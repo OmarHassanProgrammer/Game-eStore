@@ -1,10 +1,6 @@
 import styles from './Slider.module.css';
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from "framer-motion";
-import Left from "../../../assets/images/left.svg";
-import Right from "../../../assets/images/right.svg";
-import Dot from "../../../assets/images/dot.svg";
-import { useLocation } from 'react-router-dom';
 import "react-slideshow-image/dist/styles.css";
 import { Slide } from "react-slideshow-image";
 import templateGame from '../../utils/templateGame';
@@ -24,7 +20,6 @@ const Slider = props => {
 
   const [footageIndex, setFootageIndex] = useState(0);
   const slideRef = React.createRef();
-  const location = useLocation();
 
   useEffect(() => {
     const selectedGameIndex = allGames.findIndex(game => "/react-ecommerce-store/games/" + game.surname === location.pathname);
@@ -40,12 +35,7 @@ const Slider = props => {
     easing: "ease"
   };
 
-  const slideImages = [
-    selectedGame ? selectedGame.footage[0] : null,
-    selectedGame ? selectedGame.footage[1] : null,
-    selectedGame ? selectedGame.footage[2] : null,
-    selectedGame ? selectedGame.footage[3] : null,
-  ];
+  const slideImages = selectedGame?.images;
 
   const templateImages = [
     templateGame.footage[0],
@@ -58,13 +48,13 @@ const Slider = props => {
     if (carouselState > 0) {
       setCarouselState(carouselState - 1);
     } else {
-      setCarouselState(3);
+      setCarouselState(slideImages.length - 1);
     }
     slideRef.current.goBack();
   }
 
   const next = () => {
-    if (carouselState < 3) {
+    if (carouselState < slideImages.length - 1) {
       setCarouselState(carouselState + 1);
     } else {
       setCarouselState(0);
@@ -90,7 +80,7 @@ const Slider = props => {
               >
                 <img 
                   className={styles.currentImg} 
-                  src={each} 
+                  src={"../assets/items/" + each.image} 
                   alt="sample" 
                 />
               </div>
@@ -116,10 +106,8 @@ const Slider = props => {
               onMouseLeave={handleHover} 
               aria-label="Previous Picture"
             >
-                <Left 
-                  className={styles.left} 
-                  style={{ fill: hoverState[22].hovered ? "#fff" : "#ccc" }}
-                />
+                <svg className={styles.left} 
+                  style={{ fill: hoverState[22].hovered ? "#fff" : "#ccc" }} xmlns="http://www.w3.org/2000/svg" height="48" width="48"><path d="M20 44 0 24 20 4l2.8 2.85L5.65 24 22.8 41.15Z"/></svg>
             </button>
     
             <button 
@@ -129,40 +117,21 @@ const Slider = props => {
               onMouseLeave={handleHover} 
               aria-label="Next Picture"
             >
-                <Right
-                  className={styles.right} 
-                  style={{ fill: hoverState[23].hovered ? "#fff" : "#ccc" }}
-                />
+                <svg className={styles.right} 
+                  style={{ fill: hoverState[23].hovered ? "#fff" : "#ccc" }} xmlns="http://www.w3.org/2000/svg" height="48" width="48"><path d="m15.2 43.9-2.8-2.85L29.55 23.9 12.4 6.75l2.8-2.85 20 20Z"/></svg>
             </button>
             <div className={styles.selectorContainer}>
-                <button 
-                  id="0" 
-                  onClick={jumpToIndex} 
-                  className={carouselState === 0 ? styles.buttonSelected : styles.button} 
-                  aria-label="Jump to picture"
-                >
-                </button>
-                <button 
-                  id="1" 
-                  onClick={jumpToIndex} 
-                  className={carouselState === 1 ? styles.buttonSelected : styles.button} 
-                  aria-label="Jump to picture"
-                >
-                </button>
-                <button 
-                  id="2" 
-                  onClick={jumpToIndex} 
-                  className={carouselState === 2 ? styles.buttonSelected : styles.button} 
-                  aria-label="Jump to picture"
-                >
-                </button>
-                <button 
-                  id="3" 
-                  onClick={jumpToIndex} 
-                  className={carouselState === 3 ? styles.buttonSelected : styles.button} 
-                  aria-label="Jump to picture"
-                >
-                </button>
+              {
+                slideImages?slideImages.map(image => {
+                  <button 
+                    id={image.id}
+                    onClick={jumpToIndex} 
+                    className={carouselState === image.id ? styles.buttonSelected : styles.button} 
+                    aria-label="Jump to picture"
+                  >
+                  </button>
+                }):""
+              }
             </div>
         </div>
   );

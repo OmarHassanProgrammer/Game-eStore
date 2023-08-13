@@ -5,21 +5,25 @@ import React, { useEffect, useState } from 'react';
 import NavBar from '../../Components/NavBar/NavBar';
 import { AnimatePresence } from "framer-motion";
 import AnimatedPage from '../AnimatedPage/AnimatedPage';
-import Grids from "../../../assets/images/grid.svg";
-import Columns from "../../../assets/images/columns.svg";
+import Grids from "../../../assets/icons/grid.svg";
+import Columns from "../../../assets/icons/columns.svg";
 import Filters from '../../Components/Filters/Filters';
 import Grid from '../../Components/Grid/Grid';
-import games from '../../utils/games';
+//import games from '../../utils/games';
 import categories from '../../utils/categories';
 import Cart from '../../Components/Cart/Cart';
 import Footer from '../../Components/Footer/Footer';
 import filterNames from '../../utils/filterNames';
 import templateGame from '../../utils/templateGame';
+import axios from 'axios';
+
 export default function Browse (props) {
   
   const [currentFilter, setCurrentFilter] = useState("none");
-  const [allGames, setAllGames] = useState(games);
+  const [currentItemFilter, setCurrentItemFilter] = useState("none");
+  const [allGames, setAllGames] = useState([]);
   const [shownCategories, setShownCategories] = useState(categories);
+  const [shownItems, setShownItems] = useState([]);
   const [cart, setCart] = useState([]);
   const [cartAmount, setCartAmount] = useState(0);
   const [shownGames, setShownGames] = useState(allGames);
@@ -37,6 +41,9 @@ export default function Browse (props) {
   const [currentGameId, setCurrentGameId] = useState(-1);
   const [currentCategory, setCurrentCategory] = useState({});
   const [currentCategoryId, setCurrentCategoryId] = useState(-1);
+  const [genres, setGenres] = useState([]);
+  const [activeGenre, setActiveGenre] = useState({});
+  const [user, setUser] = useState();
   const [hoverState, setHoverState] = useState([
     {
         hovered: false,
@@ -140,10 +147,35 @@ export default function Browse (props) {
     }
   ]);
 
+useEffect(() => {
+  const apiUrl = '/api/genres/getAll'; // Replace with your actual API endpoint
+  axios.get(apiUrl)
+    .then(response => {
+      setGenres(response.data.genres);
+    })
+    .catch(error => {
+      console.error('Error fetching data:', error);
+    });
+
+
+    const apiUrl2 = '/api/user/me'; // Replace with your actual API endpoint
+    axios.get(apiUrl2)
+      .then(response => {
+        if(response.data.message != "Unauthenticated.") {
+          setUser(response.data);
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+}, []);
+
 if (window.location.href != "/" && window.location.href != "/browse" && selectedGame === false) {
-  let surname = window.location.href.substring(29);
+  let id = window.location.href.substring(29);
   console.log("test");
-  let currentGame = games.find(game => game.surname === surname);
+  let currentGame = {};
+  if(allGames)
+  currentGame = allGames.find(game => game.id === id);
   if (currentGame != undefined) {
     setSelectedGame(currentGame);
   } else {
@@ -165,7 +197,14 @@ const handleSearchSubmit = (e) => {
     window.location.href = '/games';
   }
 }
+const handleSelectItemFilter = (filter, e) => {
+  setCurrentItemFilter(filter);
+}
 
+const handleSelectGenre  = (genre) => {
+  setActiveGenre(genre);
+
+}
 const handleSelect = (e) => {
   const globalFilter = e.target.id < 11;
 
@@ -182,18 +221,11 @@ const handleSelect = (e) => {
     updatedFilter = [...currentFilter];
 
     for(const filter of currentFilter) {
-      if((filter == "Ratings" || filter == "Reviews" || filter == "Wishlist") && globalFilter) {
-        updatedFilter.splice(currentFilter.indexOf(filter), 1);
-        
-        if(filter == filterNames[e.target.id - 8]) {
-          activated = true;
-        }
-      } else if ((filter != "Ratings" && filter != "Reviews" && filter != "Wishlist") && !globalFilter) {
+      if (!globalFilter) {
         updatedFilter.splice(currentFilter.indexOf(filter), 1);
         if(filter == filterNames[e.target.id - 8]) {
           activated = true;
         }
-        console.log("Ss");
       }
     }
   }
@@ -214,24 +246,24 @@ const handleSelectGameFilter = (e) => {
   window.location.search = 'game=' + e.target.id;
 }
 
-const handleSelectGame = (e) => {
+const handleSelectGame = (id, e) => {
   if (e.target.tagName === "BUTTON") {
     return
   } else if (e.target.classList[0] != "AddToCart_addToCart__zbJPe") {
-        setSelectedGame(games[e.target.parentNode.id]);
+        
         if((window.location.pathname) == "/games") {
           if(currentCategoryId == -1) {
-            window.location.href = `/categories` + '?game=' + e.target.parentNode.id;
+            window.location.href = `/categories` + '?game=' + id;
           } else
-            window.location.href = `/items?category=` + e.target.parentNode.id + "&game=" + currentGameId;
+            window.location.href = `/items?category=` + currentCategoryId + "&game=" + id;
         } else if((window.location.pathname) == "/categories") {
           if(currentGameId == -1) {
-            window.location.href = `/games?category=` + e.target.parentNode.id;
+            window.location.href = `/games?category=` + id;
           } else {
-            window.location.href = `/items?category=` + e.target.parentNode.id + "&game=" + currentGameId;
+            window.location.href = `/items?category=` + id + "&game=" + currentGameId;
           }
-        } else if((window.location.pathname + window.location.search) == "/items") {
-          window.location.href = `/game/${games[e.target.parentNode.id].surname}`;
+        } else if((window.location.pathname) == "/items") {
+          window.location.href = `/game?id=${id}`;
         }
   }
 }
@@ -251,6 +283,14 @@ const handleLike = (e) => {
 
 const clearFilter = () => {
   setCurrentFilter("none");
+  setActiveGenre({});
+  setSearch("");
+  setReviewDisplay(false);
+}
+
+const clearItemFilter = () => {
+  setCurrentItemFilter("none");
+  setActiveGenre({});
   setSearch("");
   setReviewDisplay(false);
 }
@@ -277,31 +317,18 @@ const handleHoverGame = (e) => {
 
 const handleAddToCart = (e) => {
   e.stopPropagation();
-  console.log(window.location.href);
-  let handledAddedGame = allGames.map((game, i) => {
-    if (browsePages.includes(window.location.href)) {
+  let handledAddedGame = shownItems.map((item, i) => {
+    
       if (e.target.id == i) {
-        game.inCart = true
+        item.inCart = true
         let newCart = cart;
-        newCart.push(game);
+        newCart.push(item);
         setCart(newCart);
         setCartAmount(cartAmount + 1);
-        return game
+        return item
       } else {
-        return game;
-      }
-    } else {
-        if (selectedGame.id == i) {
-          game.inCart = true
-          let newCart = cart;
-          newCart.push(game);
-          setCart(newCart);
-          setCartAmount(cartAmount + 1);
-          return game
-        } else {
-          return game;
-        }
-    }
+        return item;
+      } 
   });
 
   setAllGames(handledAddedGame);
@@ -392,11 +419,18 @@ useEffect(() => {
     ]);
   }
 
-  const handleBrowse = () => {
+  const handleBrowse = (type) => {
     setOverlap(true);
     setTimeout(() => {
       setBrowsing(true);
-      window.location.href = '/games';
+      let C = "";
+      let G = "";
+      if(type == "games") {
+        window.location.href = "games";
+      } 
+      if(type == "categories") {
+        window.location.href = "categories?" + (window.location.search.indexOf('game=') != -1?"game=" + currentGameId:"");
+      } 
     }, 1500);
   }
 
@@ -453,27 +487,73 @@ useEffect(() => {
 
     useEffect(() => {
       if (currentFilter == "none") {
-        if(browseType == "/games") 
-          setShownGames(allGames);
-        else if (browseType == "/categories")
-          setShownGames(shownCategories);
+        if(browseType == "/games") {
+          const apiUrl = '/api/games/getAll'; // Replace with your actual API endpoint
+          axios.get(apiUrl)
+            .then(response => {
+              setAllGames(response.data.games);
+              setShownGames(response.data.games);          
+            })
+            .catch(error => {
+              console.error('Error fetching data:', error);
+            });
+        } else if (browseType == "/categories") {
+          if(currentGame.id != -1) {
+            const apiUrl = '/api/games/getCategories/' + currentGame.id; // Replace with your actual API endpoint
+            axios.get(apiUrl)
+            .then(response => {
+              setShownCategories(response.data.categories);
+              setShownGames(response.data.categories);
+              g = response.data.games;
+            })
+            .catch(error => {
+              console.error('Error fetching data:', error);
+            });
+          } else {
+            const apiUrl = '/api/categories/getAll'; // Replace with your actual API endpoint
+            axios.get(apiUrl)
+            .then(response => {
+              setShownCategories(response.data.categories);
+              setShownGames(response.data.categories);
+              g = response.data.games;
+            })
+            .catch(error => {
+              console.error('Error fetching data:', error);
+            });
+          }
+        } else if (browseType == "/items") {
+          if(currentCategory.id) {
+            const apiUrl = '/api/items/getAll/' + currentCategory.id; // Replace with your actual API endpoint
+              axios.get(apiUrl)
+              .then(response => {
+                setShownGames(response.data.items);
+              })
+              .catch(error => {
+                console.error('Error fetching data:', error);
+              });
+          } else {
+            const apiUrl = '/api/items/getAll'; // Replace with your actual API endpoint
+              axios.get(apiUrl)
+              .then(response => {
+                setShownGames(response.data.items);
+              })
+              .catch(error => {
+                console.error('Error fetching data:', error);
+              });
+          }
+        }
 
       } else{
         let Cgames = allGames;
-        
         for(const filter of currentFilter) {
-          if (filter != "Ratings" && filter != "Reviews" && filter != "Wishlist" && (filter[0] + filter[1]) != "g-") {
-            let filteredShownGames = Cgames.filter(game => game.genre === filter);
-            Cgames = filteredShownGames;
-            setShownGames(Cgames);
-  
-          } else if (filter === "Ratings") {
+          
+          if (filter === "Ratings") {
               let filteredShownGames = Cgames.slice(0);
               filteredShownGames = filteredShownGames.sort(function(a, b) {
                 return b.rating - a.rating;
               });
             Cgames = filteredShownGames;
-
+            g = Cgames;
             setShownGames(Cgames);
     
           } else if (filter === "Reviews") {
@@ -482,18 +562,44 @@ useEffect(() => {
           } else if (filter === "Wishlist") {
               let filteredShownGames = Cgames.filter(game => game.isLiked === true);
               Cgames = filteredShownGames;
+              g = Cgames;
               setShownGames(Cgames);
-          } else if ((filter[0] + filter[1]) == "g-") {
-            setShownGames(shownCategories);
           }
-    
+
           if (filter != "Reviews") {
               setReviewDisplay(false);
           }
         }
 
-      } 
-    }, [currentFilter])
+        if(activeGenre != {}) {
+          let fGames = [];
+          Cgames.forEach(game => {
+            if(game.genresIds.includes(activeGenre)) {
+              fGames.push(game);
+            }
+          });
+          setShownGames(fGames);
+        }
+      }
+      
+
+    }, [currentFilter, currentGame, currentCategory]);
+
+    useEffect(() => {
+      console.log('activeGenre: ' + activeGenre.name);
+      if(activeGenre.id) {
+        let fGames = [];
+        allGames.forEach(game => {
+          if(game.genresIds.includes(activeGenre.id)) {
+            fGames.push(game);
+          }
+        });
+        setShownGames(fGames);
+      } else {
+        console.log("aaaaaaaaaaaaaaaaaa");
+        setShownGames(allGames);
+      }
+    }, [activeGenre]);
 
     useEffect(() => {
       if (cartDisplayed) {
@@ -572,10 +678,17 @@ useEffect(() => {
                 setCurrentCategoryId={setCurrentCategoryId}
                 browseType={browseType}
                 handleHover={handleHover}
+                genres={genres}
+                setGenres={setGenres}
+                activeGenre={activeGenre}
+                setActiveGenre={setActiveGenre}
                 handleBrowse={handleBrowse}
                 handleSelect={handleSelect}
+                handleSelectGenre={handleSelectGenre}
                 handleSelectGameFilter={handleSelectGameFilter}
                 currentFilter={currentFilter} 
+                currentItemFilter={currentItemFilter} 
+                handleSelectItemFilter={handleSelectItemFilter}
               />
 
               <div className={styles.list}>
@@ -591,20 +704,23 @@ useEffect(() => {
                       Filter by:
                       <span> 
                         {
-                          browseType == "/games"? currentFilter == "none"?"none":currentFilter.map((filter, index) => {
+                          browseType == "/games"? <>{currentFilter == "none"?"":currentFilter.map((filter, index) => {
                             return ((index != 0)?", ":"") + filter
-                          }):
+                          })}{ activeGenre!={}?activeGenre.name:"" }{(currentFilter == "none" && activeGenre=={})?"none":""}</>:
                           browseType == "/categories"?
                             currentGame.name
-                            :""
-                      }</span>
+                            :
+                            browseType == "/items"? currentItemFilter:""
+                        }
+                        
+                      </span>
                     </button>
                     <button 
                       className={`${styles.filterButton} ${styles.clearButton}`}
-                      onClick={clearFilter} 
+                      onClick={browseType == "/items"?clearItemFilter:clearFilter} 
                       aria-label="Clear Filters"
                     >
-                      Clear Filter
+                      Clear Filtev
                     </button>
                   </div>
                   
@@ -652,6 +768,8 @@ useEffect(() => {
                       handleSelectGame={handleSelectGame}
                       cartDisplayed={cartDisplayed}
                       hoverState={hoverState}
+                      smallFont={false}
+                      limit="0"
                     />
               </div>
             </div>

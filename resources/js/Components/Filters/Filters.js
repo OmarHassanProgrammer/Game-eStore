@@ -1,20 +1,11 @@
 import React from "react";
 import styles from "./Filters.module.css";
-import Wishlist from "../../../assets/images/wishlist.svg";
-import Ratings from "../../../assets/images/ratings.svg";
-import Reviews from "../../../assets/images/reviews.svg";
-import Action from "../../../assets/images/action.svg";
-import Strategy from "../../../assets/images/strategy.svg";
-import RPG from "../../../assets/images/RPG.svg";
-import Shooter from "../../../assets/images/shooter.svg";
-import Adventure from "../../../assets/images/adventure.svg";
-import Puzzle from "../../../assets/images/puzzle.svg";
-import Racing from "../../../assets/images/racing.svg";
-import Sports from "../../../assets/images/sports.svg";
+import Wishlist from "../../../assets/icons/wishlist.svg";
+import Ratings from "../../../assets/icons/ratings.svg";
 import { useState } from "react";
 import { useEffect } from "react";
-import games from "../../utils/games";
 import categories from "../../utils/categories";
+import axios from "axios";
 
 const Filters = props => {
     const {
@@ -27,349 +18,130 @@ const Filters = props => {
         currentGameId,
         setCurrentGameId,
         currentCategory,
+        handleSelectGenre,
         setCurrentCategory,
         currentCategoryId,
         setCurrentCategoryId,
         handleSelectGameFilter,
-        currentFilter
+        currentFilter,
+        currentItemFilter,
+        genres,
+        activeGenre,
+        handleSelectItemFilter,
+        browseType
     } = props;
 
     const numElements = 9; // number of elements to pick
     const [randomGames, setRandomGames] = useState([]);
     useEffect(() => {
-      let found = false;
-
       let id = -1;
-      const G = games.filter((game) => {
-            
-          if(!found)  {
-            let q = window.location.search.slice(window.location.search.indexOf('game=') + 5);
-            const i = q.indexOf("&");
-            if(i != -1) {
-              q = q.slice(0, i);
-            }
-            if(game.id == q) {
-              id = game.id;
-              found = true;
-              return game;
-            }
-          }
-      })[0];
-      if(found)
-        setCurrentGame(G);
-      setCurrentGameId(id);
+      if(window.location.search.indexOf('game=') != -1) {
+        let q = window.location.search.slice(window.location.search.indexOf('game=') + 5);
+        const i = q.indexOf("&");
+        if(i != -1) {
+          q = q.slice(0, i);
+        }
 
-      let Cfound = false;
+        const apiUrl = '/api/games/get/' + q; // Replace with your actual API endpoint
+        axios.get(apiUrl)
+          .then(response => {
+            if(response.data.game) {
+              setCurrentGame(response.data.game);
+              setCurrentGameId(response.data.game.id); 
+            }
+            else
+              setCurrentGame({});
+          })
+          .catch(error => {
+            console.error('Error fetching data:', error);
+          });
+      }
 
-      let Cid = -1;
-      const C = categories.filter((category) => {
-            
-          if(!Cfound)  {
-            let q = window.location.search.slice(window.location.search.indexOf('category=') + 9);
-            const i = q.indexOf("&");
-            if(i != -1) {
-              q = q.slice(0, i);
+      if(window.location.search.indexOf('category=') != -1) {
+        
+        let q = window.location.search.slice(window.location.search.indexOf('category=') + 9);
+        const i = q.indexOf("&");
+        if(i != -1) {
+          q = q.slice(0, i);
+        }
+        const apiUrl = '/api/categories/get/' + q; // Replace with your actual API endpoint
+        axios.get(apiUrl)
+          .then(response => {
+            if(response.data.category) {
+              setCurrentCategory(response.data.category);
+              setCurrentCategoryId(response.data.category.id); 
             }
-            if(category.id == q) {
-              Cid = category.id;
-              Cfound = true;
-              return category;
-            }
-          }
-      })[0];
-      if(Cfound)
-        setCurrentCategory(C);
-      setCurrentCategoryId(Cid);
+            else
+              setCurrentCategory({});
+          })
+          .catch(error => {
+            console.error('Error fetching data:', error);
+          });
+        
+        }
+
     }, [window.location.search]);
     
     useEffect(() => {
       if(window.location.href != "/games") {
-        const randomIndices = new Set(); // set to store the unique indices
+        const apiUrl = '/api/games/getRandom/5'; // Replace with your actual API endpoint
+        axios.get(apiUrl)
+          .then(response => {
+              setRandomGames(response.data.games);
+          })
+          .catch(error => {
+            console.error('Error fetching data:', error);
+          });
+      }
 
-        while (randomIndices.size < numElements) {
-          const randomIndex = Math.floor(Math.random() * games.length);
-          randomIndices.add(randomIndex);
-        }
-        const r = Array.from(randomIndices).map(index => games[index]);
-        
-      let found = false;
-      let id = -1;
-
-      let g = games.filter((game) => {
-
-        if(!found)  {
-          let q = window.location.search.slice(window.location.search.indexOf('game=') + 5);
-          const i = q.indexOf("&");
-          if(i != -1) {
-            q = q.slice(0, i);
-          }
-          if(game.id == q) {
-            found = true;
-            return game;
-          }
-        }
-        })[0];
-        setCurrentGameId(id);
-        if(found) {
-          r.splice(r.indexOf(g), 1);
-          setRandomGames([g, ...r]);
+      if(window.location.pathname == "items") {
+        if(window.location.search.indexOf('game=') == -1) { 
+          window.location.href = "/games";
+        } else if (window.location.search.indexOf('category=') == -1) {
+          window.location.href = "/categories?game=" + currentGame;
         } else {
-          setRandomGames([...r]);
+          
         }
-
-        console.log(r);
-    
       }
     }, []);
 
     
     return (
         <div className={styles.filters}>
-          {currentCategoryId} game {currentGameId}
           { (window.location.pathname + window.location.search) == "/games"?
             <div>
-              <h2>Filters</h2>
-
-              <div className={styles.globalFilters}>
-                  <div 
-                    className={styles.filterDiv} 
-                    id="8" 
-                    onMouseEnter={handleHover} 
-                    onMouseLeave={handleHover} 
-                    onClick={handleSelect}
-                  >
-                    <button 
-                      className={styles.filterBtn} 
-                      style={{ backgroundColor: (hoverState[8].hovered || currentFilter.includes("Wishlist")) ? "#fff" : "#2d2d2d" }}
-                      aria-label="Open wishlist"
-                    >
-                        <img
-                            src={Wishlist} 
-                            style={{ filter: (hoverState[8].hovered || currentFilter.includes("Wishlist")) ? "" : "grayscale(100%) invert(1)" }} 
-                            className={styles.Wishlist}
-                        />
-                    </button>
-                    Wishlist
-                  </div>
-        
-                  <div 
-                    className={styles.filterDiv} 
-                    id="9" 
-                    onMouseEnter={handleHover} 
-                    onMouseLeave={handleHover} 
-                    onClick={handleSelect}
-                  >
-                    <button 
-                      className={`${styles.filterBtn2} ${styles.Ratings}`} 
-                      style={{ backgroundColor: (hoverState[9].hovered || currentFilter.includes("Ratings")) ? "#fff" : "#2d2d2d" }}
-                      aria-label="Sort after ratings"
-                    >
-                        <img 
-                          src={Ratings}
-                          className={`${styles.filterSVG2} ${styles.Ratings}`} 
-                          style={{ filter: (hoverState[9].hovered || currentFilter.includes("Ratings")) ? "" : "grayscale(100%) invert(1)" }} 
-                        />
-                    </button>
-                    Ratings
-                  </div>
-        
-                  <div 
-                    className={styles.filterDiv}
-                    id="10" 
-                    onMouseEnter={handleHover} 
-                    onMouseLeave={handleHover} 
-                    onClick={handleSelect}
-                  >
-                    <button 
-                      className={`${styles.filterBtn3} ${styles.Reviews}`} 
-                      style={{ backgroundColor: (hoverState[10].hovered || currentFilter.includes("Reviews")) ? "#fff" : "#2d2d2d" }}
-                      aria-label="Sort after reviews"
-                    >
-                        <img
-                            src={Reviews}
-                          className={`${styles.filterSVG3} ${styles.Reviews}`} 
-                          viewBox="0 0 48 48" 
-                          style={{ filter: (hoverState[10].hovered || currentFilter.includes("Reviews")) ? "" : "grayscale(100%) invert(1)" }} 
-                        />
-                    </button>
-                    Reviews
-                  </div>
-              </div>
-
               <div className={styles.genreFilters}>
                 <h2>Genres</h2>
-
-                <div 
-                  className={styles.filterDiv} 
-                  id="11" 
-                  onMouseEnter={handleHover} 
-                  onMouseLeave={handleHover} 
-                  onClick={handleSelect}
-                >
-                    <button 
-                      className={styles.filterBtn3} 
-                      style={{ backgroundColor: (hoverState[11].hovered || currentFilter.includes("Action")) ? "#fff" : "#2d2d2d" }}
-                      aria-label="Show action genre"
+                {
+                  genres?
+                  genres.map((genre, index) => {
+                    return <div 
+                      key={index}
+                      className={styles.filterDiv} 
+                      id={genre.id}
+                      style={{backgroundColor: activeGenre.id == genre.id?"#333":"transparent"}}
+                      onMouseEnter={handleHover} 
+                      onMouseLeave={handleHover} 
+                      onClick={handleSelectGenre.bind(this, genre)}
                     >
-                        <img 
-                          src={Action} 
-                          className={styles.filterSVG3}
-                          style={{ filter: (hoverState[11].hovered || currentFilter.includes("Action")) ? "" : "grayscale(100%) invert(1)" }} 
-                        />
-                    </button>
-                    Action
-                </div>
-
-                <div 
-                  className={styles.filterDiv} 
-                  id="12" 
-                  onMouseEnter={handleHover} 
-                  onMouseLeave={handleHover} 
-                  onClick={handleSelect}
-                >
-                    <button 
-                      className={styles.filterBtn2} 
-                      style={{ backgroundColor: (hoverState[12].hovered || currentFilter.includes("Strategy")) ? "#fff" : "#2d2d2d" }}
-                      aria-label="Show Strategy genre"
-                    >
-                        <img
-                          src={Strategy} 
-                          className={styles.filterSVG2} 
-                          style={{ filter: (hoverState[12].hovered || currentFilter.includes("Strategy")) ? "" : "grayscale(100%) invert(1)" }} 
-                        />
-                    </button>
-                    Strategy
-                </div>
-
-                <div 
-                  className={styles.filterDiv} 
-                  id="13" 
-                  onMouseEnter={handleHover} 
-                  onMouseLeave={handleHover} 
-                  onClick={handleSelect}
-                >
-                    <button 
-                      className={styles.filterBtn3} 
-                      style={{ backgroundColor: (hoverState[13].hovered || currentFilter.includes("RPG")) ? "#fff" : "#2d2d2d" }}
-                      aria-label="Show RPG genre"
-                    >
-                        <img 
-                            src={RPG} 
-                          className={styles.filterSVG3} 
-                          style={{ filter: (hoverState[13].hovered || currentFilter.includes("RPG")) ? "" : "grayscale(100%) invert(1)" }} 
-                          />
-                    </button>
-                    RPG
-                </div>
-
-                <div 
-                  className={styles.filterDiv} 
-                  id="14" 
-                  onMouseEnter={handleHover} 
-                  onMouseLeave={handleHover} 
-                  onClick={handleSelect}
-                >
-                    <button 
-                      className={styles.filterBtn2} 
-                      style={{ backgroundColor: (hoverState[14].hovered || currentFilter.includes("Shooter")) ? "#fff" : "#2d2d2d" }}
-                      aria-label="Show Shooter genre"
-                    >
-                        <img
-                            src={Strategy} 
-                          className={styles.filterSVG2} 
-                          style={{ filter: (hoverState[14].hovered || currentFilter.includes("Shooter")) ? "" : "grayscale(100%) invert(1)" }} 
-                          />
-                    </button>
-                    Shooter
-                </div>
-
-                <div 
-                  className={styles.filterDiv} 
-                  id="15" 
-                  onMouseEnter={handleHover} 
-                  onMouseLeave={handleHover} 
-                  onClick={handleSelect}
-                >
-                    <button 
-                      className={styles.filterBtn2} 
-                      style={{ backgroundColor: (hoverState[15].hovered || currentFilter.includes("Adventure")) ? "#fff" : "#2d2d2d" }}
-                      aria-label="Show Adventure genre"
-                    >
-                        <img
-                            src={Adventure} 
-                          className={styles.filterSVG2} 
-                          style={{ filter: (hoverState[15].hovered || currentFilter.includes("Adventure")) ? "" : "grayscale(100%) invert(1)" }} 
-                          />
-                    </button>
-                    Adventure
-                </div>
-
-                <div 
-                  className={styles.filterDiv} 
-                  id="16" 
-                  onMouseEnter={handleHover} 
-                  onMouseLeave={handleHover} 
-                  onClick={handleSelect}
-                >
-                    <button 
-                      className={styles.filterBtn4} 
-                      style={{ backgroundColor: (hoverState[16].hovered || currentFilter.includes("Puzzle")) ? "#fff" : "#2d2d2d" }}
-                      aria-label="Show Puzzle genre"
-                      >
-                        <img
-                            src={Puzzle} 
-                          className={styles.filterSVG2} 
-                          style={{ filter: (hoverState[16].hovered || currentFilter.includes("Puzzle")) ? "" : "grayscale(100%) invert(1)" }} 
-                          />
-                    </button>
-                    Puzzle
-                </div>
-
-                <div 
-                  className={styles.filterDiv} 
-                  id="17" 
-                  onMouseEnter={handleHover} 
-                  onMouseLeave={handleHover} 
-                  onClick={handleSelect}
-                >
-                    <button 
-                      className={styles.filterBtn3} 
-                      style={{ backgroundColor: (hoverState[17].hovered || currentFilter.includes("Racing")) ? "#fff" : "#2d2d2d" }}
-                      aria-label="Show Racing genre"
-                    >
-                        <img
-                            src={Racing} 
-                          className={styles.filterSVG3} 
-                          style={{ filter: (hoverState[17].hovered || currentFilter.includes("Racing")) ? "" : "grayscale(100%) invert(1)" }} 
-                          />
-                    </button>
-                    Racing
-                </div>
-
-                <div 
-                  className={styles.filterDiv} 
-                  id="18" 
-                  onMouseEnter={handleHover} 
-                  onMouseLeave={handleHover} 
-                  onClick={handleSelect}
-                >
-                    <button 
-                      className={styles.filterBtn4} 
-                      style={{ backgroundColor: (hoverState[18].hovered || currentFilter.includes("Sports")) ? "#fff" : "#2d2d2d" }}
-                      aria-label="Show Sports genre"
-                    >
-                        <img
-                            src={Sports} 
-                          className={styles.filterSVG3} 
-                          style={{ filter: (hoverState[18].hovered || currentFilter.includes("Sports")) ? "" : "grayscale(100%) invert(1)" }} 
-                          />
-                    </button>
-                    Sports
-                </div>
+                        <button 
+                          className={styles.filterBtn3} 
+                          aria-label="Show action genre"
+                        >
+                            <img 
+                              src={"../../assets/genres/" + genre.id + "." + genre.imgType} 
+                              className={styles.filterSVG3}
+                            />
+                        </button>
+                        {genre.name}
+                    </div>
+                  }):""
+                }
               </div>
             </div>:
+            (window.location.pathname + window.location.search) == "/categories"?
             <div>
-              <h2 onClick={handleBrowse}>Games</h2>
+              <h2 onClick={handleBrowse.bind(this, "games")}>Games</h2>
 
               <div className={styles.globalFilters}>
                 {
@@ -380,7 +152,7 @@ const Filters = props => {
                             id={game.id}
                             onMouseEnter={handleHover} 
                             onMouseLeave={handleHover} 
-                            onClick={handleSelectGameFilter}
+                            onClick={currentGame.id == game.id?handleBrowse.bind(this, "game"):handleSelectGameFilter}
                             style={{fontSize: "0.9rem", backgroundColor: (currentGame.id == game.id)?"#333":"transparent"}}
                             aria-label={game.name}
                           >
@@ -389,7 +161,7 @@ const Filters = props => {
                               aria-label={game.name}
                             >
                                 <img
-                                    src={game.cover} 
+                                    src={'../../../assets' + browseType + '/' + game.id + '.' + game.imgType} 
                                     className={styles.gameFilterImg}
                                 />
                             </button>
@@ -401,6 +173,136 @@ const Filters = props => {
                 }
                 
             </div>
+          </div>:
+          <div>
+            {
+              currentGameId != -1?<>
+              <h2 onClick={handleBrowse.bind(this, "games")}>Game</h2>
+              <div>
+                  <div 
+                    className={styles.filterDiv} 
+                    id={currentGameId}
+                    onMouseEnter={handleHover} 
+                    onMouseLeave={handleHover} 
+                    onClick={handleBrowse.bind(this, "games")}
+                    style={{fontSize: "0.9rem"}}
+                    aria-label={currentGame.name}
+                  >
+                    <button 
+                      className={styles.gameFilter} 
+                      aria-label={currentGame.name}
+                    >
+                        <img
+                            src={'../../../assets/games/' + currentGame.id + '.' + currentGame.imgType} 
+                            className={styles.gameFilterImg}
+                        />
+                    </button>
+                    {
+                      currentGame.name
+                    }
+                </div>
+                  
+              </div></>:""
+            }
+            {
+              currentCategoryId != -1?<>
+              <h2 onClick={handleBrowse.bind(this, "categories")}>Category</h2>
+              <div>
+                  <div 
+                    className={styles.filterDiv} 
+                    id={currentCategoryId}
+                    onMouseEnter={handleHover} 
+                    onMouseLeave={handleHover} 
+                    onClick={handleBrowse.bind(this, "categories")}
+                    style={{fontSize: "0.9rem"}}
+                    aria-label={currentCategory.name}
+                  >
+                    <button 
+                      className={styles.gameFilter} 
+                      aria-label={currentCategory.name}
+                    >
+                        <img
+                            src={'../../../assets/categories/' + currentCategory.id + '.' + currentCategory.imgType} 
+                            className={styles.gameFilterImg}
+                        />
+                    </button>
+                    {
+                      currentCategory.name
+                    }
+                </div>
+                  
+              </div></>:""
+            }
+
+            <h2>Filter</h2>
+            <div className={styles.globalFilters}>
+                  <div 
+                    className={styles.filterDiv} 
+                    id="8" 
+                    onMouseEnter={handleHover} 
+                    onMouseLeave={handleHover} 
+                    onClick={handleSelectItemFilter.bind(this, "Wishlist")}
+                  >
+                    <button 
+                      className={styles.filterBtn} 
+                      style={{ backgroundColor: (currentItemFilter == "Wishlist") ? "#fff" : "#2d2d2d" }}
+                      aria-label="Open wishlist"
+                    >
+                        <img
+                            src={Wishlist} 
+                            style={{ filter: (currentItemFilter == "Wishlist") ? "" : "grayscale(100%) invert(1)" }} 
+                            className={styles.Wishlist}
+                        />
+                    </button>
+                    Wishlist
+                  </div>
+        
+                  <div 
+                    className={styles.filterDiv} 
+                    id="9" 
+                    onMouseEnter={handleHover} 
+                    onMouseLeave={handleHover} 
+                    onClick={handleSelectItemFilter.bind(this, "Ratings")}
+                  >
+                    <button 
+                      className={`${styles.filterBtn2} ${styles.Ratings}`} 
+                      style={{ backgroundColor: (currentItemFilter == "Ratings") ? "#fff" : "#2d2d2d" }}
+                      aria-label="Sort after ratings"
+                    >
+                        <img 
+                          src={Ratings}
+                          className={`${styles.filterSVG2} ${styles.Ratings}`} 
+                          style={{ filter: (currentItemFilter == "Ratings") ? "" : "grayscale(100%) invert(1)" }} 
+                        />
+                    </button>
+                    Ratings
+                  </div>
+        
+                  <div 
+                    className={styles.filterDiv}
+                    id="10" 
+                    onMouseEnter={handleHover} 
+                    onMouseLeave={handleHover} 
+                    onClick={handleSelectItemFilter.bind(this, "Price")}
+                  >
+                    <button 
+                      className={`${styles.filterBtn3} ${styles.Reviews}`} 
+                      style={{ backgroundColor: (currentItemFilter == "Price") ? "#fff" : "#2d2d2d" }}
+                      aria-label="Sort after reviews"
+                    >
+                      <svg className={`${styles.filterSVG3} ${styles.Reviews}`} style={{ filter: (currentItemFilter == "Price") ? "" : "grayscale(100%) invert(1)" }}  xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" fill="#000000" height="800px" width="800px" version="1.1" viewBox="0 0 512 512" enableBackground="new 0 0 512 512">
+                      
+                        <g>
+                          <g>
+                            <path d="m256,11c-135.1,0-245,109.9-245,245s109.9,245 245,245c135.1,0 245-109.9 245-245s-109.9-245-245-245zm0,449.2c-112.6,0-204.2-91.6-204.2-204.2 0-112.6 91.6-204.2 204.2-204.2 112.6,0 204.2,91.6 204.2,204.2 0,112.6-91.6,204.2-204.2,204.2z"/>
+                            <path d="m268.8,224.8v-66.5c11,4.8 17.8,13.8 20.4,27.2l43-5.6c-2.9-17-9.8-30.6-20.4-40.7-10.7-10.2-25-16.3-43-18.5v-16.8h-24.7v16.8c-19.5,1.9-35.1,9.2-46.9,21.9-11.7,12.6-17.6,28.3-17.6,46.9 0,18.4 5.2,34 15.6,46.9 10.4,12.9 26.7,22.5 48.9,28.8v71.3c-6.1-2.9-11.7-7.7-16.7-14.3-5-6.6-8.4-14.4-10.2-23.5l-44.4,4.8c3.4,22.3 11.2,39.6 23.5,51.9s28.2,19.6 47.8,21.9v31h24.7v-31.8c22.1-3.2 39.4-11.8 51.8-25.9 12.4-14.1 18.6-31.4 18.6-51.9 0-18.4-4.9-33.4-14.8-45.2-9.9-11.8-28.4-21.3-55.6-28.7zm-24.7-8.2c-36.1-11.8-24.2-58.9 0-58.9v58.9zm24.7,122.2v-66.4c36.2,7 33.1,59.5 0,66.4z"/>
+                          </g>
+                        </g>
+                      </svg>
+                    </button>
+                    Price
+                  </div>
+              </div>
           </div>
           }
         </div>

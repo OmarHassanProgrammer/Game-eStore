@@ -26,3 +26,6 @@ import '../assets/fonts/walsheim/GTWalsheimPro-Bold.ttf';
 
 import "./Containers/Home/Home";
 import "./Containers/Browse/Browse";
+import "./Containers/GamePage/GamePage";
+import "./Containers/Login/Login";
+import "./Containers/Signup/Signup";

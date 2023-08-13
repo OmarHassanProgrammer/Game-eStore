@@ -6,6 +6,8 @@
     transition: 0.3s all;
     position: relative;
     padding-bottom: 56.25%;
+    padding-bottom: 50px;
+    display: inline-block;
 }
 
 .cardHome {
@@ -39,7 +41,9 @@
     -webkit-user-select: none;
     -ms-user-select: none;
 }
-
+.img {
+    width: 100%;
+}
 .cardHome div {
     display: flex;
     justify-content: space-between;
@@ -250,6 +254,9 @@
 .name,
 .img {
     cursor: pointer;
+}
+
+.img {
 }
 
 .price {

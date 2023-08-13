@@ -1,6 +1,6 @@
 import styles from './AddedToCart.module.css';
 import React from 'react';
-import Added from "../../../assets/images/added.svg";
+import Added from "../../../assets/icons/added.svg";
 import AnimatedCard from '../../Containers/AnimatedPage/AnimatedCard';
 
 const AddedToCart = props => {

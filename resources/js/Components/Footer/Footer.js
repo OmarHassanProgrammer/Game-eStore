@@ -1,7 +1,7 @@
 import styles from './Footer.module.css';
 import React from 'react';
-import Logo from "../../../assets/images/logo.svg";
-import AppStore from "../../../assets/images/appstorebadge.svg";
+import Logo from "../../../assets/icons/logo.svg";
+import AppStore from "../../../assets/icons/appstorebadge.svg";
 
 const Footer = props => {
     const {
@@ -45,7 +45,7 @@ const Footer = props => {
                 <p>Portions of this page are inspired by <span>RAWG, RAWG.io</span>. This page was built solely for educational purposes.</p>
               </div>
               <div className={styles.infoRight}>
-                <img className={styles.google} src={require("../../../assets/images/googleplaybadge.png")} alt="Google Play Badge" />
+                <img className={styles.google} src={require("../../../assets/icons/googleplaybadge.png")} alt="Google Play Badge" />
                 <img src={AppStore} className={styles.apple} />
               </div>
             </div>
@@ -60,8 +60,8 @@ const Footer = props => {
               </div>
     
               <div className={styles.endRight}>
-                <img className={styles.social} src={require("../../../assets/images/twitter.png")} alt="Twitter Logo" />
-                <img className={styles.social} src={require("../../../assets/images/instagram.png")} alt="Instagram Logo" />
+                <img className={styles.social} src={require("../../../assets/icons/twitter.png")} alt="Twitter Logo" />
+                <img className={styles.social} src={require("../../../assets/icons/instagram.png")} alt="Instagram Logo" />
               </div>
             </div>
         </div>

@@ -1,7 +1,7 @@
 import styles from './Cart.module.css';
 import React, { useState } from 'react';
-import Right from "../../../assets/images/arrowRight.svg";
-import Cross from "../../../assets/images/cross.svg";
+import Right from "../../../assets/icons/arrowRight.svg";
+import Cross from "../../../assets/icons/cross.svg";
 import { motion, AnimatePresence } from "framer-motion";
 import AnimatedCart from '../../Containers/AnimatedPage/AnimatedCart';
 import AnimatedCard from '../../Containers/AnimatedPage/AnimatedCard';

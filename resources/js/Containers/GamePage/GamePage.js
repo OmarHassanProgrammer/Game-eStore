@@ -1,54 +1,351 @@
 import styles from './GamePage.module.css';
 import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import ReactDOM from 'react-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { motion, AnimatePresence } from "framer-motion";
 import AnimatedGamePage from '../AnimatedPage/AnimatedGamePage';
 import NavBar from '../../Components/NavBar/NavBar';
-import Arrow from "../../../assets/images/arrow.svg";
-import Up from "../../../assets/images/up.svg";
-import Down from "../../../assets/images/down.svg";
-import Like from "../../../assets/images/like.svg";
 import Slider from '../../Components/Slider/Slider';
 import games from '../../utils/games';
 import AnimatedText from '../AnimatedPage/AnimatedText';
-import Add from "../../../assets/images/add.svg";
 import AddedToCartBig from '../../Components/AddedToCart/AddedToCartBig';
 import Cart from '../../Components/Cart/Cart';
 import templateGame from '../../utils/templateGame';
+import axios from "axios";
 
 const GamePage = props => {
-  const {
-    handleHover,
-    hoverState,
-    handleHome,
-    landingPage,
-    cartAmount,
-    cart,
-    search,
-    searching,
-    handleSearch,
-    handleSearchSubmit,
-    browsing,
-    handleBrowse,
-    selectedGame,
-    setSelectedGame,
-    allGames,
-    extended,
-    setExtended,
-    handleAddToCart,
-    handleLike,
-    textExtended,
-    setTextExtended,
-    handleOpenCart,
-    handleCloseCart,
-    cartDisplayed,
-    clearCart,
-    handleRemoveFromCart,
-    openGamePage
-  } = props;
+  
+  const [currentFilter, setCurrentFilter] = useState("none");
+  const [currentItemFilter, setCurrentItemFilter] = useState("none");
+  const [allGames, setAllGames] = useState([]);
+  const [shownItems, setShownItems] = useState([]);
+  const [cart, setCart] = useState([]);
+  const [cartAmount, setCartAmount] = useState(0);
+  const [shownGames, setShownGames] = useState(allGames);
+  const [reviewDisplay, setReviewDisplay] = useState(false);
+  const [cartDisplayed, setCartDisplayed] = useState(false);
+  const [search, setSearch] = useState("");
+  const [overlap, setOverlap] = useState(false);
+  const [searching, setSearching] = useState(false);
+  const [selectedGame, setSelectedGame] = useState(false);
+  const [extended, setExtended] = useState(false);
+  const [textExtended, setTextExtended] = useState(false);
+  const browsePages = ['/games', '/categories', '/items'];
+  const [browseType, setBrowseType] = useState(window.location.pathname);
+  const [currentGame, setCurrentGame] = useState({});
+  const [currentGameId, setCurrentGameId] = useState(-1);
+  const [currentCategory, setCurrentCategory] = useState({});
+  const [currentCategoryId, setCurrentCategoryId] = useState(-1);
+  const [genres, setGenres] = useState([]);
+  const [activeGenre, setActiveGenre] = useState({});
+  const [hoverState, setHoverState] = useState([
+    {
+        hovered: false,
+        selected: false
+    },
+    {
+        hovered: false,
+        selected: false
+    },
+    {
+        hovered: false,
+        selected: false
+    },
+    {
+        hovered: false,
+        selected: false
+    },
+    {
+        hovered: false,
+        selected: false
+    },
+    {
+        hovered: false,
+        selected: false
+    },
+    {
+        hovered: false,
+        selected: false
+    },
+    {
+        hovered: false,
+        selected: false
+    },
+    {
+        hovered: false,
+        selected: false
+    },
+    {
+        hovered: false,
+        selected: false
+    },
+    {
+        hovered: false,
+        selected: false
+    },
+    {
+        hovered: false,
+        selected: false
+    },
+    {
+        hovered: false,
+        selected: false
+    },
+    {
+        hovered: false,
+        selected: false
+    },
+    {
+        hovered: false,
+        selected: false
+    },
+    {
+        hovered: false,
+        selected: false
+    },
+    {
+        hovered: false,
+        selected: false
+    },
+    {
+        hovered: false,
+        selected: false
+    },
+    {
+        hovered: false,
+        selected: false
+    },
+    {
+      hovered: false,
+      selected: false
+    },
+    {
+      hovered: false,
+      selected: false
+    },
+    {
+      hovered: false,
+      selected: false
+    },
+    {
+      hovered: false,
+      selected: false
+    },
+    {
+      hovered: false,
+      selected: false
+    },
+    {
+      hovered: false,
+      selected: false
+    }
+  ]);
+
+useEffect(() => {
+  let id = window.location.search.slice(window.location.search.indexOf('id=') + 3);
+  const apiUrl = '/api/items/get/' + id; // Replace with your actual API endpoint
+  axios.get(apiUrl)
+    .then(response => {
+      setSelectedGame(response.data.item);
+    })
+    .catch(error => {
+      console.error('Error fetching data:', error);
+    });
+}, []);
+
+const handleLike = (e) => {
+  let handledLike = allGames.map((game, i) => {
+    if (e.target.id == i) {
+      game.isLiked = !game.isLiked
+      return game
+    } else {
+      return game;
+    }
+  });
+
+  setAllGames(handledLike);
+}
+
+const openGamePage = (e) => {
+  setCartDisplayed(false);
+  let selectedGameSurname = e.target.id;
+  window.location.href += `/game/${selectedGameSurname}`;
+}
+
+
+const handleAddToCart = (e) => {
+  e.stopPropagation();
+  let handledAddedGame = shownItems.map((item, i) => {
+    
+      if (e.target.id == i) {
+        item.inCart = true
+        let newCart = cart;
+        newCart.push(item);
+        setCart(newCart);
+        setCartAmount(cartAmount + 1);
+        return item
+      } else {
+        return item;
+      } 
+  });
+
+  setAllGames(handledAddedGame);
+}
+
+const clearCart = () => {
+  setCart([]);
+  setCartAmount(0);
+  const defaultGames = allGames.map((game, i) => {
+    game.inCart = false;
+    game.isHovered = false;
+    return game;
+  });
+  setAllGames(defaultGames);
+  let newHoverState = hoverState[21];
+  newHoverState.hovered = false;
+  setHoverState([
+    ...hoverState, hoverState[21] = newHoverState
+  ]);
+}
+
+const handleRemoveFromCart = (e) => {
+  let removedIndex = cart.findIndex(game => game.id == e.target.id);
+  let newAllGames = allGames.map((game, i) => {
+    if (game.id == e.target.id) {
+      game.inCart = false;
+      game.isHovered = false;
+      return game;
+    } else {
+      return game;
+    }
+  });
+  setAllGames(newAllGames);
+  let firstHalf = cart.slice(0, removedIndex);
+  let secondHalf = cart.slice(removedIndex + 1);
+  let addedUp = firstHalf.concat(secondHalf);
+  setCart(addedUp);
+  setCartAmount(cartAmount - 1)
+  setHoverState([...hoverState, hoverState[21].hovered = false]);
+}
+
+
+const handleOpenCart = () => {
+  setCartDisplayed(true);
+}
+
+const handleCloseCart = () => {
+  setCartDisplayed(false);
+}
+
+useEffect(() => {
+  console.log(selectedGame);
+}, [selectedGame])
+
+useEffect(() => {
+  if (cartDisplayed) {
+    document.body.style.overflow = "hidden !important";   
+  } else {
+    document.body.style.overflow = "scroll !important";
+  }
+}, [cartDisplayed]);
+
+
+  const [browsing, setBrowsing] = useState(false);
+
+  const handleHover = (e) => {
+    let newHoverState = hoverState[e.target.id];
+    newHoverState.hovered = !newHoverState.hovered;
+
+    setHoverState([
+        ...hoverState, hoverState[e.target.id] = newHoverState
+    ]);
+  }
+
+  const handleBrowse = (type) => {
+    setOverlap(true);
+    setTimeout(() => {
+      setBrowsing(true);
+      let C = "";
+      let G = "";
+      if(type == "games") {
+        window.location.href = "games";
+      } 
+      if(type == "categories") {
+        window.location.href = "categories?" + (window.location.search.indexOf('game=') != -1?"game=" + currentGameId:"");
+      } 
+    }, 1500);
+  }
+
+  const handleHome = () => {
+    setBrowsing(false);
+    window.location.href = '/';
+  }
+
+  const handleNavGamePage = () => {
+    setHoverState([...hoverState, hoverState[21].hovered = false]);
+    window.location.href = '/game/riseofthetombraider';
+  }
+  
+  const handleNavNotFoundPage = () => {
+    window.location.href = '/this-page';
+  }
+  
+  const handleNavNotFoundQuery = () => {
+    window.location.href = '/game/404';
+  }
+
+  const variants = {
+    hidden: { opacity: 1, x: -150 },
+    visible: { opacity: 1, x: 0 },
+    exit: { opacity: 0, x: 150 },
+  }
+
+  const buttonVariants = {
+    hidden: { opacity: 0, y: 900 },
+    visible: { opacity: 1, y: 0, transition: {  y: { type: "tween", duration: 1.5, bounce: 0.3 }} },
+  }
+  
+    const [landingPage, setLandingPage] = useState(false);
+    const [grid, setGrid] = useState(true);
+
+    const handleLayoutSwitch = (e) => {
+      if (e.target.id == "grid") {
+        setGrid(true);
+      } else {
+        setGrid(false);
+      }
+    }
+
+    useEffect(() => {
+      if (cartDisplayed) {
+        document.body.style.overflow = "hidden";   
+      } else {
+        document.body.style.overflow = "scroll";
+      }
+    }, [cartDisplayed])
+
+    useEffect(() => {
+      let unhoveredState = hoverState.map((element, i) => {
+        if (i >= 25) {
+          return
+        } else {
+            element.hovered = false;
+            return element;
+        }
+      });
+
+      setHoverState(unhoveredState);
+
+      /*** */
+
+      if((window.location.pathname + window.location.search) == "/games") {
+        setShownGames(allGames);
+      } else if ((window.location.pathname + window.location.search) == "/categories") {
+        setShownGames(shownCategories);
+      }
+    }, []);
 
   let { gameId } = useParams();
-  const location = useLocation();
   const [carouselState, setCarouselState] = useState(0);
 
   const incrementCarousel = (e) => {
@@ -110,8 +407,6 @@ const GamePage = props => {
               cartAmount={cartAmount}
               search={search}
               searching={searching}
-              handleSearch={handleSearch}
-              handleSearchSubmit={handleSearchSubmit}
               handleOpenCart={handleOpenCart}
               handleCloseCart={handleCloseCart}
             />
@@ -128,7 +423,7 @@ const GamePage = props => {
                       id="19"
                       aria-label='Back'
                     >
-                        <Arrow style={{ fill: hoverState[19].hovered ? "#92f" : "#cccccc" }} className={styles.arrow} />
+                        <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" className={styles.arrow}  xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="493.578px" height="493.578px" viewBox="0 0 493.578 493.578"  xmlSpace="preserve"><g><path d="M487.267,225.981c0-17.365-13.999-31.518-31.518-31.518H194.501L305.35,83.615c12.24-12.24,12.24-32.207,0-44.676 L275.592,9.18c-12.24-12.24-32.207-12.24-44.676,0L15.568,224.527c-6.12,6.12-9.256,14.153-9.256,22.262 c0,8.032,3.136,16.142,9.256,22.262l215.348,215.348c12.24,12.239,32.207,12.239,44.676,0l29.758-29.759 c12.24-12.24,12.24-32.207,0-44.676L194.501,299.498h261.094c17.366,0,31.519-14.153,31.519-31.519L487.267,225.981z"/></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>
                         Store
                     </button>
 
@@ -151,21 +446,19 @@ const GamePage = props => {
                     <div className={styles.about}>
                       <div className={styles.aboutTop}>
                         <h2>About</h2>
-                        <p>{selectedGame ? selectedGame.desc : templateGame.desc}</p>
+                        <p>{selectedGame ? selectedGame.description : templateGame.desc}</p>
                       </div>
                       <div 
                         className={extended ? `${styles.conditionalOpen} ${styles.aboutBottom}` : `${styles.conditionalClose} ${styles.aboutBottomClosed}`} 
                         id="about"
                       >
-                        <AnimatedText>
-                             <div className={textExtended ? styles.open : styles.closed}>
-                                 <a href={selectedGame ? selectedGame.link : templateGame.link} target="_blank">{selectedGame ? selectedGame.name : "No"} Website</a>
-                                 <h4>Released: {selectedGame ? selectedGame.release : templateGame.release}</h4>
-                                 <h4>Platforms: {selectedGame ? selectedGame.platforms : templateGame.platforms}</h4>
-                                 <h4>Main Genre: {selectedGame ? selectedGame.genre : templateGame.genre}</h4>
-                                 <h4>Developers: {selectedGame ? selectedGame.developers : templateGame.developers}</h4>
-                                 <h4 className={styles.lastChild}>Publishers: {selectedGame ? selectedGame.publishers : templateGame.publishers}</h4>
-                             </div>
+                      <AnimatedText>
+                            <div className={textExtended ? styles.open : styles.closed}>
+                                <h4>Game: {selectedGame ? selectedGame.subgame.game.name : templateGame.release}</h4>
+                                <h4>Category: {selectedGame ? selectedGame.subgame.name : templateGame.platforms}</h4>
+                                <h4>Sells in: {selectedGame ? selectedGame.sellTime : templateGame.genre}</h4>
+                                <h4>Seller: {selectedGame ? selectedGame.seller_id : templateGame.developers}</h4>
+                            </div>
                         </AnimatedText>
 
                         <button 
@@ -177,7 +470,8 @@ const GamePage = props => {
                           aria-label="Extend"
                         >
                           {extended ? "Hide" : "More"}
-                          {extended ? <Up  className={styles.up} style={{ fill: hoverState[20].hovered ? "#fff" : "#cccccc" }}/> : <Up className={styles.down} style={{ fill: hoverState[20].hovered ? "#fff" : "#cccccc" }}/>}
+                          {extended ? <svg width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path className={styles.up} style={{ fill: hoverState[20].hovered ? "#fff" : "#cccccc" }} fillRule="evenodd" clipRule="evenodd" d="M5.46967 14.5303C5.17678 14.2374 5.17678 13.7626 5.46967 13.4697L11.4697 7.46967C11.7626 7.17678 12.2374 7.17678 12.5303 7.46967L18.5303 13.4697C18.8232 13.7626 18.8232 14.2374 18.5303 14.5303C18.2374 14.8232 17.7626 14.8232 17.4697 14.5303L12 9.06066L6.53033 14.5303C6.23744 14.8232 5.76256 14.8232 5.46967 14.5303Z" /></svg> : 
+                            <svg width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path className={styles.down} style={{ fill: hoverState[20].hovered ? "#fff" : "#cccccc" }} fillRule="evenodd" clipRule="evenodd" d="M5.46967 14.5303C5.17678 14.2374 5.17678 13.7626 5.46967 13.4697L11.4697 7.46967C11.7626 7.17678 12.2374 7.17678 12.5303 7.46967L18.5303 13.4697C18.8232 13.7626 18.8232 14.2374 18.5303 14.5303C18.2374 14.8232 17.7626 14.8232 17.4697 14.5303L12 9.06066L6.53033 14.5303C6.23744 14.8232 5.76256 14.8232 5.46967 14.5303Z" /></svg>}
                         </button>
                       </div>
                     </div>
@@ -186,10 +480,43 @@ const GamePage = props => {
                       <div className={styles.infos}>
                           <h3>${selectedGame ? selectedGame.price : templateGame.price}</h3>
                           <button id={selectedGame ? selectedGame.id : templateGame.id} onClick={handleLike} aria-label="Like">
-                              <Like 
-                                className={selectedGame ? selectedGame.isLiked ? styles.liked : styles.like : styles.like}
-                              />
-                          </button>
+                          <svg className={selectedGame ? selectedGame.isLiked ? styles.liked : styles.like : styles.like} version="1.1" id="Capa_1" fill="red" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                            viewBox="0 0 230 230" xmlSpace="preserve">
+                          <path d="M213.588,120.982L115,213.445l-98.588-92.463C-6.537,96.466-5.26,57.99,19.248,35.047l2.227-2.083
+                            c24.51-22.942,62.984-21.674,85.934,2.842L115,43.709l7.592-7.903c22.949-24.516,61.424-25.784,85.936-2.842l2.227,2.083
+                            C235.26,57.99,236.537,96.466,213.588,120.982z"/>
+                          <g>
+                          </g>
+                          <g>
+                          </g>
+                          <g>
+                          </g>
+                          <g>
+                          </g>
+                          <g>
+                          </g>
+                          <g>
+                          </g>
+                          <g>
+                          </g>
+                          <g>
+                          </g>
+                          <g>
+                          </g>
+                          <g>
+                          </g>
+                          <g>
+                          </g>
+                          <g>
+                          </g>
+                          <g>
+                          </g>
+                          <g>
+                          </g>
+                          <g>
+                          </g>
+                          </svg>
+                        </button>
                       </div>
                       {selectedGame ? selectedGame.inCart ? <AddedToCartBig /> : 
                       <button 
@@ -202,10 +529,46 @@ const GamePage = props => {
                         aria-label="Add"
                       >
                         Add to cart
-                        <Add 
-                          className={styles.add} 
-                          style={{ fill: hoverState[21].hovered ? "#92f" : "#999999" }}
-                        />
+                        <svg className={styles.add} 
+                          style={{ fill: hoverState[21].hovered ? "#92f" : "#999999" }} version="1.1" id="Capa_1" fill="#92f" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                          viewBox="0 0 60.364 60.364" xmlSpace="preserve">
+                        <g>
+                          <path d="M54.454,23.18l-18.609-0.002L35.844,5.91C35.845,2.646,33.198,0,29.934,0c-3.263,0-5.909,2.646-5.909,5.91v17.269
+                            L5.91,23.178C2.646,23.179,0,25.825,0,29.088c0.002,3.264,2.646,5.909,5.91,5.909h18.115v19.457c0,3.267,2.646,5.91,5.91,5.91
+                            c3.264,0,5.909-2.646,5.91-5.908V34.997h18.611c3.262,0,5.908-2.645,5.908-5.907C60.367,25.824,57.718,23.178,54.454,23.18z"/>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        </svg>
+
                       </button> : 
 
                       <button 
@@ -217,10 +580,45 @@ const GamePage = props => {
                         aria-label="Add"
                       >
                         Not available
-                        <Add 
-                          className={styles.add} 
-                          style={{ fill: hoverState[21].hovered ? "#D2042D" : "#999999" }}
-                        />
+                        <svg className={styles.add} 
+                          style={{ fill: hoverState[21].hovered ? "#D2042D" : "#999999" }} version="1.1" id="Capa_1" fill="#92f" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                          viewBox="0 0 60.364 60.364" xmlSpace="preserve">
+                        <g>
+                          <path d="M54.454,23.18l-18.609-0.002L35.844,5.91C35.845,2.646,33.198,0,29.934,0c-3.263,0-5.909,2.646-5.909,5.91v17.269
+                            L5.91,23.178C2.646,23.179,0,25.825,0,29.088c0.002,3.264,2.646,5.909,5.91,5.909h18.115v19.457c0,3.267,2.646,5.91,5.91,5.91
+                            c3.264,0,5.909-2.646,5.91-5.908V34.997h18.611c3.262,0,5.908-2.645,5.908-5.907C60.367,25.824,57.718,23.178,54.454,23.18z"/>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        </svg>
                       </button>}
                     </div>
                   </div>
@@ -233,3 +631,7 @@ const GamePage = props => {
 }
 
 export default GamePage;
+
+if (document.getElementById('game')) {
+  ReactDOM.render(<GamePage />, document.getElementById('game'));
+}
