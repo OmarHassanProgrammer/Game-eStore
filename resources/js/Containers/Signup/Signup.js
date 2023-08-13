@@ -44,7 +44,7 @@ const Signup = props => {
     })
       .then(response => {
         if(response.data.msg == "done") {
-          location.href = "/browse";
+          localStorage.setItem("token", response.data.api_token);
         } 
       })
       .catch(error => {

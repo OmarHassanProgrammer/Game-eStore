@@ -12,8 +12,10 @@
         <link rel="stylesheet" href="{{ asset('app.css') }}" />
         <!-- Styles -->
         <style>
-             </style>
-         
+        </style>
+    <script>
+        window.auth = {!! json_encode(['user' => ['api_token' => auth()->user()->api_token]]) !!};
+    </script>
     <script src="{{ asset('js/index.js') }}" defer></script>
 
     </head>

@@ -13,8 +13,10 @@
         <!-- Styles -->
         <style>
         </style>
-    
-    <script src="{{ asset('js/index.js') }}" defer></script>
+        <script>
+    window.auth = {!! json_encode(['user' => ['api_token' => optional(auth()->user())->api_token]]) !!};
+</script>
+        <script src="{{ asset('js/index.js') }}" defer></script>
 
     </head>
     <body class="antialiased app" id="app">  

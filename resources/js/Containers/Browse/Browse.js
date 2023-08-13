@@ -157,9 +157,12 @@ useEffect(() => {
       console.error('Error fetching data:', error);
     });
 
-
-    const apiUrl2 = '/api/user/me'; // Replace with your actual API endpoint
-    axios.get(apiUrl2)
+    const api = axios.create({
+      baseURL: '/api'
+    });
+    api.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem("token")}`;
+    
+    api.get('/user/me')
       .then(response => {
         if(response.data.message != "Unauthenticated.") {
           setUser(response.data);
@@ -653,6 +656,7 @@ useEffect(() => {
           handleHover={handleHover}
           hoverState={hoverState}
           handleBrowse={handleBrowse}
+          user={user}
           handleHome={handleHome}
           browsing={browsing}
           landingPage={landingPage}
