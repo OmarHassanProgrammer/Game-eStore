@@ -19,6 +19,23 @@ const Signup = props => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  useEffect(() => {
+
+    const api = axios.create({
+      baseURL: '/api'
+    });
+    
+    api.get('/user/me')
+      .then(response => {
+        if(response.data.message != "Unauthenticated.") {
+          location.href = "/games";
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+  }, []);
+
   const handleNameInput = (e) => {
     setName(e.target.value);
   }
@@ -44,8 +61,10 @@ const Signup = props => {
     })
       .then(response => {
         if(response.data.msg == "done") {
-          localStorage.setItem("token", response.data.api_token);
-        } 
+          location.href = "/games";
+        } else if (response.data.msg == "authAlready") {
+          location.href = "/games";
+        }
       })
       .catch(error => {
         console.error('Error fetching data:', error);

@@ -12,7 +12,6 @@ const Card = props => {
         game,
         handleAddToCart,
         handleHover,
-        hoverState,
         browseType,
         handleLike,
         handleHoverGame,
@@ -29,7 +28,7 @@ const Card = props => {
 
     return (
           <motion.div 
-            className={hoverState[1].selected === false ? styles.card : game.id === 26 ? styles.fifa : game.id === 12 ? styles.tombraider : game.id === 3 ? styles.mariokart : game.id === 11 ? styles.minecraft : styles.cardHome}
+            className={styles.cardHome}
             onClick={handleSelectGame.bind(this, game.id)}
             id={game.id}
             style={{ margin: 0, textAlign: "center" }}

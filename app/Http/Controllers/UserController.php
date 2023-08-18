@@ -11,6 +11,13 @@ class UserController extends Controller
     use HasApiTokens;
 
     public function me() {
-        return response()->json(Auth::user());
+        return response()->json(array("user" => Auth::user(), "msg" => "done"));
+    }
+
+        
+    public function logout()
+    {
+        Auth::logout(); // Log out the currently authenticated user
+        return respons()->json(array('msg' => 'done')); 
     }
 }

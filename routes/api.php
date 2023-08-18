@@ -46,6 +46,7 @@ Route::prefix('/genres')->group(function () {
 
 Route::prefix('/user')->group(function () {
     Route::get('/me', [UserController::class, 'me'])->middleware('auth:sanctum');
+    Route::get('/logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
 });
 
 require __DIR__.'/auth.php';

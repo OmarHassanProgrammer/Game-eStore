@@ -19,6 +19,7 @@ import Cart from '../../Components/Cart/Cart';
 import AnimatedScroll from '../AnimatedPage/AnimatedScroll';
 import games from '../../utils/games';
 import templateGame from '../../utils/templateGame';
+import axios from 'axios';
 
 export default function Home (props) {
   
@@ -35,6 +36,7 @@ export default function Home (props) {
   const [selectedGame, setSelectedGame] = useState(false);
   const [extended, setExtended] = useState(false);
   const [textExtended, setTextExtended] = useState(false);
+  const [user, setUser] = useState();
   const [hoverState, setHoverState] = useState([
     {
         hovered: false,
@@ -137,6 +139,42 @@ export default function Home (props) {
       selected: false
     }
   ]);
+
+
+  useEffect(() => {
+    const api = axios.create({
+      baseURL: '/api'
+    });
+    
+    
+    api.get('/user/me')
+      .then(response => {
+        if(response.data.message != "Unauthenticated.") {
+          setUser(response.data.user);
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+  }, []);
+
+  
+const logout = () => {
+  const api = axios.create({
+    baseURL: '/api'
+  });
+  
+  
+  api.post('/logout')
+    .then(response => {
+      if(response.data.msg = "done") {
+        setUser(null);
+      }
+    })
+    .catch(error => {
+      console.error('Error fetching data:', error);
+    });
+}
 
 if (window.location.href != "/" && window.location.href != "/games" && selectedGame === false) {
   let surname = window.location.href.substring(29);
@@ -411,16 +449,21 @@ useEffect(() => {
                   <source src={pyke} type="video/mp4" />
                 </video>
 
-                <NavBar 
-                  handleHover={handleHover} 
+                <NavBar
+                  handleHover={handleHover}
                   hoverState={hoverState}
-                  browsing={browsing}
                   handleBrowse={handleBrowse}
+                  user={user}
                   handleHome={handleHome}
+                  browsing={browsing}
                   landingPage={landingPage}
                   cartAmount={cartAmount}
+                  search={search}
+                  searching={searching}
+                  handleSearch={handleSearch}
+                  handleSearchSubmit={handleSearchSubmit}
                   handleOpenCart={handleOpenCart}
-                  handleCloseCart={handleCloseCart}
+                  logout={logout}
                 />
                 <div className={styles.container}>
                     <div className={styles.left}>

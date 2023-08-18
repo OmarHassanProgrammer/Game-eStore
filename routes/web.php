@@ -34,5 +34,8 @@ Route::get('/login', function () {
 Route::get('/signup', function () {
     return view('signup');
 });
+Route::get('/list', function () {
+    return view('list');
+});
 
 

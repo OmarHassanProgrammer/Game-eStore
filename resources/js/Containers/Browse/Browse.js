@@ -160,18 +160,35 @@ useEffect(() => {
     const api = axios.create({
       baseURL: '/api'
     });
-    api.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem("token")}`;
+    
     
     api.get('/user/me')
       .then(response => {
         if(response.data.message != "Unauthenticated.") {
-          setUser(response.data);
+          setUser(response.data.user);
         }
       })
       .catch(error => {
         console.error('Error fetching data:', error);
       });
 }, []);
+
+const logout = () => {
+  const api = axios.create({
+    baseURL: '/api'
+  });
+  
+  
+  api.post('/logout')
+    .then(response => {
+      if(response.data.msg = "done") {
+        setUser(null);
+      }
+    })
+    .catch(error => {
+      console.error('Error fetching data:', error);
+    });
+}
 
 if (window.location.href != "/" && window.location.href != "/browse" && selectedGame === false) {
   let id = window.location.href.substring(29);
@@ -666,6 +683,7 @@ useEffect(() => {
           handleSearch={handleSearch}
           handleSearchSubmit={handleSearchSubmit}
           handleOpenCart={handleOpenCart}
+          logout={logout}
         />
 
         <AnimatedPage exitBeforeEnter>
@@ -759,7 +777,7 @@ useEffect(() => {
                 </div>
               
                     <Grid 
-                      
+                      columns={4}
                       shownGames={shownGames}
                       reviewDisplay={reviewDisplay}
                       handleLike={handleLike}

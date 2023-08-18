@@ -12,13 +12,13 @@ class GameController extends Controller
         foreach ($games as $key => $game) {
             $game->genresIds = $game->genres->pluck('id')->toArray();
         }
-        return response()->json(['games' => $games]);    
+        return response()->json(['games' => $games, "msg" => "done"]);    
     }
 
     public function getCategories($id) {
         $game = Game::find($id);
         $categories = $game->subGames;
-        return response()->json(['categories' => $categories]);    
+        return response()->json(['categories' => $categories, "msg" => "done"]);    
     }
 
     public function get($id) {

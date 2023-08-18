@@ -16,10 +16,7 @@
     border: 1px transparent;
     border-radius: 12px;
     transition: 0.3s all;
-    position: absolute;
     width: 285px;
-    left: 25.95%;
-    top: 35.25%;
 }
 
 .cardHome:hover {

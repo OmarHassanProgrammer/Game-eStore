@@ -10,8 +10,8 @@ const Grid = props => {
         reviewDisplay,
         browseType,
         handleLike,
+        columns = 0,
         handleHoverGame,
-        hoverState,
         handleAddToCart,
         grid,
         search,
@@ -35,51 +35,48 @@ const Grid = props => {
     }, [grid])
 
     return (
-    <>
-          <div className={styles.reviews} style={{ display: reviewDisplay ? "flex" : "none" }}>
-              <h2>There are no reviews yet!</h2>
-              <h3>You can add some, soon.</h3>
-          </div>
-          <div className={styles.gridContainer} style={{ display: reviewDisplay ? "none" : "grid" }} id="gridContainer">
-            {searching === false ? cartDisplayed ? shownGames.map((game, i) => {
-                if (i <= 7) {
-                    return <Card
-                    browseType={browseType} 
-                    game={game} 
-                    key={game.name} 
-                    handleLike={handleLike} 
-                    handleHoverGame={handleHoverGame} 
-                    handleAddToCart={handleAddToCart} 
-                    handleSelectGame={handleSelectGame}
-                    hoverState={hoverState}
-                  />
-                }
-            }) : shownGames.map((game, i) => {
+    <>  
+        <div className={styles.reviews} style={{ display: reviewDisplay ? "flex" : "none"}}>
+            <h2>There are no reviews yet!</h2>
+            <h3>You can add some, soon.</h3>
+        </div>
+        <div className={`${styles.gridContainer} ` + (columns!=0?`${styles['c' + columns]}`:"")} style={{ display: reviewDisplay ? "none" : "grid" }} id="gridContainer">
+        {searching === false ? cartDisplayed ? shownGames.map((game, i) => {
+            if (i <= 7) {
                 return <Card
-                         browseType={browseType} 
-                         game={game} 
-                         key={game.name} 
-                         handleLike={handleLike} 
-                         handleHoverGame={handleHoverGame} 
-                         handleAddToCart={handleAddToCart} 
-                         handleSelectGame={handleSelectGame}
-                         hoverState={hoverState}
-                       />
-            }) : shownGames.map((game, i) => {
-                if (game.name.toLowerCase().includes(search.toLowerCase())) {
-                    return <Card
-                             browseType={browseType} 
-                             game={game} 
-                             key={game.name} 
-                             handleLike={handleLike} 
-                             handleHoverGame={handleHoverGame} 
-                             handleAddToCart={handleAddToCart} 
-                             handleSelectGame={handleSelectGame}
-                             hoverState={hoverState}
-                           />
-                }
-            })}
-          </div>
+                browseType={browseType} 
+                game={game} 
+                key={game.name} 
+                handleLike={handleLike} 
+                handleHoverGame={handleHoverGame} 
+                handleAddToCart={handleAddToCart} 
+                handleSelectGame={handleSelectGame}
+                />
+            }
+        }) : shownGames.map((game, i) => {
+            return <Card
+                        browseType={browseType} 
+                        game={game} 
+                        key={game.name} 
+                        handleLike={handleLike} 
+                        handleHoverGame={handleHoverGame} 
+                        handleAddToCart={handleAddToCart} 
+                        handleSelectGame={handleSelectGame}
+                    />
+        }) : shownGames.map((game, i) => {
+            if (game.name.toLowerCase().includes(search.toLowerCase())) {
+                return <Card
+                            browseType={browseType} 
+                            game={game} 
+                            key={game.name} 
+                            handleLike={handleLike} 
+                            handleHoverGame={handleHoverGame} 
+                            handleAddToCart={handleAddToCart} 
+                            handleSelectGame={handleSelectGame}
+                        />
+            }
+        })}
+        </div>
     </>
     );
   }

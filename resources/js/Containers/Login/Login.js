@@ -18,6 +18,23 @@ const Login = props => {
   const [password, setPassword] = useState("");
   const [counter, setCounter] = useState(0);
 
+  useEffect(() => {
+    
+    const api = axios.create({
+      baseURL: '/api'
+    });
+    
+    api.get('/user/me')
+      .then(response => {
+        if(response.data.message != "Unauthenticated.") {
+          location.href = "/games";
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+  }, []);
+  
   useEffect(() => {setCounter(counter+1)}, [])
   const handleEmailInput = (e) => {
     setEmail(e.target.value);
@@ -37,7 +54,9 @@ const Login = props => {
       .then(response => {
         if(response.data.msg == "done") {
           location.href = "/games";
-        } 
+        } else if (response.data.msg == "authAlready") {
+          location.href = "/games";
+        }
       })
       .catch(error => {
         console.error('Error fetching data:', error);
@@ -50,7 +69,7 @@ const Login = props => {
         <h2 className={styles.title}>Login</h2>
         <form>
           <input className={`${styles.input} ${styles.i}`} name="e" autoComplete={"off"} value={email} type="email" placeholder='Enter your email' onChange={handleEmailInput}/>
-          <input className={`${styles.input} ${styles.i}`} name="p" autoComplete={"off"} value={password} type="password" laceholder='Enter the password' onChange={handlePasswordInput}/>
+          <input className={`${styles.input} ${styles.i}`} name="p" autoComplete={"off"} value={password} type="password" placeholder='Enter the password' onChange={handlePasswordInput}/>
           <span className={styles.input}><input type="checkbox" onChange={handlePasswordInput}/> Remember me</span>
           <button className={styles.btn} onClick={submit}>Login</button>
         </form>
