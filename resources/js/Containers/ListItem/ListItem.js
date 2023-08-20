@@ -32,9 +32,14 @@ const ListItem = props => {
   const [categories, setCategories] = useState([]);
   const [selectedGame, setSelectedGame] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(false);
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
   const [price, setPrice] = useState(0);
+  const [amount, setAmount] = useState(1);
+  const [sellTime, setSellTime] = useState(1);
   const [imgs, setImgs] = useState([]);
   const [refresher, setRefresher] = useState(false);
+  const [triedSubmit, setTriedSubmit] = useState(false);
 
   useEffect(() => {
 
@@ -157,8 +162,20 @@ const ListItem = props => {
     setSelectedCategory(false);
   }
 
+  const updateName = (e) => {
+    setName(e.target.value);
+  }
+  const updateDescription = (e) => {
+    setDescription(e.target.value);
+  }
   const updatePrice = (e) => {
     setPrice(e.target.value);
+  }
+  const updateAmount = (e) => {
+    setAmount(e.target.value);
+  }
+  const updateSellTime = (e) => {
+    setSellTime(e.target.value);
   }
 
   const addImg = (e) => {
@@ -180,6 +197,34 @@ const ListItem = props => {
   const submit = (e) => {
     e.preventDefault();
 
+    if(name != "" && price != 0 && amount != 0 && imgs.length > 0) {
+      const apiUrl = '/api/items/add'; // Replace with your actual API endpoint
+      const formData = new FormData();
+      formData.append('name', name);
+      formData.append('description', description);
+      formData.append('price', price);
+      formData.append('amount', sellTime);
+      formData.append('sellTime', sellTime);
+      formData.append('sub_game_id', selectedCategory.id);
+      for(let i = 0; i < imgs.length; i++) {
+        formData.append('imgFiles[]', imgs[i].file);
+      }
+      axios.post(apiUrl, formData, {
+          headers: {
+              'Content-Type': 'multipart/form-data',
+          },
+      })
+        .then(response => {
+          if(response.data.msg == "done") {
+            location.href = "/game?id=" + response.data.item.id;
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching data:', error);
+        });
+    } else {
+      setTriedSubmit(true);
+    }
   }
   
   return (
@@ -259,25 +304,25 @@ const ListItem = props => {
                     /></div>:<div className={styles.form}>
                       <div className={styles.row}>
                         <span className={styles.label}>Name: </span>
-                        <input className={styles.input} />
+                        <input className={`${styles.input} ` + ((triedSubmit && name=="")?`${styles.err}`:'')} onChange={updateName} />
                       </div>
                       <div className={styles.row}>
                         <span className={styles.label}>Description: </span>
-                        <textarea className={styles.input} ></textarea>
+                        <textarea className={styles.input} onChange={updateDescription} ></textarea>
                       </div>
                       <div className={styles.row}>
                         <span className={styles.label}>Price: </span>
-                        <input className={`${styles.input} ${styles.p}`} onChange={updatePrice} type="number"/>
-                        <span className={styles.trailer}>You will get {0.9 * price}$</span>
+                        <input className={`${styles.input} ${styles.p} ` + ((triedSubmit && price==0)?`${styles.err}`:'')} onChange={updatePrice} type="number"/>
+                        <span className={styles.trailer}>You will get {0.95 * price}$</span>
                       </div>
                       <div className={styles.row}>
                         <span className={styles.label}>Amount: </span>
-                        <input className={styles.input} type="number"/>
+                        <input className={`${styles.input} ` + ((triedSubmit && amount==0)?`${styles.err}`:'')} type="number" onChange={updateAmount} defaultValue={1}/>
                       </div>
                       <div className={styles.row}>
                         <span className={styles.label}>Sells in: </span>
-                        <input className={styles.input} type="number"/>
-                        <span className={styles.trailer}>days</span>
+                        <input className={styles.input} type="number" onChange={updateSellTime} defaultValue={1}/>
+                        <span className={styles.trailer}>day/s</span>
                       </div>
                       <div className={styles.submit}>
                         <button onClick={submit}>Sell</button>
@@ -295,7 +340,7 @@ const ListItem = props => {
                   </div>
                 })
               }
-              <div className={`${styles.block} ${styles.add}`}>
+              <div className={`${styles.block} ${styles.add} ` + (triedSubmit && imgs.length == 0?`${styles.err}`:'')}>
                 <span className={styles.l}><svg xmlns="http://www.w3.org/2000/svg" fill="#fff" viewBox="0 0 30 30"><path d="M 14.970703 2.9726562 A 2.0002 2.0002 0 0 0 13 5 L 13 13 L 5 13 A 2.0002 2.0002 0 1 0 5 17 L 13 17 L 13 25 A 2.0002 2.0002 0 1 0 17 25 L 17 17 L 25 17 A 2.0002 2.0002 0 1 0 25 13 L 17 13 L 17 5 A 2.0002 2.0002 0 0 0 14.970703 2.9726562 z"/></svg></span>
                 <input className={styles.i} onChange={addImg} multiple type="file" />
               </div>

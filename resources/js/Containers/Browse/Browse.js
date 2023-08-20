@@ -542,7 +542,7 @@ useEffect(() => {
             });
           }
         } else if (browseType == "/items") {
-          if(currentCategory.id) {
+          if(currentCategory.id != -1) {
             const apiUrl = '/api/items/getAll/' + currentCategory.id; // Replace with your actual API endpoint
               axios.get(apiUrl)
               .then(response => {
@@ -602,7 +602,6 @@ useEffect(() => {
         }
       }
       
-
     }, [currentFilter, currentGame, currentCategory]);
 
     useEffect(() => {
@@ -777,7 +776,6 @@ useEffect(() => {
                 </div>
               
                     <Grid 
-                      columns={4}
                       shownGames={shownGames}
                       reviewDisplay={reviewDisplay}
                       handleLike={handleLike}

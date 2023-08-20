@@ -18,6 +18,7 @@ const GamePage = props => {
   const [currentFilter, setCurrentFilter] = useState("none");
   const [currentItemFilter, setCurrentItemFilter] = useState("none");
   const [allGames, setAllGames] = useState([]);
+  const [user, setUser] = useState();
   const [shownItems, setShownItems] = useState([]);
   const [cart, setCart] = useState([]);
   const [cartAmount, setCartAmount] = useState(0);
@@ -141,6 +142,39 @@ const GamePage = props => {
     }
   ]);
 
+  const logout = () => {
+    const api = axios.create({
+      baseURL: '/api'
+    });
+    
+    
+    api.post('/logout')
+      .then(response => {
+        if(response.data.msg = "done") {
+          setUser(null);
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+  }
+
+  useEffect(() => {
+    const api = axios.create({
+      baseURL: '/api'
+    });
+    
+    api.get('/user/me')
+      .then(response => {
+        if(response.data.msg == "done") {
+          setUser(response.data.user);
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+  }, []);
+  
 useEffect(() => {
   let id = window.location.search.slice(window.location.search.indexOf('id=') + 3);
   const apiUrl = '/api/items/get/' + id; // Replace with your actual API endpoint
@@ -399,7 +433,9 @@ useEffect(() => {
             /> : null}
 
             <NavBar
+              handleBrowse={handleBrowse.bind(this, "games")}
               handleHover={handleHover}
+              user={user}
               hoverState={hoverState}
               handleHome={handleHome}
               browsing={browsing}
@@ -409,6 +445,7 @@ useEffect(() => {
               searching={searching}
               handleOpenCart={handleOpenCart}
               handleCloseCart={handleCloseCart}
+              logout={logout}
             />
 
             <AnimatedGamePage>
@@ -456,8 +493,8 @@ useEffect(() => {
                             <div className={textExtended ? styles.open : styles.closed}>
                                 <h4>Game: {selectedGame ? selectedGame.subgame.game.name : templateGame.release}</h4>
                                 <h4>Category: {selectedGame ? selectedGame.subgame.name : templateGame.platforms}</h4>
-                                <h4>Sells in: {selectedGame ? selectedGame.sellTime : templateGame.genre}</h4>
-                                <h4>Seller: {selectedGame ? selectedGame.seller_id : templateGame.developers}</h4>
+                                <h4>Sells in: {selectedGame ? selectedGame.sellTime + " days" : templateGame.genre}</h4>
+                                <h4>Seller: {selectedGame ? selectedGame.seller.name : templateGame.developers}</h4>
                             </div>
                         </AnimatedText>
 

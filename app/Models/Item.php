@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Item extends Model
 {
     use HasFactory;
-    protected $fillable = ["name", "price", "amount", "sold", "secription", "sellTime"];
+    protected $fillable = ["name", "price", "amount", "seller_id", "sub_game_id", "sold", "description", "sellTime"];
 
     public function game()
     {

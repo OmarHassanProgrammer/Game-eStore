@@ -38,6 +38,7 @@ Route::prefix('/items')->group(function () {
     Route::get('/getAll/', [ItemController::class, 'index']);
     Route::get('/getAll/{subGame}', [ItemController::class, 'getAll']);
     Route::get('/get/{id}', [ItemController::class, 'get']);
+    Route::post('/add', [ItemController::class, 'add'])->middleware('auth:sanctum');
 });
 
 Route::prefix('/genres')->group(function () {
@@ -46,6 +47,7 @@ Route::prefix('/genres')->group(function () {
 
 Route::prefix('/user')->group(function () {
     Route::get('/me', [UserController::class, 'me'])->middleware('auth:sanctum');
+    Route::get('/get/{id}', [UserController::class, 'get']);
     Route::get('/logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
 });
 

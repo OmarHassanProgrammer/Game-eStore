@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->decimal('price', 10, 2);
             $table->integer("amount");
-            $table->integer("sold");
+            $table->integer("sold")->default(0);
             $table->string('description');
             $table->string('sellTime');
             $table->string('seller_id');

@@ -30,3 +30,4 @@ import "./Containers/GamePage/GamePage";
 import "./Containers/Login/Login";
 import "./Containers/Signup/Signup";
 import "./Containers/ListItem/ListItem";
+import "./Containers/Profile/Profile";

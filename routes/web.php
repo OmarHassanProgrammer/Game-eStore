@@ -37,5 +37,11 @@ Route::get('/signup', function () {
 Route::get('/list', function () {
     return view('list');
 });
+Route::get('/profile', function () {
+    return view('profile');
+});
+Route::get('/settings', function () {
+    return view('settings');
+});
 
 

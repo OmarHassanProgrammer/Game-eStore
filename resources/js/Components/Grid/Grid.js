@@ -46,7 +46,7 @@ const Grid = props => {
                 return <Card
                 browseType={browseType} 
                 game={game} 
-                key={game.name} 
+                key={game.id} 
                 handleLike={handleLike} 
                 handleHoverGame={handleHoverGame} 
                 handleAddToCart={handleAddToCart} 
@@ -57,7 +57,7 @@ const Grid = props => {
             return <Card
                         browseType={browseType} 
                         game={game} 
-                        key={game.name} 
+                        key={game.id} 
                         handleLike={handleLike} 
                         handleHoverGame={handleHoverGame} 
                         handleAddToCart={handleAddToCart} 
@@ -68,7 +68,7 @@ const Grid = props => {
                 return <Card
                             browseType={browseType} 
                             game={game} 
-                            key={game.name} 
+                            key={game.id} 
                             handleLike={handleLike} 
                             handleHoverGame={handleHoverGame} 
                             handleAddToCart={handleAddToCart} 
