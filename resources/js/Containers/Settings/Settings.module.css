@@ -1,0 +1,278 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    overflow-x: hidden;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+.Profile {
+    background-color: #0f1011;
+}
+
+
+.profileContent {
+    margin-top: 15px;
+    display: flex;
+    width: 100vw;
+    padding: 0 60px 280px;
+    padding-bottom: 50px;
+    background-color: #0f1011;
+    gap: 50px;
+}
+
+.profileContent .left {
+    width: 25%;
+
+}
+.profileContent .left .img {
+    width: 100%;
+    padding-top: 100%;
+    border-radius: 50%;
+    position: relative;
+}
+.profileContent .left .img .content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+    border: 2px solid #eee;
+    background-color: #aaa;
+}
+.profileContent .left .img .content img{
+    width: 100%;
+    height: 100%;
+    fill: #fff;
+    border-radius: 50%;
+}   
+.profileContent .left .name {
+    color: #eee;
+    margin: 20px 0 0 10px;
+    font-family: "GT Bold";
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+}
+.profileContent .left .rate .star {
+    width: 20px;
+    height: 20px;
+}
+.profileContent .left .accounts {
+    margin-top: 8px;
+}
+.profileContent .left .accounts .games {
+    display: flex;
+    gap: 7px;
+}
+.profileContent .left .accounts .games .account img {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+.profileContent .left .edit {
+    width: 100%;
+    padding: 7px 0;
+    font-size: 1.05rem;
+    margin-top: 8px;
+    border-radius: 5px;
+    background-color: #444;
+    border: 1px solid #aaa;
+    color: #eee;
+    cursor: pointer;
+    transition: all 0.5s ease-in-out;
+    font-family: "GT Light";
+}
+.profileContent .left .edit:hover {
+    background-color: #333;
+}
+.profileContent .right {
+    width: 75%;
+}
+.profileContent .right .title {
+    font-family: "GT Light";
+    font-size: 1.1rem;
+    color: #eee;
+}
+
+.clearButton {
+    font-family: "GT Bold" !important;
+}
+
+
+.list {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding-right: 60px;
+}
+
+.list h1,
+.list p {
+    color: white;
+}
+
+.list h1 {
+    font-family: "GT Bold";
+    font-size: 4em;
+}
+
+.applied {
+    margin-top: 28px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.filterButton {
+    padding: 8px 22px;
+    height: 40px;
+    background-color: #262626;
+    color: #fff;
+    font-family: "GT Light";
+    font-size: 0.95em;
+    border: 1px transparent;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.filterButton:hover {
+    background-color: #2d2d2d;
+}
+
+.filterButton:active {
+    transform: scale(0.9);
+}
+
+.applied button span {
+    color: #fff;
+    font-family: "GT Bold";
+}
+
+.displayStyle {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.displayStyle p {
+    color: #696969;
+    font-family: "GT Medium";
+}
+
+.displayBtn {
+    border: 1px transparent;
+    border-radius: 8px;
+    outline: none;
+    background-color: #282828;
+    transition: 0.3s all;
+    padding: 0px 3px;
+}
+
+.displayBtn * {
+    pointer-events: none;
+}
+
+.displayBtn:hover {
+    background-color: #313131;
+}
+
+.displayBtn:active {
+    transform: scale(0.9125);
+}
+
+.displayItem {
+    transform: scale(0.9);
+    transition: 0.3s all;
+}
+
+@media screen and (max-width: 850px) {
+    .displayStyle p {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 770px) {
+    .displayStyle {
+        display: none;
+    }
+
+    .list h1 {
+        font-size: 40px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .list {
+        padding-left: 35px;
+        padding-right: 35px;
+    }
+
+    .list h1 {
+        font-size: 48px;
+    }
+}
+
+@media screen and (max-width: 375px) {
+    .list {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .list h1 {
+        font-size: 38px;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .filterButton {
+        font-size: 12px;
+    }
+}
+
+.row {
+    padding: 0 10px 12px;
+    font-size: 1.3rem;
+    color: #fff;
+    width: 100%;
+    display: flex
+}
+
+.row.cat {
+    padding-top: 12px;
+    position: relative;
+}
+
+.row.cat:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 40px;
+    width: 5%;
+    height: 2px;
+    background-color: #333;
+}
+
+.row .change {
+    font-size: 1.15rem;
+    color: #3498db;
+    transition: all 0.5 ease-in-out;
+    margin-left: 7px;
+}
+.row .change {
+    color: #2980b9;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.row .label {
+    width: 150px;
+    display: inline-block;
+}
