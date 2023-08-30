@@ -124,6 +124,7 @@ const NavBar = props => {
                 {
                   toggleUser?<div className={styles.userDropbox}>
                     <div className={styles.item} onClick={() => {location.href = "/profile"; setToggleUser(false);}}>Profile</div>
+                    <div className={styles.item} onClick={() => {location.href = "/settings?page=profile"; setToggleUser(false);}}>Dashboard</div>
                     <div className={styles.item}>Balance</div>
                     <div className={styles.item} onClick={() => {logout(); setToggleUser(false);}}>Logout</div>
                   </div>:""

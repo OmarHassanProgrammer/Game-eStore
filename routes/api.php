@@ -49,6 +49,19 @@ Route::prefix('/user')->group(function () {
     Route::get('/me', [UserController::class, 'me'])->middleware('auth:sanctum');
     Route::get('/get/{id}', [UserController::class, 'get']);
     Route::get('/logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
+    Route::post('/updateProfile', [UserController::class, 'updateProfile'])->middleware('auth:sanctum');
+    Route::post('/updatePassword', [UserController::class, 'updatePassword'])->middleware('auth:sanctum');
+    
+    Route::prefix('/cart')->group(function () {
+        Route::get('/get', [UserController::class, 'getCart']);
+        Route::get('/clear', [UserController::class, 'clearCart']);
+        Route::get('/add/{item_id}', [UserController::class, 'addToCart']);
+    });
+
+    Route::prefix('/wishlist')->group(function () {
+        Route::post('/toggle/{item_id}', [UserController::class, 'toggleWishlist']);
+    });
+
 });
 
 require __DIR__.'/auth.php';

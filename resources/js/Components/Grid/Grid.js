@@ -51,6 +51,7 @@ const Grid = props => {
                 handleHoverGame={handleHoverGame} 
                 handleAddToCart={handleAddToCart} 
                 handleSelectGame={handleSelectGame}
+                gameKey={i}
                 />
             }
         }) : shownGames.map((game, i) => {
@@ -62,6 +63,7 @@ const Grid = props => {
                         handleHoverGame={handleHoverGame} 
                         handleAddToCart={handleAddToCart} 
                         handleSelectGame={handleSelectGame}
+                        gameKey={i}
                     />
         }) : shownGames.map((game, i) => {
             if (game.name.toLowerCase().includes(search.toLowerCase())) {
@@ -73,6 +75,7 @@ const Grid = props => {
                             handleHoverGame={handleHoverGame} 
                             handleAddToCart={handleAddToCart} 
                             handleSelectGame={handleSelectGame}
+                            gameKey={i}
                         />
             }
         })}

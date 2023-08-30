@@ -12,36 +12,37 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::group(['middleware' => ['web']], function () {
 
-Route::get('/', function () {
-    return view('home');
+    Route::get('/', function () {
+        return view('home');
+    });
+    Route::get('/games', function () {
+        return view('games');
+    });
+    Route::get('/categories', function () {
+        return view('categories');
+    });
+    Route::get('/items', function () {
+        return view('items');
+    });
+    Route::get('/game', function () {
+        return view('game');
+    });
+    Route::get('/login', function () {
+        return view('login');
+    });
+    Route::get('/signup', function () {
+        return view('signup');
+    });
+    Route::get('/list', function () {
+        return view('list');
+    });
+    Route::get('/profile', function () {
+        return view('profile');
+    });
+    Route::get('/settings', function () {
+        return view('settings');
+    });
 });
-Route::get('/games', function () {
-    return view('games');
-});
-Route::get('/categories', function () {
-    return view('categories');
-});
-Route::get('/items', function () {
-    return view('items');
-});
-Route::get('/game', function () {
-    return view('game');
-});
-Route::get('/login', function () {
-    return view('login');
-});
-Route::get('/signup', function () {
-    return view('signup');
-});
-Route::get('/list', function () {
-    return view('list');
-});
-Route::get('/profile', function () {
-    return view('profile');
-});
-Route::get('/settings', function () {
-    return view('settings');
-});
-
 

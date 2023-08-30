@@ -17,6 +17,7 @@
     border-radius: 12px;
     transition: 0.3s all;
     width: 285px;
+    position: relative;
 }
 
 .cardHome:hover {

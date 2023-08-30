@@ -1,5 +1,5 @@
 import styles from './Profile.module.css';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef, useLayoutEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { useNavigate, useParams } from 'react-router-dom';
 import { motion, AnimatePresence } from "framer-motion";
@@ -32,7 +32,15 @@ const Profile = props => {
   const [userProfile, setUserProfile] = useState({});
   const [stars, setStars] = useState([]);
   const [emptyStars, setEmptyStars] = useState([0,0,0,0,0]);
+  const firstUpdate = useRef(true);
 
+  useLayoutEffect(() => {
+    if (firstUpdate.current) {
+      firstUpdate.current = false;
+      return;
+    }
+
+  });
   useEffect(() => {
     let api = axios.create({
       baseURL: '/api'
@@ -65,6 +73,8 @@ const Profile = props => {
       }
     } else if (user) {
       q = user['id'];
+    } else if(firstUpdate.current) {
+      location.href = '/login';
     }
         
     if(q != 0) {
@@ -88,7 +98,7 @@ const Profile = props => {
           console.error('Error fetching data:', error);
         });
     }
-  }, [user, window.location.search]);
+  }, [user]);
 
   const handleBrowse = (type) => {
     setOverlap(true);
@@ -237,7 +247,7 @@ const Profile = props => {
               </div>
             </div>
             {
-              user?.id == userProfile?.id?<button className={styles.edit}>
+              user?.id == userProfile?.id?<button className={styles.edit} onClick={() => {location.href = '/settings?page=profile'}}>
                 Edit Profile
               </button>:''
             }

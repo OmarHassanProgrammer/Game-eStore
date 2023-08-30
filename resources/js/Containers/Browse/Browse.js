@@ -44,6 +44,8 @@ export default function Browse (props) {
   const [genres, setGenres] = useState([]);
   const [activeGenre, setActiveGenre] = useState({});
   const [user, setUser] = useState();
+  const [isCart, setIsCart] = useState({});
+  const [isFav, setIsFav] = useState({});
   const [hoverState, setHoverState] = useState([
     {
         hovered: false,
@@ -112,38 +114,6 @@ export default function Browse (props) {
     {
         hovered: false,
         selected: false
-    },
-    {
-        hovered: false,
-        selected: false
-    },
-    {
-        hovered: false,
-        selected: false
-    },
-    {
-      hovered: false,
-      selected: false
-    },
-    {
-      hovered: false,
-      selected: false
-    },
-    {
-      hovered: false,
-      selected: false
-    },
-    {
-      hovered: false,
-      selected: false
-    },
-    {
-      hovered: false,
-      selected: false
-    },
-    {
-      hovered: false,
-      selected: false
     }
   ]);
 
@@ -166,6 +136,16 @@ useEffect(() => {
       .then(response => {
         if(response.data.message != "Unauthenticated.") {
           setUser(response.data.user);
+          api.get('/user/cart/get')
+          .then(response => {
+            if(response.data.message != "Unauthenticated.") {
+              setCart(response.data.cart);
+              setCartAmount(response.data.cart.length);
+            }
+          })
+          .catch(error => {
+            console.error('Error fetching data:', error);
+          });
         }
       })
       .catch(error => {
@@ -288,17 +268,17 @@ const handleSelectGame = (id, e) => {
   }
 }
 
-const handleLike = (e) => {
-  let handledLike = allGames.map((game, i) => {
-    if (e.target.id == i) {
-      game.isLiked = !game.isLiked
-      return game
-    } else {
-      return game;
-    }
-  });
-
-  setAllGames(handledLike);
+const handleLike = (id, key, e) => {
+  const apiUrl = '/api/user/wishlist/toggle/' + id; // Replace with your actual API endpoint
+  axios.post(apiUrl)
+    .then(response => {
+      let s = shownGames;
+      s[key].isLiked = response.data.fav;
+      setShownGames([...s]);
+    })
+    .catch(error => {
+      console.error('Error fetching data:', error);
+    });
 }
 
 const clearFilter = () => {
@@ -335,25 +315,23 @@ const handleHoverGame = (e) => {
   setAllGames(handledHoveredGame);
 }
 
-const handleAddToCart = (e) => {
+const handleAddToCart = (id, key, e) => {
   e.stopPropagation();
-  let handledAddedGame = shownItems.map((item, i) => {
-    
-      if (e.target.id == i) {
-        item.inCart = true
-        let newCart = cart;
-        newCart.push(item);
-        setCart(newCart);
-        setCartAmount(cartAmount + 1);
-        return item
-      } else {
-        return item;
-      } 
-  });
+  console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+  const apiUrl = '/api/user/cart/add/' + id; // Replace with your actual API endpoint
+  axios.get(apiUrl)
+    .then(response => {
+      setCart(response.data.cart);
+      setCartAmount(response.data.cart.length);
+      let s = shownGames;
+      s[key].inCart = true;
+      setShownGames([...s]);
+    })
+    .catch(error => {
+      console.error('Error fetching data:', error);
+    });
 
-  setAllGames(handledAddedGame);
 }
-
 const clearCart = () => {
   setCart([]);
   setCartAmount(0);

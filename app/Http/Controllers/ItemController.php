@@ -12,11 +12,25 @@ class ItemController extends Controller
 {
     public function index() {
         $items = Item::with("images")->get();
+        if(Auth::check()) {
+            $user = Auth::user();
+            foreach ($items as $key => $item) {
+                $item->inCart = $user->cart->contains('id', $item->id);
+                $item->isLiked = $user->wishList->contains('id', $item->id);
+            }
+        }
         return response()->json(["items" => $items]);
     }
     public function getAll($id) {
         $subCategory = SubGame::find($id);
         $items = $subCategory->items;
+        if(Auth::check()) {
+            $user = Auth::user();
+            foreach ($items as $key => $item) {
+                $item->inCart = $user->cart->contains('id', $item->id);
+                $item->isLiked = $user->wishList->contains('id', $item->id);
+            }
+        }
         foreach ($items as $key => $item) {
             $item->_images = $item->images;
         }
@@ -25,7 +39,17 @@ class ItemController extends Controller
 
     public function get($id) {
         $item = Item::with(['subgame.game', 'images', 'seller'])->find($id);
-        return response()->json(["item" => $item]);
+        $isCart = false;
+        $isFav = false;
+        if(Auth::check()) {
+            if(Auth::user()->cart->contains('id', $item->id)) {
+                $isCart = true;
+            }
+            if(Auth::user()->wishlist->contains('id', $item->id)) {
+                $isFav = true;
+            }
+        }
+        return response()->json(["item" => $item, 'isCart' => $isCart, 'isFav' => $isFav]);
     }
 
     public function add(Request $request) 

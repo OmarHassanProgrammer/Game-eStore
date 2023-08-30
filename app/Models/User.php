@@ -22,7 +22,8 @@ class User extends Authenticatable
         'email',
         'password',
         'imgType',
-        'rate'
+        'rate',
+        'bio'
     ];
 
     /**
@@ -48,9 +49,15 @@ class User extends Authenticatable
         return $this->hasMany(Item::class, "seller_id");
     }
     public function wishList() {
-        return $this->belongsToMany(Item::class, "wishlists");
+        return $this->belongsToMany(Item::class, "wishlist");
     }
     public function cart() {
         return $this->belongsToMany(Item::class, "carts");
+    }
+    public function socialLinks() {
+        return $this->hasMany(SocialLink::class);
+    }
+    public function gameLinks() {
+        return $this->hasMany(GameLink::class);
     }
 }

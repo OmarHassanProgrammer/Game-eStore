@@ -17,4 +17,5 @@ class SubGameController extends Controller
         $category = SubGame::find($id);
         return response()->json(['category' => $category]);    
     }
+
 }

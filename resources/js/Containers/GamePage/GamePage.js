@@ -39,6 +39,8 @@ const GamePage = props => {
   const [currentCategoryId, setCurrentCategoryId] = useState(-1);
   const [genres, setGenres] = useState([]);
   const [activeGenre, setActiveGenre] = useState({});
+  const [isCart, setIsCart] = useState({});
+  const [isFav, setIsFav] = useState({});
   const [hoverState, setHoverState] = useState([
     {
         hovered: false,
@@ -166,8 +168,18 @@ const GamePage = props => {
     
     api.get('/user/me')
       .then(response => {
-        if(response.data.msg == "done") {
+        if(response.data.message != "Unauthenticated.") {
           setUser(response.data.user);
+          api.get('/user/cart/get')
+          .then(response => {
+            if(response.data.message != "Unauthenticated.") {
+              setCart(response.data.cart);
+              setCartAmount(response.data.cart.length);
+            }
+          })
+          .catch(error => {
+            console.error('Error fetching data:', error);
+          });
         }
       })
       .catch(error => {
@@ -181,23 +193,23 @@ useEffect(() => {
   axios.get(apiUrl)
     .then(response => {
       setSelectedGame(response.data.item);
+      setIsCart(response.data.isCart);
+      setIsFav(response.data.isFav);
     })
     .catch(error => {
       console.error('Error fetching data:', error);
     });
 }, []);
 
-const handleLike = (e) => {
-  let handledLike = allGames.map((game, i) => {
-    if (e.target.id == i) {
-      game.isLiked = !game.isLiked
-      return game
-    } else {
-      return game;
-    }
-  });
-
-  setAllGames(handledLike);
+const handleLike = (id, e) => {
+  const apiUrl = '/api/user/wishlist/toggle/' + id; // Replace with your actual API endpoint
+  axios.post(apiUrl)
+    .then(response => {
+      setIsFav(response.data.fav);
+    })
+    .catch(error => {
+      console.error('Error fetching data:', error);
+    });
 }
 
 const openGamePage = (e) => {
@@ -207,23 +219,20 @@ const openGamePage = (e) => {
 }
 
 
-const handleAddToCart = (e) => {
+const handleAddToCart = (id, e) => {
   e.stopPropagation();
-  let handledAddedGame = shownItems.map((item, i) => {
-    
-      if (e.target.id == i) {
-        item.inCart = true
-        let newCart = cart;
-        newCart.push(item);
-        setCart(newCart);
-        setCartAmount(cartAmount + 1);
-        return item
-      } else {
-        return item;
-      } 
-  });
+  
+  const apiUrl = '/api/user/cart/add/' + id; // Replace with your actual API endpoint
+  axios.get(apiUrl)
+    .then(response => {
+      setCart(response.data.cart);
+      setCartAmount(response.data.cart.length);
+      setIsCart(true);
+    })
+    .catch(error => {
+      console.error('Error fetching data:', error);
+    });
 
-  setAllGames(handledAddedGame);
 }
 
 const clearCart = () => {
@@ -516,8 +525,8 @@ useEffect(() => {
                     <div className={styles.addToCart}>
                       <div className={styles.infos}>
                           <h3>${selectedGame ? selectedGame.price : templateGame.price}</h3>
-                          <button id={selectedGame ? selectedGame.id : templateGame.id} onClick={handleLike} aria-label="Like">
-                          <svg className={selectedGame ? selectedGame.isLiked ? styles.liked : styles.like : styles.like} version="1.1" id="Capa_1" fill="red" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                          <button id={selectedGame ? selectedGame.id : templateGame.id} onClick={handleLike.bind(this, selectedGame ? selectedGame.id:0)} aria-label="Like">
+                          <svg className={selectedGame ? isFav ? styles.liked : styles.like : styles.like} version="1.1" id="Capa_1" fill="red" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                             viewBox="0 0 230 230" xmlSpace="preserve">
                           <path d="M213.588,120.982L115,213.445l-98.588-92.463C-6.537,96.466-5.26,57.99,19.248,35.047l2.227-2.083
                             c24.51-22.942,62.984-21.674,85.934,2.842L115,43.709l7.592-7.903c22.949-24.516,61.424-25.784,85.936-2.842l2.227,2.083
@@ -555,14 +564,14 @@ useEffect(() => {
                           </svg>
                         </button>
                       </div>
-                      {selectedGame ? selectedGame.inCart ? <AddedToCartBig /> : 
+                      {selectedGame ? isCart ? <AddedToCartBig /> : 
                       <button 
                         id="21" 
                         onMouseEnter={handleHover} 
                         onMouseLeave={handleHover} 
                         className={styles.addToCartButton}
                         style={{ color: hoverState[21].hovered ? "#92f" : "#999999" }} 
-                        onClick={handleAddToCart} 
+                        onClick={handleAddToCart.bind(this, selectedGame.id)} 
                         aria-label="Add"
                       >
                         Add to cart

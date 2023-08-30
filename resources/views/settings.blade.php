@@ -13,11 +13,11 @@
         <!-- Styles -->
         <style>
         </style>
-        <script src="{{ asset('js/index.js') }}" defer></script>
+    <script src="{{ asset('js/index.js') }}" defer></script>
 
     </head>
     <body class="antialiased app" id="app">  
-        <div id="categories"></div>
+        <div id="settings"></div>
     
     </body>
 </html>

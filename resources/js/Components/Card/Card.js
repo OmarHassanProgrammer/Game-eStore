@@ -16,7 +16,8 @@ const Card = props => {
         handleLike,
         handleHoverGame,
         handleSelectGame,
-        smallFont
+        smallFont,
+        gameKey
       } = props;
 
     const variants = {
@@ -45,6 +46,7 @@ const Card = props => {
                                             game={game} 
                                             handleHoverGame={handleHoverGame} 
                                             handleAddToCart={handleAddToCart} 
+                                            gameKey={gameKey}
                                           />
                       }
                   ${game.price}
@@ -61,7 +63,7 @@ const Card = props => {
                 <button 
                   className={styles.like} 
                   id={game.id} 
-                  onClick={handleLike} 
+                  onClick={handleLike.bind(this, game.id, gameKey)} 
                   aria-label="Like"
                 >
                     <img

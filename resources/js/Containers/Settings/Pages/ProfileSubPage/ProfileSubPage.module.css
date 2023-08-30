@@ -1,0 +1,264 @@
+.profileSubPage {
+    margin: 0 50px;
+}
+
+.profileSubPage .block {
+    position: relative;
+    padding: 0 0 8px 0;
+    margin-bottom: 8px;
+}
+.profileSubPage .block:not(:last-of-type)::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 20%;
+    width: 60%;
+    height: 2px;
+    background-color: #444;
+    border-radius: 5px;
+}
+
+.profileSubPage .block .title {
+    font-size: 1.6rem;
+    font-family: "GT Medium";
+    color: #f0f0f0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #333;
+}
+
+.profileSubPage .block .content {
+    padding: 15px 0;
+    display: flex;
+    flex-direction: column;
+}
+.profileSubPage .block .content .top {
+    display: flex;
+    gap: 30px;
+}
+.profileSubPage .block .content .top .l {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+}
+.profileSubPage .block .content .top .l .row:nth-of-type(2){
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+.profileSubPage .block .content .top .l .row:nth-of-type(2) textarea{
+    flex: 1;
+}
+.profileSubPage .block .content .top .r {
+    width: 40%; 
+    position: relative;
+}
+.profileSubPage .block .content .top .r .edit {
+    position: absolute;
+    display: flex;
+    gap: 5px;
+    cursor: pointer;
+    transition: all 0.5s ease-in-out;
+    bottom: 10px;
+    right: calc(80% - 60px);
+    padding: 6px;
+    font-size: 0.95rem;
+    margin-top: 8px;
+    border-radius: 5px;
+    background-color: #444;
+    border: 1px solid #aaa;
+    color: #eee;
+    cursor: pointer;
+    transition: all 0.5s ease-in-out;
+    font-family: "GT Light";
+}
+.profileSubPage .block .content .top .r .edit:hover {
+    background-color: #333;
+}
+.profileSubPage .block .content .top .r .imgContainer {
+    width: 60%;
+    margin-left: 20%;
+    padding-top: 60%;
+    position: relative;
+}
+.profileSubPage .block .content .top .r .imgContainer .img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 1px solid #aaa;
+}
+.profileSubPage .block .content .top .r .edit svg {
+    width: 17px;
+    fill: #f0f0f0;
+}
+.profileSubPage .block .content .top .r .edit .file {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+.profileSubPage .block .content .row {
+    margin-bottom: 20px;
+}
+.profileSubPage .block .content .label {
+    font-family: "GT Medium";
+    color: #f0f0f0;
+    display: block;
+    margin-bottom: 7px;
+}
+.profileSubPage .block .content .input {
+    padding: 8px;
+    outline: none;
+    width: 100%;
+    background-color: #070707;
+    border: 1px solid #aaa;
+    color: #eee;
+    border-radius: 5px;
+}
+.profileSubPage .block .content .inputs {
+    display: flex;
+    gap: 8px;
+}
+.profileSubPage .block .content .inputs .input {
+    flex: 3;
+}
+.profileSubPage .block .content .inputs .input.btn {
+    flex: 1;
+    background-color: #2980b9;
+    cursor: pointer;
+    transition: all 0.5s ease-in-out;
+    border-width: 2px;
+}
+.profileSubPage .block .content .inputs .input.btn:hover {
+    background-color: #226a9b;
+}
+.profileSubPage .block .content .input:focus {
+    outline: none;
+    border: 2px solid #2980b9;
+}
+.profileSubPage .block .content .l {
+    margin-bottom: 20px;
+}
+.profileSubPage .block .content .l .links {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-left: 10px;
+}
+.profileSubPage .block .content .l .link {
+    display: flex;
+    gap: 10px;
+}
+.profileSubPage .block .content .l .link svg {
+    width: 25px;
+    fill: #888
+}
+.profileSubPage .block .content .l .link .input {
+    flex: 1;
+}
+.profileSubPage .block .content .l .links .select {
+    outline: none;
+    flex: 1;
+    border: 1px solid #aaa;
+    background-color: #070707;
+    color: #eee;
+    border-radius: 5px;
+    font-family: "GT Light";
+    cursor: pointer;
+    position: relative;
+    transition: all 0.5s ease-in-out;
+}
+.profileSubPage .block .content .l .links .select:hover {
+    background-color: #111;
+}
+.profileSubPage .block .content .l .links .select:after {
+    content: "";
+    border: 5px solid;
+    border-color: #eee transparent transparent transparent;
+    position: absolute;
+    right: 10px;
+    top: calc(50% + 2.5px);
+    transform: translateY(-50%);
+}
+.profileSubPage .block .content .l .links .select.active {
+    border: 2px solid #2980b9;
+}
+.profileSubPage .block .content .l .links .select .shown {
+    padding: 8px;
+}
+
+.profileSubPage .block .content .l .links .select .dropdown {
+    display: none;
+    outline: none;
+    position: absolute;
+    top: calc(100% + 10px);
+    right: -20px;
+    z-index: 5;
+    background-color: #070707;
+    border: 1px solid #aaa;
+    color: #eee;
+    border-radius: 5px;
+    flex-direction: column;
+    box-shadow: 1px 1px 3px 1px #333;
+    min-width: 200px;
+    font-family: "GT Light";
+    padding: 8px 0;
+}
+.profileSubPage .block .content .l .links .select .dropdown:before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    right: 30px;
+    border: 5px solid;
+    border-color: transparent transparent #aaa transparent;
+
+}
+.profileSubPage .block .content .l .links .select .dropdown.active {
+    display: flex;
+}
+.profileSubPage .block .content .l .links .select .dropdown .item {
+    padding: 8px 15px;
+    transition: all 0.5s ease-in-out;
+    cursor: pointer;
+}
+.profileSubPage .block .content .l .links .select .dropdown .item:hover,
+.profileSubPage .block .content .l .links .select .dropdown .item.active {
+    background-color: #111;
+}
+.profileSubPage .block .content .l .links .select .i {
+    background-color: #070707;
+    color: #eee;
+    border-radius: 5px;
+    font-family: "GT Light";
+    border: 2px solid #226a9b;
+    outline: none;
+    padding: 8px;
+    font-family: "GT Light";
+}
+.profileSubPage .block .content .l .links .select .i:focus {
+    border: 2px solid #226a9b;
+    outline: none;
+}
+.profileSubPage .block .content .l .links .input {
+    flex: 6;
+}
+.profileSubPage .block .btn {
+    background-color: #2980b9;
+    cursor: pointer;
+    transition: all 0.5s ease-in-out;
+    border: none;
+    outline: none;
+    color: #eee;
+    font-family: "GT Medium";
+    padding:  8px 12px;
+    font-size: 1.05rem;
+    border-radius: 5px;
+}
+.profileSubPage .block .btn:hover {
+    background-color: #226a9b;
+}
