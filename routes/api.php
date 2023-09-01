@@ -7,6 +7,7 @@ use App\Http\Controllers\GameController;
 use App\Http\Controllers\SubGameController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\OrderController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -51,12 +52,16 @@ Route::prefix('/user')->group(function () {
     Route::get('/logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
     Route::post('/updateProfile', [UserController::class, 'updateProfile'])->middleware('auth:sanctum');
     Route::post('/updatePassword', [UserController::class, 'updatePassword'])->middleware('auth:sanctum');
+    Route::get('/getSoldOrders', [UserController::class, 'getSoldOrders'])->middleware('auth:sanctum');
+    Route::get('/getPurchasedOrders', [UserController::class, 'getPurchasedOrders'])->middleware('auth:sanctum');
     
     Route::prefix('/cart')->group(function () {
         Route::get('/get', [UserController::class, 'getCart']);
         Route::get('/clear', [UserController::class, 'clearCart']);
+        Route::post('/order', [OrderController::class, 'orderCart']);
         Route::get('/add/{item_id}', [UserController::class, 'addToCart']);
-    });
+        Route::get('/remove/{item_id}', [UserController::class, 'removeFromCart']);
+    })->middleware('auth:sanctum');
 
     Route::prefix('/wishlist')->group(function () {
         Route::post('/toggle/{item_id}', [UserController::class, 'toggleWishlist']);

@@ -32,3 +32,4 @@ import "./Containers/Signup/Signup";
 import "./Containers/ListItem/ListItem";
 import "./Containers/Profile/Profile";
 import "./Containers/Settings/Settings";
+import "./Containers/Checkout/Checkout";

@@ -44,5 +44,8 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/settings', function () {
         return view('settings');
     });
+    Route::get('/checkout', function () {
+        return view('checkout');
+    });
 });
 

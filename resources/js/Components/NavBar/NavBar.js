@@ -22,7 +22,8 @@ const NavBar = props => {
         handleOpenCart,
         handleCloseCart,
         user,
-        logout
+        logout,
+        showCart = true
     } = props;
 
     const [toggleUser, setToggleUser] = useState(false);
@@ -139,18 +140,20 @@ const NavBar = props => {
               </div>
             }
             
-
-            <div 
-              className={styles.cartdiv} 
-              onClick={handleOpenCart}
-            >
-                <img src={Cart} 
-                  onClick={handleOpenCart} 
-                  className={styles.svg2} 
-                  style={{ filter: cartAmount ? 'brightness(100%) saturate(100%) invert(78%) sepia(99%) saturate(1103%) hue-rotate(72deg) brightness(100%) contrast(100%)' : 'invert(78%) brightness(10000%)' , stroke: cartAmount ? "" : "#fff", strokeWidth: "34px" }}
-                />
-                <h3 onClick={handleOpenCart}>Cart: {cartAmount}</h3>
-            </div>
+            {
+              showCart?
+              <div 
+                className={styles.cartdiv} 
+                onClick={handleOpenCart}
+              >
+                  <img src={Cart} 
+                    onClick={handleOpenCart} 
+                    className={styles.svg2} 
+                    style={{ filter: cartAmount ? 'brightness(100%) saturate(100%) invert(78%) sepia(99%) saturate(1103%) hue-rotate(72deg) brightness(100%) contrast(100%)' : 'invert(78%) brightness(10000%)' , stroke: cartAmount ? "" : "#fff", strokeWidth: "34px" }}
+                  />
+                  <h3 onClick={handleOpenCart}>Cart: {cartAmount}</h3>
+              </div>:null
+            }
         </div>
       </motion.div>
     </>

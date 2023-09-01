@@ -1,0 +1,134 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    overflow-x: hidden;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+.Checkout {
+    background-color: #0f1011;
+}
+
+.checkoutContent {
+    margin-top: 15px;
+    display: flex;
+    width: 100vw;
+    padding: 0 60px 280px;
+    padding-bottom: 50px;
+    background-color: #0f1011;
+    gap: 50px;
+    align-items: flex-start;
+}
+
+.checkoutContent > .left {
+    width: 80%;
+    background-color: #222;
+    border-radius: 8px;
+    padding: 10px;
+    color: #fff;
+    font-family: "GT Medium";
+    font-size: 1.2rem;
+}
+.checkoutContent .left .cart {
+    display: flex;
+    flex-direction: column;
+}
+.checkoutContent .left .cart .cartItem {
+    display: flex;
+    width: 100%;
+    gap: 25px;
+    padding: 10px;
+    transition: all 0.5s ease-in-out;
+    cursor: pointer;
+}
+.checkoutContent .left .cart .cartItem:hover {
+    background-color: #151515;
+}
+.checkoutContent .left .cart .cartItem .left {
+    width: 150px;
+}
+.checkoutContent .left .cart .cartItem .left img {
+    width: 150px;
+    height: 150px;
+}
+.checkoutContent .left .cart .cartItem .right {
+    padding-top: 15px;
+}
+.checkoutContent .left .cart .cartItem .right .price {
+    margin-bottom: 4px;
+}
+.checkoutContent .left .cart .cartItem .right .price .dollar {
+    font-size: 1rem;
+}
+.checkoutContent .left .cart .cartItem .right .title{
+    font-size: 1.3rem;
+    margin-bottom: 8px;
+}
+.checkoutContent .left .cart .cartItem .right .rmbtn {
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #006cd9;
+    color: #fff;
+    transition: all 0.5s ease-in-out;
+    border: none;
+    outline: none;
+    margin: 8px 0 0 8px;
+}
+.checkoutContent .left .cart .cartItem .right .rmbtn:hover {
+    background-color: #002e83;
+}
+.checkoutContent .left .total {
+    margin-top: 10px;
+    position: relative;
+    padding: 20px 10px 10px 0;
+    text-align: right;
+}
+.checkoutContent .left .total .dollar {
+    font-size: 1rem
+}
+.checkoutContent .left .total:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 10%;
+    width: 80%;
+    height: 1px;
+    background-color: #555;
+}
+
+.checkoutContent > .right {
+    width: 20%;
+    background-color: #222;
+    border-radius: 8px;
+    padding: 20px;
+    color: #fff;
+    font-family: "GT Medium";
+    font-size: 1.2rem;
+}
+.checkoutContent .right .r .dollar {
+    font-size: 1rem;
+}
+.checkoutContent .right .pay{
+    margin-top: 20px;
+    width: 100%;
+    padding: 7px;
+    border: none;
+    outline: none;
+    background-color: #006cd9;
+    color: #fff;
+    font-family: "GT Medium";
+    font-size: 1.2rem;
+    transition: all 0.5s ease-in-out;
+    cursor: pointer;
+}
+.checkoutContent .right .pay:hover {
+    background-color: #002e83;
+}

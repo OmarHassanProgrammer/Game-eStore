@@ -317,7 +317,6 @@ const handleHoverGame = (e) => {
 
 const handleAddToCart = (id, key, e) => {
   e.stopPropagation();
-  console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaa");
   const apiUrl = '/api/user/cart/add/' + id; // Replace with your actual API endpoint
   axios.get(apiUrl)
     .then(response => {
@@ -333,39 +332,41 @@ const handleAddToCart = (id, key, e) => {
 
 }
 const clearCart = () => {
-  setCart([]);
-  setCartAmount(0);
-  const defaultGames = allGames.map((game, i) => {
-    game.inCart = false;
-    game.isHovered = false;
-    return game;
-  });
-  setAllGames(defaultGames);
-  let newHoverState = hoverState[21];
-  newHoverState.hovered = false;
-  setHoverState([
-    ...hoverState, hoverState[21] = newHoverState
-  ]);
+  const apiUrl = '/api/user/cart/clear/'; // Replace with your actual API endpoint
+  axios.get(apiUrl)
+  .then(response => {
+    if(response.data.msg == "done") {
+      setCart([]);
+      setCartAmount(0);
+      let s = shownGames;
+      s.forEach(element => {
+        if(element.inCart) element.inCart = false;
+      });
+      setShownGames([...s]);
+      console.log(s);
+    }
+    })
+    .catch(error => {
+      console.error('Error fetching data:', error);
+    });
 }
 
-const handleRemoveFromCart = (e) => {
-  let removedIndex = cart.findIndex(game => game.id == e.target.id);
-  let newAllGames = allGames.map((game, i) => {
-    if (game.id == e.target.id) {
-      game.inCart = false;
-      game.isHovered = false;
-      return game;
-    } else {
-      return game;
-    }
-  });
-  setAllGames(newAllGames);
-  let firstHalf = cart.slice(0, removedIndex);
-  let secondHalf = cart.slice(removedIndex + 1);
-  let addedUp = firstHalf.concat(secondHalf);
-  setCart(addedUp);
-  setCartAmount(cartAmount - 1)
-  setHoverState([...hoverState, hoverState[21].hovered = false]);
+const handleRemoveFromCart = (id, key, e) => {
+  e.stopPropagation();
+  const apiUrl = '/api/user/cart/remove/' + id; // Replace with your actual API endpoint
+  axios.get(apiUrl)
+    .then(response => {
+      setCart(response.data.cart);S
+      let c = cart.filter((cart_item) => {});
+
+      setCartAmount(cartAmount - 1);
+      let s = shownGames;
+      s[key].inCart = false;
+      setShownGames([...s]);
+    })
+    .catch(error => {
+      console.error('Error fetching data:', error);
+    });
 }
 
 useEffect(() => {

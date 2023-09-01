@@ -60,4 +60,7 @@ class User extends Authenticatable
     public function gameLinks() {
         return $this->hasMany(GameLink::class);
     }
+    public function purchasedOrders() {
+        return $this->hasMany(Order::class, "client_id");
+    }
 }

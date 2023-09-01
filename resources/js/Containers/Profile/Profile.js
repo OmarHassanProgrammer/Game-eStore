@@ -50,6 +50,16 @@ const Profile = props => {
       .then(response => {
         if(response.data.msg == "done") {
           setUser(response.data.user);
+          api.get('/user/cart/get')
+          .then(response => {
+            if(response.data.message != "Unauthenticated.") {
+              setCart(response.data.cart);
+              setCartAmount(response.data.cart.length);
+            }
+          })
+          .catch(error => {
+            console.error('Error fetching data:', error);
+          });
         }
       })
       .catch(error => {
@@ -99,6 +109,54 @@ const Profile = props => {
         });
     }
   }, [user]);
+
+  
+const clearCart = () => {
+  const apiUrl = '/api/user/cart/clear/'; // Replace with your actual API endpoint
+  axios.get(apiUrl)
+  .then(response => {
+    if(response.data.msg == "done") {
+      setCart([]);
+      setCartAmount(0);
+      let s = shownGames;
+      s.forEach(element => {
+        if(element.inCart) element.inCart = false;
+      });
+      setShownGames([...s]);
+      console.log(s);
+    }
+    })
+    .catch(error => {
+      console.error('Error fetching data:', error);
+    });
+}
+
+const handleRemoveFromCart = (id, key, e) => {
+  e.stopPropagation();
+  const apiUrl = '/api/user/cart/remove/' + id; // Replace with your actual API endpoint
+  axios.get(apiUrl)
+    .then(response => {
+      setCart(response.data.cart);
+      let c = cart.filter((cart_item) => {});
+
+      setCartAmount(cartAmount - 1);
+      let s = shownGames;
+      s[key].inCart = false;
+      setShownGames([...s]);
+    })
+    .catch(error => {
+      console.error('Error fetching data:', error);
+    });
+}
+
+const openGamePage = (e) => {
+  setCartDisplayed(false);
+  let selectedGameSurname = e.target.id;
+  window.location.href = `/game/${selectedGameSurname}`;
+}
+const handleCloseCart = () => {
+  setCartDisplayed(false);
+}
 
   const handleBrowse = (type) => {
     setOverlap(true);

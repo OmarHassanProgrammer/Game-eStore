@@ -20,7 +20,8 @@ class UserController extends Controller
 
     public function getCart() {
         $user = Auth::user();
-        return response()->json(['msg' => 'done', 'cart' => $user->cart]);
+        $fullData = User::with(["cart.images", "cart.seller"])->find($user->id);
+        return response()->json(['msg' => 'done', 'cart' => $fullData->cart]);
     }
     
     public function addToCart($item_id) {
@@ -34,11 +35,11 @@ class UserController extends Controller
 
     public function removeFromCart($item_id) {
         $user = Auth::user();
-        if(!$user->cart->contains('id', $item_id)) {
+        if($user->cart->contains('id', $item_id)) {
             $item = Item::find($item_id);
-            $cart = $user->cart()->attach($item);
+            $cart = $user->cart()->detach($item);
         }
-        return response()->json(['msg' => 'done', 'cart' => [...$user->cart, $item]]);
+        return response()->json(['msg' => 'done', 'cart' => $user->cart]);
     }
 
     public function clearCart() {
@@ -78,8 +79,7 @@ class UserController extends Controller
                 'email' => ['unique:'.User::class],
             ]);
         }
-
-        if($request->img) {
+        if(isset($request->img) and $request->img != "undefined") {
             $request->validate([
                 'img' => 'required|image|mimes:jpeg,png,jpg,gif',
             ]);
@@ -131,6 +131,18 @@ class UserController extends Controller
 
     }
 
+    public function getSoldOrders() {
+        $user = Auth::user();
+        $fullData = user::with('items.orders')->find($user->id);
+        return response()->json(['msg' => 'done', 'items' => $fullData->items]); // TO FIX
+    }
+    
+    public function getPurchasedOrders() {
+        $user = Auth::user();
+        $orders = User::with(["purchasedOrders.item.seller", "purchasedOrders.item.images"])->find($user->id)->purchasedOrders;
+        return response()->json(['msg' => 'done', 'orders' => $orders]);
+    }
+    
     public function logout()
     {
         Auth::logout(); // Log out the currently authenticated user

@@ -261,7 +261,7 @@ const ProfileSubPage = props => {
                           <div className={`${styles.dropdown} ` + (dropDowns[key] && !gameLinks[key].cust?`${styles.active}`: '')}>
                             {
                               availableGames.map((game, gamekey) => {
-                                return <span className={`${styles.item} ` + (game == link.game?`${styles.active}`:"")} key={gamekey} placeHolder="Paste your game account ID here" onClick={changeGame.bind(this, key, gamekey)}>{game}</span>
+                                return <span className={`${styles.item} ` + (game == link.game?`${styles.active}`:"")} key={gamekey} placeholder="Paste your game account ID here" onClick={changeGame.bind(this, key, gamekey)}>{game}</span>
                               })
                             }
                           </div>

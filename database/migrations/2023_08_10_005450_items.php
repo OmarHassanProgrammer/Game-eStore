@@ -19,8 +19,8 @@ return new class extends Migration
             $table->integer("sold")->default(0);
             $table->string('description');
             $table->string('sellTime');
-            $table->string('seller_id');
-            $table->string('sub_game_id');
+            $table->unsignedBigInteger('seller_id');
+            $table->unsignedBigInteger('sub_game_id');
             $table->timestamps(); // Adds created_at and updated_at columns
         });
     }
