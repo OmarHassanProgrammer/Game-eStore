@@ -10,9 +10,11 @@ import Slider from '../../Components/Slider/Slider';
 import games from '../../utils/games';
 import AnimatedText from '../AnimatedPage/AnimatedText';
 import AddedToCartBig from '../../Components/AddedToCart/AddedToCartBig';
+import Chat from '../../Components/Chat/Chat';
 import Cart from '../../Components/Cart/Cart';
 import templateGame from '../../utils/templateGame';
 import Grid from '../../Components/Grid/Grid';
+import Notifications from '../../Components/Notifications/Notifications';
 import axios from "axios";
 
 const ListItem = props => {
@@ -38,6 +40,8 @@ const ListItem = props => {
   const [amount, setAmount] = useState(1);
   const [sellTime, setSellTime] = useState(1);
   const [imgs, setImgs] = useState([]);
+  const [addPerson, setAddPerson] = useState();
+  const [addNotification, setAddNotification] = useState();
   const [refresher, setRefresher] = useState(false);
   const [triedSubmit, setTriedSubmit] = useState(false);
 
@@ -70,6 +74,11 @@ const ListItem = props => {
         console.error('Error fetching data:', error);
       });
   }, []);
+
+  
+  const handleCloseCart = () => {
+    setCartDisplayed(false);
+  }
 
   const handleBrowse = (type) => {
     setOverlap(true);
@@ -226,6 +235,50 @@ const ListItem = props => {
       setTriedSubmit(true);
     }
   }
+
+const clearCart = () => {
+  const apiUrl = '/api/user/cart/clear/'; // Replace with your actual API endpoint
+  axios.get(apiUrl)
+  .then(response => {
+    if(response.data.msg == "done") {
+      setCart([]);
+      setCartAmount(0);
+      let s = shownGames;
+      s.forEach(element => {
+        if(element.inCart) element.inCart = false;
+      });
+      setShownGames([...s]);
+      console.log(s);
+    }
+    })
+    .catch(error => {
+      console.error('Error fetching data:', error);
+    });
+}
+
+const openGamePage = (e) => {
+  setCartDisplayed(false);
+  let selectedGameSurname = e.target.id;
+  window.location.href = `/game/${selectedGameSurname}`;
+}
+
+const handleRemoveFromCart = (id, key, e) => {
+  e.stopPropagation();
+  const apiUrl = '/api/user/cart/remove/' + id; // Replace with your actual API endpoint
+  axios.get(apiUrl)
+    .then(response => {
+      setCart(response.data.cart);
+      let c = cart.filter((cart_item) => {});
+
+      setCartAmount(cartAmount - 1);
+      let s = shownGames;
+      s[key].inCart = false;
+      setShownGames([...s]);
+    })
+    .catch(error => {
+      console.error('Error fetching data:', error);
+    });
+}
   
   return (
     <>
@@ -240,6 +293,8 @@ const ListItem = props => {
               handleRemoveFromCart={handleRemoveFromCart}
               openGamePage={openGamePage}
         /> : null}
+        <Chat addPerson={addPerson}/>
+        <Notifications addNotification={addNotification} />
         <NavBar
           handleBrowse={handleBrowse.bind(this, "games")}
           user={user}

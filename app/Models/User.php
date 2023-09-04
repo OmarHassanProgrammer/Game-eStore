@@ -63,4 +63,10 @@ class User extends Authenticatable
     public function purchasedOrders() {
         return $this->hasMany(Order::class, "client_id");
     }
+    public function chats() {
+        return $this->belongsToMany(Chat::class, ['to', 'from']);
+    }
+    public function notifications() {
+        return $this->hasMany(Notification::class, 'user_id');
+    }
 }

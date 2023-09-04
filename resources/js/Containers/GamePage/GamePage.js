@@ -9,8 +9,10 @@ import Slider from '../../Components/Slider/Slider';
 import games from '../../utils/games';
 import AnimatedText from '../AnimatedPage/AnimatedText';
 import AddedToCartBig from '../../Components/AddedToCart/AddedToCartBig';
+import Chat from '../../Components/Chat/Chat';
 import Cart from '../../Components/Cart/Cart';
 import templateGame from '../../utils/templateGame';
+import Notifications from '../../Components/Notifications/Notifications';
 import axios from "axios";
 
 const GamePage = props => {
@@ -40,7 +42,9 @@ const GamePage = props => {
   const [genres, setGenres] = useState([]);
   const [activeGenre, setActiveGenre] = useState({});
   const [isCart, setIsCart] = useState({});
+  const [addPerson, setAddPerson] = useState();
   const [isFav, setIsFav] = useState({});
+  const [addNotification, setAddNotification] = useState();
   const [hoverState, setHoverState] = useState([
     {
         hovered: false,
@@ -442,7 +446,8 @@ useEffect(() => {
               handleRemoveFromCart={handleRemoveFromCart}
               openGamePage={openGamePage}
             /> : null}
-
+            <Chat addPerson={addPerson}/>
+            <Notifications addNotification={addNotification} />
             <NavBar
               handleBrowse={handleBrowse.bind(this, "games")}
               handleHover={handleHover}

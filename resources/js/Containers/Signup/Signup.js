@@ -11,12 +11,14 @@ import AnimatedText from '../AnimatedPage/AnimatedText';
 import AddedToCartBig from '../../Components/AddedToCart/AddedToCartBig';
 import Cart from '../../Components/Cart/Cart';
 import templateGame from '../../utils/templateGame';
+import Notifications from '../../Components/Notifications/Notifications';
 import axios from "axios";
 
 const Signup = props => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [addNotification, setAddNotification] = useState();
   const [confirmPassword, setConfirmPassword] = useState("");
 
   useEffect(() => {
@@ -34,6 +36,7 @@ const Signup = props => {
       .catch(error => {
         console.error('Error fetching data:', error);
       });
+      
   }, []);
 
   const handleNameInput = (e) => {
@@ -73,6 +76,7 @@ const Signup = props => {
 
   return (
     <>
+      <Notifications addNotification={addNotification} />
       <div className={styles.form}>
         <h2 className={styles.title}>Rgeister</h2>
         <form>

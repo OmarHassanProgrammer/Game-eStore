@@ -142,7 +142,29 @@ class UserController extends Controller
         $orders = User::with(["purchasedOrders.item.seller", "purchasedOrders.item.images"])->find($user->id)->purchasedOrders;
         return response()->json(['msg' => 'done', 'orders' => $orders]);
     }
+
+    public function getSimpleData(Request $request) {
+        $people = [];
+
+        if($request->ids) {
+            foreach ($request->ids as $key => $id) {
+                $user = User::find($id)->only(["id", "name", "imgType"]);
+                array_push($people, $user);
+            }
+        }
+
+        return response()->json(["msg" => "done", "people" => $people]);
+    }
     
+    public function getNewNotifications() {
+        $user = Auth::user();
+        $notifications = $user->notifications;
+        foreach ($user->notifications as $key => $notification) {
+            $user->notifications()->detach($notification);
+        }
+        return response()->json(['msg' => "done", "notifications" => $notifications]);
+    }
+
     public function logout()
     {
         Auth::logout(); // Log out the currently authenticated user

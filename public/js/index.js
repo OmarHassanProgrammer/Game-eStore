@@ -5380,6 +5380,269 @@ var Cart = function Cart(props) {
 
 /***/ }),
 
+/***/ "./resources/js/Components/Chat/Chat.js":
+/*!**********************************************!*\
+  !*** ./resources/js/Components/Chat/Chat.js ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Chat_module_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Chat.module.css */ "./resources/js/Components/Chat/Chat.module.css");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _assets_icons_arrowRight_svg__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../assets/icons/arrowRight.svg */ "./resources/assets/icons/arrowRight.svg");
+/* harmony import */ var _assets_icons_cross_svg__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../assets/icons/cross.svg */ "./resources/assets/icons/cross.svg");
+/* harmony import */ var _Containers_AnimatedPage_AnimatedChat__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../Containers/AnimatedPage/AnimatedChat */ "./resources/js/Containers/AnimatedPage/AnimatedChat.js");
+/* harmony import */ var _Containers_AnimatedPage_AnimatedCard__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../Containers/AnimatedPage/AnimatedCard */ "./resources/js/Containers/AnimatedPage/AnimatedCard.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+var _this = undefined;
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+
+
+
+
+
+
+
+var Chat = function Chat(props) {
+  var addPerson = props.addPerson;
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(true),
+    _useState2 = _slicedToArray(_useState, 2),
+    chatDisplayed = _useState2[0],
+    setChatDisplayed = _useState2[1];
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(null),
+    _useState4 = _slicedToArray(_useState3, 2),
+    people = _useState4[0],
+    setPeople = _useState4[1];
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(null),
+    _useState6 = _slicedToArray(_useState5, 2),
+    activeChat = _useState6[0],
+    setActiveChat = _useState6[1];
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(""),
+    _useState8 = _slicedToArray(_useState7, 2),
+    msg = _useState8[0],
+    setMsg = _useState8[1];
+  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]),
+    _useState10 = _slicedToArray(_useState9, 2),
+    chat = _useState10[0],
+    setChat = _useState10[1];
+  var handleCloseChat = function handleCloseChat() {
+    setChatDisplayed(false);
+  };
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
+    if (addPerson) addPersonF(addPerson);
+  }, [addPerson]);
+  var addPersonF = function addPersonF(id) {
+    var exist = false;
+    people === null || people === void 0 ? void 0 : people.forEach(function (person) {
+      if (person.id == id) exist = true;
+    });
+    if (exist) {
+      changeChat(id);
+    } else {
+      var apiUrl = '/api/user/getSimpleData/'; // Replace with your actual API endpoint
+      axios__WEBPACK_IMPORTED_MODULE_7__["default"].post(apiUrl, {
+        ids: [id]
+      }).then(function (response) {
+        if (response.data.msg = "done") {
+          localStorage.setItem('people', localStorage.getItem('people') ? localStorage.getItem('people') + ',' + id : id);
+          if (people) setPeople([].concat(_toConsumableArray(people), [response.data.people[0]]));else setPeople([response.data.people[0]]);
+          changeChat(id);
+          if (!chatDisplayed) setChatDisplayed(true);
+        }
+      })["catch"](function (error) {
+        console.error('Error fetching data:', error);
+      });
+    }
+  };
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
+    var _localStorage$getItem;
+    var ids = (_localStorage$getItem = localStorage.getItem('people')) === null || _localStorage$getItem === void 0 ? void 0 : _localStorage$getItem.split(',');
+    if (ids && ids.length != 0) {
+      var apiUrl = '/api/user/getSimpleData/'; // Replace with your actual API endpoint
+      axios__WEBPACK_IMPORTED_MODULE_7__["default"].post(apiUrl, {
+        ids: ids
+      }).then(function (response) {
+        if (response.data.msg = "done") {
+          setPeople(response.data.people);
+        }
+      })["catch"](function (error) {
+        console.error('Error fetching data:', error);
+      });
+    }
+    var a = localStorage.getItem('activeChat');
+    if (a) {
+      setActiveChat(a);
+      loadChat(a);
+    }
+  }, []);
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
+    setInterval(function () {
+      loadChat(null, false);
+    }, 3000);
+  }, []);
+  var loadChat = function loadChat(a) {
+    var change = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+    var ac = localStorage.getItem("activeChat");
+    if (ac || a) {
+      if (!a) {
+        a = ac;
+      }
+      var apiUrl = '/api/chat/get/' + a; // Replace with your actual API endpoint
+      axios__WEBPACK_IMPORTED_MODULE_7__["default"].get(apiUrl).then(function (response) {
+        if (response.data.msg = "done") {
+          setChat(response.data.chat);
+          if (change) {
+            setActiveChat(a);
+            localStorage.setItem("activeChat", a);
+          }
+        }
+      })["catch"](function (error) {
+        console.error('Error fetching data:', error);
+      });
+    }
+  };
+  var changeChat = function changeChat(id, e) {
+    if (activeChat != id) loadChat(id, true);
+  };
+  var toggleChat = function toggleChat() {
+    setChatDisplayed(!chatDisplayed);
+  };
+  var handleMsg = function handleMsg(e) {
+    setMsg(e.target.value);
+  };
+  var sendMsg = function sendMsg() {
+    var apiUrl = '/api/chat/send'; // Replace with your actual API endpoint
+    axios__WEBPACK_IMPORTED_MODULE_7__["default"].post(apiUrl, {
+      id: activeChat,
+      msg: msg
+    }).then(function (response) {
+      if (response.data.msg == "done") {
+        setChat([].concat(_toConsumableArray(chat), [response.data.message]));
+      }
+    })["catch"](function (error) {
+      console.error('Error fetching data:', error);
+    });
+    setMsg("");
+  };
+  var closeChat = function closeChat(key, id, e) {
+    if (id == activeChat) {
+      if (people.length == 1) {
+        setPeople(null);
+        setActiveChat(null);
+        localStorage.removeItem("activeChat");
+        localStorage.removeItem("people");
+      } else {
+        var k = people[(key + 1) % people.length].id;
+        setActiveChat(k);
+        localStorage.setItem("activeChat", k);
+        var p = people;
+        p.splice(key, 1);
+        setPeople(_toConsumableArray(p));
+        var ids = "";
+        p.forEach(function (person) {
+          ids += person.id + ",";
+        });
+        localStorage.setItem("people", ids.slice(0, ids.length - 1));
+      }
+    } else {
+      var _p = people;
+      _p.splice(key, 1);
+      setPeople(_toConsumableArray(_p));
+      var _ids = "";
+      _p.forEach(function (person) {
+        _ids += person.id + ",";
+      });
+      localStorage.setItem("people", _ids.slice(0, _ids.length - 1));
+    }
+  };
+  return people ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Containers_AnimatedPage_AnimatedChat__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+      className: "".concat(_Chat_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].chatWindow, " ") + (chatDisplayed ? _Chat_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].show : ''),
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+        className: _Chat_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].top,
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
+          className: chatDisplayed ? _Chat_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].close : _Chat_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].open,
+          onClick: toggleChat,
+          children: "C"
+        }), people.map(function (person, key) {
+          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+            className: "".concat(_Chat_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].person, " ") + (person.id == activeChat ? _Chat_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].active : ""),
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
+              className: _Chat_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].c,
+              onClick: closeChat.bind(_this, key, person.id),
+              children: "x"
+            }), person.imgType != null ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("img", {
+              className: _Chat_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].img,
+              src: "../../assets/users/" + person.id + "." + person.imgType,
+              onClick: changeChat.bind(_this, person.id)
+            }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("svg", {
+              className: _Chat_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].img,
+              viewBox: "-1 -1 26 26",
+              fill: "none",
+              xmlns: "http://www.w3.org/2000/svg",
+              onClick: changeChat.bind(_this, person.id),
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("path", {
+                fillRule: "evenodd",
+                clipRule: "evenodd",
+                d: "M16.5 7.063C16.5 10.258 14.57 13 12 13c-2.572 0-4.5-2.742-4.5-5.938C7.5 3.868 9.16 2 12 2s4.5 1.867 4.5 5.063zM4.102 20.142C4.487 20.6 6.145 22 12 22c5.855 0 7.512-1.4 7.898-1.857a.416.416 0 0 0 .09-.317C19.9 18.944 19.106 15 12 15s-7.9 3.944-7.989 4.826a.416.416 0 0 0 .091.317z",
+                fill: "#eee"
+              })
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
+              className: _Chat_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].name,
+              children: person.name
+            })]
+          }, key);
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+        className: _Chat_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].middle,
+        children: chat.map(function (msg, key) {
+          var _chat, _chat2;
+          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+            className: "".concat(_Chat_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].chat_text, " ") + (msg.to == activeChat ? _Chat_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].me : _Chat_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].him) + " " + (((_chat = chat[key + 1]) === null || _chat === void 0 ? void 0 : _chat.to) != msg.to ? _Chat_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].end : "") + " " + (((_chat2 = chat[key - 1]) === null || _chat2 === void 0 ? void 0 : _chat2.to) != msg.to ? _Chat_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].start : ""),
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
+              className: _Chat_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].msg,
+              children: msg.msg
+            })
+          }, key);
+        })
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+        className: _Chat_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].bottom,
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("input", {
+          className: _Chat_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].input,
+          value: msg,
+          onChange: handleMsg
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
+          className: _Chat_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].send,
+          onClick: sendMsg,
+          children: '>'
+        })]
+      })]
+    })
+  }) : null;
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Chat);
+
+/***/ }),
+
 /***/ "./resources/js/Components/Filters/Filters.js":
 /*!****************************************************!*\
   !*** ./resources/js/Components/Filters/Filters.js ***!
@@ -6218,6 +6481,191 @@ var NavBar = function NavBar(props) {
 
 /***/ }),
 
+/***/ "./resources/js/Components/Notifications/Notifications.js":
+/*!****************************************************************!*\
+  !*** ./resources/js/Components/Notifications/Notifications.js ***!
+  \****************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Notifications_module_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Notifications.module.css */ "./resources/js/Components/Notifications/Notifications.module.css");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _Containers_AnimatedPage_AnimatedChat__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../Containers/AnimatedPage/AnimatedChat */ "./resources/js/Containers/AnimatedPage/AnimatedChat.js");
+/* harmony import */ var _Containers_AnimatedPage_AnimatedCard__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../Containers/AnimatedPage/AnimatedCard */ "./resources/js/Containers/AnimatedPage/AnimatedCard.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+var _this = undefined;
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+
+
+
+
+
+var Notifications = function Notifications(props) {
+  var addNotification = props.addNotification;
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]),
+    _useState2 = _slicedToArray(_useState, 2),
+    notifications = _useState2[0],
+    setNotifications = _useState2[1];
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(true),
+    _useState4 = _slicedToArray(_useState3, 2),
+    f = _useState4[0],
+    setF = _useState4[1];
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
+    var n = localStorage.getItem("notifications");
+    var ns = [];
+    if (n) {
+      n = n.split(',');
+      n.forEach(function (notification, key) {
+        ns.push({
+          key: notification.split(';')[0],
+          type: notification.split(';')[1],
+          msg: notification.split(';')[2],
+          time: notification.split(';')[3]
+        });
+        if (notification.split(';')[3] != 0) {
+          setTimeout(function () {
+            rmNotification(notification.split(';')[0]);
+          }, notification.split(';')[3]);
+        }
+      });
+      setNotifications([].concat(ns));
+      console.log(ns);
+    }
+    var apiUrl = '/api/user/getNewNotifications'; // Replace with your actual API endpoint
+    axios__WEBPACK_IMPORTED_MODULE_5__["default"].get(apiUrl).then(function (response) {
+      if (response.data.msg == "done") {
+        response.data.notifications.forEach(function (notification) {
+          ns.push({
+            key: notification.id,
+            type: notification.status,
+            msg: notification.msg,
+            time: notification.time
+          });
+          if (notification.time != 0) {
+            setTimeout(function () {
+              rmNotification(notification.id);
+            }, notification.time);
+          }
+        });
+        setNotifications([].concat(ns));
+        console.log(ns);
+        var localSN = "";
+        ns.forEach(function (n) {
+          localSN += n.key + ";" + n.type + ";" + n.msg + ";" + n.time + ",";
+        });
+        localStorage.setItem("notifications", localSN.slice(0, localSN.length - 1));
+      }
+    })["catch"](function (error) {
+      console.error('Error fetching data:', error);
+    });
+  }, []);
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
+    if (f) setF(false);else {
+      var newNotifications = [].concat(_toConsumableArray(notifications), [addNotification]);
+      setNotifications(newNotifications);
+      var localSN = "";
+      newNotifications.forEach(function (notification) {
+        localSN += notification.key + ";" + notification.type + ";" + notification.msg + ";" + notification.time + ",";
+      });
+      localStorage.setItem("notifications", localSN.slice(0, localSN.length - 1));
+      setTimeout(function () {
+        rmNotification(addNotification.key);
+      }, addNotification.time);
+    }
+  }, [addNotification]);
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
+    console.log(localStorage.getItem("notifications"));
+  }, [localStorage]);
+  var rmNotification = function rmNotification(key) {
+    var index = -1;
+    var n = localStorage.getItem("notifications").split(',');
+    var ns = [];
+    if (n) {
+      n.forEach(function (notification, key) {
+        ns.push({
+          key: notification.split(';')[0],
+          type: notification.split(';')[1],
+          msg: notification.split(';')[2],
+          time: notification.split(';')[3]
+        });
+      });
+    }
+    ns.forEach(function (notification, k) {
+      if (notification.key == key) index = k;
+    });
+    if (index != -1) {
+      var newNotifications = ns;
+      newNotifications.splice(index, 1);
+      setNotifications(_toConsumableArray(newNotifications));
+      var localSN = "";
+      newNotifications.forEach(function (notification) {
+        localSN += notification.key + ";" + notification.type + ";" + notification.msg + ";" + notification.time + ",";
+      });
+      localStorage.setItem("notifications", localSN.slice(0, localSN.length - 1));
+    }
+  };
+
+  // ++ 
+
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Containers_AnimatedPage_AnimatedChat__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+      className: _Notifications_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].NotificationsWidget,
+      children: notifications.map(function (notification, key) {
+        var _notification$msg;
+        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+          className: "".concat(_Notifications_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].notification, " ").concat(_Notifications_module_css__WEBPACK_IMPORTED_MODULE_0__["default"][notification.type]),
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
+            className: _Notifications_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].txt,
+            children: notification === null || notification === void 0 || (_notification$msg = notification.msg) === null || _notification$msg === void 0 ? void 0 : _notification$msg.split("++").map(function (m, k) {
+              if (m.split("--")[1]) {
+                return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("a", {
+                  href: m.split("--")[1],
+                  className: "".concat(_Notifications_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].p, " ").concat(_Notifications_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].l),
+                  children: m.split("--")[0]
+                });
+              } else {
+                return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
+                  className: _Notifications_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].p,
+                  children: m.split("--")[0]
+                });
+              }
+            })
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
+            className: _Notifications_module_css__WEBPACK_IMPORTED_MODULE_0__["default"]["delete"],
+            onClick: rmNotification.bind(_this, notification.key),
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
+              className: _Notifications_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].icon,
+              children: "x"
+            })
+          })]
+        }, key);
+      })
+    })
+  });
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Notifications);
+
+/***/ }),
+
 /***/ "./resources/js/Components/Slider/Slider.js":
 /*!**************************************************!*\
   !*** ./resources/js/Components/Slider/Slider.js ***!
@@ -6561,6 +7009,63 @@ var AnimatedCart = function AnimatedCart(_ref) {
 
 /***/ }),
 
+/***/ "./resources/js/Containers/AnimatedPage/AnimatedChat.js":
+/*!**************************************************************!*\
+  !*** ./resources/js/Containers/AnimatedPage/AnimatedChat.js ***!
+  \**************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var framer_motion__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! framer-motion */ "./node_modules/framer-motion/dist/es/render/dom/motion.mjs");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
+
+var animations = {
+  initial: {
+    y: 200
+  },
+  animate: {
+    y: 0,
+    transition: {
+      y: {
+        type: "spring",
+        duration: 0.8,
+        bounce: 0.35
+      }
+    }
+  },
+  exit: {
+    y: 200,
+    transition: {
+      y: {
+        type: "spring",
+        duration: 1.5,
+        bounce: 0.575
+      }
+    }
+  }
+};
+var AnimatedChat = function AnimatedChat(_ref) {
+  var children = _ref.children;
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(framer_motion__WEBPACK_IMPORTED_MODULE_2__.motion.div, {
+    variants: animations,
+    initial: "initial",
+    animate: "animate",
+    exit: "exit",
+    children: children
+  });
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (AnimatedChat);
+
+/***/ }),
+
 /***/ "./resources/js/Containers/AnimatedPage/AnimatedGamePage.js":
 /*!******************************************************************!*\
   !*** ./resources/js/Containers/AnimatedPage/AnimatedGamePage.js ***!
@@ -6826,11 +7331,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Components_Grid_Grid__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../Components/Grid/Grid */ "./resources/js/Components/Grid/Grid.js");
 /* harmony import */ var _utils_categories__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../utils/categories */ "./resources/js/utils/categories.js");
 /* harmony import */ var _Components_Cart_Cart__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../Components/Cart/Cart */ "./resources/js/Components/Cart/Cart.js");
-/* harmony import */ var _Components_Footer_Footer__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../Components/Footer/Footer */ "./resources/js/Components/Footer/Footer.js");
-/* harmony import */ var _utils_filterNames__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../utils/filterNames */ "./resources/js/utils/filterNames.js");
-/* harmony import */ var _utils_templateGame__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../utils/templateGame */ "./resources/js/utils/templateGame.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _Components_Chat_Chat__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../Components/Chat/Chat */ "./resources/js/Components/Chat/Chat.js");
+/* harmony import */ var _Components_Notifications_Notifications__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../Components/Notifications/Notifications */ "./resources/js/Components/Notifications/Notifications.js");
+/* harmony import */ var _Components_Footer_Footer__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../Components/Footer/Footer */ "./resources/js/Components/Footer/Footer.js");
+/* harmony import */ var _utils_filterNames__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../../utils/filterNames */ "./resources/js/utils/filterNames.js");
+/* harmony import */ var _utils_templateGame__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../../utils/templateGame */ "./resources/js/utils/templateGame.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e2) { throw _e2; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e3) { didErr = true; err = _e3; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -6853,6 +7360,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 //import games from '../../utils/games';
+
+
 
 
 
@@ -6968,7 +7477,15 @@ function Browse(props) {
     _useState52 = _slicedToArray(_useState51, 2),
     isFav = _useState52[0],
     setIsFav = _useState52[1];
-  var _useState53 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)([{
+  var _useState53 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(),
+    _useState54 = _slicedToArray(_useState53, 2),
+    addPerson = _useState54[0],
+    setAddPerson = _useState54[1];
+  var _useState55 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(),
+    _useState56 = _slicedToArray(_useState55, 2),
+    addNotification = _useState56[0],
+    setAddNotification = _useState56[1];
+  var _useState57 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)([{
       hovered: false,
       selected: false
     }, {
@@ -7020,17 +7537,17 @@ function Browse(props) {
       hovered: false,
       selected: false
     }]),
-    _useState54 = _slicedToArray(_useState53, 2),
-    hoverState = _useState54[0],
-    setHoverState = _useState54[1];
+    _useState58 = _slicedToArray(_useState57, 2),
+    hoverState = _useState58[0],
+    setHoverState = _useState58[1];
   (0,react__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
     var apiUrl = '/api/genres/getAll'; // Replace with your actual API endpoint
-    axios__WEBPACK_IMPORTED_MODULE_15__["default"].get(apiUrl).then(function (response) {
+    axios__WEBPACK_IMPORTED_MODULE_17__["default"].get(apiUrl).then(function (response) {
       setGenres(response.data.genres);
     })["catch"](function (error) {
       console.error('Error fetching data:', error);
     });
-    var api = axios__WEBPACK_IMPORTED_MODULE_15__["default"].create({
+    var api = axios__WEBPACK_IMPORTED_MODULE_17__["default"].create({
       baseURL: '/api'
     });
     api.get('/user/me').then(function (response) {
@@ -7050,7 +7567,7 @@ function Browse(props) {
     });
   }, []);
   var logout = function logout() {
-    var api = axios__WEBPACK_IMPORTED_MODULE_15__["default"].create({
+    var api = axios__WEBPACK_IMPORTED_MODULE_17__["default"].create({
       baseURL: '/api'
     });
     api.post('/logout').then(function (response) {
@@ -7071,7 +7588,7 @@ function Browse(props) {
     if (_currentGame != undefined) {
       setSelectedGame(_currentGame);
     } else {
-      setSelectedGame(_utils_templateGame__WEBPACK_IMPORTED_MODULE_13__["default"]);
+      setSelectedGame(_utils_templateGame__WEBPACK_IMPORTED_MODULE_15__["default"]);
     }
   }
   var handleSearch = function handleSearch(e) {
@@ -7108,7 +7625,7 @@ function Browse(props) {
           var filter = _step.value;
           if (!globalFilter) {
             updatedFilter.splice(currentFilter.indexOf(filter), 1);
-            if (filter == _utils_filterNames__WEBPACK_IMPORTED_MODULE_12__["default"][e.target.id - 8]) {
+            if (filter == _utils_filterNames__WEBPACK_IMPORTED_MODULE_14__["default"][e.target.id - 8]) {
               activated = true;
             }
           }
@@ -7120,7 +7637,7 @@ function Browse(props) {
       }
     }
     if (!activated) {
-      setCurrentFilter([_utils_filterNames__WEBPACK_IMPORTED_MODULE_12__["default"][e.target.id - 8]].concat(_toConsumableArray(updatedFilter)));
+      setCurrentFilter([_utils_filterNames__WEBPACK_IMPORTED_MODULE_14__["default"][e.target.id - 8]].concat(_toConsumableArray(updatedFilter)));
     } else {
       if (updatedFilter.length == 0) {
         setCurrentFilter("none");
@@ -7153,7 +7670,7 @@ function Browse(props) {
   };
   var handleLike = function handleLike(id, key, e) {
     var apiUrl = '/api/user/wishlist/toggle/' + id; // Replace with your actual API endpoint
-    axios__WEBPACK_IMPORTED_MODULE_15__["default"].post(apiUrl).then(function (response) {
+    axios__WEBPACK_IMPORTED_MODULE_17__["default"].post(apiUrl).then(function (response) {
       var s = shownGames;
       s[key].isLiked = response.data.fav;
       setShownGames(_toConsumableArray(s));
@@ -7192,7 +7709,7 @@ function Browse(props) {
   var handleAddToCart = function handleAddToCart(id, key, e) {
     e.stopPropagation();
     var apiUrl = '/api/user/cart/add/' + id; // Replace with your actual API endpoint
-    axios__WEBPACK_IMPORTED_MODULE_15__["default"].get(apiUrl).then(function (response) {
+    axios__WEBPACK_IMPORTED_MODULE_17__["default"].get(apiUrl).then(function (response) {
       setCart(response.data.cart);
       setCartAmount(response.data.cart.length);
       var s = shownGames;
@@ -7204,7 +7721,7 @@ function Browse(props) {
   };
   var clearCart = function clearCart() {
     var apiUrl = '/api/user/cart/clear/'; // Replace with your actual API endpoint
-    axios__WEBPACK_IMPORTED_MODULE_15__["default"].get(apiUrl).then(function (response) {
+    axios__WEBPACK_IMPORTED_MODULE_17__["default"].get(apiUrl).then(function (response) {
       if (response.data.msg == "done") {
         setCart([]);
         setCartAmount(0);
@@ -7222,7 +7739,7 @@ function Browse(props) {
   var handleRemoveFromCart = function handleRemoveFromCart(id, key, e) {
     e.stopPropagation();
     var apiUrl = '/api/user/cart/remove/' + id; // Replace with your actual API endpoint
-    axios__WEBPACK_IMPORTED_MODULE_15__["default"].get(apiUrl).then(function (response) {
+    axios__WEBPACK_IMPORTED_MODULE_17__["default"].get(apiUrl).then(function (response) {
       setCart(response.data.cart);
       S;
       var c = cart.filter(function (cart_item) {});
@@ -7263,10 +7780,10 @@ function Browse(props) {
       document.body.style.overflow = "scroll !important";
     }
   }, [cartDisplayed]);
-  var _useState55 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(false),
-    _useState56 = _slicedToArray(_useState55, 2),
-    browsing = _useState56[0],
-    setBrowsing = _useState56[1];
+  var _useState59 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(false),
+    _useState60 = _slicedToArray(_useState59, 2),
+    browsing = _useState60[0],
+    setBrowsing = _useState60[1];
   var handleHover = function handleHover(e) {
     var newHoverState = hoverState[e.target.id];
     newHoverState.hovered = !newHoverState.hovered;
@@ -7340,14 +7857,14 @@ function Browse(props) {
       }
     }
   };
-  var _useState57 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(false),
-    _useState58 = _slicedToArray(_useState57, 2),
-    landingPage = _useState58[0],
-    setLandingPage = _useState58[1];
-  var _useState59 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(true),
-    _useState60 = _slicedToArray(_useState59, 2),
-    grid = _useState60[0],
-    setGrid = _useState60[1];
+  var _useState61 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(false),
+    _useState62 = _slicedToArray(_useState61, 2),
+    landingPage = _useState62[0],
+    setLandingPage = _useState62[1];
+  var _useState63 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(true),
+    _useState64 = _slicedToArray(_useState63, 2),
+    grid = _useState64[0],
+    setGrid = _useState64[1];
   var handleLayoutSwitch = function handleLayoutSwitch(e) {
     if (e.target.id == "grid") {
       setGrid(true);
@@ -7359,7 +7876,7 @@ function Browse(props) {
     if (currentFilter == "none") {
       if (browseType == "/games") {
         var apiUrl = '/api/games/getAll'; // Replace with your actual API endpoint
-        axios__WEBPACK_IMPORTED_MODULE_15__["default"].get(apiUrl).then(function (response) {
+        axios__WEBPACK_IMPORTED_MODULE_17__["default"].get(apiUrl).then(function (response) {
           setAllGames(response.data.games);
           setShownGames(response.data.games);
         })["catch"](function (error) {
@@ -7368,7 +7885,7 @@ function Browse(props) {
       } else if (browseType == "/categories") {
         if (currentGame.id != -1) {
           var _apiUrl = '/api/games/getCategories/' + currentGame.id; // Replace with your actual API endpoint
-          axios__WEBPACK_IMPORTED_MODULE_15__["default"].get(_apiUrl).then(function (response) {
+          axios__WEBPACK_IMPORTED_MODULE_17__["default"].get(_apiUrl).then(function (response) {
             setShownCategories(response.data.categories);
             setShownGames(response.data.categories);
             g = response.data.games;
@@ -7377,7 +7894,7 @@ function Browse(props) {
           });
         } else {
           var _apiUrl2 = '/api/categories/getAll'; // Replace with your actual API endpoint
-          axios__WEBPACK_IMPORTED_MODULE_15__["default"].get(_apiUrl2).then(function (response) {
+          axios__WEBPACK_IMPORTED_MODULE_17__["default"].get(_apiUrl2).then(function (response) {
             setShownCategories(response.data.categories);
             setShownGames(response.data.categories);
             g = response.data.games;
@@ -7388,14 +7905,14 @@ function Browse(props) {
       } else if (browseType == "/items") {
         if (currentCategory.id != -1) {
           var _apiUrl3 = '/api/items/getAll/' + currentCategory.id; // Replace with your actual API endpoint
-          axios__WEBPACK_IMPORTED_MODULE_15__["default"].get(_apiUrl3).then(function (response) {
+          axios__WEBPACK_IMPORTED_MODULE_17__["default"].get(_apiUrl3).then(function (response) {
             setShownGames(response.data.items);
           })["catch"](function (error) {
             console.error('Error fetching data:', error);
           });
         } else {
           var _apiUrl4 = '/api/items/getAll'; // Replace with your actual API endpoint
-          axios__WEBPACK_IMPORTED_MODULE_15__["default"].get(_apiUrl4).then(function (response) {
+          axios__WEBPACK_IMPORTED_MODULE_17__["default"].get(_apiUrl4).then(function (response) {
             setShownGames(response.data.items);
           })["catch"](function (error) {
             console.error('Error fetching data:', error);
@@ -7491,13 +8008,13 @@ function Browse(props) {
   (0,react__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
     console.log(shownGames);
   }, [shownGames]);
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsxs)("section", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsxs)("section", {
     className: _Browse_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].Browse,
     style: {
       maxHeight: cartDisplayed ? "100vh" : "1000vh",
       minHeight: "100vh"
     },
-    children: [cartDisplayed ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)(_Components_Cart_Cart__WEBPACK_IMPORTED_MODULE_10__["default"], {
+    children: [cartDisplayed ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)(_Components_Cart_Cart__WEBPACK_IMPORTED_MODULE_10__["default"], {
       cartDisplayed: cartDisplayed,
       handleOpenCart: handleOpenCart,
       handleCloseCart: handleCloseCart,
@@ -7508,7 +8025,11 @@ function Browse(props) {
       clearCart: clearCart,
       handleRemoveFromCart: handleRemoveFromCart,
       openGamePage: openGamePage
-    }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)(_Components_NavBar_NavBar__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)(_Components_Chat_Chat__WEBPACK_IMPORTED_MODULE_11__["default"], {
+      addPerson: addPerson
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)(_Components_Notifications_Notifications__WEBPACK_IMPORTED_MODULE_12__["default"], {
+      addNotification: addNotification
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)(_Components_NavBar_NavBar__WEBPACK_IMPORTED_MODULE_3__["default"], {
       handleHover: handleHover,
       hoverState: hoverState,
       handleBrowse: handleBrowse,
@@ -7523,11 +8044,11 @@ function Browse(props) {
       handleSearchSubmit: handleSearchSubmit,
       handleOpenCart: handleOpenCart,
       logout: logout
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)(_AnimatedPage_AnimatedPage__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)(_AnimatedPage_AnimatedPage__WEBPACK_IMPORTED_MODULE_4__["default"], {
       exitBeforeEnter: true,
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsxs)("div", {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsxs)("div", {
         className: _Browse_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].browseContent,
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)(_Components_Filters_Filters__WEBPACK_IMPORTED_MODULE_7__["default"], {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)(_Components_Filters_Filters__WEBPACK_IMPORTED_MODULE_7__["default"], {
           hoverState: hoverState,
           currentGame: currentGame,
           setCurrentGame: setCurrentGame,
@@ -7550,54 +8071,54 @@ function Browse(props) {
           currentFilter: currentFilter,
           currentItemFilter: currentItemFilter,
           handleSelectItemFilter: handleSelectItemFilter
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsxs)("div", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsxs)("div", {
           className: _Browse_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].list,
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("h1", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)("h1", {
             children: "Trending and interesting"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("p", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)("p", {
             children: "Based on player counts and ratings"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsxs)("div", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsxs)("div", {
             className: _Browse_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].applied,
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsxs)("div", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsxs)("div", {
               className: _Browse_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].filterList,
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsxs)("button", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsxs)("button", {
                 className: _Browse_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].filterButton,
                 "aria-label": "Current Filter",
-                children: ["Filter by:", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("span", {
-                  children: browseType == "/games" ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.Fragment, {
+                children: ["Filter by:", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)("span", {
+                  children: browseType == "/games" ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.Fragment, {
                     children: [currentFilter == "none" ? "" : currentFilter.map(function (filter, index) {
                       return (index != 0 ? ", " : "") + filter;
                     }), activeGenre != {} ? activeGenre.name : "", currentFilter == "none" && activeGenre == {} ? "none" : ""]
                   }) : browseType == "/categories" ? currentGame.name : browseType == "/items" ? currentItemFilter : ""
                 })]
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("button", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)("button", {
                 className: "".concat(_Browse_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].filterButton, " ").concat(_Browse_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].clearButton),
                 onClick: browseType == "/items" ? clearItemFilter : clearFilter,
                 "aria-label": "Clear Filters",
                 children: "Clear Filtev"
               })]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsxs)("div", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsxs)("div", {
               className: _Browse_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].displayStyle,
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("p", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)("p", {
                 children: "Display options:"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("button", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)("button", {
                 className: _Browse_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].displayBtn,
                 onClick: handleLayoutSwitch,
                 id: "grid",
                 "aria-label": "Display grids",
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("img", {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)("img", {
                   src: _assets_icons_grid_svg__WEBPACK_IMPORTED_MODULE_5__["default"],
                   className: _Browse_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].displayItem,
                   style: {
                     filter: grid ? 'invert(78%) brightness(10000%)' : 'brightness(10000%) saturate(100%) invert(78%) sepia(99%) saturate(1066%) hue-rotate(183deg) brightness(50%) contrast(100%)'
                   }
                 })
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("button", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)("button", {
                 className: _Browse_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].displayBtn,
                 onClick: handleLayoutSwitch,
                 id: "columns",
                 "aria-label": "Display columns",
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("img", {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)("img", {
                   src: _assets_icons_columns_svg__WEBPACK_IMPORTED_MODULE_6__["default"],
                   className: _Browse_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].displayItem,
                   style: {
@@ -7606,7 +8127,7 @@ function Browse(props) {
                 })
               })]
             })]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)(_Components_Grid_Grid__WEBPACK_IMPORTED_MODULE_8__["default"], {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)(_Components_Grid_Grid__WEBPACK_IMPORTED_MODULE_8__["default"], {
             shownGames: shownGames,
             reviewDisplay: reviewDisplay,
             handleLike: handleLike,
@@ -7626,17 +8147,17 @@ function Browse(props) {
           })]
         })]
       })
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)(_Components_Footer_Footer__WEBPACK_IMPORTED_MODULE_11__["default"], {})]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)(_Components_Footer_Footer__WEBPACK_IMPORTED_MODULE_13__["default"], {})]
   });
 }
 if (document.getElementById('games')) {
-  react_dom__WEBPACK_IMPORTED_MODULE_0__.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)(Browse, {}), document.getElementById('games'));
+  react_dom__WEBPACK_IMPORTED_MODULE_0__.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)(Browse, {}), document.getElementById('games'));
 }
 if (document.getElementById('categories')) {
-  react_dom__WEBPACK_IMPORTED_MODULE_0__.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)(Browse, {}), document.getElementById('categories'));
+  react_dom__WEBPACK_IMPORTED_MODULE_0__.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)(Browse, {}), document.getElementById('categories'));
 }
 if (document.getElementById('items')) {
-  react_dom__WEBPACK_IMPORTED_MODULE_0__.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)(Browse, {}), document.getElementById('items'));
+  react_dom__WEBPACK_IMPORTED_MODULE_0__.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)(Browse, {}), document.getElementById('items'));
 }
 
 /***/ }),
@@ -7660,11 +8181,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utils_games__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../utils/games */ "./resources/js/utils/games.js");
 /* harmony import */ var _AnimatedPage_AnimatedText__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../AnimatedPage/AnimatedText */ "./resources/js/Containers/AnimatedPage/AnimatedText.js");
 /* harmony import */ var _Components_AddedToCart_AddedToCartBig__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../Components/AddedToCart/AddedToCartBig */ "./resources/js/Components/AddedToCart/AddedToCartBig.js");
-/* harmony import */ var _Components_Cart_Cart__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../Components/Cart/Cart */ "./resources/js/Components/Cart/Cart.js");
-/* harmony import */ var _utils_templateGame__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../utils/templateGame */ "./resources/js/utils/templateGame.js");
-/* harmony import */ var _Components_Grid_Grid__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../Components/Grid/Grid */ "./resources/js/Components/Grid/Grid.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _Components_Chat_Chat__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../Components/Chat/Chat */ "./resources/js/Components/Chat/Chat.js");
+/* harmony import */ var _Components_Cart_Cart__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../Components/Cart/Cart */ "./resources/js/Components/Cart/Cart.js");
+/* harmony import */ var _utils_templateGame__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../utils/templateGame */ "./resources/js/utils/templateGame.js");
+/* harmony import */ var _Components_Grid_Grid__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../Components/Grid/Grid */ "./resources/js/Components/Grid/Grid.js");
+/* harmony import */ var _Components_Notifications_Notifications__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../../Components/Notifications/Notifications */ "./resources/js/Components/Notifications/Notifications.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 var _this = undefined;
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -7676,6 +8199,8 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
 
 
 
@@ -7740,10 +8265,18 @@ var Checkout = function Checkout(props) {
     _useState22 = _slicedToArray(_useState21, 2),
     searching = _useState22[0],
     setSearching = _useState22[1];
-  var _useState23 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(0),
+  var _useState23 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(),
     _useState24 = _slicedToArray(_useState23, 2),
-    totalPrice = _useState24[0],
-    setTotalPrice = _useState24[1];
+    addPerson = _useState24[0],
+    setAddPerson = _useState24[1];
+  var _useState25 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(0),
+    _useState26 = _slicedToArray(_useState25, 2),
+    totalPrice = _useState26[0],
+    setTotalPrice = _useState26[1];
+  var _useState27 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(),
+    _useState28 = _slicedToArray(_useState27, 2),
+    addNotification = _useState28[0],
+    setAddNotification = _useState28[1];
   var firstUpdate = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)(true);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useLayoutEffect)(function () {
     if (firstUpdate.current) {
@@ -7752,7 +8285,7 @@ var Checkout = function Checkout(props) {
     }
   });
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
-    var api = axios__WEBPACK_IMPORTED_MODULE_14__["default"].create({
+    var api = axios__WEBPACK_IMPORTED_MODULE_16__["default"].create({
       baseURL: '/api'
     });
     api.get('/user/me').then(function (response) {
@@ -7810,7 +8343,7 @@ var Checkout = function Checkout(props) {
     }
   };
   var logout = function logout() {
-    var api = axios__WEBPACK_IMPORTED_MODULE_14__["default"].create({
+    var api = axios__WEBPACK_IMPORTED_MODULE_16__["default"].create({
       baseURL: '/api'
     });
     api.post('/logout').then(function (response) {
@@ -7824,7 +8357,7 @@ var Checkout = function Checkout(props) {
   var handleRemoveFromCart = function handleRemoveFromCart(id, key, e) {
     e.stopPropagation();
     var apiUrl = '/api/user/cart/remove/' + id; // Replace with your actual API endpoint
-    axios__WEBPACK_IMPORTED_MODULE_14__["default"].get(apiUrl).then(function (response) {
+    axios__WEBPACK_IMPORTED_MODULE_16__["default"].get(apiUrl).then(function (response) {
       var c = cart.filter(function (cart_item) {
         return cart_item.id != id;
       });
@@ -7840,7 +8373,7 @@ var Checkout = function Checkout(props) {
     });
   };
   var orderCart = function orderCart() {
-    var api = axios__WEBPACK_IMPORTED_MODULE_14__["default"].create({
+    var api = axios__WEBPACK_IMPORTED_MODULE_16__["default"].create({
       baseURL: '/api'
     });
     api.post('/user/cart/order').then(function (response) {
@@ -7853,14 +8386,14 @@ var Checkout = function Checkout(props) {
       console.error('Error fetching data:', error);
     });
   };
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.Fragment, {
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("section", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.Fragment, {
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsxs)("section", {
       className: _Checkout_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].Checkout,
       style: {
         maxHeight: cartDisplayed ? "100vh" : "1000vh",
         minHeight: "100vh"
       },
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_Components_NavBar_NavBar__WEBPACK_IMPORTED_MODULE_5__["default"], {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)(_Components_NavBar_NavBar__WEBPACK_IMPORTED_MODULE_5__["default"], {
         handleBrowse: handleBrowse.bind(_this, "games"),
         user: user,
         handleHome: handleHome,
@@ -7874,49 +8407,53 @@ var Checkout = function Checkout(props) {
         handleOpenCart: function handleOpenCart() {},
         logout: logout,
         showCart: false
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)(_Components_Chat_Chat__WEBPACK_IMPORTED_MODULE_10__["default"], {
+        addPerson: addPerson
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)(_Components_Notifications_Notifications__WEBPACK_IMPORTED_MODULE_14__["default"], {
+        addNotification: addNotification
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsxs)("div", {
         className: _Checkout_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].checkoutContent,
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsxs)("div", {
           className: _Checkout_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].left,
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("div", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("div", {
             className: _Checkout_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].cart,
             children: cart.map(function (item, key) {
               var _ref, _item$images$, _item$seller, _item$seller2;
-              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsxs)("div", {
                 className: _Checkout_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].cartItem,
                 onClick: function onClick() {
                   location.href = "game?id=" + item.id;
                 },
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("div", {
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("div", {
                   className: _Checkout_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].left,
-                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("div", {
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("div", {
                     className: _Checkout_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].img,
-                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("img", {
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("img", {
                       src: (_ref = "../../../assets/items/" + (item === null || item === void 0 || (_item$images$ = item.images[0]) === null || _item$images$ === void 0 ? void 0 : _item$images$.image)) !== null && _ref !== void 0 ? _ref : "d.jpg"
                     })
                   })
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsxs)("div", {
                   className: _Checkout_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].right,
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("div", {
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("div", {
                     className: _Checkout_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].title,
                     children: item.name
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsxs)("div", {
                     className: _Checkout_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].price,
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("span", {
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("span", {
                       className: _Checkout_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].dollar,
                       children: "$"
                     }), item.price]
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsxs)("div", {
                     className: _Checkout_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].trader,
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("span", {
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("span", {
                       className: _Checkout_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].label,
                       children: "By "
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("a", {
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("a", {
                       href: "profile?id=" + (item === null || item === void 0 || (_item$seller = item.seller) === null || _item$seller === void 0 ? void 0 : _item$seller.id),
                       className: _Checkout_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].l,
                       children: item === null || item === void 0 || (_item$seller2 = item.seller) === null || _item$seller2 === void 0 ? void 0 : _item$seller2.name
                     })]
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("button", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("button", {
                     className: _Checkout_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].rmbtn,
                     onClick: handleRemoveFromCart.bind(_this, item.id, key),
                     children: "remove"
@@ -7924,39 +8461,39 @@ var Checkout = function Checkout(props) {
                 })]
               }, key);
             })
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsxs)("div", {
             className: _Checkout_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].total,
-            children: ["Total (", cartAmount, " item", cartAmount > 1 ? 's' : null, "): ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("span", {
+            children: ["Total (", cartAmount, " item", cartAmount > 1 ? 's' : null, "): ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("span", {
               className: _Checkout_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].dollar,
               children: "$"
             }), totalPrice]
           })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsxs)("div", {
           className: _Checkout_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].right,
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsxs)("div", {
             className: _Checkout_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].r,
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("span", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("span", {
               className: _Checkout_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].label,
               children: "Total price is "
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("span", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("span", {
               className: _Checkout_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].dollar,
               children: "$"
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("span", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("span", {
               className: _Checkout_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].price,
               children: totalPrice
             })]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("button", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("button", {
             className: _Checkout_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].pay,
             onClick: orderCart,
             children: "Pay with PayPal"
           })]
         })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_Components_Footer_Footer__WEBPACK_IMPORTED_MODULE_4__["default"], {})]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)(_Components_Footer_Footer__WEBPACK_IMPORTED_MODULE_4__["default"], {})]
     })
   });
 };
 if (document.getElementById('checkout')) {
-  react_dom__WEBPACK_IMPORTED_MODULE_2__.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(Checkout, {}), document.getElementById('checkout'));
+  react_dom__WEBPACK_IMPORTED_MODULE_2__.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)(Checkout, {}), document.getElementById('checkout'));
 }
 
 /***/ }),
@@ -7976,17 +8513,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
 /* harmony import */ var _AnimatedPage_AnimatedGamePage__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../AnimatedPage/AnimatedGamePage */ "./resources/js/Containers/AnimatedPage/AnimatedGamePage.js");
 /* harmony import */ var _Components_NavBar_NavBar__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../Components/NavBar/NavBar */ "./resources/js/Components/NavBar/NavBar.js");
 /* harmony import */ var _Components_Slider_Slider__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../Components/Slider/Slider */ "./resources/js/Components/Slider/Slider.js");
 /* harmony import */ var _utils_games__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../utils/games */ "./resources/js/utils/games.js");
 /* harmony import */ var _AnimatedPage_AnimatedText__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../AnimatedPage/AnimatedText */ "./resources/js/Containers/AnimatedPage/AnimatedText.js");
 /* harmony import */ var _Components_AddedToCart_AddedToCartBig__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../Components/AddedToCart/AddedToCartBig */ "./resources/js/Components/AddedToCart/AddedToCartBig.js");
-/* harmony import */ var _Components_Cart_Cart__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../Components/Cart/Cart */ "./resources/js/Components/Cart/Cart.js");
-/* harmony import */ var _utils_templateGame__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../utils/templateGame */ "./resources/js/utils/templateGame.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _Components_Chat_Chat__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../Components/Chat/Chat */ "./resources/js/Components/Chat/Chat.js");
+/* harmony import */ var _Components_Cart_Cart__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../Components/Cart/Cart */ "./resources/js/Components/Cart/Cart.js");
+/* harmony import */ var _utils_templateGame__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../utils/templateGame */ "./resources/js/utils/templateGame.js");
+/* harmony import */ var _Components_Notifications_Notifications__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../Components/Notifications/Notifications */ "./resources/js/Components/Notifications/Notifications.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 var _this = undefined;
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -7998,6 +8537,8 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
 
 
 
@@ -8113,11 +8654,19 @@ var GamePage = function GamePage(props) {
     _useState48 = _slicedToArray(_useState47, 2),
     isCart = _useState48[0],
     setIsCart = _useState48[1];
-  var _useState49 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)({}),
+  var _useState49 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(),
     _useState50 = _slicedToArray(_useState49, 2),
-    isFav = _useState50[0],
-    setIsFav = _useState50[1];
-  var _useState51 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([{
+    addPerson = _useState50[0],
+    setAddPerson = _useState50[1];
+  var _useState51 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)({}),
+    _useState52 = _slicedToArray(_useState51, 2),
+    isFav = _useState52[0],
+    setIsFav = _useState52[1];
+  var _useState53 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(),
+    _useState54 = _slicedToArray(_useState53, 2),
+    addNotification = _useState54[0],
+    setAddNotification = _useState54[1];
+  var _useState55 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([{
       hovered: false,
       selected: false
     }, {
@@ -8193,11 +8742,11 @@ var GamePage = function GamePage(props) {
       hovered: false,
       selected: false
     }]),
-    _useState52 = _slicedToArray(_useState51, 2),
-    hoverState = _useState52[0],
-    setHoverState = _useState52[1];
+    _useState56 = _slicedToArray(_useState55, 2),
+    hoverState = _useState56[0],
+    setHoverState = _useState56[1];
   var logout = function logout() {
-    var api = axios__WEBPACK_IMPORTED_MODULE_12__["default"].create({
+    var api = axios__WEBPACK_IMPORTED_MODULE_14__["default"].create({
       baseURL: '/api'
     });
     api.post('/logout').then(function (response) {
@@ -8209,7 +8758,7 @@ var GamePage = function GamePage(props) {
     });
   };
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
-    var api = axios__WEBPACK_IMPORTED_MODULE_12__["default"].create({
+    var api = axios__WEBPACK_IMPORTED_MODULE_14__["default"].create({
       baseURL: '/api'
     });
     api.get('/user/me').then(function (response) {
@@ -8231,7 +8780,7 @@ var GamePage = function GamePage(props) {
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
     var id = window.location.search.slice(window.location.search.indexOf('id=') + 3);
     var apiUrl = '/api/items/get/' + id; // Replace with your actual API endpoint
-    axios__WEBPACK_IMPORTED_MODULE_12__["default"].get(apiUrl).then(function (response) {
+    axios__WEBPACK_IMPORTED_MODULE_14__["default"].get(apiUrl).then(function (response) {
       setSelectedGame(response.data.item);
       setIsCart(response.data.isCart);
       setIsFav(response.data.isFav);
@@ -8241,7 +8790,7 @@ var GamePage = function GamePage(props) {
   }, []);
   var handleLike = function handleLike(id, e) {
     var apiUrl = '/api/user/wishlist/toggle/' + id; // Replace with your actual API endpoint
-    axios__WEBPACK_IMPORTED_MODULE_12__["default"].post(apiUrl).then(function (response) {
+    axios__WEBPACK_IMPORTED_MODULE_14__["default"].post(apiUrl).then(function (response) {
       setIsFav(response.data.fav);
     })["catch"](function (error) {
       console.error('Error fetching data:', error);
@@ -8255,7 +8804,7 @@ var GamePage = function GamePage(props) {
   var handleAddToCart = function handleAddToCart(id, e) {
     e.stopPropagation();
     var apiUrl = '/api/user/cart/add/' + id; // Replace with your actual API endpoint
-    axios__WEBPACK_IMPORTED_MODULE_12__["default"].get(apiUrl).then(function (response) {
+    axios__WEBPACK_IMPORTED_MODULE_14__["default"].get(apiUrl).then(function (response) {
       setCart(response.data.cart);
       setCartAmount(response.data.cart.length);
       setIsCart(true);
@@ -8265,7 +8814,7 @@ var GamePage = function GamePage(props) {
   };
   var clearCart = function clearCart() {
     var apiUrl = '/api/user/cart/clear/'; // Replace with your actual API endpoint
-    axios__WEBPACK_IMPORTED_MODULE_12__["default"].get(apiUrl).then(function (response) {
+    axios__WEBPACK_IMPORTED_MODULE_14__["default"].get(apiUrl).then(function (response) {
       if (response.data.msg == "done") {
         setCart([]);
         setCartAmount(0);
@@ -8283,7 +8832,7 @@ var GamePage = function GamePage(props) {
   var handleRemoveFromCart = function handleRemoveFromCart(id, key, e) {
     e.stopPropagation();
     var apiUrl = '/api/user/cart/remove/' + id; // Replace with your actual API endpoint
-    axios__WEBPACK_IMPORTED_MODULE_12__["default"].get(apiUrl).then(function (response) {
+    axios__WEBPACK_IMPORTED_MODULE_14__["default"].get(apiUrl).then(function (response) {
       setCart(response.data.cart);
       S;
       var c = cart.filter(function (cart_item) {});
@@ -8311,10 +8860,10 @@ var GamePage = function GamePage(props) {
       document.body.style.overflow = "scroll !important";
     }
   }, [cartDisplayed]);
-  var _useState53 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
-    _useState54 = _slicedToArray(_useState53, 2),
-    browsing = _useState54[0],
-    setBrowsing = _useState54[1];
+  var _useState57 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+    _useState58 = _slicedToArray(_useState57, 2),
+    browsing = _useState58[0],
+    setBrowsing = _useState58[1];
   var handleHover = function handleHover(e) {
     var newHoverState = hoverState[e.target.id];
     newHoverState.hovered = !newHoverState.hovered;
@@ -8379,14 +8928,14 @@ var GamePage = function GamePage(props) {
       }
     }
   };
-  var _useState55 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
-    _useState56 = _slicedToArray(_useState55, 2),
-    landingPage = _useState56[0],
-    setLandingPage = _useState56[1];
-  var _useState57 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(true),
-    _useState58 = _slicedToArray(_useState57, 2),
-    grid = _useState58[0],
-    setGrid = _useState58[1];
+  var _useState59 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+    _useState60 = _slicedToArray(_useState59, 2),
+    landingPage = _useState60[0],
+    setLandingPage = _useState60[1];
+  var _useState61 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(true),
+    _useState62 = _slicedToArray(_useState61, 2),
+    grid = _useState62[0],
+    setGrid = _useState62[1];
   var handleLayoutSwitch = function handleLayoutSwitch(e) {
     if (e.target.id == "grid") {
       setGrid(true);
@@ -8420,12 +8969,12 @@ var GamePage = function GamePage(props) {
       setShownGames(shownCategories);
     }
   }, []);
-  var _useParams = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_13__.useParams)(),
+  var _useParams = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_15__.useParams)(),
     gameId = _useParams.gameId;
-  var _useState59 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(0),
-    _useState60 = _slicedToArray(_useState59, 2),
-    carouselState = _useState60[0],
-    setCarouselState = _useState60[1];
+  var _useState63 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(0),
+    _useState64 = _slicedToArray(_useState63, 2),
+    carouselState = _useState64[0],
+    setCarouselState = _useState64[1];
   var incrementCarousel = function incrementCarousel(e) {
     if (carouselState === 3) {
       setCarouselState(0);
@@ -8456,10 +9005,10 @@ var GamePage = function GamePage(props) {
       setTextExtended(!textExtended);
     }
   };
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.Fragment, {
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.Fragment, {
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
       className: _GamePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].gamepage,
-      children: [cartDisplayed ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_Components_Cart_Cart__WEBPACK_IMPORTED_MODULE_9__["default"], {
+      children: [cartDisplayed ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_Components_Cart_Cart__WEBPACK_IMPORTED_MODULE_10__["default"], {
         cartDisplayed: cartDisplayed,
         handleOpenCart: handleOpenCart,
         handleCloseCart: handleCloseCart,
@@ -8470,7 +9019,11 @@ var GamePage = function GamePage(props) {
         clearCart: clearCart,
         handleRemoveFromCart: handleRemoveFromCart,
         openGamePage: openGamePage
-      }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_Components_NavBar_NavBar__WEBPACK_IMPORTED_MODULE_4__["default"], {
+      }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_Components_Chat_Chat__WEBPACK_IMPORTED_MODULE_9__["default"], {
+        addPerson: addPerson
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_Components_Notifications_Notifications__WEBPACK_IMPORTED_MODULE_12__["default"], {
+        addNotification: addNotification
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_Components_NavBar_NavBar__WEBPACK_IMPORTED_MODULE_4__["default"], {
         handleBrowse: handleBrowse.bind(_this, "games"),
         handleHover: handleHover,
         user: user,
@@ -8484,11 +9037,11 @@ var GamePage = function GamePage(props) {
         handleOpenCart: handleOpenCart,
         handleCloseCart: handleCloseCart,
         logout: logout
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_AnimatedPage_AnimatedGamePage__WEBPACK_IMPORTED_MODULE_3__["default"], {
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_AnimatedPage_AnimatedGamePage__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
           className: _GamePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].gamepageContent,
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("header", {
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("button", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("header", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("button", {
               style: {
                 color: hoverState[19].hovered ? "#92f" : "#cccccc"
               },
@@ -8498,7 +9051,7 @@ var GamePage = function GamePage(props) {
               onClick: handleBrowse,
               id: "19",
               "aria-label": "Back",
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("svg", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("svg", {
                 version: "1.1",
                 id: "Capa_1",
                 xmlns: "http://www.w3.org/2000/svg",
@@ -8510,18 +9063,18 @@ var GamePage = function GamePage(props) {
                 height: "493.578px",
                 viewBox: "0 0 493.578 493.578",
                 xmlSpace: "preserve",
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {
-                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("path", {
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("path", {
                     d: "M487.267,225.981c0-17.365-13.999-31.518-31.518-31.518H194.501L305.35,83.615c12.24-12.24,12.24-32.207,0-44.676 L275.592,9.18c-12.24-12.24-32.207-12.24-44.676,0L15.568,224.527c-6.12,6.12-9.256,14.153-9.256,22.262 c0,8.032,3.136,16.142,9.256,22.262l215.348,215.348c12.24,12.239,32.207,12.239,44.676,0l29.758-29.759 c12.24-12.24,12.24-32.207,0-44.676L194.501,299.498h261.094c17.366,0,31.519-14.153,31.519-31.519L487.267,225.981z"
                   })
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {})]
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {})]
               }), "Store"]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("h1", {
-              children: selectedGame ? selectedGame.name : _utils_templateGame__WEBPACK_IMPORTED_MODULE_10__["default"].name
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("h1", {
+              children: selectedGame ? selectedGame.name : _utils_templateGame__WEBPACK_IMPORTED_MODULE_11__["default"].name
             })]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("section", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("section", {
             className: _GamePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].game,
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_Components_Slider_Slider__WEBPACK_IMPORTED_MODULE_5__["default"], {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_Components_Slider_Slider__WEBPACK_IMPORTED_MODULE_5__["default"], {
               selectedGame: selectedGame,
               setSelectedGame: setSelectedGame,
               allGames: allGames,
@@ -8531,46 +9084,46 @@ var GamePage = function GamePage(props) {
               setCarouselState: setCarouselState,
               hoverState: hoverState,
               handleHover: handleHover
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
               className: _GamePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].gameInfo,
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
                 className: _GamePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].about,
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
                   className: _GamePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].aboutTop,
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("h2", {
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("h2", {
                     children: "About"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("p", {
-                    children: selectedGame ? selectedGame.description : _utils_templateGame__WEBPACK_IMPORTED_MODULE_10__["default"].desc
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("p", {
+                    children: selectedGame ? selectedGame.description : _utils_templateGame__WEBPACK_IMPORTED_MODULE_11__["default"].desc
                   })]
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
                   className: extended ? "".concat(_GamePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].conditionalOpen, " ").concat(_GamePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].aboutBottom) : "".concat(_GamePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].conditionalClose, " ").concat(_GamePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].aboutBottomClosed),
                   id: "about",
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_AnimatedPage_AnimatedText__WEBPACK_IMPORTED_MODULE_7__["default"], {
-                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_AnimatedPage_AnimatedText__WEBPACK_IMPORTED_MODULE_7__["default"], {
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
                       className: textExtended ? _GamePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].open : _GamePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].closed,
-                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("h4", {
-                        children: ["Game: ", selectedGame ? selectedGame.subgame.game.name : _utils_templateGame__WEBPACK_IMPORTED_MODULE_10__["default"].release]
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("h4", {
-                        children: ["Category: ", selectedGame ? selectedGame.subgame.name : _utils_templateGame__WEBPACK_IMPORTED_MODULE_10__["default"].platforms]
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("h4", {
-                        children: ["Sells in: ", selectedGame ? selectedGame.sellTime + " days" : _utils_templateGame__WEBPACK_IMPORTED_MODULE_10__["default"].genre]
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("h4", {
-                        children: ["Seller: ", selectedGame ? selectedGame.seller.name : _utils_templateGame__WEBPACK_IMPORTED_MODULE_10__["default"].developers]
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("h4", {
+                        children: ["Game: ", selectedGame ? selectedGame.subgame.game.name : _utils_templateGame__WEBPACK_IMPORTED_MODULE_11__["default"].release]
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("h4", {
+                        children: ["Category: ", selectedGame ? selectedGame.subgame.name : _utils_templateGame__WEBPACK_IMPORTED_MODULE_11__["default"].platforms]
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("h4", {
+                        children: ["Sells in: ", selectedGame ? selectedGame.sellTime + " days" : _utils_templateGame__WEBPACK_IMPORTED_MODULE_11__["default"].genre]
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("h4", {
+                        children: ["Seller: ", selectedGame ? selectedGame.seller.name : _utils_templateGame__WEBPACK_IMPORTED_MODULE_11__["default"].developers]
                       })]
                     })
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("button", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("button", {
                     id: "20",
                     onClick: handleExtend,
                     onMouseEnter: handleHover,
                     onMouseLeave: handleHover,
                     className: hoverState[20].hovered ? _GamePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].buttonHovered : _GamePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].buttonNotHovered,
                     "aria-label": "Extend",
-                    children: [extended ? "Hide" : "More", extended ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("svg", {
+                    children: [extended ? "Hide" : "More", extended ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("svg", {
                       width: "24px",
                       height: "24px",
                       viewBox: "0 0 24 24",
                       xmlns: "http://www.w3.org/2000/svg",
-                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("path", {
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("path", {
                         className: _GamePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].up,
                         style: {
                           fill: hoverState[20].hovered ? "#fff" : "#cccccc"
@@ -8579,12 +9132,12 @@ var GamePage = function GamePage(props) {
                         clipRule: "evenodd",
                         d: "M5.46967 14.5303C5.17678 14.2374 5.17678 13.7626 5.46967 13.4697L11.4697 7.46967C11.7626 7.17678 12.2374 7.17678 12.5303 7.46967L18.5303 13.4697C18.8232 13.7626 18.8232 14.2374 18.5303 14.5303C18.2374 14.8232 17.7626 14.8232 17.4697 14.5303L12 9.06066L6.53033 14.5303C6.23744 14.8232 5.76256 14.8232 5.46967 14.5303Z"
                       })
-                    }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("svg", {
+                    }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("svg", {
                       width: "24px",
                       height: "24px",
                       viewBox: "0 0 24 24",
                       xmlns: "http://www.w3.org/2000/svg",
-                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("path", {
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("path", {
                         className: _GamePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].down,
                         style: {
                           fill: hoverState[20].hovered ? "#fff" : "#cccccc"
@@ -8596,17 +9149,17 @@ var GamePage = function GamePage(props) {
                     })]
                   })]
                 })]
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
                 className: _GamePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].addToCart,
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
                   className: _GamePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].infos,
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("h3", {
-                    children: ["$", selectedGame ? selectedGame.price : _utils_templateGame__WEBPACK_IMPORTED_MODULE_10__["default"].price]
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("button", {
-                    id: selectedGame ? selectedGame.id : _utils_templateGame__WEBPACK_IMPORTED_MODULE_10__["default"].id,
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("h3", {
+                    children: ["$", selectedGame ? selectedGame.price : _utils_templateGame__WEBPACK_IMPORTED_MODULE_11__["default"].price]
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("button", {
+                    id: selectedGame ? selectedGame.id : _utils_templateGame__WEBPACK_IMPORTED_MODULE_11__["default"].id,
                     onClick: handleLike.bind(_this, selectedGame ? selectedGame.id : 0),
                     "aria-label": "Like",
-                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("svg", {
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("svg", {
                       className: selectedGame ? isFav ? _GamePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].liked : _GamePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].like : _GamePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].like,
                       version: "1.1",
                       id: "Capa_1",
@@ -8617,12 +9170,12 @@ var GamePage = function GamePage(props) {
                       y: "0px",
                       viewBox: "0 0 230 230",
                       xmlSpace: "preserve",
-                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("path", {
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("path", {
                         d: "M213.588,120.982L115,213.445l-98.588-92.463C-6.537,96.466-5.26,57.99,19.248,35.047l2.227-2.083 c24.51-22.942,62.984-21.674,85.934,2.842L115,43.709l7.592-7.903c22.949-24.516,61.424-25.784,85.936-2.842l2.227,2.083 C235.26,57.99,236.537,96.466,213.588,120.982z"
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {})]
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {})]
                     })
                   })]
-                }), selectedGame ? isCart ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_Components_AddedToCart_AddedToCartBig__WEBPACK_IMPORTED_MODULE_8__["default"], {}) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("button", {
+                }), selectedGame ? isCart ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_Components_AddedToCart_AddedToCartBig__WEBPACK_IMPORTED_MODULE_8__["default"], {}) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("button", {
                   id: "21",
                   onMouseEnter: handleHover,
                   onMouseLeave: handleHover,
@@ -8632,7 +9185,7 @@ var GamePage = function GamePage(props) {
                   },
                   onClick: handleAddToCart.bind(_this, selectedGame.id),
                   "aria-label": "Add",
-                  children: ["Add to cart", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("svg", {
+                  children: ["Add to cart", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("svg", {
                     className: _GamePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].add,
                     style: {
                       fill: hoverState[21].hovered ? "#92f" : "#999999"
@@ -8646,13 +9199,13 @@ var GamePage = function GamePage(props) {
                     y: "0px",
                     viewBox: "0 0 60.364 60.364",
                     xmlSpace: "preserve",
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {
-                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("path", {
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("path", {
                         d: "M54.454,23.18l-18.609-0.002L35.844,5.91C35.845,2.646,33.198,0,29.934,0c-3.263,0-5.909,2.646-5.909,5.91v17.269 L5.91,23.178C2.646,23.179,0,25.825,0,29.088c0.002,3.264,2.646,5.909,5.91,5.909h18.115v19.457c0,3.267,2.646,5.91,5.91,5.91 c3.264,0,5.909-2.646,5.91-5.908V34.997h18.611c3.262,0,5.908-2.645,5.908-5.907C60.367,25.824,57.718,23.178,54.454,23.18z"
                       })
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {})]
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {})]
                   })]
-                }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("button", {
+                }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("button", {
                   id: "21",
                   onMouseEnter: handleHover,
                   onMouseLeave: handleHover,
@@ -8661,7 +9214,7 @@ var GamePage = function GamePage(props) {
                   },
                   onClick: handleAddToCart,
                   "aria-label": "Add",
-                  children: ["Not available", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("svg", {
+                  children: ["Not available", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("svg", {
                     className: _GamePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].add,
                     style: {
                       fill: hoverState[21].hovered ? "#D2042D" : "#999999"
@@ -8675,11 +9228,11 @@ var GamePage = function GamePage(props) {
                     y: "0px",
                     viewBox: "0 0 60.364 60.364",
                     xmlSpace: "preserve",
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {
-                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("path", {
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("path", {
                         d: "M54.454,23.18l-18.609-0.002L35.844,5.91C35.845,2.646,33.198,0,29.934,0c-3.263,0-5.909,2.646-5.909,5.91v17.269 L5.91,23.178C2.646,23.179,0,25.825,0,29.088c0.002,3.264,2.646,5.909,5.91,5.909h18.115v19.457c0,3.267,2.646,5.91,5.91,5.91 c3.264,0,5.909-2.646,5.91-5.908V34.997h18.611c3.262,0,5.908-2.645,5.908-5.907C60.367,25.824,57.718,23.178,54.454,23.18z"
                       })
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("g", {})]
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("g", {})]
                   })]
                 })]
               })]
@@ -8692,7 +9245,7 @@ var GamePage = function GamePage(props) {
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (GamePage);
 if (document.getElementById('game')) {
-  react_dom__WEBPACK_IMPORTED_MODULE_2__.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(GamePage, {}), document.getElementById('game'));
+  react_dom__WEBPACK_IMPORTED_MODULE_2__.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(GamePage, {}), document.getElementById('game'));
 }
 
 /***/ }),
@@ -8725,13 +9278,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _assets_icons_performance_svg__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../../assets/icons/performance.svg */ "./resources/assets/icons/performance.svg");
 /* harmony import */ var _assets_icons_sources_svg__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../../../assets/icons/sources.svg */ "./resources/assets/icons/sources.svg");
 /* harmony import */ var _assets_icons_pyke_mp4__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../../../assets/icons/pyke.mp4 */ "./resources/assets/icons/pyke.mp4");
-/* harmony import */ var framer_motion__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! framer-motion */ "./node_modules/framer-motion/dist/es/render/dom/motion.mjs");
-/* harmony import */ var _Components_Cart_Cart__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../../Components/Cart/Cart */ "./resources/js/Components/Cart/Cart.js");
-/* harmony import */ var _AnimatedPage_AnimatedScroll__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../AnimatedPage/AnimatedScroll */ "./resources/js/Containers/AnimatedPage/AnimatedScroll.js");
-/* harmony import */ var _utils_games__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../../utils/games */ "./resources/js/utils/games.js");
-/* harmony import */ var _utils_templateGame__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../../utils/templateGame */ "./resources/js/utils/templateGame.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var framer_motion__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! framer-motion */ "./node_modules/framer-motion/dist/es/render/dom/motion.mjs");
+/* harmony import */ var _Components_Chat_Chat__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../../Components/Chat/Chat */ "./resources/js/Components/Chat/Chat.js");
+/* harmony import */ var _Components_Cart_Cart__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../../Components/Cart/Cart */ "./resources/js/Components/Cart/Cart.js");
+/* harmony import */ var _AnimatedPage_AnimatedScroll__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../AnimatedPage/AnimatedScroll */ "./resources/js/Containers/AnimatedPage/AnimatedScroll.js");
+/* harmony import */ var _utils_games__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../../utils/games */ "./resources/js/utils/games.js");
+/* harmony import */ var _utils_templateGame__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ../../utils/templateGame */ "./resources/js/utils/templateGame.js");
+/* harmony import */ var _Components_Notifications_Notifications__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ../../Components/Notifications/Notifications */ "./resources/js/Components/Notifications/Notifications.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
@@ -8766,12 +9321,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
+
 function Home(props) {
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)("none"),
     _useState2 = _slicedToArray(_useState, 2),
     currentFilter = _useState2[0],
     setCurrentFilter = _useState2[1];
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(_utils_games__WEBPACK_IMPORTED_MODULE_18__["default"]),
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(_utils_games__WEBPACK_IMPORTED_MODULE_19__["default"]),
     _useState4 = _slicedToArray(_useState3, 2),
     allGames = _useState4[0],
     setAllGames = _useState4[1];
@@ -8821,9 +9378,17 @@ function Home(props) {
     setTextExtended = _useState26[1];
   var _useState27 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(),
     _useState28 = _slicedToArray(_useState27, 2),
-    user = _useState28[0],
-    setUser = _useState28[1];
-  var _useState29 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([{
+    addPerson = _useState28[0],
+    setAddPerson = _useState28[1];
+  var _useState29 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(),
+    _useState30 = _slicedToArray(_useState29, 2),
+    user = _useState30[0],
+    setUser = _useState30[1];
+  var _useState31 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(),
+    _useState32 = _slicedToArray(_useState31, 2),
+    addNotification = _useState32[0],
+    setAddNotification = _useState32[1];
+  var _useState33 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([{
       hovered: false,
       selected: false
     }, {
@@ -8899,11 +9464,11 @@ function Home(props) {
       hovered: false,
       selected: false
     }]),
-    _useState30 = _slicedToArray(_useState29, 2),
-    hoverState = _useState30[0],
-    setHoverState = _useState30[1];
+    _useState34 = _slicedToArray(_useState33, 2),
+    hoverState = _useState34[0],
+    setHoverState = _useState34[1];
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    var api = axios__WEBPACK_IMPORTED_MODULE_21__["default"].create({
+    var api = axios__WEBPACK_IMPORTED_MODULE_23__["default"].create({
       baseURL: '/api'
     });
     api.get('/user/me').then(function (response) {
@@ -8923,7 +9488,7 @@ function Home(props) {
     });
   }, []);
   var logout = function logout() {
-    var api = axios__WEBPACK_IMPORTED_MODULE_21__["default"].create({
+    var api = axios__WEBPACK_IMPORTED_MODULE_23__["default"].create({
       baseURL: '/api'
     });
     api.post('/logout').then(function (response) {
@@ -8937,13 +9502,13 @@ function Home(props) {
   if (window.location.href != "/" && window.location.href != "/games" && selectedGame === false) {
     var surname = window.location.href.substring(29);
     console.log("test");
-    var currentGame = _utils_games__WEBPACK_IMPORTED_MODULE_18__["default"].find(function (game) {
+    var currentGame = _utils_games__WEBPACK_IMPORTED_MODULE_19__["default"].find(function (game) {
       return game.surname === surname;
     });
     if (currentGame != undefined) {
       setSelectedGame(currentGame);
     } else {
-      setSelectedGame(_utils_templateGame__WEBPACK_IMPORTED_MODULE_19__["default"]);
+      setSelectedGame(_utils_templateGame__WEBPACK_IMPORTED_MODULE_20__["default"]);
     }
   }
   var handleSearch = function handleSearch(e) {
@@ -8965,8 +9530,8 @@ function Home(props) {
     if (e.target.tagName === "BUTTON") {
       return;
     } else if (e.target.classList[0] != "AddToCart_addToCart__zbJPe") {
-      setSelectedGame(_utils_games__WEBPACK_IMPORTED_MODULE_18__["default"][e.target.parentNode.id]);
-      window.location.href = "/game/".concat(_utils_games__WEBPACK_IMPORTED_MODULE_18__["default"][e.target.parentNode.id].surname);
+      setSelectedGame(_utils_games__WEBPACK_IMPORTED_MODULE_19__["default"][e.target.parentNode.id]);
+      window.location.href = "/game/".concat(_utils_games__WEBPACK_IMPORTED_MODULE_19__["default"][e.target.parentNode.id].surname);
     }
   };
   var handleLike = function handleLike(e) {
@@ -9004,7 +9569,7 @@ function Home(props) {
   var handleAddToCart = function handleAddToCart(id, key, e) {
     e.stopPropagation();
     var apiUrl = '/api/user/cart/add/' + id; // Replace with your actual API endpoint
-    axios__WEBPACK_IMPORTED_MODULE_21__["default"].get(apiUrl).then(function (response) {
+    axios__WEBPACK_IMPORTED_MODULE_23__["default"].get(apiUrl).then(function (response) {
       setCart(response.data.cart);
       setCartAmount(response.data.cart.length);
       var s = shownGames;
@@ -9016,7 +9581,7 @@ function Home(props) {
   };
   var clearCart = function clearCart() {
     var apiUrl = '/api/user/cart/clear/'; // Replace with your actual API endpoint
-    axios__WEBPACK_IMPORTED_MODULE_21__["default"].get(apiUrl).then(function (response) {
+    axios__WEBPACK_IMPORTED_MODULE_23__["default"].get(apiUrl).then(function (response) {
       if (response.data.msg == "done") {
         setCart([]);
         setCartAmount(0);
@@ -9034,7 +9599,7 @@ function Home(props) {
   var handleRemoveFromCart = function handleRemoveFromCart(id, key, e) {
     e.stopPropagation();
     var apiUrl = '/api/user/cart/remove/' + id; // Replace with your actual API endpoint
-    axios__WEBPACK_IMPORTED_MODULE_21__["default"].get(apiUrl).then(function (response) {
+    axios__WEBPACK_IMPORTED_MODULE_23__["default"].get(apiUrl).then(function (response) {
       setCart(response.data.cart);
       var c = cart.filter(function (cart_item) {});
       setCartAmount(cartAmount - 1);
@@ -9074,14 +9639,14 @@ function Home(props) {
       document.body.style.overflow = "scroll !important";
     }
   }, [cartDisplayed]);
-  var _useState31 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
-    _useState32 = _slicedToArray(_useState31, 2),
-    browsing = _useState32[0],
-    setBrowsing = _useState32[1];
-  var _useState33 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(true),
-    _useState34 = _slicedToArray(_useState33, 2),
-    landingPage = _useState34[0],
-    setLandingPage = _useState34[1];
+  var _useState35 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState36 = _slicedToArray(_useState35, 2),
+    browsing = _useState36[0],
+    setBrowsing = _useState36[1];
+  var _useState37 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(true),
+    _useState38 = _slicedToArray(_useState37, 2),
+    landingPage = _useState38[0],
+    setLandingPage = _useState38[1];
   var handleHover = function handleHover(e) {
     var newHoverState = hoverState[e.target.id];
     newHoverState.hovered = !newHoverState.hovered;
@@ -9110,7 +9675,7 @@ function Home(props) {
   };
   var handlePlayDice = function handlePlayDice() {
     var randomIndex = Math.floor(Math.random() * 32);
-    var randomSurname = _utils_games__WEBPACK_IMPORTED_MODULE_18__["default"][randomIndex].surname;
+    var randomSurname = _utils_games__WEBPACK_IMPORTED_MODULE_19__["default"][randomIndex].surname;
     setOverlap(true);
     setTimeout(function () {
       setBrowsing(true);
@@ -9148,14 +9713,18 @@ function Home(props) {
       }
     }
   };
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsxs)("div", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsxs)("div", {
     className: _Home_module_css__WEBPACK_IMPORTED_MODULE_2__["default"].main,
-    children: [overlap ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsx)(framer_motion__WEBPACK_IMPORTED_MODULE_22__.motion.div, {
+    children: [overlap ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)(framer_motion__WEBPACK_IMPORTED_MODULE_24__.motion.div, {
       className: _Home_module_css__WEBPACK_IMPORTED_MODULE_2__["default"].overlap,
       variants: buttonVariants,
       initial: "hidden",
       animate: "visible"
-    }) : null, cartDisplayed ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsx)(_Components_Cart_Cart__WEBPACK_IMPORTED_MODULE_16__["default"], {
+    }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)(_Components_Chat_Chat__WEBPACK_IMPORTED_MODULE_16__["default"], {
+      addPerson: addPerson
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)(_Components_Notifications_Notifications__WEBPACK_IMPORTED_MODULE_21__["default"], {
+      addNotification: addNotification
+    }), cartDisplayed ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)(_Components_Cart_Cart__WEBPACK_IMPORTED_MODULE_17__["default"], {
       cartDisplayed: cartDisplayed,
       handleOpenCart: handleOpenCart,
       handleCloseCart: handleCloseCart,
@@ -9166,18 +9735,18 @@ function Home(props) {
       clearCart: clearCart,
       handleRemoveFromCart: handleRemoveFromCart,
       openGamePage: openGamePage
-    }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsxs)("div", {
+    }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsxs)("div", {
       className: _Home_module_css__WEBPACK_IMPORTED_MODULE_2__["default"].home,
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsx)("video", {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)("video", {
         autoPlay: true,
         muted: true,
         loop: true,
         className: _Home_module_css__WEBPACK_IMPORTED_MODULE_2__["default"].video,
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsx)("source", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)("source", {
           src: _assets_icons_pyke_mp4__WEBPACK_IMPORTED_MODULE_15__["default"],
           type: "video/mp4"
         })
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsx)(_Components_NavBar_NavBar__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)(_Components_NavBar_NavBar__WEBPACK_IMPORTED_MODULE_3__["default"], {
         handleHover: handleHover,
         hoverState: hoverState,
         handleBrowse: handleBrowse,
@@ -9192,160 +9761,160 @@ function Home(props) {
         handleSearchSubmit: handleSearchSubmit,
         handleOpenCart: handleOpenCart,
         logout: logout
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsxs)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsxs)("div", {
         className: _Home_module_css__WEBPACK_IMPORTED_MODULE_2__["default"].container,
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsxs)("div", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsxs)("div", {
           className: _Home_module_css__WEBPACK_IMPORTED_MODULE_2__["default"].left,
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsxs)("div", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsxs)("div", {
             className: _Home_module_css__WEBPACK_IMPORTED_MODULE_2__["default"].splash,
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsx)("h1", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)("h1", {
               children: "Game Store"
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsxs)("p", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsxs)("p", {
               className: _Home_module_css__WEBPACK_IMPORTED_MODULE_2__["default"].intro,
-              children: ["The best destination to buy new games to competitive prices. 24 hour support, \"best price\" guarantee and a flawless UX. Wish for more? Tell us ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsx)("span", {
+              children: ["The best destination to buy new games to competitive prices. 24 hour support, \"best price\" guarantee and a flawless UX. Wish for more? Tell us ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)("span", {
                 className: _Home_module_css__WEBPACK_IMPORTED_MODULE_2__["default"].here,
                 children: "below"
-              }), " \u2014 or check out our ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsx)("span", {
+              }), " \u2014 or check out our ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)("span", {
                 className: _Home_module_css__WEBPACK_IMPORTED_MODULE_2__["default"].careers,
                 children: "careers."
               })]
             })]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsxs)("div", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsxs)("div", {
             className: _Home_module_css__WEBPACK_IMPORTED_MODULE_2__["default"].buttons,
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsxs)("button", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsxs)("button", {
               className: "".concat(_Home_module_css__WEBPACK_IMPORTED_MODULE_2__["default"].cta, " ").concat(_Home_module_css__WEBPACK_IMPORTED_MODULE_2__["default"].browseBtn),
               onClick: handleBrowse,
               "aria-label": "Browse",
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsx)("img", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)("img", {
                 src: _assets_icons_enter_svg__WEBPACK_IMPORTED_MODULE_5__["default"],
                 className: _Home_module_css__WEBPACK_IMPORTED_MODULE_2__["default"].ctaSVG
               }), "Browse"]
-            }), user ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsxs)("button", {
+            }), user ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsxs)("button", {
               className: "".concat(_Home_module_css__WEBPACK_IMPORTED_MODULE_2__["default"].cta),
               onClick: function onClick() {
                 location.href = "/profile";
               },
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsx)("svg", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)("svg", {
                 className: _Home_module_css__WEBPACK_IMPORTED_MODULE_2__["default"].ctaSVG,
                 xmlns: "http://www.w3.org/2000/svg",
                 fill: "#000",
                 viewBox: "0 0 50 50",
                 width: "100px",
                 height: "100px",
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsx)("path", {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)("path", {
                   d: "M 25 2.0078125 C 12.309296 2.0078125 2.0000002 12.317108 2 25.007812 C 2 37.112262 11.38131 47.043195 23.259766 47.935547 C 23.283185 47.93745 23.306613 47.939576 23.330078 47.941406 C 23.882405 47.981205 24.437631 48.007812 25 48.007812 C 25.562369 48.007812 26.117595 47.981205 26.669922 47.941406 C 26.693387 47.939576 26.716815 47.93745 26.740234 47.935547 C 38.61869 47.043195 48 37.112262 48 25.007812 C 48 12.317108 37.690704 2.0078125 25 2.0078125 z M 25 4.0078125 C 36.609824 4.0078125 46 13.397988 46 25.007812 C 46 30.739515 43.704813 35.924072 39.990234 39.710938 C 38.401074 38.55372 36.437194 37.863387 34.677734 37.246094 C 32.593734 36.516094 30.622172 35.824094 30.076172 34.621094 C 29.990172 33.594094 29.997859 32.792094 30.005859 31.871094 L 30.007812 31.480469 C 30.895813 30.635469 32.012531 28.852078 32.394531 27.205078 C 33.054531 26.853078 33.861516 26.009281 34.103516 23.988281 C 34.224516 22.985281 33.939062 22.2085 33.539062 21.6875 C 34.079062 19.8325 35.153484 15.136469 33.271484 12.105469 C 32.475484 10.824469 31.274313 10.016266 29.695312 9.6972656 C 28.808312 8.5992656 27.134484 8 24.896484 8 C 21.495484 8.063 19.002234 9.1047031 17.490234 11.095703 C 15.707234 13.445703 15.370328 16.996297 16.486328 21.654297 C 16.073328 22.175297 15.775438 22.963328 15.898438 23.986328 C 16.141438 26.007328 16.945469 26.851125 17.605469 27.203125 C 17.987469 28.852125 19.103188 30.635469 19.992188 31.480469 L 19.994141 31.861328 C 20.002141 32.786328 20.009828 33.590094 19.923828 34.621094 C 19.375828 35.827094 17.394781 36.526625 15.300781 37.265625 C 13.551886 37.88319 11.599631 38.574586 10.013672 39.716797 C 6.2962191 35.929504 4 30.742023 4 25.007812 C 4.0000002 13.397989 13.390176 4.0078125 25 4.0078125 z"
                 })
               }), user.name]
-            }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsxs)("button", {
+            }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsxs)("button", {
               className: "".concat(_Home_module_css__WEBPACK_IMPORTED_MODULE_2__["default"].cta),
               onClick: function onClick() {
                 window.location.href = "login";
               },
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsx)("svg", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)("svg", {
                 className: _Home_module_css__WEBPACK_IMPORTED_MODULE_2__["default"].ctaSVG,
                 fill: "#000",
                 xmlns: "http://www.w3.org/2000/svg",
                 viewBox: "0 0 50 50",
                 width: "100px",
                 height: "100px",
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsx)("path", {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)("path", {
                   d: "M 25.017578 1.9824219 C 15.436898 1.9824219 7.2123268 7.8663695 3.7636719 16.220703 A 2.0002 2.0002 0 1 0 7.4609375 17.746094 C 10.308283 10.848427 17.072259 5.9824219 25.017578 5.9824219 C 35.534702 5.9824219 44.017578 14.465298 44.017578 24.982422 C 44.017578 35.499546 35.534702 43.982422 25.017578 43.982422 C 17.073352 43.982422 10.308226 39.118231 7.4609375 32.220703 A 2.0002 2.0002 0 1 0 3.7636719 33.746094 C 7.2123838 42.100566 15.437804 47.982422 25.017578 47.982422 C 37.696454 47.982422 48.017578 37.661298 48.017578 24.982422 C 48.017578 12.303546 37.696454 1.9824219 25.017578 1.9824219 z M 26.962891 15.962891 A 2.0002 2.0002 0 0 0 25.568359 19.396484 L 29.154297 22.982422 L 3.9824219 22.982422 A 2.0002 2.0002 0 1 0 3.9824219 26.982422 L 29.154297 26.982422 L 25.568359 30.568359 A 2.0002 2.0002 0 1 0 28.396484 33.396484 L 35.396484 26.396484 A 2.0002 2.0002 0 0 0 35.396484 23.568359 L 28.396484 16.568359 A 2.0002 2.0002 0 0 0 26.962891 15.962891 z"
                 })
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsx)("h3", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)("h3", {
                 onClick: handleOpenCart,
                 children: "Login"
               })]
             })]
           })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsx)("div", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)("div", {
           className: _Home_module_css__WEBPACK_IMPORTED_MODULE_2__["default"].right,
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsxs)("div", {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsxs)("div", {
             className: _Home_module_css__WEBPACK_IMPORTED_MODULE_2__["default"].buttonsRight,
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsx)("h2", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)("h2", {
               children: "Quick Navigation"
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsxs)("button", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsxs)("button", {
               className: _Home_module_css__WEBPACK_IMPORTED_MODULE_2__["default"].cta,
               onClick: handleNavGamePage,
               "aria-label": "Open a game page",
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsx)("img", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)("img", {
                 src: _assets_icons_game_svg__WEBPACK_IMPORTED_MODULE_8__["default"],
                 className: _Home_module_css__WEBPACK_IMPORTED_MODULE_2__["default"].ctaSVG
               }), "Games"]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsxs)("button", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsxs)("button", {
               className: _Home_module_css__WEBPACK_IMPORTED_MODULE_2__["default"].cta,
               onClick: handleNavNotFoundPage,
               "aria-label": "Open 404 page",
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsx)("svg", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)("svg", {
                 xmlns: "http://www.w3.org/2000/svg",
                 className: _Home_module_css__WEBPACK_IMPORTED_MODULE_2__["default"].ctaSVG,
                 viewBox: "0 0 576 512",
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsx)("path", {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)("path", {
                   d: "M264.5 5.2c14.9-6.9 32.1-6.9 47 0l218.6 101c8.5 3.9 13.9 12.4 13.9 21.8s-5.4 17.9-13.9 21.8l-218.6 101c-14.9 6.9-32.1 6.9-47 0L45.9 149.8C37.4 145.8 32 137.3 32 128s5.4-17.9 13.9-21.8L264.5 5.2zM476.9 209.6l53.2 24.6c8.5 3.9 13.9 12.4 13.9 21.8s-5.4 17.9-13.9 21.8l-218.6 101c-14.9 6.9-32.1 6.9-47 0L45.9 277.8C37.4 273.8 32 265.3 32 256s5.4-17.9 13.9-21.8l53.2-24.6 152 70.2c23.4 10.8 50.4 10.8 73.8 0l152-70.2zm-152 198.2l152-70.2 53.2 24.6c8.5 3.9 13.9 12.4 13.9 21.8s-5.4 17.9-13.9 21.8l-218.6 101c-14.9 6.9-32.1 6.9-47 0L45.9 405.8C37.4 401.8 32 393.3 32 384s5.4-17.9 13.9-21.8l53.2-24.6 152 70.2c23.4 10.8 50.4 10.8 73.8 0z"
                 })
               }), "Categories"]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsxs)("button", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsxs)("button", {
               className: "".concat(_Home_module_css__WEBPACK_IMPORTED_MODULE_2__["default"].cta, " ").concat(_Home_module_css__WEBPACK_IMPORTED_MODULE_2__["default"].lastChild),
               onClick: handleNavNotFoundQuery,
               "aria-label": "open 404 query page",
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsx)("svg", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)("svg", {
                 xmlns: "http://www.w3.org/2000/svg",
                 className: "".concat(_Home_module_css__WEBPACK_IMPORTED_MODULE_2__["default"].ctaSVG),
                 fill: "#000000",
                 height: "800px",
                 width: "800px",
                 viewBox: "0 0 57 57",
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsx)("path", {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)("path", {
                   d: "M57,0h-8.837L18.171,29.992l-4.076-4.076l-1.345-4.034c-0.22-0.663-0.857-1.065-1.55-0.98  c-0.693,0.085-1.214,0.63-1.268,1.327l-0.572,7.438l5.982,5.982L4.992,46H2.274C1.02,46,0,47.02,0,48.274v6.452  C0,55.98,1.02,57,2.274,57h6.452C9.98,57,11,55.98,11,54.726v-3.421l10-10l6.021,6.021l6.866-1.145  c0.685-0.113,1.182-0.677,1.21-1.37c0.028-0.693-0.422-1.295-1.096-1.464l-3.297-0.824l-4.043-4.043L57,8.489V0z M9,54.726  C9,54.877,8.877,55,8.726,55H2.274C2.123,55,2,54.877,2,54.726v-6.452C2,48.123,2.123,48,2.274,48h0.718h5.734  C8.877,48,9,48.123,9,48.274v5.031V54.726z M11,48.477v-0.203C11,47.02,9.98,46,8.726,46H7.82l8.938-8.938l1.417,1.417l1.411,1.411  L11,48.477z M30.942,44.645l-3.235,0.54l-5.293-5.293l0,0l-2.833-2.833l-8.155-8.155l0.292-3.796l0.63,1.89l4.41,4.41l0,0  l4.225,4.225l8.699,8.699L30.942,44.645z M25.247,37.066l-2.822-2.822l-2.839-2.839L48.991,2h4.243L23.829,31.406  c-0.391,0.391-0.391,1.023,0,1.414c0.195,0.195,0.451,0.293,0.707,0.293s0.512-0.098,0.707-0.293L55,3.062v4.592L25.247,37.066z"
                 })
               }), "Items"]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsx)("a", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)("a", {
               href: "https://github.com/gianlucajahn/react-ecommerce-store/commits/main",
               target: "_blank",
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsxs)("button", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsxs)("button", {
                 className: _Home_module_css__WEBPACK_IMPORTED_MODULE_2__["default"].cta,
                 "aria-label": "Open commit log",
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsx)("svg", {
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)("svg", {
                   xmlns: "http://www.w3.org/2000/svg",
                   className: "".concat(_Home_module_css__WEBPACK_IMPORTED_MODULE_2__["default"].ctaSVG),
                   viewBox: "0 0 512 512",
-                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsx)("path", {
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)("path", {
                     d: "M47.6 300.4L228.3 469.1c7.5 7 17.4 10.9 27.7 10.9s20.2-3.9 27.7-10.9L464.4 300.4c30.4-28.3 47.6-68 47.6-109.5v-5.8c0-69.9-50.5-129.5-119.4-141C347 36.5 300.6 51.4 268 84L256 96 244 84c-32.6-32.6-79-47.5-124.6-39.9C50.5 55.6 0 115.2 0 185.1v5.8c0 41.5 17.2 81.2 47.6 109.5z"
                   })
                 }), "Favourites"]
               })
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsx)("a", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)("a", {
               href: "https://github.com/gianlucajahn/react-ecommerce-store/blob/main/README.md#performance",
               target: "_blank",
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsxs)("button", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsxs)("button", {
                 className: "".concat(_Home_module_css__WEBPACK_IMPORTED_MODULE_2__["default"].cta, " ").concat(_Home_module_css__WEBPACK_IMPORTED_MODULE_2__["default"].lastChild),
                 "aria-label": "Open performance test results",
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsx)("img", {
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)("img", {
                   src: _assets_icons_cart_svg__WEBPACK_IMPORTED_MODULE_11__["default"],
                   className: "".concat(_Home_module_css__WEBPACK_IMPORTED_MODULE_2__["default"].ctaSVG)
                 }), "Cart"]
               })
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsx)("a", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)("a", {
               href: "https://github.com/gianlucajahn/react-ecommerce-store/blob/main/README.md#technologies-used",
               target: "_blank",
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsxs)("button", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsxs)("button", {
                 className: "".concat(_Home_module_css__WEBPACK_IMPORTED_MODULE_2__["default"].cta, " ").concat(_Home_module_css__WEBPACK_IMPORTED_MODULE_2__["default"].lastChild),
                 "aria-label": "View technologies used",
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsx)("svg", {
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)("svg", {
                   xmlns: "http://www.w3.org/2000/svg",
                   className: "".concat(_Home_module_css__WEBPACK_IMPORTED_MODULE_2__["default"].ctaSVG),
                   viewBox: "0 0 512 512",
-                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsx)("path", {
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)("path", {
                     d: "M464 256A208 208 0 1 1 48 256a208 208 0 1 1 416 0zM0 256a256 256 0 1 0 512 0A256 256 0 1 0 0 256zM232 120V256c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2V120c0-13.3-10.7-24-24-24s-24 10.7-24 24z"
                   })
                 }), "Saved For Later"]
               })
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsx)("a", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)("a", {
               href: "https://github.com/gianlucajahn/react-ecommerce-store/blob/main/README.md#sources",
               target: "_blank",
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsxs)("button", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsxs)("button", {
                 className: "".concat(_Home_module_css__WEBPACK_IMPORTED_MODULE_2__["default"].cta, " ").concat(_Home_module_css__WEBPACK_IMPORTED_MODULE_2__["default"].lastChild),
                 "aria-label": "View Sources",
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsx)("img", {
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)("img", {
                   src: _assets_icons_sources_svg__WEBPACK_IMPORTED_MODULE_14__["default"],
                   className: "".concat(_Home_module_css__WEBPACK_IMPORTED_MODULE_2__["default"].ctaSVG)
                 }), "About us"]
@@ -9358,7 +9927,7 @@ function Home(props) {
   });
 }
 if (document.getElementById('home')) {
-  react_dom__WEBPACK_IMPORTED_MODULE_1__.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsx)(Home, {}), document.getElementById('home'));
+  react_dom__WEBPACK_IMPORTED_MODULE_1__.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)(Home, {}), document.getElementById('home'));
 }
 
 /***/ }),
@@ -9382,11 +9951,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utils_games__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../utils/games */ "./resources/js/utils/games.js");
 /* harmony import */ var _AnimatedPage_AnimatedText__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../AnimatedPage/AnimatedText */ "./resources/js/Containers/AnimatedPage/AnimatedText.js");
 /* harmony import */ var _Components_AddedToCart_AddedToCartBig__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../Components/AddedToCart/AddedToCartBig */ "./resources/js/Components/AddedToCart/AddedToCartBig.js");
-/* harmony import */ var _Components_Cart_Cart__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../Components/Cart/Cart */ "./resources/js/Components/Cart/Cart.js");
-/* harmony import */ var _utils_templateGame__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../utils/templateGame */ "./resources/js/utils/templateGame.js");
-/* harmony import */ var _Components_Grid_Grid__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../Components/Grid/Grid */ "./resources/js/Components/Grid/Grid.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _Components_Chat_Chat__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../Components/Chat/Chat */ "./resources/js/Components/Chat/Chat.js");
+/* harmony import */ var _Components_Cart_Cart__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../Components/Cart/Cart */ "./resources/js/Components/Cart/Cart.js");
+/* harmony import */ var _utils_templateGame__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../utils/templateGame */ "./resources/js/utils/templateGame.js");
+/* harmony import */ var _Components_Grid_Grid__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../Components/Grid/Grid */ "./resources/js/Components/Grid/Grid.js");
+/* harmony import */ var _Components_Notifications_Notifications__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../../Components/Notifications/Notifications */ "./resources/js/Components/Notifications/Notifications.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 var _this = undefined;
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -9398,6 +9969,8 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
 
 
 
@@ -9506,16 +10079,24 @@ var ListItem = function ListItem(props) {
     _useState44 = _slicedToArray(_useState43, 2),
     imgs = _useState44[0],
     setImgs = _useState44[1];
-  var _useState45 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+  var _useState45 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(),
     _useState46 = _slicedToArray(_useState45, 2),
-    refresher = _useState46[0],
-    setRefresher = _useState46[1];
-  var _useState47 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+    addPerson = _useState46[0],
+    setAddPerson = _useState46[1];
+  var _useState47 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(),
     _useState48 = _slicedToArray(_useState47, 2),
-    triedSubmit = _useState48[0],
-    setTriedSubmit = _useState48[1];
+    addNotification = _useState48[0],
+    setAddNotification = _useState48[1];
+  var _useState49 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+    _useState50 = _slicedToArray(_useState49, 2),
+    refresher = _useState50[0],
+    setRefresher = _useState50[1];
+  var _useState51 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+    _useState52 = _slicedToArray(_useState51, 2),
+    triedSubmit = _useState52[0],
+    setTriedSubmit = _useState52[1];
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
-    var api = axios__WEBPACK_IMPORTED_MODULE_14__["default"].create({
+    var api = axios__WEBPACK_IMPORTED_MODULE_16__["default"].create({
       baseURL: '/api'
     });
     api.get('/user/me').then(function (response) {
@@ -9536,6 +10117,9 @@ var ListItem = function ListItem(props) {
       console.error('Error fetching data:', error);
     });
   }, []);
+  var handleCloseCart = function handleCloseCart() {
+    setCartDisplayed(false);
+  };
   var handleBrowse = function handleBrowse(type) {
     setOverlap(true);
     setTimeout(function () {
@@ -9570,7 +10154,7 @@ var ListItem = function ListItem(props) {
     setCartDisplayed(true);
   };
   var logout = function logout() {
-    var api = axios__WEBPACK_IMPORTED_MODULE_14__["default"].create({
+    var api = axios__WEBPACK_IMPORTED_MODULE_16__["default"].create({
       baseURL: '/api'
     });
     api.post('/logout').then(function (response) {
@@ -9586,7 +10170,7 @@ var ListItem = function ListItem(props) {
       return g.id == id;
     });
     setSelectedGame(game[0]);
-    var api = axios__WEBPACK_IMPORTED_MODULE_14__["default"].create({
+    var api = axios__WEBPACK_IMPORTED_MODULE_16__["default"].create({
       baseURL: '/api'
     });
     api.get('/games/getCategories/' + id).then(function (response) {
@@ -9656,7 +10240,7 @@ var ListItem = function ListItem(props) {
       for (var i = 0; i < imgs.length; i++) {
         formData.append('imgFiles[]', imgs[i].file);
       }
-      axios__WEBPACK_IMPORTED_MODULE_14__["default"].post(apiUrl, formData, {
+      axios__WEBPACK_IMPORTED_MODULE_16__["default"].post(apiUrl, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -9671,14 +10255,50 @@ var ListItem = function ListItem(props) {
       setTriedSubmit(true);
     }
   };
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.Fragment, {
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("section", {
+  var clearCart = function clearCart() {
+    var apiUrl = '/api/user/cart/clear/'; // Replace with your actual API endpoint
+    axios__WEBPACK_IMPORTED_MODULE_16__["default"].get(apiUrl).then(function (response) {
+      if (response.data.msg == "done") {
+        setCart([]);
+        setCartAmount(0);
+        var s = shownGames;
+        s.forEach(function (element) {
+          if (element.inCart) element.inCart = false;
+        });
+        setShownGames(_toConsumableArray(s));
+        console.log(s);
+      }
+    })["catch"](function (error) {
+      console.error('Error fetching data:', error);
+    });
+  };
+  var openGamePage = function openGamePage(e) {
+    setCartDisplayed(false);
+    var selectedGameSurname = e.target.id;
+    window.location.href = "/game/".concat(selectedGameSurname);
+  };
+  var handleRemoveFromCart = function handleRemoveFromCart(id, key, e) {
+    e.stopPropagation();
+    var apiUrl = '/api/user/cart/remove/' + id; // Replace with your actual API endpoint
+    axios__WEBPACK_IMPORTED_MODULE_16__["default"].get(apiUrl).then(function (response) {
+      setCart(response.data.cart);
+      var c = cart.filter(function (cart_item) {});
+      setCartAmount(cartAmount - 1);
+      var s = shownGames;
+      s[key].inCart = false;
+      setShownGames(_toConsumableArray(s));
+    })["catch"](function (error) {
+      console.error('Error fetching data:', error);
+    });
+  };
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.Fragment, {
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsxs)("section", {
       className: _ListItem_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].listPage,
       style: {
         maxHeight: cartDisplayed ? "100vh" : "1000vh",
         minHeight: "100vh"
       },
-      children: [cartDisplayed ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_Components_Cart_Cart__WEBPACK_IMPORTED_MODULE_10__["default"], {
+      children: [cartDisplayed ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)(_Components_Cart_Cart__WEBPACK_IMPORTED_MODULE_11__["default"], {
         cartDisplayed: cartDisplayed,
         handleOpenCart: handleOpenCart,
         handleCloseCart: handleCloseCart,
@@ -9687,7 +10307,11 @@ var ListItem = function ListItem(props) {
         clearCart: clearCart,
         handleRemoveFromCart: handleRemoveFromCart,
         openGamePage: openGamePage
-      }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_Components_NavBar_NavBar__WEBPACK_IMPORTED_MODULE_5__["default"], {
+      }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)(_Components_Chat_Chat__WEBPACK_IMPORTED_MODULE_10__["default"], {
+        addPerson: addPerson
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)(_Components_Notifications_Notifications__WEBPACK_IMPORTED_MODULE_14__["default"], {
+        addNotification: addNotification
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)(_Components_NavBar_NavBar__WEBPACK_IMPORTED_MODULE_5__["default"], {
         handleBrowse: handleBrowse.bind(_this, "games"),
         user: user,
         handleHome: handleHome,
@@ -9700,42 +10324,42 @@ var ListItem = function ListItem(props) {
         handleSearchSubmit: handleSearchSubmit,
         handleOpenCart: handleOpenCart,
         logout: logout
-      }), auth ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+      }), auth ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsxs)("div", {
         className: _ListItem_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].listBody,
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsxs)("div", {
           className: "".concat(_ListItem_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].right, " ") + (selectedGame != {} && selectedCategory != {}) ? "" : _ListItem_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].full,
           style: {
             width: selectedGame != {} && selectedCategory != {} ? '60%' : '100%'
           },
-          children: [selectedGame == false ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("div", {
+          children: [selectedGame == false ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("div", {
             className: _ListItem_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].row,
             children: "Select The Game: "
-          }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+          }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsxs)("div", {
             className: _ListItem_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].row,
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("span", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("span", {
               className: _ListItem_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].label,
               children: "Game:"
-            }), selectedGame.name, " ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("span", {
+            }), selectedGame.name, " ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("span", {
               className: _ListItem_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].change,
               onClick: resetGame,
               children: "change"
             })]
-          }), selectedGame != false ? selectedCategory == false ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("div", {
+          }), selectedGame != false ? selectedCategory == false ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("div", {
             className: "".concat(_ListItem_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].row, " ").concat(_ListItem_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].cat),
             children: "Select The Category: "
-          }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+          }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsxs)("div", {
             className: _ListItem_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].row,
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("span", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("span", {
               className: _ListItem_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].label,
               children: "Category:"
-            }), selectedCategory.name, " ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("span", {
+            }), selectedCategory.name, " ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("span", {
               className: _ListItem_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].change,
               onClick: resetCategory,
               children: "change"
             })]
-          }) : "", selectedGame == false ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("div", {
+          }) : "", selectedGame == false ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("div", {
             className: _ListItem_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].list,
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_Components_Grid_Grid__WEBPACK_IMPORTED_MODULE_12__["default"], {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)(_Components_Grid_Grid__WEBPACK_IMPORTED_MODULE_13__["default"], {
               columns: 4,
               shownGames: games,
               reviewDisplay: reviewDisplay,
@@ -9751,9 +10375,9 @@ var ListItem = function ListItem(props) {
               smallFont: false,
               limit: "0"
             })
-          }) : selectedCategory == false ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("div", {
+          }) : selectedCategory == false ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("div", {
             className: _ListItem_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].list,
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_Components_Grid_Grid__WEBPACK_IMPORTED_MODULE_12__["default"], {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)(_Components_Grid_Grid__WEBPACK_IMPORTED_MODULE_13__["default"], {
               columns: 4,
               shownGames: categories,
               reviewDisplay: reviewDisplay,
@@ -9769,98 +10393,98 @@ var ListItem = function ListItem(props) {
               smallFont: false,
               limit: "0"
             })
-          }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+          }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsxs)("div", {
             className: _ListItem_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].form,
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsxs)("div", {
               className: _ListItem_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].row,
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("span", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("span", {
                 className: _ListItem_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].label,
                 children: "Name: "
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("input", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("input", {
                 className: "".concat(_ListItem_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].input, " ") + (triedSubmit && name == "" ? "".concat(_ListItem_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].err) : ''),
                 onChange: updateName
               })]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsxs)("div", {
               className: _ListItem_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].row,
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("span", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("span", {
                 className: _ListItem_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].label,
                 children: "Description: "
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("textarea", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("textarea", {
                 className: _ListItem_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].input,
                 onChange: updateDescription
               })]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsxs)("div", {
               className: _ListItem_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].row,
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("span", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("span", {
                 className: _ListItem_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].label,
                 children: "Price: "
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("input", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("input", {
                 className: "".concat(_ListItem_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].input, " ").concat(_ListItem_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].p, " ") + (triedSubmit && price == 0 ? "".concat(_ListItem_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].err) : ''),
                 onChange: updatePrice,
                 type: "number"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("span", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsxs)("span", {
                 className: _ListItem_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].trailer,
                 children: ["You will get ", 0.95 * price, "$"]
               })]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsxs)("div", {
               className: _ListItem_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].row,
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("span", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("span", {
                 className: _ListItem_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].label,
                 children: "Amount: "
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("input", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("input", {
                 className: "".concat(_ListItem_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].input, " ") + (triedSubmit && amount == 0 ? "".concat(_ListItem_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].err) : ''),
                 type: "number",
                 onChange: updateAmount,
                 defaultValue: 1
               })]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsxs)("div", {
               className: _ListItem_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].row,
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("span", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("span", {
                 className: _ListItem_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].label,
                 children: "Sells in: "
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("input", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("input", {
                 className: _ListItem_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].input,
                 type: "number",
                 onChange: updateSellTime,
                 defaultValue: 1
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("span", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("span", {
                 className: _ListItem_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].trailer,
                 children: "day/s"
               })]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("div", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("div", {
               className: _ListItem_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].submit,
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("button", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("button", {
                 onClick: submit,
                 children: "Sell"
               })
             })]
           })]
-        }), selectedGame != false && selectedCategory != false ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+        }), selectedGame != false && selectedCategory != false ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsxs)("div", {
           className: _ListItem_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].left,
           children: [imgs.map(function (img, key) {
-            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsxs)("div", {
               className: "".concat(_ListItem_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].img, " ").concat(_ListItem_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].block),
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("img", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("img", {
                 src: img.url
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("span", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("span", {
                 className: _ListItem_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].del,
                 onClick: deleteImg.bind(_this, key),
                 children: "delete"
               })]
             }, key);
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsxs)("div", {
             className: "".concat(_ListItem_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].block, " ").concat(_ListItem_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].add, " ") + (triedSubmit && imgs.length == 0 ? "".concat(_ListItem_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].err) : ''),
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("span", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("span", {
               className: _ListItem_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].l,
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("svg", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("svg", {
                 xmlns: "http://www.w3.org/2000/svg",
                 fill: "#fff",
                 viewBox: "0 0 30 30",
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("path", {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("path", {
                   d: "M 14.970703 2.9726562 A 2.0002 2.0002 0 0 0 13 5 L 13 13 L 5 13 A 2.0002 2.0002 0 1 0 5 17 L 13 17 L 13 25 A 2.0002 2.0002 0 1 0 17 25 L 17 17 L 25 17 A 2.0002 2.0002 0 1 0 25 13 L 17 13 L 17 5 A 2.0002 2.0002 0 0 0 14.970703 2.9726562 z"
                 })
               })
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("input", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("input", {
               className: _ListItem_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].i,
               onChange: addImg,
               multiple: true,
@@ -9868,21 +10492,21 @@ var ListItem = function ListItem(props) {
             })]
           })]
         }) : ""]
-      }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+      }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsxs)("div", {
         className: _ListItem_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].mustAuth,
-        children: ["You must ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("a", {
+        children: ["You must ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("a", {
           href: "/login",
           children: "Login"
-        }), " or ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("a", {
+        }), " or ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("a", {
           href: "/signup",
           children: "Register"
         }), " to sell an item."]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_Components_Footer_Footer__WEBPACK_IMPORTED_MODULE_4__["default"], {})]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)(_Components_Footer_Footer__WEBPACK_IMPORTED_MODULE_4__["default"], {})]
     })
   });
 };
 if (document.getElementById('listItem')) {
-  react_dom__WEBPACK_IMPORTED_MODULE_2__.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(ListItem, {}), document.getElementById('listItem'));
+  react_dom__WEBPACK_IMPORTED_MODULE_2__.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)(ListItem, {}), document.getElementById('listItem'));
 }
 
 /***/ }),
@@ -9907,14 +10531,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Components_AddedToCart_AddedToCartBig__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../Components/AddedToCart/AddedToCartBig */ "./resources/js/Components/AddedToCart/AddedToCartBig.js");
 /* harmony import */ var _Components_Cart_Cart__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../Components/Cart/Cart */ "./resources/js/Components/Cart/Cart.js");
 /* harmony import */ var _utils_templateGame__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../utils/templateGame */ "./resources/js/utils/templateGame.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _Components_Notifications_Notifications__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../Components/Notifications/Notifications */ "./resources/js/Components/Notifications/Notifications.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 
 
 
@@ -9941,12 +10567,16 @@ var Login = function Login(props) {
     _useState4 = _slicedToArray(_useState3, 2),
     password = _useState4[0],
     setPassword = _useState4[1];
-  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(0),
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(),
     _useState6 = _slicedToArray(_useState5, 2),
-    counter = _useState6[0],
-    setCounter = _useState6[1];
+    addNotification = _useState6[0],
+    setAddNotification = _useState6[1];
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(0),
+    _useState8 = _slicedToArray(_useState7, 2),
+    counter = _useState8[0],
+    setCounter = _useState8[1];
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
-    var api = axios__WEBPACK_IMPORTED_MODULE_12__["default"].create({
+    var api = axios__WEBPACK_IMPORTED_MODULE_13__["default"].create({
       baseURL: '/api'
     });
     api.get('/user/me').then(function (response) {
@@ -9969,7 +10599,7 @@ var Login = function Login(props) {
   var submit = function submit(e) {
     e.preventDefault();
     var apiUrl = '/api/login'; // Replace with your actual API endpoint
-    axios__WEBPACK_IMPORTED_MODULE_12__["default"].post(apiUrl, {
+    axios__WEBPACK_IMPORTED_MODULE_13__["default"].post(apiUrl, {
       email: email,
       password: password
     }).then(function (response) {
@@ -9982,14 +10612,16 @@ var Login = function Login(props) {
       console.error('Error fetching data:', error);
     });
   };
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.Fragment, {
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.Fragment, {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Components_Notifications_Notifications__WEBPACK_IMPORTED_MODULE_11__["default"], {
+      addNotification: addNotification
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
       className: _Login_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].form,
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("h2", {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("h2", {
         className: _Login_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].title,
         children: "Login"
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("form", {
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("input", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("form", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("input", {
           className: "".concat(_Login_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].input, " ").concat(_Login_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].i),
           name: "e",
           autoComplete: "off",
@@ -9997,7 +10629,7 @@ var Login = function Login(props) {
           type: "email",
           placeholder: "Enter your email",
           onChange: handleEmailInput
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("input", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("input", {
           className: "".concat(_Login_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].input, " ").concat(_Login_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].i),
           name: "p",
           autoComplete: "off",
@@ -10005,46 +10637,46 @@ var Login = function Login(props) {
           type: "password",
           placeholder: "Enter the password",
           onChange: handlePasswordInput
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("span", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("span", {
           className: _Login_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].input,
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("input", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("input", {
             type: "checkbox",
             onChange: handlePasswordInput
           }), " Remember me"]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("button", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("button", {
           className: _Login_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].btn,
           onClick: submit,
           children: "Login"
         })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
         className: _Login_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].bottom,
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("span", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("span", {
           className: _Login_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].part,
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("span", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("span", {
             className: _Login_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].label,
             children: "Don't have acount?"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("a", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("a", {
             className: _Login_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].link,
             href: "/signup",
             children: "create new account"
           })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("span", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("span", {
           className: _Login_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].part,
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("span", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("span", {
             className: _Login_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].label,
             children: "Forgot your password?"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("a", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("a", {
             className: _Login_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].link,
             href: "/reset-password",
             children: "reset password"
           })]
         })]
       })]
-    })
+    })]
   });
 };
 if (document.getElementById('login')) {
-  react_dom__WEBPACK_IMPORTED_MODULE_2__.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(Login, {}), document.getElementById('login'));
+  react_dom__WEBPACK_IMPORTED_MODULE_2__.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(Login, {}), document.getElementById('login'));
 }
 
 /***/ }),
@@ -10068,11 +10700,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utils_games__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../utils/games */ "./resources/js/utils/games.js");
 /* harmony import */ var _AnimatedPage_AnimatedText__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../AnimatedPage/AnimatedText */ "./resources/js/Containers/AnimatedPage/AnimatedText.js");
 /* harmony import */ var _Components_AddedToCart_AddedToCartBig__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../Components/AddedToCart/AddedToCartBig */ "./resources/js/Components/AddedToCart/AddedToCartBig.js");
-/* harmony import */ var _Components_Cart_Cart__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../Components/Cart/Cart */ "./resources/js/Components/Cart/Cart.js");
-/* harmony import */ var _utils_templateGame__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../utils/templateGame */ "./resources/js/utils/templateGame.js");
-/* harmony import */ var _Components_Grid_Grid__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../Components/Grid/Grid */ "./resources/js/Components/Grid/Grid.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _Components_Chat_Chat__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../Components/Chat/Chat */ "./resources/js/Components/Chat/Chat.js");
+/* harmony import */ var _Components_Cart_Cart__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../Components/Cart/Cart */ "./resources/js/Components/Cart/Cart.js");
+/* harmony import */ var _utils_templateGame__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../utils/templateGame */ "./resources/js/utils/templateGame.js");
+/* harmony import */ var _Components_Grid_Grid__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../Components/Grid/Grid */ "./resources/js/Components/Grid/Grid.js");
+/* harmony import */ var _Components_Notifications_Notifications__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../../Components/Notifications/Notifications */ "./resources/js/Components/Notifications/Notifications.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 var _this = undefined;
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -10084,6 +10718,8 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
 
 
 
@@ -10165,10 +10801,18 @@ var Profile = function Profile(props) {
     _useState30 = _slicedToArray(_useState29, 2),
     stars = _useState30[0],
     setStars = _useState30[1];
-  var _useState31 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([0, 0, 0, 0, 0]),
+  var _useState31 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(),
     _useState32 = _slicedToArray(_useState31, 2),
-    emptyStars = _useState32[0],
-    setEmptyStars = _useState32[1];
+    addPerson = _useState32[0],
+    setAddPerson = _useState32[1];
+  var _useState33 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([0, 0, 0, 0, 0]),
+    _useState34 = _slicedToArray(_useState33, 2),
+    emptyStars = _useState34[0],
+    setEmptyStars = _useState34[1];
+  var _useState35 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(),
+    _useState36 = _slicedToArray(_useState35, 2),
+    addNotification = _useState36[0],
+    setAddNotification = _useState36[1];
   var firstUpdate = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)(true);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useLayoutEffect)(function () {
     if (firstUpdate.current) {
@@ -10177,7 +10821,7 @@ var Profile = function Profile(props) {
     }
   });
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
-    var api = axios__WEBPACK_IMPORTED_MODULE_14__["default"].create({
+    var api = axios__WEBPACK_IMPORTED_MODULE_16__["default"].create({
       baseURL: '/api'
     });
     api.get('/user/me').then(function (response) {
@@ -10200,7 +10844,7 @@ var Profile = function Profile(props) {
     });
   }, []);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
-    var api = axios__WEBPACK_IMPORTED_MODULE_14__["default"].create({
+    var api = axios__WEBPACK_IMPORTED_MODULE_16__["default"].create({
       baseURL: '/api'
     });
     var q = 0;
@@ -10216,7 +10860,7 @@ var Profile = function Profile(props) {
       location.href = '/login';
     }
     if (q != 0) {
-      api = axios__WEBPACK_IMPORTED_MODULE_14__["default"].create({
+      api = axios__WEBPACK_IMPORTED_MODULE_16__["default"].create({
         baseURL: '/api'
       });
       api.get('/user/get/' + q).then(function (response) {
@@ -10237,7 +10881,7 @@ var Profile = function Profile(props) {
   }, [user]);
   var clearCart = function clearCart() {
     var apiUrl = '/api/user/cart/clear/'; // Replace with your actual API endpoint
-    axios__WEBPACK_IMPORTED_MODULE_14__["default"].get(apiUrl).then(function (response) {
+    axios__WEBPACK_IMPORTED_MODULE_16__["default"].get(apiUrl).then(function (response) {
       if (response.data.msg == "done") {
         setCart([]);
         setCartAmount(0);
@@ -10255,7 +10899,7 @@ var Profile = function Profile(props) {
   var handleRemoveFromCart = function handleRemoveFromCart(id, key, e) {
     e.stopPropagation();
     var apiUrl = '/api/user/cart/remove/' + id; // Replace with your actual API endpoint
-    axios__WEBPACK_IMPORTED_MODULE_14__["default"].get(apiUrl).then(function (response) {
+    axios__WEBPACK_IMPORTED_MODULE_16__["default"].get(apiUrl).then(function (response) {
       setCart(response.data.cart);
       var c = cart.filter(function (cart_item) {});
       setCartAmount(cartAmount - 1);
@@ -10311,7 +10955,7 @@ var Profile = function Profile(props) {
     window.location.href = "/game?id=".concat(id);
   };
   var logout = function logout() {
-    var api = axios__WEBPACK_IMPORTED_MODULE_14__["default"].create({
+    var api = axios__WEBPACK_IMPORTED_MODULE_16__["default"].create({
       baseURL: '/api'
     });
     api.post('/logout').then(function (response) {
@@ -10347,14 +10991,14 @@ var Profile = function Profile(props) {
     // Clean up: remove the textarea
     document.body.removeChild(textArea);
   }
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.Fragment, {
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("section", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.Fragment, {
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsxs)("section", {
       className: _Profile_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].Profile,
       style: {
         maxHeight: cartDisplayed ? "100vh" : "1000vh",
         minHeight: "100vh"
       },
-      children: [cartDisplayed ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_Components_Cart_Cart__WEBPACK_IMPORTED_MODULE_10__["default"], {
+      children: [cartDisplayed ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)(_Components_Cart_Cart__WEBPACK_IMPORTED_MODULE_11__["default"], {
         cartDisplayed: cartDisplayed,
         handleOpenCart: handleOpenCart,
         handleCloseCart: handleCloseCart,
@@ -10363,7 +11007,11 @@ var Profile = function Profile(props) {
         clearCart: clearCart,
         handleRemoveFromCart: handleRemoveFromCart,
         openGamePage: openGamePage
-      }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_Components_NavBar_NavBar__WEBPACK_IMPORTED_MODULE_5__["default"], {
+      }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)(_Components_Chat_Chat__WEBPACK_IMPORTED_MODULE_10__["default"], {
+        addPerson: addPerson
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)(_Components_Notifications_Notifications__WEBPACK_IMPORTED_MODULE_14__["default"], {
+        addNotification: addNotification
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)(_Components_NavBar_NavBar__WEBPACK_IMPORTED_MODULE_5__["default"], {
         handleBrowse: handleBrowse.bind(_this, "games"),
         user: user,
         handleHome: handleHome,
@@ -10376,118 +11024,124 @@ var Profile = function Profile(props) {
         handleSearchSubmit: handleSearchSubmit,
         handleOpenCart: handleOpenCart,
         logout: logout
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsxs)("div", {
         className: _Profile_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].profileContent,
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsxs)("div", {
           className: _Profile_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].left,
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("div", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("div", {
             className: _Profile_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].img,
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("div", {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsxs)("div", {
               className: _Profile_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].content,
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("img", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("img", {
                 src: userProfile.imgType != null ? '../assets/users/' + userProfile.id + '.' + userProfile.imgType : '../images/profile2.svg'
-              })
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("span", {
+                className: _Profile_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].c,
+                onClick: function onClick() {
+                  setAddPerson(userProfile.id);
+                },
+                children: "C"
+              })]
             })
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsxs)("div", {
             className: _Profile_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].name,
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("h2", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("h2", {
               className: _Profile_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].n,
               children: userProfile.name
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsxs)("div", {
               className: _Profile_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].rate,
               children: [stars.map(function (star, key) {
-                return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("svg", {
+                return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsxs)("svg", {
                   xmlns: "http://www.w3.org/2000/svg",
                   className: _Profile_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].star,
                   viewBox: "0 0 48 48",
                   width: "96px",
                   height: "96px",
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("linearGradient", {
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsxs)("linearGradient", {
                     id: "q0c2dLEp_4LHk~8cW2fATa",
                     x1: "9.009",
                     x2: "38.092",
                     y1: "6.36",
                     y2: "45.266",
                     gradientUnits: "userSpaceOnUse",
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("stop", {
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("stop", {
                       offset: "0",
                       stopColor: "#ffda1c"
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("stop", {
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("stop", {
                       offset: "1",
                       stopColor: "#feb705"
                     })]
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("path", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("path", {
                     fill: "url(#q0c2dLEp_4LHk~8cW2fATa)",
                     d: "M24.913,5.186l5.478,12.288l13.378,1.413c0.861,0.091,1.207,1.158,0.564,1.737l-9.993,9.005\tl2.791,13.161c0.18,0.847-0.728,1.506-1.478,1.074L24,37.141l-11.653,6.722c-0.75,0.432-1.657-0.227-1.478-1.074l2.791-13.161\tl-9.993-9.005c-0.643-0.579-0.296-1.646,0.564-1.737l13.378-1.413l5.478-12.288C23.439,4.395,24.561,4.395,24.913,5.186z"
                   })]
                 }, key);
               }), emptyStars.map(function (star, key) {
-                return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("svg", {
+                return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsxs)("svg", {
                   xmlns: "http://www.w3.org/2000/svg",
                   className: _Profile_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].star,
                   viewBox: "0 0 48 48",
                   width: "96px",
                   height: "96px",
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("linearGradient", {
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsxs)("linearGradient", {
                     id: "q0c2dLEp_4LHk~8cW2fATb",
                     x1: "9.009",
                     x2: "38.092",
                     y1: "6.36",
                     y2: "45.266",
                     gradientUnits: "userSpaceOnUse",
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("stop", {
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("stop", {
                       offset: "0",
                       stopColor: "#fbe574"
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("stop", {
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("stop", {
                       offset: "1",
                       stopColor: "#ffdb80"
                     })]
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("path", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("path", {
                     fill: "url(#q0c2dLEp_4LHk~8cW2fATb)",
                     d: "M24.913,5.186l5.478,12.288l13.378,1.413c0.861,0.091,1.207,1.158,0.564,1.737l-9.993,9.005\tl2.791,13.161c0.18,0.847-0.728,1.506-1.478,1.074L24,37.141l-11.653,6.722c-0.75,0.432-1.657-0.227-1.478-1.074l2.791-13.161\tl-9.993-9.005c-0.643-0.579-0.296-1.646,0.564-1.737l13.378-1.413l5.478-12.288C23.439,4.395,24.561,4.395,24.913,5.186z"
                   })]
                 }, stars.length + key);
               })]
             })]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("div", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("div", {
             className: _Profile_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].accounts,
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsxs)("div", {
               className: _Profile_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].games,
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("span", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("span", {
                 className: _Profile_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].account,
                 onClick: copyLink.bind(_this, 'roblox'),
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("img", {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("img", {
                   src: "../images/roblox.png"
                 })
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("span", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("span", {
                 className: _Profile_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].account,
                 onClick: copyLink.bind(_this, 'fortnite'),
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("img", {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("img", {
                   src: "../images/fortnite.jpg"
                 })
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("span", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("span", {
                 className: _Profile_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].account,
                 onClick: copyLink.bind(_this, 'fdsr'),
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("img", {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("img", {
                   src: "../images/minecraft.svg"
                 })
               })]
             })
-          }), (user === null || user === void 0 ? void 0 : user.id) == (userProfile === null || userProfile === void 0 ? void 0 : userProfile.id) ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("button", {
+          }), (user === null || user === void 0 ? void 0 : user.id) == (userProfile === null || userProfile === void 0 ? void 0 : userProfile.id) ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("button", {
             className: _Profile_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].edit,
             onClick: function onClick() {
               location.href = '/settings?page=profile';
             },
             children: "Edit Profile"
           }) : '']
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsxs)("div", {
           className: _Profile_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].right,
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("h3", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("h3", {
             className: _Profile_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].title,
             children: "Popular Sold Items"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("div", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("div", {
             className: _Profile_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].content,
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_Components_Grid_Grid__WEBPACK_IMPORTED_MODULE_12__["default"], {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)(_Components_Grid_Grid__WEBPACK_IMPORTED_MODULE_13__["default"], {
               shownGames: (_userProfile$items = userProfile.items) !== null && _userProfile$items !== void 0 ? _userProfile$items : [],
               reviewDisplay: reviewDisplay,
               handleLike: function handleLike() {},
@@ -10504,12 +11158,12 @@ var Profile = function Profile(props) {
             })
           })]
         })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_Components_Footer_Footer__WEBPACK_IMPORTED_MODULE_4__["default"], {})]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)(_Components_Footer_Footer__WEBPACK_IMPORTED_MODULE_4__["default"], {})]
     })
   });
 };
 if (document.getElementById('profile')) {
-  react_dom__WEBPACK_IMPORTED_MODULE_2__.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(Profile, {}), document.getElementById('profile'));
+  react_dom__WEBPACK_IMPORTED_MODULE_2__.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)(Profile, {}), document.getElementById('profile'));
 }
 
 /***/ }),
@@ -11349,14 +12003,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utils_games__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../utils/games */ "./resources/js/utils/games.js");
 /* harmony import */ var _AnimatedPage_AnimatedText__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../AnimatedPage/AnimatedText */ "./resources/js/Containers/AnimatedPage/AnimatedText.js");
 /* harmony import */ var _Components_AddedToCart_AddedToCartBig__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../Components/AddedToCart/AddedToCartBig */ "./resources/js/Components/AddedToCart/AddedToCartBig.js");
-/* harmony import */ var _Components_Cart_Cart__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../Components/Cart/Cart */ "./resources/js/Components/Cart/Cart.js");
-/* harmony import */ var _utils_templateGame__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../utils/templateGame */ "./resources/js/utils/templateGame.js");
-/* harmony import */ var _Components_Grid_Grid__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../Components/Grid/Grid */ "./resources/js/Components/Grid/Grid.js");
-/* harmony import */ var _Pages_ProfileSubPage_ProfileSubPage__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./Pages/ProfileSubPage/ProfileSubPage */ "./resources/js/Containers/Settings/Pages/ProfileSubPage/ProfileSubPage.js");
-/* harmony import */ var _Pages_SoldItemsPage_SoldItemsPage__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./Pages/SoldItemsPage/SoldItemsPage */ "./resources/js/Containers/Settings/Pages/SoldItemsPage/SoldItemsPage.js");
-/* harmony import */ var _Pages_PurchasedItemsPage_PurchasedItemsPage__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./Pages/PurchasedItemsPage/PurchasedItemsPage */ "./resources/js/Containers/Settings/Pages/PurchasedItemsPage/PurchasedItemsPage.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _Components_Chat_Chat__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../Components/Chat/Chat */ "./resources/js/Components/Chat/Chat.js");
+/* harmony import */ var _Components_Cart_Cart__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../Components/Cart/Cart */ "./resources/js/Components/Cart/Cart.js");
+/* harmony import */ var _utils_templateGame__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../utils/templateGame */ "./resources/js/utils/templateGame.js");
+/* harmony import */ var _Components_Grid_Grid__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../Components/Grid/Grid */ "./resources/js/Components/Grid/Grid.js");
+/* harmony import */ var _Pages_ProfileSubPage_ProfileSubPage__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./Pages/ProfileSubPage/ProfileSubPage */ "./resources/js/Containers/Settings/Pages/ProfileSubPage/ProfileSubPage.js");
+/* harmony import */ var _Pages_SoldItemsPage_SoldItemsPage__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./Pages/SoldItemsPage/SoldItemsPage */ "./resources/js/Containers/Settings/Pages/SoldItemsPage/SoldItemsPage.js");
+/* harmony import */ var _Pages_PurchasedItemsPage_PurchasedItemsPage__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./Pages/PurchasedItemsPage/PurchasedItemsPage */ "./resources/js/Containers/Settings/Pages/PurchasedItemsPage/PurchasedItemsPage.js");
+/* harmony import */ var _Components_Notifications_Notifications__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../../Components/Notifications/Notifications */ "./resources/js/Components/Notifications/Notifications.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 var _this = undefined;
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -11368,6 +12024,8 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
 
 
 
@@ -11443,24 +12101,32 @@ var Settings = function Settings(props) {
     _useState26 = _slicedToArray(_useState25, 2),
     categories = _useState26[0],
     setCategories = _useState26[1];
-  var _useState27 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)({}),
+  var _useState27 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(),
     _useState28 = _slicedToArray(_useState27, 2),
-    userProfile = _useState28[0],
-    setUserProfile = _useState28[1];
-  var _useState29 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]),
+    addPerson = _useState28[0],
+    setAddPerson = _useState28[1];
+  var _useState29 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)({}),
     _useState30 = _slicedToArray(_useState29, 2),
-    stars = _useState30[0],
-    setStars = _useState30[1];
-  var _useState31 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([0, 0, 0, 0, 0]),
+    userProfile = _useState30[0],
+    setUserProfile = _useState30[1];
+  var _useState31 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]),
     _useState32 = _slicedToArray(_useState31, 2),
-    emptyStars = _useState32[0],
-    setEmptyStars = _useState32[1];
-  var _useState33 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('profile'),
+    stars = _useState32[0],
+    setStars = _useState32[1];
+  var _useState33 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([0, 0, 0, 0, 0]),
     _useState34 = _slicedToArray(_useState33, 2),
-    page = _useState34[0],
-    setPage = _useState34[1];
+    emptyStars = _useState34[0],
+    setEmptyStars = _useState34[1];
+  var _useState35 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(),
+    _useState36 = _slicedToArray(_useState35, 2),
+    addNotification = _useState36[0],
+    setAddNotification = _useState36[1];
+  var _useState37 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('profile'),
+    _useState38 = _slicedToArray(_useState37, 2),
+    page = _useState38[0],
+    setPage = _useState38[1];
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
-    var api = axios__WEBPACK_IMPORTED_MODULE_17__["default"].create({
+    var api = axios__WEBPACK_IMPORTED_MODULE_19__["default"].create({
       baseURL: '/api'
     });
     api.get('/user/me').then(function (response) {
@@ -11533,7 +12199,7 @@ var Settings = function Settings(props) {
   };
   var clearCart = function clearCart() {
     var apiUrl = '/api/user/cart/clear/'; // Replace with your actual API endpoint
-    axios__WEBPACK_IMPORTED_MODULE_17__["default"].get(apiUrl).then(function (response) {
+    axios__WEBPACK_IMPORTED_MODULE_19__["default"].get(apiUrl).then(function (response) {
       if (response.data.msg == "done") {
         setCart([]);
         setCartAmount(0);
@@ -11551,7 +12217,7 @@ var Settings = function Settings(props) {
   var handleRemoveFromCart = function handleRemoveFromCart(id, key, e) {
     e.stopPropagation();
     var apiUrl = '/api/user/cart/remove/' + id; // Replace with your actual API endpoint
-    axios__WEBPACK_IMPORTED_MODULE_17__["default"].get(apiUrl).then(function (response) {
+    axios__WEBPACK_IMPORTED_MODULE_19__["default"].get(apiUrl).then(function (response) {
       setCart(response.data.cart);
       var c = cart.filter(function (cart_item) {});
       setCartAmount(cartAmount - 1);
@@ -11586,7 +12252,7 @@ var Settings = function Settings(props) {
     window.location.href = "/game?id=".concat(id);
   };
   var logout = function logout() {
-    var api = axios__WEBPACK_IMPORTED_MODULE_17__["default"].create({
+    var api = axios__WEBPACK_IMPORTED_MODULE_19__["default"].create({
       baseURL: '/api'
     });
     api.post('/logout').then(function (response) {
@@ -11597,14 +12263,14 @@ var Settings = function Settings(props) {
       console.error('Error fetching data:', error);
     });
   };
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.Fragment, {
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsxs)("section", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_18__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_18__.Fragment, {
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_18__.jsxs)("section", {
       className: _Settings_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].Settings,
       style: {
         maxHeight: cartDisplayed ? "100vh" : "1000vh",
         minHeight: "100vh"
       },
-      children: [cartDisplayed ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)(_Components_Cart_Cart__WEBPACK_IMPORTED_MODULE_10__["default"], {
+      children: [cartDisplayed ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_18__.jsx)(_Components_Cart_Cart__WEBPACK_IMPORTED_MODULE_11__["default"], {
         cartDisplayed: cartDisplayed,
         handleOpenCart: handleOpenCart,
         handleCloseCart: handleCloseCart,
@@ -11613,7 +12279,11 @@ var Settings = function Settings(props) {
         clearCart: clearCart,
         handleRemoveFromCart: handleRemoveFromCart,
         openGamePage: openGamePage
-      }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)(_Components_NavBar_NavBar__WEBPACK_IMPORTED_MODULE_5__["default"], {
+      }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_18__.jsx)(_Components_Chat_Chat__WEBPACK_IMPORTED_MODULE_10__["default"], {
+        addPerson: addPerson
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_18__.jsx)(_Components_Notifications_Notifications__WEBPACK_IMPORTED_MODULE_17__["default"], {
+        addNotification: addNotification
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_18__.jsx)(_Components_NavBar_NavBar__WEBPACK_IMPORTED_MODULE_5__["default"], {
         handleBrowse: handleBrowse.bind(_this, "games"),
         user: user,
         handleHome: handleHome,
@@ -11626,28 +12296,28 @@ var Settings = function Settings(props) {
         handleSearchSubmit: handleSearchSubmit,
         handleOpenCart: handleOpenCart,
         logout: logout
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsxs)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_18__.jsxs)("div", {
         className: _Settings_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].settingsContent,
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsxs)("div", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_18__.jsxs)("div", {
           className: _Settings_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].header,
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsxs)("div", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_18__.jsxs)("div", {
             className: _Settings_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].left,
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)("img", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_18__.jsx)("img", {
               src: (userProfile === null || userProfile === void 0 ? void 0 : userProfile.imgType) != null ? '../assets/users/' + (userProfile === null || userProfile === void 0 ? void 0 : userProfile.id) + '.' + (userProfile === null || userProfile === void 0 ? void 0 : userProfile.imgType) + "?r=" + Math.random() * 1000 : '../images/profile2.svg',
               className: _Settings_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].img
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsxs)("div", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_18__.jsxs)("div", {
               className: _Settings_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].name,
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)("h2", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_18__.jsx)("h2", {
                 className: _Settings_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].h,
                 children: user === null || user === void 0 ? void 0 : user.name
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)("span", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_18__.jsx)("span", {
                 className: _Settings_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].s,
                 children: "Your personal account"
               })]
             })]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)("div", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_18__.jsx)("div", {
             className: _Settings_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].right,
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)("button", {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_18__.jsx)("button", {
               className: _Settings_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].pro,
               onClick: function onClick() {
                 location.href = '/profile';
@@ -11655,91 +12325,91 @@ var Settings = function Settings(props) {
               children: "See your personal profile"
             })
           })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsxs)("div", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_18__.jsxs)("div", {
           className: _Settings_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].body,
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)("div", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_18__.jsx)("div", {
             className: _Settings_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].left,
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsxs)("div", {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_18__.jsxs)("div", {
               className: _Settings_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].block,
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsxs)("div", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_18__.jsxs)("div", {
                 className: "".concat(_Settings_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].link, " ") + (page == "profile" ? "".concat(_Settings_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].active) : ''),
                 onClick: function onClick() {
                   window.location.search = '?page=profile';
                 },
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)("svg", {
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_18__.jsx)("svg", {
                   className: _Settings_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].icon,
                   viewBox: "0 0 24 24",
                   fill: "#eee",
                   xmlns: "http://www.w3.org/2000/svg",
-                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)("path", {
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_18__.jsx)("path", {
                     fillRule: "evenodd",
                     clipRule: "evenodd",
                     d: "M16.5 7.063C16.5 10.258 14.57 13 12 13c-2.572 0-4.5-2.742-4.5-5.938C7.5 3.868 9.16 2 12 2s4.5 1.867 4.5 5.063zM4.102 20.142C4.487 20.6 6.145 22 12 22c5.855 0 7.512-1.4 7.898-1.857a.416.416 0 0 0 .09-.317C19.9 18.944 19.106 15 12 15s-7.9 3.944-7.989 4.826a.416.416 0 0 0 .091.317z",
                     fill: "#aaa"
                   })
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)("span", {
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_18__.jsx)("span", {
                   className: _Settings_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].label,
                   children: "Profile and account"
                 })]
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsxs)("div", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_18__.jsxs)("div", {
                 className: "".concat(_Settings_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].link, " ") + (page == "balance" ? "".concat(_Settings_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].active) : ''),
                 onClick: function onClick() {
                   window.location.search = '?page=balance';
                 },
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)("svg", {
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_18__.jsx)("svg", {
                   className: _Settings_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].icon,
                   xmlns: "http://www.w3.org/2000/svg",
                   fill: "#aaa",
                   viewBox: "0 0 50 50",
-                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)("path", {
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_18__.jsx)("path", {
                     d: "M 23.6875 2.03125 C 23.019531 2.011719 22.375 2.261719 21.84375 2.65625 C 21.3125 3.050781 20.835938 3.570313 20.375 4.21875 C 20.023438 4.714844 19.675781 4.925781 19.0625 5.0625 C 18.449219 5.199219 17.59375 5.1875 16.59375 5.1875 C 15.476563 5.1875 14.667969 5.285156 14 5.53125 C 13.464844 5.726563 12.976563 6.109375 12.71875 6.59375 C 12.707031 6.625 12.695313 6.65625 12.6875 6.6875 C 12.675781 6.710938 12.664063 6.726563 12.65625 6.75 C 12.644531 6.769531 12.632813 6.792969 12.625 6.8125 C 12.605469 6.867188 12.574219 6.914063 12.5625 6.96875 C 12.402344 7.640625 12.628906 8.207031 12.90625 8.65625 C 13.179688 9.097656 13.542969 9.476563 13.90625 9.8125 C 14.324219 10.230469 15.210938 10.988281 16.0625 12.34375 C 16.832031 13.566406 17.390625 15.230469 17.34375 17.21875 C 14.03125 18.230469 10.867188 20.640625 8.4375 23.71875 C 5.800781 27.058594 4 31.132813 4 35.09375 C 4 39.980469 5.53125 43.460938 9 45.4375 C 12.46875 47.414063 17.59375 48 25 48 C 32.40625 48 37.53125 47.414063 41 45.4375 C 44.46875 43.460938 46 39.980469 46 35.09375 C 46 27.53125 40.074219 20.609375 33.25 17.59375 C 33.730469 17.53125 34.226563 17.484375 34.75 17.5 C 36.433594 17.542969 38.230469 18.050781 39.78125 19.6875 C 40.015625 19.988281 40.402344 20.132813 40.777344 20.054688 C 41.148438 19.976563 41.449219 19.691406 41.542969 19.320313 C 41.636719 18.953125 41.511719 18.558594 41.21875 18.3125 C 39.40625 16.394531 37.210938 15.667969 35.25 15.53125 C 36.890625 14.84375 38.777344 14.636719 41.03125 15.875 C 41.347656 16.097656 41.761719 16.117188 42.101563 15.929688 C 42.4375 15.738281 42.632813 15.371094 42.605469 14.984375 C 42.578125 14.597656 42.328125 14.265625 41.96875 14.125 C 40.5625 13.351563 39.226563 13.039063 37.96875 13.03125 C 35.136719 13.015625 32.753906 14.523438 31.1875 15.59375 C 30.960938 11.949219 33.023438 9.042969 33.28125 8.71875 L 33.3125 8.6875 L 33.34375 8.625 C 33.691406 8.078125 34.234375 7.300781 34.46875 6.375 C 34.585938 5.914063 34.652344 5.304688 34.25 4.75 C 33.847656 4.195313 33.167969 4 32.5 4 C 31.25 4 30.121094 4.425781 29.21875 4.59375 C 28.316406 4.761719 27.859375 4.734375 27.40625 4.28125 L 27.40625 4.3125 C 27.398438 4.304688 27.382813 4.320313 27.375 4.3125 C 26.074219 2.960938 25.019531 2.070313 23.6875 2.03125 Z M 23.625 4.03125 C 23.988281 4.042969 24.777344 4.449219 25.96875 5.6875 L 26 5.6875 L 26 5.71875 C 27.046875 6.765625 28.472656 6.738281 29.59375 6.53125 C 30.441406 6.375 31.246094 6.164063 31.90625 6.0625 C 31.917969 6.136719 31.933594 6.140625 31.84375 6.28125 C 31.753906 6.421875 31.546875 6.660156 31.21875 6.9375 C 30.5625 7.492188 29.46875 8.199219 28.3125 9.25 C 27.839844 9.683594 27.277344 9.976563 26.84375 10.03125 C 26.410156 10.085938 26.160156 10 25.875 9.65625 L 25.84375 9.65625 C 25.335938 9.023438 24.878906 8.542969 24.34375 8.21875 C 23.796875 7.886719 23.152344 7.71875 22.5625 7.8125 C 21.394531 7.996094 20.652344 8.835938 19.75 9.6875 L 19.71875 9.6875 L 19.71875 9.65625 C 19.203125 10.140625 18.589844 10.300781 17.65625 9.90625 C 16.867188 9.574219 15.894531 8.742188 14.96875 7.375 C 15.3125 7.28125 15.8125 7.1875 16.59375 7.1875 C 17.59375 7.1875 18.5625 7.210938 19.5 7 C 20.4375 6.789063 21.351563 6.28125 22 5.375 L 22.03125 5.375 C 22.421875 4.824219 22.761719 4.449219 23.03125 4.25 C 23.300781 4.050781 23.445313 4.027344 23.625 4.03125 Z M 22.875 9.8125 C 23 9.792969 23.078125 9.765625 23.3125 9.90625 C 23.546875 10.046875 23.878906 10.359375 24.3125 10.90625 L 24.3125 10.9375 L 24.34375 10.9375 C 25.058594 11.792969 26.128906 12.121094 27.09375 12 C 28.058594 11.878906 28.957031 11.417969 29.6875 10.75 C 29.792969 10.652344 29.894531 10.59375 30 10.5 C 29.328125 12.125 28.796875 14.296875 29.21875 16.78125 C 24.59375 19.027344 20.890625 17.839844 19.46875 17.1875 C 19.507813 15.148438 18.917969 13.398438 18.1875 12.03125 C 19.265625 12.136719 20.324219 11.847656 21.09375 11.125 C 21.984375 10.285156 22.625 9.851563 22.875 9.8125 Z M 30.25 18.5 C 37.164063 20.523438 44 27.84375 44 35.09375 C 44 39.605469 42.886719 42.09375 40.03125 43.71875 C 37.175781 45.34375 32.292969 46 25 46 C 17.707031 46 12.824219 45.34375 9.96875 43.71875 C 7.113281 42.09375 6 39.605469 6 35.09375 C 6 31.753906 7.585938 27.996094 10 24.9375 C 12.382813 21.921875 15.554688 19.617188 18.5 18.90625 C 20.175781 19.660156 24.800781 21.203125 30.25 18.5 Z M 25.6875 25 C 21.136719 25 19.789063 29.261719 19.4375 31.0625 L 18.25 31.0625 L 17.65625 32.375 L 19.28125 32.375 C 19.265625 32.476563 19.25 32.601563 19.25 32.71875 L 19.25 33.3125 C 19.25 33.386719 19.265625 33.457031 19.28125 33.53125 L 18.25 33.53125 L 17.65625 34.875 L 19.375 34.875 C 19.992188 39.140625 22.066406 41.28125 25.65625 41.28125 C 26.933594 41.28125 28.082031 40.941406 29.0625 40.3125 L 29.0625 38.03125 C 28.445313 38.601563 27.507813 39.59375 25.65625 39.59375 C 23.355469 39.59375 21.984375 38.027344 21.5 34.875 L 26.28125 34.875 L 26.84375 33.53125 L 21.375 33.53125 C 21.359375 33.457031 21.375 33.386719 21.375 33.3125 L 21.375 32.75 C 21.375 32.632813 21.359375 32.492188 21.375 32.375 L 27.15625 32.375 L 27.75 31.0625 L 21.53125 31.0625 C 21.78125 29.847656 22.65625 26.6875 25.5 26.6875 C 26.570313 26.6875 27.597656 27.207031 28.625 28.21875 L 29.65625 26.375 C 28.335938 25.449219 27.019531 25 25.6875 25 Z"
                   })
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)("span", {
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_18__.jsx)("span", {
                   className: _Settings_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].label,
                   children: "Balance"
                 })]
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsxs)("div", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_18__.jsxs)("div", {
                 className: "".concat(_Settings_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].link, " ") + (page == "purchase" ? "".concat(_Settings_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].active) : ''),
                 onClick: function onClick() {
                   window.location.search = '?page=purchase';
                 },
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)("svg", {
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_18__.jsx)("svg", {
                   className: _Settings_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].icon,
                   fill: "#aaa",
                   xmlns: "http://www.w3.org/2000/svg",
                   viewBox: "0 0 24 24",
-                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)("path", {
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_18__.jsx)("path", {
                     d: "M 11 1 L 11 6 L 8 6 L 12 10 L 16 6 L 13 6 L 13 1 L 11 1 z M 4.4140625 1.9960938 L 1.0039062 2.0136719 L 1.0136719 4.0136719 L 3.0839844 4.0039062 L 6.3789062 11.908203 L 5.1816406 13.824219 C 4.7816406 14.464219 4.7609531 15.272641 5.1269531 15.931641 C 5.4929531 16.590641 6.1874063 17 6.9414062 17 L 19 17 L 19 15 L 6.9414062 15 L 6.8769531 14.882812 L 8.0527344 13 L 15.521484 13 C 16.248484 13 16.917531 12.606656 17.269531 11.972656 L 21.382812 4.5664062 L 19.634766 3.5957031 L 15.521484 11 L 8.1660156 11 L 4.4140625 1.9960938 z M 7 18 A 2 2 0 0 0 5 20 A 2 2 0 0 0 7 22 A 2 2 0 0 0 9 20 A 2 2 0 0 0 7 18 z M 17 18 A 2 2 0 0 0 15 20 A 2 2 0 0 0 17 22 A 2 2 0 0 0 19 20 A 2 2 0 0 0 17 18 z"
                   })
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)("span", {
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_18__.jsx)("span", {
                   className: _Settings_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].label,
                   children: "Purchasing Orders"
                 })]
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsxs)("div", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_18__.jsxs)("div", {
                 className: "".concat(_Settings_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].link, " ") + (page == "selling" ? "".concat(_Settings_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].active) : ''),
                 onClick: function onClick() {
                   window.location.search = '?page=selling';
                 },
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)("svg", {
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_18__.jsx)("svg", {
                   className: _Settings_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].icon,
                   xmlns: "http://www.w3.org/2000/svg",
                   fill: "#aaa",
                   viewBox: "0 0 30 30",
-                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)("path", {
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_18__.jsx)("path", {
                     d: "M 13 4 A 1.0001 1.0001 0 1 0 13 6 L 13 14 C 13 14.552 13.448 15 14 15 L 26 15 C 26.552 15 27 14.552 27 14 L 27 6 A 1.0001 1.0001 0 1 0 27 4 L 13 4 z M 18 6 L 22 6 C 22.552 6 23 6.448 23 7 C 23 7.552 22.552 8 22 8 L 18 8 C 17.448 8 17 7.552 17 7 C 17 6.448 17.448 6 18 6 z M 8 15 A 3 3 0 0 0 6.8828125 15.216797 L 2 17 L 2 25 L 6.2207031 23.166016 C 6.7187031 22.950016 7.2821563 22.942438 7.7851562 23.148438 L 16.849609 26.851562 C 16.849609 26.851562 16.853494 26.851563 16.853516 26.851562 A 1.5 1.5 0 0 0 17.5 27 A 1.5 1.5 0 0 0 18.238281 26.802734 C 18.238413 26.802691 18.244057 26.802776 18.244141 26.802734 L 27.230469 21.810547 L 27.228516 21.808594 A 1.5 1.5 0 0 0 28 20.5 A 1.5 1.5 0 0 0 26.5 19 A 1.5 1.5 0 0 0 25.863281 19.144531 L 25.863281 19.142578 L 19 22 L 17.5 22 A 1.5 1.5 0 0 0 19 20.5 A 1.5 1.5 0 0 0 17.964844 19.074219 L 17.964844 19.072266 L 9.2714844 15.28125 L 9.2597656 15.28125 A 3 3 0 0 0 8 15 z"
                   })
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)("span", {
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_18__.jsx)("span", {
                   className: _Settings_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].label,
                   children: "Ongoing Selling Orders"
                 })]
               })]
             })
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)("div", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_18__.jsx)("div", {
             className: _Settings_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].right,
             children: function () {
               switch (page) {
                 case 'profile':
-                  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)(_Pages_ProfileSubPage_ProfileSubPage__WEBPACK_IMPORTED_MODULE_13__["default"], {
+                  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_18__.jsx)(_Pages_ProfileSubPage_ProfileSubPage__WEBPACK_IMPORTED_MODULE_14__["default"], {
                     userProfile: userProfile,
                     setUserProfile: setUserProfile,
                     auth: auth,
@@ -11747,21 +12417,21 @@ var Settings = function Settings(props) {
                     setUser: setUser
                   });
                 case 'selling':
-                  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)(_Pages_SoldItemsPage_SoldItemsPage__WEBPACK_IMPORTED_MODULE_14__["default"], {});
+                  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_18__.jsx)(_Pages_SoldItemsPage_SoldItemsPage__WEBPACK_IMPORTED_MODULE_15__["default"], {});
                 case 'purchase':
-                  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)(_Pages_PurchasedItemsPage_PurchasedItemsPage__WEBPACK_IMPORTED_MODULE_15__["default"], {});
+                  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_18__.jsx)(_Pages_PurchasedItemsPage_PurchasedItemsPage__WEBPACK_IMPORTED_MODULE_16__["default"], {});
                 default:
                   return null;
               }
             }()
           })]
         })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)(_Components_Footer_Footer__WEBPACK_IMPORTED_MODULE_4__["default"], {})]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_18__.jsx)(_Components_Footer_Footer__WEBPACK_IMPORTED_MODULE_4__["default"], {})]
     })
   });
 };
 if (document.getElementById('settings')) {
-  react_dom__WEBPACK_IMPORTED_MODULE_2__.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)(Settings, {}), document.getElementById('settings'));
+  react_dom__WEBPACK_IMPORTED_MODULE_2__.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_18__.jsx)(Settings, {}), document.getElementById('settings'));
 }
 
 /***/ }),
@@ -11786,14 +12456,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Components_AddedToCart_AddedToCartBig__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../Components/AddedToCart/AddedToCartBig */ "./resources/js/Components/AddedToCart/AddedToCartBig.js");
 /* harmony import */ var _Components_Cart_Cart__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../Components/Cart/Cart */ "./resources/js/Components/Cart/Cart.js");
 /* harmony import */ var _utils_templateGame__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../utils/templateGame */ "./resources/js/utils/templateGame.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _Components_Notifications_Notifications__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../Components/Notifications/Notifications */ "./resources/js/Components/Notifications/Notifications.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 
 
 
@@ -11824,12 +12496,16 @@ var Signup = function Signup(props) {
     _useState6 = _slicedToArray(_useState5, 2),
     password = _useState6[0],
     setPassword = _useState6[1];
-  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(""),
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(),
     _useState8 = _slicedToArray(_useState7, 2),
-    confirmPassword = _useState8[0],
-    setConfirmPassword = _useState8[1];
+    addNotification = _useState8[0],
+    setAddNotification = _useState8[1];
+  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(""),
+    _useState10 = _slicedToArray(_useState9, 2),
+    confirmPassword = _useState10[0],
+    setConfirmPassword = _useState10[1];
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
-    var api = axios__WEBPACK_IMPORTED_MODULE_12__["default"].create({
+    var api = axios__WEBPACK_IMPORTED_MODULE_13__["default"].create({
       baseURL: '/api'
     });
     api.get('/user/me').then(function (response) {
@@ -11855,7 +12531,7 @@ var Signup = function Signup(props) {
   var submit = function submit(e) {
     e.preventDefault();
     var apiUrl = '/api/register'; // Replace with your actual API endpoint
-    axios__WEBPACK_IMPORTED_MODULE_12__["default"].post(apiUrl, {
+    axios__WEBPACK_IMPORTED_MODULE_13__["default"].post(apiUrl, {
       name: name,
       email: email,
       password: password,
@@ -11870,14 +12546,16 @@ var Signup = function Signup(props) {
       console.error('Error fetching data:', error);
     });
   };
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.Fragment, {
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.Fragment, {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Components_Notifications_Notifications__WEBPACK_IMPORTED_MODULE_11__["default"], {
+      addNotification: addNotification
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
       className: _Signup_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].form,
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("h2", {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("h2", {
         className: _Signup_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].title,
         children: "Rgeister"
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("form", {
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("input", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("form", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("input", {
           className: "".concat(_Signup_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].input, " ").concat(_Signup_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].i),
           name: "e",
           autoComplete: "off",
@@ -11885,7 +12563,7 @@ var Signup = function Signup(props) {
           type: "text",
           placeholder: "Enter your name:",
           onChange: handleNameInput
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("input", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("input", {
           className: "".concat(_Signup_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].input, " ").concat(_Signup_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].i),
           name: "e",
           autoComplete: "off",
@@ -11893,7 +12571,7 @@ var Signup = function Signup(props) {
           type: "text",
           placeholder: "Enter email:",
           onChange: handleEmailInput
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("input", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("input", {
           className: "".concat(_Signup_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].input, " ").concat(_Signup_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].i),
           name: "p",
           autoComplete: "off",
@@ -11901,7 +12579,7 @@ var Signup = function Signup(props) {
           type: "password",
           placeholder: "Enter password:",
           onChange: handlePasswordInput
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("input", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("input", {
           className: "".concat(_Signup_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].input, " ").concat(_Signup_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].i),
           name: "cp",
           autoComplete: "off",
@@ -11909,30 +12587,30 @@ var Signup = function Signup(props) {
           type: "password",
           placeholder: "Confirm the password",
           onChange: handleConfirmPasswordInput
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("button", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("button", {
           className: _Signup_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].btn,
           onClick: submit,
           children: "Sign Up"
         })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
         className: _Signup_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].bottom,
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("span", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("span", {
           className: _Signup_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].part,
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("span", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("span", {
             className: _Signup_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].label,
             children: "Already have an acount?"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("a", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("a", {
             className: _Signup_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].link,
             href: "/login",
             children: "Login"
           })]
         })
       })]
-    })
+    })]
   });
 };
 if (document.getElementById('signup')) {
-  react_dom__WEBPACK_IMPORTED_MODULE_2__.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(Signup, {}), document.getElementById('signup'));
+  react_dom__WEBPACK_IMPORTED_MODULE_2__.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(Signup, {}), document.getElementById('signup'));
 }
 
 /***/ }),
@@ -15081,6 +15759,52 @@ ___CSS_LOADER_EXPORT___.locals = {
 
 /***/ }),
 
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[2]!./resources/js/Components/Chat/Chat.module.css":
+/*!****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[2]!./resources/js/Components/Chat/Chat.module.css ***!
+  \****************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
+// Imports
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, ".wgvJdyioKffqiU6ywozczQ\\=\\= {\r\n    position: fixed;\r\n    bottom: -335px;\r\n    right: 80px;\r\n    width: 350px;\r\n    height: 400px;\r\n    background-color: #222;\r\n    z-index: 10;\r\n    color: #fff;\r\n    font-family: \"GT Medium\";\r\n    box-shadow: 0 0 5px 2px #63dd3f55;\r\n    border-radius: 5px 5px 0 0;\r\n    display: flex;\r\n    flex-direction: column;\r\n    transition: all 1s ease-in-out;\r\n}\r\n.wgvJdyioKffqiU6ywozczQ\\=\\=.MrUQ8VmaAZ02y3pIJbNmog\\=\\= {\r\n    bottom: 0;\r\n}\r\n.wgvJdyioKffqiU6ywozczQ\\=\\= .lwCV0C0CoWrTv33FQScxKw\\=\\=, .wgvJdyioKffqiU6ywozczQ\\=\\= .vAqGq1H\\+I3XCGu25WQyWsA\\=\\= {\r\n    position: absolute;\r\n    top: 50%;\r\n    right: 20px;\r\n    transform: translateY(-50%);\r\n    background-color: #333;\r\n    padding: 8px;\r\n    border-radius: 50%;\r\n    cursor: pointer;\r\n    transition: all 0.5s ease-in-out;\r\n    width: 35px;\r\n    height: 35px;\r\n    font-size: 1.2rem;\r\n}\r\n.wgvJdyioKffqiU6ywozczQ\\=\\= .vAqGq1H\\+I3XCGu25WQyWsA\\=\\= {\r\n}\r\n.wgvJdyioKffqiU6ywozczQ\\=\\= .lwCV0C0CoWrTv33FQScxKw\\=\\=:hover, .wgvJdyioKffqiU6ywozczQ\\=\\= .vAqGq1H\\+I3XCGu25WQyWsA\\=\\=:hover {\r\n    background-color: #444;\r\n}\r\n.wgvJdyioKffqiU6ywozczQ\\=\\= .Xpqz5tRk3Is7i6y5QYC9wA\\=\\= {\r\n    display: flex;\r\n    gap: 10px;\r\n    align-items: center;\r\n    position: relative;\r\n    padding: 10px;\r\n    margin-bottom: 15px;\r\n}\r\n.wgvJdyioKffqiU6ywozczQ\\=\\= .Xpqz5tRk3Is7i6y5QYC9wA\\=\\=:after {\r\n    content: \"\";\r\n    bottom: -15px;\r\n    position: absolute;\r\n    left: 10%;\r\n    width: 80%;\r\n    height: 1px;\r\n    background-color: #555;\r\n}\r\n.wgvJdyioKffqiU6ywozczQ\\=\\= .Xpqz5tRk3Is7i6y5QYC9wA\\=\\= ._7rrBZtUoBAs-O9\\+Rp3bmLA\\=\\= {\r\n    position: relative;\r\n    text-align: center;\r\n}\r\n.wgvJdyioKffqiU6ywozczQ\\=\\= .Xpqz5tRk3Is7i6y5QYC9wA\\=\\= .VTfRGME1xX96xJ5a38SqXQ\\=\\= {\r\n    width: 45px;\r\n    height: 45px;\r\n    border-radius: 50%;\r\n    cursor: pointer;\r\n    transition: all 0.5s ease-in-out;\r\n    background-color: #555;\r\n    outline: 2px solid transparent;\r\n    position: relative;\r\n}\r\n.wgvJdyioKffqiU6ywozczQ\\=\\= .Xpqz5tRk3Is7i6y5QYC9wA\\=\\= ._7rrBZtUoBAs-O9\\+Rp3bmLA\\=\\= ._81697ShgvUmrwmdkKTkpgA\\=\\= {\r\n    position: absolute;\r\n    top: 1px;\r\n    right: -4px;\r\n    font-family: \"GT Light\";\r\n    cursor: pointer;\r\n    background-color: #f00;\r\n    font-size: 0.8rem;\r\n    z-index: 2;\r\n    width: 17px;\r\n    height: 17px;\r\n    border-radius: 50%;\r\n    transition: all 0.5s ease-in-out\r\n}\r\n.wgvJdyioKffqiU6ywozczQ\\=\\= .Xpqz5tRk3Is7i6y5QYC9wA\\=\\= ._7rrBZtUoBAs-O9\\+Rp3bmLA\\=\\= ._81697ShgvUmrwmdkKTkpgA\\=\\=:hover {\r\n    background-color: rgb(150, 0, 0);\r\n}\r\n.wgvJdyioKffqiU6ywozczQ\\=\\=.MrUQ8VmaAZ02y3pIJbNmog\\=\\= .Xpqz5tRk3Is7i6y5QYC9wA\\=\\= ._7rrBZtUoBAs-O9\\+Rp3bmLA\\=\\=._2MRtjAMkyB6JmTmOF5ChiQ\\=\\= .VTfRGME1xX96xJ5a38SqXQ\\=\\= {\r\n    outline: 2px solid #63dd3f;\r\n    transform: scale(1.05);\r\n}\r\n.wgvJdyioKffqiU6ywozczQ\\=\\= .Xpqz5tRk3Is7i6y5QYC9wA\\=\\= .VTfRGME1xX96xJ5a38SqXQ\\=\\=:hover {\r\n    transform: scale(1.05);\r\n}\r\n.wgvJdyioKffqiU6ywozczQ\\=\\= .Xpqz5tRk3Is7i6y5QYC9wA\\=\\= ._7rrBZtUoBAs-O9\\+Rp3bmLA\\=\\= .HqMaeiKlbBvGJjeBSkPWng\\=\\= {\r\n    display: none;\r\n    position: absolute;\r\n    top: 100%;\r\n    left: 50%;\r\n    transform: translateX(-50%);\r\n    width: max-content;\r\n    font-family: \"GT Light\";\r\n    font-size: 0.9rem;\r\n}\r\n.wgvJdyioKffqiU6ywozczQ\\=\\=.MrUQ8VmaAZ02y3pIJbNmog\\=\\= .Xpqz5tRk3Is7i6y5QYC9wA\\=\\= ._7rrBZtUoBAs-O9\\+Rp3bmLA\\=\\=._2MRtjAMkyB6JmTmOF5ChiQ\\=\\= .HqMaeiKlbBvGJjeBSkPWng\\=\\= {\r\n    display: inline-block;\r\n}\r\n.wgvJdyioKffqiU6ywozczQ\\=\\= ._8eBmu3DFTvZHzMfmjNyAmA\\=\\= {\r\n    flex: 1;\r\n    display: flex;\r\n    padding: 10px;\r\n    flex-direction: column;\r\n    overflow-y: scroll;\r\n}\r\n.wgvJdyioKffqiU6ywozczQ\\=\\= ._8eBmu3DFTvZHzMfmjNyAmA\\=\\= .j2eyhKz5epuYm4cDTOVfUg\\=\\= {\r\n    display: flex;\r\n    width: 100%;\r\n}\r\n.wgvJdyioKffqiU6ywozczQ\\=\\= ._8eBmu3DFTvZHzMfmjNyAmA\\=\\= .j2eyhKz5epuYm4cDTOVfUg\\=\\=.J2FJqEM7-lYz6OhPl2Bwxg\\=\\= {\r\n    justify-content: flex-start;\r\n}\r\n.wgvJdyioKffqiU6ywozczQ\\=\\= ._8eBmu3DFTvZHzMfmjNyAmA\\=\\= .j2eyhKz5epuYm4cDTOVfUg\\=\\=.kiSl0MSGwodvSzgFPWtCtg\\=\\= {\r\n    justify-content: flex-end;\r\n}\r\n.wgvJdyioKffqiU6ywozczQ\\=\\= ._8eBmu3DFTvZHzMfmjNyAmA\\=\\= .j2eyhKz5epuYm4cDTOVfUg\\=\\= .z3NMlXQ5owVzTcDKb7FlOQ\\=\\= {\r\n    padding: 5px 10px;\r\n    background-color: #777;\r\n    width: -moz-fit-content;\r\n    width: fit-content;\r\n    margin-bottom: 2px;\r\n    max-width: 150px;\r\n    word-wrap: break-word;\r\n}\r\n.wgvJdyioKffqiU6ywozczQ\\=\\= ._8eBmu3DFTvZHzMfmjNyAmA\\=\\= .j2eyhKz5epuYm4cDTOVfUg\\=\\= .z3NMlXQ5owVzTcDKb7FlOQ\\=\\= {\r\n    display: inline-block;\r\n}\r\n.wgvJdyioKffqiU6ywozczQ\\=\\= ._8eBmu3DFTvZHzMfmjNyAmA\\=\\= .j2eyhKz5epuYm4cDTOVfUg\\=\\=.J2FJqEM7-lYz6OhPl2Bwxg\\=\\= .z3NMlXQ5owVzTcDKb7FlOQ\\=\\= {\r\n    border-radius: 0 5px 5px 0;\r\n}\r\n.wgvJdyioKffqiU6ywozczQ\\=\\= ._8eBmu3DFTvZHzMfmjNyAmA\\=\\= .j2eyhKz5epuYm4cDTOVfUg\\=\\=.kiSl0MSGwodvSzgFPWtCtg\\=\\= .z3NMlXQ5owVzTcDKb7FlOQ\\=\\= {\r\n    border-radius: 5px 0 0 5px;\r\n}\r\n.wgvJdyioKffqiU6ywozczQ\\=\\= ._8eBmu3DFTvZHzMfmjNyAmA\\=\\= .j2eyhKz5epuYm4cDTOVfUg\\=\\=.hy8Xz16VbaEPglNklzFqnA\\=\\= .z3NMlXQ5owVzTcDKb7FlOQ\\=\\= {\r\n    margin-bottom: 5px;\r\n}\r\n.wgvJdyioKffqiU6ywozczQ\\=\\= ._8eBmu3DFTvZHzMfmjNyAmA\\=\\= .j2eyhKz5epuYm4cDTOVfUg\\=\\=.J2FJqEM7-lYz6OhPl2Bwxg\\=\\=.hy8Xz16VbaEPglNklzFqnA\\=\\= .z3NMlXQ5owVzTcDKb7FlOQ\\=\\= {\r\n    border-radius: 0 5px 5px 5px;\r\n}\r\n.wgvJdyioKffqiU6ywozczQ\\=\\= ._8eBmu3DFTvZHzMfmjNyAmA\\=\\= .j2eyhKz5epuYm4cDTOVfUg\\=\\=.kiSl0MSGwodvSzgFPWtCtg\\=\\=.hy8Xz16VbaEPglNklzFqnA\\=\\= .z3NMlXQ5owVzTcDKb7FlOQ\\=\\= {\r\n    border-radius: 5px 0 5px 5px;\r\n}\r\n.wgvJdyioKffqiU6ywozczQ\\=\\= ._8eBmu3DFTvZHzMfmjNyAmA\\=\\= .j2eyhKz5epuYm4cDTOVfUg\\=\\=.J2FJqEM7-lYz6OhPl2Bwxg\\=\\=.-zsmKKS3kB3whJbTTiUdxw\\=\\= .z3NMlXQ5owVzTcDKb7FlOQ\\=\\= {\r\n    border-radius: 5px 5px 5px 0;\r\n}\r\n.wgvJdyioKffqiU6ywozczQ\\=\\= ._8eBmu3DFTvZHzMfmjNyAmA\\=\\= .j2eyhKz5epuYm4cDTOVfUg\\=\\=.kiSl0MSGwodvSzgFPWtCtg\\=\\=.-zsmKKS3kB3whJbTTiUdxw\\=\\= .z3NMlXQ5owVzTcDKb7FlOQ\\=\\= {\r\n    border-radius: 5px 5px 0 5px;\r\n}\r\n.wgvJdyioKffqiU6ywozczQ\\=\\= ._8eBmu3DFTvZHzMfmjNyAmA\\=\\= .j2eyhKz5epuYm4cDTOVfUg\\=\\=.-zsmKKS3kB3whJbTTiUdxw\\=\\=.hy8Xz16VbaEPglNklzFqnA\\=\\= .z3NMlXQ5owVzTcDKb7FlOQ\\=\\= {\r\n    border-radius: 5px;\r\n}\r\n.wgvJdyioKffqiU6ywozczQ\\=\\= ._8eBmu3DFTvZHzMfmjNyAmA\\=\\= .j2eyhKz5epuYm4cDTOVfUg\\=\\=.kiSl0MSGwodvSzgFPWtCtg\\=\\= .z3NMlXQ5owVzTcDKb7FlOQ\\=\\= {\r\n    background-color: #009225;\r\n}\r\n.wgvJdyioKffqiU6ywozczQ\\=\\= .D-h8IGZ1MbxvBMtFst8BJQ\\=\\= {\r\n    display: flex;\r\n    padding: 10px;\r\n    gap: 5px;\r\n    align-items: center;\r\n}\r\n.wgvJdyioKffqiU6ywozczQ\\=\\= .D-h8IGZ1MbxvBMtFst8BJQ\\=\\= .zOjGsUfwyZKa0j1Moqb4aA\\=\\= {\r\n    flex: 1;\r\n    padding: 5px 10px;\r\n    font-size: 1.1rem;\r\n    border-radius: 20px;\r\n    background-color: #444;\r\n    border: none;\r\n    outline: none;\r\n    color: #fff;\r\n    font-family: \"GT Light\";\r\n    border: 2px solid transparent;\r\n}\r\n.wgvJdyioKffqiU6ywozczQ\\=\\= .D-h8IGZ1MbxvBMtFst8BJQ\\=\\= .zOjGsUfwyZKa0j1Moqb4aA\\=\\=:focus {\r\n    border: 2px solid #63dd3f;\r\n}\r\n.wgvJdyioKffqiU6ywozczQ\\=\\= .D-h8IGZ1MbxvBMtFst8BJQ\\=\\= .mJACWD2nS9zEaGRJIJ5o7Q\\=\\= {\r\n    padding: 5px;\r\n    border-radius: 50%;\r\n    background-color: #009225;\r\n    color: #fff;\r\n    border: none;\r\n    outline: none;\r\n    cursor: pointer;\r\n    transition: all 0.5s ease-in-out;\r\n    width: 33px;\r\n    height: 33px;\r\n    font-size: 1.3rem;\r\n    font-family: \"GT Bold\";\r\n    text-align: center;\r\n}\r\n.wgvJdyioKffqiU6ywozczQ\\=\\= .D-h8IGZ1MbxvBMtFst8BJQ\\=\\= .mJACWD2nS9zEaGRJIJ5o7Q\\=\\=:hover {\r\n    transform: scale(1.07);\r\n}", ""]);
+// Exports
+___CSS_LOADER_EXPORT___.locals = {
+	"chatWindow": "wgvJdyioKffqiU6ywozczQ==",
+	"show": "MrUQ8VmaAZ02y3pIJbNmog==",
+	"close": "lwCV0C0CoWrTv33FQScxKw==",
+	"open": "vAqGq1H+I3XCGu25WQyWsA==",
+	"top": "Xpqz5tRk3Is7i6y5QYC9wA==",
+	"person": "_7rrBZtUoBAs-O9+Rp3bmLA==",
+	"img": "VTfRGME1xX96xJ5a38SqXQ==",
+	"c": "_81697ShgvUmrwmdkKTkpgA==",
+	"active": "_2MRtjAMkyB6JmTmOF5ChiQ==",
+	"name": "HqMaeiKlbBvGJjeBSkPWng==",
+	"middle": "_8eBmu3DFTvZHzMfmjNyAmA==",
+	"chat_text": "j2eyhKz5epuYm4cDTOVfUg==",
+	"him": "J2FJqEM7-lYz6OhPl2Bwxg==",
+	"me": "kiSl0MSGwodvSzgFPWtCtg==",
+	"msg": "z3NMlXQ5owVzTcDKb7FlOQ==",
+	"end": "hy8Xz16VbaEPglNklzFqnA==",
+	"start": "-zsmKKS3kB3whJbTTiUdxw==",
+	"bottom": "D-h8IGZ1MbxvBMtFst8BJQ==",
+	"input": "zOjGsUfwyZKa0j1Moqb4aA==",
+	"send": "mJACWD2nS9zEaGRJIJ5o7Q=="
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
 /***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[2]!./resources/js/Components/Filters/Filters.module.css":
 /*!**********************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[2]!./resources/js/Components/Filters/Filters.module.css ***!
@@ -15228,6 +15952,39 @@ ___CSS_LOADER_EXPORT___.locals = {
 	"dropboxContainer": "x05V89Oy0tqlziF7hSyd6g==",
 	"userDropbox": "oBMG6cMlnl9JQPCrMlPHuA==",
 	"item": "g7y-jggEuv7vh17B8DWMcA=="
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[2]!./resources/js/Components/Notifications/Notifications.module.css":
+/*!**********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[2]!./resources/js/Components/Notifications/Notifications.module.css ***!
+  \**********************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
+// Imports
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, ".uppQMfNzNvpVp0GBFVb1fA\\=\\= {\r\n    position: fixed;\r\n    top: 100px;\r\n    right: 50px;\r\n    z-index: 11;\r\n    display: flex;\r\n    flex-direction: column;\r\n    gap: 8px;\r\n}\r\n\r\n.uppQMfNzNvpVp0GBFVb1fA\\=\\= ._61A4or1GmBq5lNl6emFDww\\=\\= {\r\n    background-color: #333;\r\n    color: #fff;\r\n    font-family: \"GT Light\";\r\n    padding: 10px 34px 10px 10px;\r\n    position: relative;\r\n    border-radius: 5px;\r\n    width: 260px;\r\n    box-shadow: 1px 1px 2px 1px #242424;\r\n    font-size: 1.3rem;\r\n}\r\n.uppQMfNzNvpVp0GBFVb1fA\\=\\= ._61A4or1GmBq5lNl6emFDww\\=\\= .fpl6Q0fEXfDFda93Te2RhQ\\=\\=:after {\r\n    content: \" \";\r\n}\r\n.uppQMfNzNvpVp0GBFVb1fA\\=\\= ._61A4or1GmBq5lNl6emFDww\\=\\= .ZtUzUfCWCeVQg5-DQQArCg\\=\\= {\r\n    color: #00f;\r\n}\r\n.uppQMfNzNvpVp0GBFVb1fA\\=\\= ._61A4or1GmBq5lNl6emFDww\\=\\= .ZtUzUfCWCeVQg5-DQQArCg\\=\\=:focus {\r\n    outline: none;\r\n    border: none;\r\n}\r\n.uppQMfNzNvpVp0GBFVb1fA\\=\\= ._61A4or1GmBq5lNl6emFDww\\=\\= .ZtUzUfCWCeVQg5-DQQArCg\\=\\=:hover {\r\n    text-decoration: underline;\r\n}\r\n.uppQMfNzNvpVp0GBFVb1fA\\=\\= ._61A4or1GmBq5lNl6emFDww\\=\\=.bZVUk9NntO5-f-1CShEjIA\\=\\= {\r\n    background-color: #009225;\r\n}\r\n.uppQMfNzNvpVp0GBFVb1fA\\=\\= ._61A4or1GmBq5lNl6emFDww\\=\\= .SxWoPriCV3ANEiHen2Dbxg\\=\\= {\r\n    position: absolute;\r\n    right: 12px;\r\n    top: calc(50% - 2px);\r\n    transform: translateY(-50%);\r\n    cursor: pointer;\r\n    transition: all 0.5s ease-in-out;\r\n    padding: 5px;\r\n    border-radius: 50%;\r\n    color: #bbb;\r\n}\r\n.uppQMfNzNvpVp0GBFVb1fA\\=\\= ._61A4or1GmBq5lNl6emFDww\\=\\= .SxWoPriCV3ANEiHen2Dbxg\\=\\=:hover {\r\n    color: #fff;\r\n    transform: scale(1.1) translateY(calc(-50% + 2px));\r\n}\r\n.uppQMfNzNvpVp0GBFVb1fA\\=\\= ._61A4or1GmBq5lNl6emFDww\\=\\= .SxWoPriCV3ANEiHen2Dbxg\\=\\= .GcehDb2WbiMK9GjxmiAnqg\\=\\= {\r\n    width: 25px;\r\n    height: 25px;\r\n}", ""]);
+// Exports
+___CSS_LOADER_EXPORT___.locals = {
+	"NotificationsWidget": "uppQMfNzNvpVp0GBFVb1fA==",
+	"notification": "_61A4or1GmBq5lNl6emFDww==",
+	"p": "fpl6Q0fEXfDFda93Te2RhQ==",
+	"l": "ZtUzUfCWCeVQg5-DQQArCg==",
+	"success": "bZVUk9NntO5-f-1CShEjIA==",
+	"delete": "SxWoPriCV3ANEiHen2Dbxg==",
+	"icon": "GcehDb2WbiMK9GjxmiAnqg=="
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -15569,7 +16326,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "* {\n    margin: 0;\n    padding: 0;\n}\n\nhtml,\nbody {\n    overflow-x: hidden;\n}\n\n::-webkit-scrollbar {\n    display: none;\n}\n\n._8SwNT9BzPkvkbXDCxB4bVQ\\=\\= {\n    background-color: #0f1011;\n}\n\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= {\n    margin-top: 15px;\n    display: flex;\n    width: 100vw;\n    padding: 0 60px 280px;\n    padding-bottom: 50px;\n    background-color: #0f1011;\n    gap: 50px;\n}\n\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= {\n    width: 25%;\n\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .\\+Cadz6dORBgfOvaCemfz4A\\=\\= {\n    width: 100%;\n    padding-top: 100%;\n    border-radius: 50%;\n    position: relative;\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .\\+Cadz6dORBgfOvaCemfz4A\\=\\= .YOTUjWU9MelzcoLUz61zZA\\=\\= {\n    position: absolute;\n    top: 0;\n    left: 0;\n    right: 0;\n    bottom: 0;\n    border-radius: 50%;\n    border: 2px solid #eee;\n    background-color: #aaa;\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .\\+Cadz6dORBgfOvaCemfz4A\\=\\= .YOTUjWU9MelzcoLUz61zZA\\=\\= img{\n    width: 100%;\n    height: 100%;\n    fill: #fff;\n    border-radius: 50%;\n}   \n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= ._2V7eEHcGkBNQgsrx8D0tSQ\\=\\= {\n    color: #eee;\n    margin: 20px 0 0 10px;\n    font-family: \"GT Bold\";\n    display: flex;\n    align-items: flex-end;\n    gap: 8px;\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .Q6You4mBugc0wOdQB06O-Q\\=\\= .iYcAl76P6OLx0bJJqj2zsg\\=\\= {\n    width: 20px;\n    height: 20px;\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .rOpW79udvMpJS48Pip0ojQ\\=\\= {\n    margin-top: 8px;\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .rOpW79udvMpJS48Pip0ojQ\\=\\= .gVTS30kENmU0VN-1jYGamw\\=\\= {\n    display: flex;\n    gap: 7px;\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .rOpW79udvMpJS48Pip0ojQ\\=\\= .gVTS30kENmU0VN-1jYGamw\\=\\= .jcqxcKu4bwd7X73cm4ARGg\\=\\= img {\n    width: 30px;\n    height: 30px;\n    cursor: pointer;\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .GVwJW4Au7TbYH\\+Heyz00Nw\\=\\= {\n    width: 100%;\n    padding: 7px 0;\n    font-size: 1.05rem;\n    margin-top: 8px;\n    border-radius: 5px;\n    background-color: #444;\n    border: 1px solid #aaa;\n    color: #eee;\n    cursor: pointer;\n    transition: all 0.5s ease-in-out;\n    font-family: \"GT Light\";\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .GVwJW4Au7TbYH\\+Heyz00Nw\\=\\=:hover {\n    background-color: #333;\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= .lDTJOwDR36ZK2BZhq\\+F9\\+Q\\=\\= {\n    width: 75%;\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= .lDTJOwDR36ZK2BZhq\\+F9\\+Q\\=\\= .RJe6nQ3wW2sPrUrzB-IFkA\\=\\= {\n    font-family: \"GT Light\";\n    font-size: 1.1rem;\n    color: #eee;\n}\n\n.gNwByqAKejAD6VSPSjbSgw\\=\\= {\n    font-family: \"GT Bold\" !important;\n}\n\n\n.CEGPR\\+SJzkr5jedeCU\\+xuA\\=\\= {\n    display: flex;\n    flex-direction: column;\n    width: 100%;\n    padding-right: 60px;\n}\n\n.CEGPR\\+SJzkr5jedeCU\\+xuA\\=\\= h1,\n.CEGPR\\+SJzkr5jedeCU\\+xuA\\=\\= p {\n    color: white;\n}\n\n.CEGPR\\+SJzkr5jedeCU\\+xuA\\=\\= h1 {\n    font-family: \"GT Bold\";\n    font-size: 4em;\n}\n\n._4lbWM8lmxXMBZXbk2nYGTA\\=\\= {\n    margin-top: 28px;\n    display: flex;\n    justify-content: space-between;\n}\n\n._6tbfiVBLi-9-6LU4Revlyw\\=\\= {\n    padding: 8px 22px;\n    height: 40px;\n    background-color: #262626;\n    color: #fff;\n    font-family: \"GT Light\";\n    font-size: 0.95em;\n    border: 1px transparent;\n    border-radius: 10px;\n    cursor: pointer;\n    transition: all 0.3s;\n}\n\n._6tbfiVBLi-9-6LU4Revlyw\\=\\=:hover {\n    background-color: #2d2d2d;\n}\n\n._6tbfiVBLi-9-6LU4Revlyw\\=\\=:active {\n    transform: scale(0.9);\n}\n\n._4lbWM8lmxXMBZXbk2nYGTA\\=\\= button span {\n    color: #fff;\n    font-family: \"GT Bold\";\n}\n\n.Pb06kHq2POdSj68kzZolMQ\\=\\= {\n    display: flex;\n    gap: 8px;\n    align-items: center;\n}\n\n.Pb06kHq2POdSj68kzZolMQ\\=\\= p {\n    color: #696969;\n    font-family: \"GT Medium\";\n}\n\n.HnxTJOANz9eW9ATV5bbRzg\\=\\= {\n    border: 1px transparent;\n    border-radius: 8px;\n    outline: none;\n    background-color: #282828;\n    transition: 0.3s all;\n    padding: 0px 3px;\n}\n\n.HnxTJOANz9eW9ATV5bbRzg\\=\\= * {\n    pointer-events: none;\n}\n\n.HnxTJOANz9eW9ATV5bbRzg\\=\\=:hover {\n    background-color: #313131;\n}\n\n.HnxTJOANz9eW9ATV5bbRzg\\=\\=:active {\n    transform: scale(0.9125);\n}\n\n.\\+bEbBIZWC8mLWDjGTmMgIg\\=\\= {\n    transform: scale(0.9);\n    transition: 0.3s all;\n}\n\n@media screen and (max-width: 850px) {\n    .Pb06kHq2POdSj68kzZolMQ\\=\\= p {\n        display: none;\n    }\n}\n\n@media screen and (max-width: 770px) {\n    .Pb06kHq2POdSj68kzZolMQ\\=\\= {\n        display: none;\n    }\n\n    .CEGPR\\+SJzkr5jedeCU\\+xuA\\=\\= h1 {\n        font-size: 40px;\n    }\n}\n\n@media screen and (max-width: 600px) {\n    .CEGPR\\+SJzkr5jedeCU\\+xuA\\=\\= {\n        padding-left: 35px;\n        padding-right: 35px;\n    }\n\n    .CEGPR\\+SJzkr5jedeCU\\+xuA\\=\\= h1 {\n        font-size: 48px;\n    }\n}\n\n@media screen and (max-width: 375px) {\n    .CEGPR\\+SJzkr5jedeCU\\+xuA\\=\\= {\n        padding-left: 20px;\n        padding-right: 20px;\n    }\n\n    .CEGPR\\+SJzkr5jedeCU\\+xuA\\=\\= h1 {\n        font-size: 38px;\n    }\n}\n\n@media screen and (max-width: 320px) {\n    ._6tbfiVBLi-9-6LU4Revlyw\\=\\= {\n        font-size: 12px;\n    }\n}\n\n.uNmspEGYhOMITMdpWThLRg\\=\\= {\n    padding: 0 10px 12px;\n    font-size: 1.3rem;\n    color: #fff;\n    width: 100%;\n    display: flex\n}\n\n.uNmspEGYhOMITMdpWThLRg\\=\\=.xbNoY1OorNaG13SlowV2tw\\=\\= {\n    padding-top: 12px;\n    position: relative;\n}\n\n.uNmspEGYhOMITMdpWThLRg\\=\\=.xbNoY1OorNaG13SlowV2tw\\=\\=:before {\n    content: \"\";\n    position: absolute;\n    top: 0;\n    left: 40px;\n    width: 5%;\n    height: 2px;\n    background-color: #333;\n}\n\n.uNmspEGYhOMITMdpWThLRg\\=\\= .q0wlAfowlZbqDuNOjhDugg\\=\\= {\n    font-size: 1.15rem;\n    color: #3498db;\n    transition: all 0.5 ease-in-out;\n    margin-left: 7px;\n}\n.uNmspEGYhOMITMdpWThLRg\\=\\= .q0wlAfowlZbqDuNOjhDugg\\=\\= {\n    color: #2980b9;\n    text-decoration: underline;\n    cursor: pointer;\n}\n\n.uNmspEGYhOMITMdpWThLRg\\=\\= .JPdpGiNLdnW6CmwQMSdnHQ\\=\\= {\n    width: 150px;\n    display: inline-block;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "* {\n    margin: 0;\n    padding: 0;\n}\n\nhtml,\nbody {\n    overflow-x: hidden;\n}\n\n::-webkit-scrollbar {\n    display: none;\n}\n\n._8SwNT9BzPkvkbXDCxB4bVQ\\=\\= {\n    background-color: #0f1011;\n}\n\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= {\n    margin-top: 15px;\n    display: flex;\n    width: 100vw;\n    padding: 0 60px 280px;\n    padding-bottom: 50px;\n    background-color: #0f1011;\n    gap: 50px;\n}\n\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= {\n    width: 25%;\n\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .\\+Cadz6dORBgfOvaCemfz4A\\=\\= {\n    width: 100%;\n    padding-top: 100%;\n    border-radius: 50%;\n    position: relative;\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .\\+Cadz6dORBgfOvaCemfz4A\\=\\= .YOTUjWU9MelzcoLUz61zZA\\=\\= {\n    position: absolute;\n    top: 0;\n    left: 0;\n    right: 0;\n    bottom: 0;\n    border-radius: 50%;\n    border: 2px solid #eee;\n    background-color: #aaa;\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .\\+Cadz6dORBgfOvaCemfz4A\\=\\= .YOTUjWU9MelzcoLUz61zZA\\=\\= img{\n    width: 100%;\n    height: 100%;\n    fill: #fff;\n    border-radius: 50%;\n}   \n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .\\+Cadz6dORBgfOvaCemfz4A\\=\\= .YOTUjWU9MelzcoLUz61zZA\\=\\= .noVdxnV9Dun63Ey005qEsQ\\=\\= {\n    position: absolute;\n    bottom: 10px;\n    right: 10px;\n    background-color: #009225;\n    color: #fff;\n    width: 70px;\n    height: 70px;\n    cursor: pointer;\n    font-size: 1.7rem;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    transition: all 0.5s ease-in-out;\n    border-radius: 50%;\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .\\+Cadz6dORBgfOvaCemfz4A\\=\\= .YOTUjWU9MelzcoLUz61zZA\\=\\= .noVdxnV9Dun63Ey005qEsQ\\=\\=:hover {\n    transform: scale(1.1);\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= ._2V7eEHcGkBNQgsrx8D0tSQ\\=\\= {\n    color: #eee;\n    margin: 20px 0 0 10px;\n    font-family: \"GT Bold\";\n    display: flex;\n    align-items: flex-end;\n    gap: 8px;\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .Q6You4mBugc0wOdQB06O-Q\\=\\= .iYcAl76P6OLx0bJJqj2zsg\\=\\= {\n    width: 20px;\n    height: 20px;\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .rOpW79udvMpJS48Pip0ojQ\\=\\= {\n    margin-top: 8px;\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .rOpW79udvMpJS48Pip0ojQ\\=\\= .gVTS30kENmU0VN-1jYGamw\\=\\= {\n    display: flex;\n    gap: 7px;\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .rOpW79udvMpJS48Pip0ojQ\\=\\= .gVTS30kENmU0VN-1jYGamw\\=\\= .jcqxcKu4bwd7X73cm4ARGg\\=\\= img {\n    width: 30px;\n    height: 30px;\n    cursor: pointer;\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .GVwJW4Au7TbYH\\+Heyz00Nw\\=\\= {\n    width: 100%;\n    padding: 7px 0;\n    font-size: 1.05rem;\n    margin-top: 8px;\n    border-radius: 5px;\n    background-color: #444;\n    border: 1px solid #aaa;\n    color: #eee;\n    cursor: pointer;\n    transition: all 0.5s ease-in-out;\n    font-family: \"GT Light\";\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .GVwJW4Au7TbYH\\+Heyz00Nw\\=\\=:hover {\n    background-color: #333;\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= .lDTJOwDR36ZK2BZhq\\+F9\\+Q\\=\\= {\n    width: 75%;\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= .lDTJOwDR36ZK2BZhq\\+F9\\+Q\\=\\= .RJe6nQ3wW2sPrUrzB-IFkA\\=\\= {\n    font-family: \"GT Light\";\n    font-size: 1.1rem;\n    color: #eee;\n}\n\n.gNwByqAKejAD6VSPSjbSgw\\=\\= {\n    font-family: \"GT Bold\" !important;\n}\n\n\n.CEGPR\\+SJzkr5jedeCU\\+xuA\\=\\= {\n    display: flex;\n    flex-direction: column;\n    width: 100%;\n    padding-right: 60px;\n}\n\n.CEGPR\\+SJzkr5jedeCU\\+xuA\\=\\= h1,\n.CEGPR\\+SJzkr5jedeCU\\+xuA\\=\\= p {\n    color: white;\n}\n\n.CEGPR\\+SJzkr5jedeCU\\+xuA\\=\\= h1 {\n    font-family: \"GT Bold\";\n    font-size: 4em;\n}\n\n._4lbWM8lmxXMBZXbk2nYGTA\\=\\= {\n    margin-top: 28px;\n    display: flex;\n    justify-content: space-between;\n}\n\n._6tbfiVBLi-9-6LU4Revlyw\\=\\= {\n    padding: 8px 22px;\n    height: 40px;\n    background-color: #262626;\n    color: #fff;\n    font-family: \"GT Light\";\n    font-size: 0.95em;\n    border: 1px transparent;\n    border-radius: 10px;\n    cursor: pointer;\n    transition: all 0.3s;\n}\n\n._6tbfiVBLi-9-6LU4Revlyw\\=\\=:hover {\n    background-color: #2d2d2d;\n}\n\n._6tbfiVBLi-9-6LU4Revlyw\\=\\=:active {\n    transform: scale(0.9);\n}\n\n._4lbWM8lmxXMBZXbk2nYGTA\\=\\= button span {\n    color: #fff;\n    font-family: \"GT Bold\";\n}\n\n.Pb06kHq2POdSj68kzZolMQ\\=\\= {\n    display: flex;\n    gap: 8px;\n    align-items: center;\n}\n\n.Pb06kHq2POdSj68kzZolMQ\\=\\= p {\n    color: #696969;\n    font-family: \"GT Medium\";\n}\n\n.HnxTJOANz9eW9ATV5bbRzg\\=\\= {\n    border: 1px transparent;\n    border-radius: 8px;\n    outline: none;\n    background-color: #282828;\n    transition: 0.3s all;\n    padding: 0px 3px;\n}\n\n.HnxTJOANz9eW9ATV5bbRzg\\=\\= * {\n    pointer-events: none;\n}\n\n.HnxTJOANz9eW9ATV5bbRzg\\=\\=:hover {\n    background-color: #313131;\n}\n\n.HnxTJOANz9eW9ATV5bbRzg\\=\\=:active {\n    transform: scale(0.9125);\n}\n\n.\\+bEbBIZWC8mLWDjGTmMgIg\\=\\= {\n    transform: scale(0.9);\n    transition: 0.3s all;\n}\n\n@media screen and (max-width: 850px) {\n    .Pb06kHq2POdSj68kzZolMQ\\=\\= p {\n        display: none;\n    }\n}\n\n@media screen and (max-width: 770px) {\n    .Pb06kHq2POdSj68kzZolMQ\\=\\= {\n        display: none;\n    }\n\n    .CEGPR\\+SJzkr5jedeCU\\+xuA\\=\\= h1 {\n        font-size: 40px;\n    }\n}\n\n@media screen and (max-width: 600px) {\n    .CEGPR\\+SJzkr5jedeCU\\+xuA\\=\\= {\n        padding-left: 35px;\n        padding-right: 35px;\n    }\n\n    .CEGPR\\+SJzkr5jedeCU\\+xuA\\=\\= h1 {\n        font-size: 48px;\n    }\n}\n\n@media screen and (max-width: 375px) {\n    .CEGPR\\+SJzkr5jedeCU\\+xuA\\=\\= {\n        padding-left: 20px;\n        padding-right: 20px;\n    }\n\n    .CEGPR\\+SJzkr5jedeCU\\+xuA\\=\\= h1 {\n        font-size: 38px;\n    }\n}\n\n@media screen and (max-width: 320px) {\n    ._6tbfiVBLi-9-6LU4Revlyw\\=\\= {\n        font-size: 12px;\n    }\n}\n\n.uNmspEGYhOMITMdpWThLRg\\=\\= {\n    padding: 0 10px 12px;\n    font-size: 1.3rem;\n    color: #fff;\n    width: 100%;\n    display: flex\n}\n\n.uNmspEGYhOMITMdpWThLRg\\=\\=.xbNoY1OorNaG13SlowV2tw\\=\\= {\n    padding-top: 12px;\n    position: relative;\n}\n\n.uNmspEGYhOMITMdpWThLRg\\=\\=.xbNoY1OorNaG13SlowV2tw\\=\\=:before {\n    content: \"\";\n    position: absolute;\n    top: 0;\n    left: 40px;\n    width: 5%;\n    height: 2px;\n    background-color: #333;\n}\n\n.uNmspEGYhOMITMdpWThLRg\\=\\= .q0wlAfowlZbqDuNOjhDugg\\=\\= {\n    font-size: 1.15rem;\n    color: #3498db;\n    transition: all 0.5 ease-in-out;\n    margin-left: 7px;\n}\n.uNmspEGYhOMITMdpWThLRg\\=\\= .q0wlAfowlZbqDuNOjhDugg\\=\\= {\n    color: #2980b9;\n    text-decoration: underline;\n    cursor: pointer;\n}\n\n.uNmspEGYhOMITMdpWThLRg\\=\\= .JPdpGiNLdnW6CmwQMSdnHQ\\=\\= {\n    width: 150px;\n    display: inline-block;\n}\n", ""]);
 // Exports
 ___CSS_LOADER_EXPORT___.locals = {
 	"Profile": "_8SwNT9BzPkvkbXDCxB4bVQ==",
@@ -15577,6 +16334,7 @@ ___CSS_LOADER_EXPORT___.locals = {
 	"left": "_8rZeyBFGsNcAnW5IGwASjQ==",
 	"img": "+Cadz6dORBgfOvaCemfz4A==",
 	"content": "YOTUjWU9MelzcoLUz61zZA==",
+	"c": "noVdxnV9Dun63Ey005qEsQ==",
 	"name": "_2V7eEHcGkBNQgsrx8D0tSQ==",
 	"rate": "Q6You4mBugc0wOdQB06O-Q==",
 	"star": "iYcAl76P6OLx0bJJqj2zsg==",
@@ -54835,6 +55593,36 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 /***/ }),
 
+/***/ "./resources/js/Components/Chat/Chat.module.css":
+/*!******************************************************!*\
+  !*** ./resources/js/Components/Chat/Chat.module.css ***!
+  \******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_6_oneOf_1_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_6_oneOf_1_use_2_Chat_module_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[2]!./Chat.module.css */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[2]!./resources/js/Components/Chat/Chat.module.css");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_6_oneOf_1_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_6_oneOf_1_use_2_Chat_module_css__WEBPACK_IMPORTED_MODULE_1__["default"], options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_6_oneOf_1_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_6_oneOf_1_use_2_Chat_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
+
+/***/ }),
+
 /***/ "./resources/js/Components/Filters/Filters.module.css":
 /*!************************************************************!*\
   !*** ./resources/js/Components/Filters/Filters.module.css ***!
@@ -54952,6 +55740,36 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_6_oneOf_1_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_6_oneOf_1_use_2_NavBar_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
+
+/***/ }),
+
+/***/ "./resources/js/Components/Notifications/Notifications.module.css":
+/*!************************************************************************!*\
+  !*** ./resources/js/Components/Notifications/Notifications.module.css ***!
+  \************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_6_oneOf_1_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_6_oneOf_1_use_2_Notifications_module_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[2]!./Notifications.module.css */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[2]!./resources/js/Components/Notifications/Notifications.module.css");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_6_oneOf_1_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_6_oneOf_1_use_2_Notifications_module_css__WEBPACK_IMPORTED_MODULE_1__["default"], options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_6_oneOf_1_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_6_oneOf_1_use_2_Notifications_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
 
 /***/ }),
 

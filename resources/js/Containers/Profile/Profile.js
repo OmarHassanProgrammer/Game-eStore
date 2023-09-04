@@ -10,9 +10,11 @@ import Slider from '../../Components/Slider/Slider';
 import games from '../../utils/games';
 import AnimatedText from '../AnimatedPage/AnimatedText';
 import AddedToCartBig from '../../Components/AddedToCart/AddedToCartBig';
+import Chat from '../../Components/Chat/Chat';
 import Cart from '../../Components/Cart/Cart';
 import templateGame from '../../utils/templateGame';
 import Grid from '../../Components/Grid/Grid';
+import Notifications from '../../Components/Notifications/Notifications';
 import axios from "axios";
 
 const Profile = props => {
@@ -31,7 +33,9 @@ const Profile = props => {
   const [categories, setCategories] = useState([]);
   const [userProfile, setUserProfile] = useState({});
   const [stars, setStars] = useState([]);
+  const [addPerson, setAddPerson] = useState();
   const [emptyStars, setEmptyStars] = useState([0,0,0,0,0]);
+  const [addNotification, setAddNotification] = useState();
   const firstUpdate = useRef(true);
 
   useLayoutEffect(() => {
@@ -260,6 +264,8 @@ const handleCloseCart = () => {
               handleRemoveFromCart={handleRemoveFromCart}
               openGamePage={openGamePage}
         /> : null}
+        <Chat addPerson={addPerson}/>
+        <Notifications addNotification={addNotification} />
         <NavBar
           handleBrowse={handleBrowse.bind(this, "games")}
           user={user}
@@ -280,6 +286,7 @@ const handleCloseCart = () => {
             <div className={styles.img}>
               <div className={styles.content}>
                 <img src={userProfile.imgType != null?'../assets/users/' + userProfile.id + '.' + userProfile.imgType:'../images/profile2.svg'} />
+                <span className={styles.c} onClick={() => {setAddPerson(userProfile.id)}}>C</span>
               </div>
             </div>
             <div className={styles.name}>

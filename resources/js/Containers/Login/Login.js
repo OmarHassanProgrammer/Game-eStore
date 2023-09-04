@@ -11,11 +11,13 @@ import AnimatedText from '../AnimatedPage/AnimatedText';
 import AddedToCartBig from '../../Components/AddedToCart/AddedToCartBig';
 import Cart from '../../Components/Cart/Cart';
 import templateGame from '../../utils/templateGame';
+import Notifications from '../../Components/Notifications/Notifications';
 import axios from "axios";
 
 const Login = props => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [addNotification, setAddNotification] = useState();
   const [counter, setCounter] = useState(0);
 
   useEffect(() => {
@@ -65,6 +67,7 @@ const Login = props => {
 
   return (
     <>
+      <Notifications addNotification={addNotification} />
       <div className={styles.form}>
         <h2 className={styles.title}>Login</h2>
         <form>

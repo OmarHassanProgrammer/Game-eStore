@@ -12,6 +12,8 @@ import Grid from '../../Components/Grid/Grid';
 //import games from '../../utils/games';
 import categories from '../../utils/categories';
 import Cart from '../../Components/Cart/Cart';
+import Chat from '../../Components/Chat/Chat';
+import Notifications from '../../Components/Notifications/Notifications';
 import Footer from '../../Components/Footer/Footer';
 import filterNames from '../../utils/filterNames';
 import templateGame from '../../utils/templateGame';
@@ -46,6 +48,8 @@ export default function Browse (props) {
   const [user, setUser] = useState();
   const [isCart, setIsCart] = useState({});
   const [isFav, setIsFav] = useState({});
+  const [addPerson, setAddPerson] = useState();
+  const [addNotification, setAddNotification] = useState();
   const [hoverState, setHoverState] = useState([
     {
         hovered: false,
@@ -647,6 +651,8 @@ useEffect(() => {
               handleRemoveFromCart={handleRemoveFromCart}
               openGamePage={openGamePage}
         /> : null}
+        <Chat addPerson={addPerson}/>
+        <Notifications addNotification={addNotification} />
         <NavBar
           handleHover={handleHover}
           hoverState={hoverState}
@@ -690,7 +696,6 @@ useEffect(() => {
                 currentItemFilter={currentItemFilter} 
                 handleSelectItemFilter={handleSelectItemFilter}
               />
-
               <div className={styles.list}>
                 <h1>Trending and interesting</h1>
                 <p>Based on player counts and ratings</p>
@@ -753,7 +758,6 @@ useEffect(() => {
                     </button>
                   </div>
                 </div>
-              
                     <Grid 
                       shownGames={shownGames}
                       reviewDisplay={reviewDisplay}

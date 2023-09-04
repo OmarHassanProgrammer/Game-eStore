@@ -15,10 +15,12 @@ import Performance from "../../../assets/icons/performance.svg";
 import Sources from "../../../assets/icons/sources.svg";
 import pyke from "../../../assets/icons/pyke.mp4"
 import { motion, AnimatePresence, m } from "framer-motion";
+import Chat from '../../Components/Chat/Chat';
 import Cart from '../../Components/Cart/Cart';
 import AnimatedScroll from '../AnimatedPage/AnimatedScroll';
 import games from '../../utils/games';
 import templateGame from '../../utils/templateGame';
+import Notifications from '../../Components/Notifications/Notifications';
 import axios from 'axios';
 
 export default function Home (props) {
@@ -36,7 +38,9 @@ export default function Home (props) {
   const [selectedGame, setSelectedGame] = useState(false);
   const [extended, setExtended] = useState(false);
   const [textExtended, setTextExtended] = useState(false);
+  const [addPerson, setAddPerson] = useState();
   const [user, setUser] = useState();
+  const [addNotification, setAddNotification] = useState();
   const [hoverState, setHoverState] = useState([
     {
         hovered: false,
@@ -429,7 +433,8 @@ useEffect(() => {
     
           </motion.div> 
       : null}
-
+      <Chat addPerson={addPerson}/>
+      <Notifications addNotification={addNotification} />
       {cartDisplayed ? <Cart 
               cartDisplayed={cartDisplayed} 
               handleOpenCart={handleOpenCart}

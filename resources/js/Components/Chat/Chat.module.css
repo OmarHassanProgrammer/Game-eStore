@@ -1,0 +1,200 @@
+.chatWindow {
+    position: fixed;
+    bottom: -335px;
+    right: 80px;
+    width: 350px;
+    height: 400px;
+    background-color: #222;
+    z-index: 10;
+    color: #fff;
+    font-family: "GT Medium";
+    box-shadow: 0 0 5px 2px #63dd3f55;
+    border-radius: 5px 5px 0 0;
+    display: flex;
+    flex-direction: column;
+    transition: all 1s ease-in-out;
+}
+.chatWindow.show {
+    bottom: 0;
+}
+.chatWindow .close, .chatWindow .open {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    background-color: #333;
+    padding: 8px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.5s ease-in-out;
+    width: 35px;
+    height: 35px;
+    font-size: 1.2rem;
+}
+.chatWindow .open {
+}
+.chatWindow .close:hover, .chatWindow .open:hover {
+    background-color: #444;
+}
+.chatWindow .top {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    position: relative;
+    padding: 10px;
+    margin-bottom: 15px;
+}
+.chatWindow .top:after {
+    content: "";
+    bottom: -15px;
+    position: absolute;
+    left: 10%;
+    width: 80%;
+    height: 1px;
+    background-color: #555;
+}
+.chatWindow .top .person {
+    position: relative;
+    text-align: center;
+}
+.chatWindow .top .img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.5s ease-in-out;
+    background-color: #555;
+    outline: 2px solid transparent;
+    position: relative;
+}
+.chatWindow .top .person .c {
+    position: absolute;
+    top: 1px;
+    right: -4px;
+    font-family: "GT Light";
+    cursor: pointer;
+    background-color: #f00;
+    font-size: 0.8rem;
+    z-index: 2;
+    width: 17px;
+    height: 17px;
+    border-radius: 50%;
+    transition: all 0.5s ease-in-out
+}
+.chatWindow .top .person .c:hover {
+    background-color: rgb(150, 0, 0);
+}
+.chatWindow.show .top .person.active .img {
+    outline: 2px solid #63dd3f;
+    transform: scale(1.05);
+}
+.chatWindow .top .img:hover {
+    transform: scale(1.05);
+}
+.chatWindow .top .person .name {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: max-content;
+    font-family: "GT Light";
+    font-size: 0.9rem;
+}
+.chatWindow.show .top .person.active .name {
+    display: inline-block;
+}
+.chatWindow .middle {
+    flex: 1;
+    display: flex;
+    padding: 10px;
+    flex-direction: column;
+    overflow-y: scroll;
+}
+.chatWindow .middle .chat_text {
+    display: flex;
+    width: 100%;
+}
+.chatWindow .middle .chat_text.him {
+    justify-content: flex-start;
+}
+.chatWindow .middle .chat_text.me {
+    justify-content: flex-end;
+}
+.chatWindow .middle .chat_text .msg {
+    padding: 5px 10px;
+    background-color: #777;
+    width: fit-content;
+    margin-bottom: 2px;
+    max-width: 150px;
+    word-wrap: break-word;
+}
+.chatWindow .middle .chat_text .msg {
+    display: inline-block;
+}
+.chatWindow .middle .chat_text.him .msg {
+    border-radius: 0 5px 5px 0;
+}
+.chatWindow .middle .chat_text.me .msg {
+    border-radius: 5px 0 0 5px;
+}
+.chatWindow .middle .chat_text.end .msg {
+    margin-bottom: 5px;
+}
+.chatWindow .middle .chat_text.him.end .msg {
+    border-radius: 0 5px 5px 5px;
+}
+.chatWindow .middle .chat_text.me.end .msg {
+    border-radius: 5px 0 5px 5px;
+}
+.chatWindow .middle .chat_text.him.start .msg {
+    border-radius: 5px 5px 5px 0;
+}
+.chatWindow .middle .chat_text.me.start .msg {
+    border-radius: 5px 5px 0 5px;
+}
+.chatWindow .middle .chat_text.start.end .msg {
+    border-radius: 5px;
+}
+.chatWindow .middle .chat_text.me .msg {
+    background-color: #009225;
+}
+.chatWindow .bottom {
+    display: flex;
+    padding: 10px;
+    gap: 5px;
+    align-items: center;
+}
+.chatWindow .bottom .input {
+    flex: 1;
+    padding: 5px 10px;
+    font-size: 1.1rem;
+    border-radius: 20px;
+    background-color: #444;
+    border: none;
+    outline: none;
+    color: #fff;
+    font-family: "GT Light";
+    border: 2px solid transparent;
+}
+.chatWindow .bottom .input:focus {
+    border: 2px solid #63dd3f;
+}
+.chatWindow .bottom .send {
+    padding: 5px;
+    border-radius: 50%;
+    background-color: #009225;
+    color: #fff;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.5s ease-in-out;
+    width: 33px;
+    height: 33px;
+    font-size: 1.3rem;
+    font-family: "GT Bold";
+    text-align: center;
+}
+.chatWindow .bottom .send:hover {
+    transform: scale(1.07);
+}

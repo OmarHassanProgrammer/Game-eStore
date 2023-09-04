@@ -10,12 +10,14 @@ import Slider from '../../Components/Slider/Slider';
 import games from '../../utils/games';
 import AnimatedText from '../AnimatedPage/AnimatedText';
 import AddedToCartBig from '../../Components/AddedToCart/AddedToCartBig';
+import Chat from '../../Components/Chat/Chat';
 import Cart from '../../Components/Cart/Cart';
 import templateGame from '../../utils/templateGame';
 import Grid from '../../Components/Grid/Grid';
 import ProfileSubPage from './Pages/ProfileSubPage/ProfileSubPage';
 import SoldItemsPage from './Pages/SoldItemsPage/SoldItemsPage';
 import PurchasedItemsPage from './Pages/PurchasedItemsPage/PurchasedItemsPage';
+import Notifications from '../../Components/Notifications/Notifications';
 import axios from "axios";
 
 const Settings = props => {
@@ -32,9 +34,11 @@ const Settings = props => {
   const [searching, setSearching] = useState(false);
   const [grid, setGrid] = useState(true);
   const [categories, setCategories] = useState([]);
+  const [addPerson, setAddPerson] = useState();
   const [userProfile, setUserProfile] = useState({});
   const [stars, setStars] = useState([]);
   const [emptyStars, setEmptyStars] = useState([0,0,0,0,0]);
+  const [addNotification, setAddNotification] = useState();
   const [page, setPage] = useState('profile');
 
   useEffect(() => {
@@ -221,6 +225,8 @@ const openGamePage = (e) => {
               handleRemoveFromCart={handleRemoveFromCart}
               openGamePage={openGamePage}
         /> : null}
+        <Chat addPerson={addPerson}/>
+        <Notifications addNotification={addNotification} />
         <NavBar
           handleBrowse={handleBrowse.bind(this, "games")}
           user={user}

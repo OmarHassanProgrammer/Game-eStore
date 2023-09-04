@@ -10,9 +10,11 @@ import Slider from '../../Components/Slider/Slider';
 import games from '../../utils/games';
 import AnimatedText from '../AnimatedPage/AnimatedText';
 import AddedToCartBig from '../../Components/AddedToCart/AddedToCartBig';
+import Chat from '../../Components/Chat/Chat';
 import Cart from '../../Components/Cart/Cart';
 import templateGame from '../../utils/templateGame';
 import Grid from '../../Components/Grid/Grid';
+import Notifications from '../../Components/Notifications/Notifications';
 import axios from "axios";
 
 const Checkout = props => {
@@ -27,7 +29,9 @@ const Checkout = props => {
   const [landingPage, setLandingPage] = useState(false);
   const [search, setSearch] = useState("");
   const [searching, setSearching] = useState(false);
+  const [addPerson, setAddPerson] = useState();
   const [totalPrice, setTotalPrice] = useState(0);
+  const [addNotification, setAddNotification] = useState();
 
   const firstUpdate = useRef(true);
 
@@ -178,7 +182,8 @@ const Checkout = props => {
           logout={logout}
           showCart={false}
         />
-
+        <Chat addPerson={addPerson}/>
+        <Notifications addNotification={addNotification} />
         <div className={styles.checkoutContent}>
           <div className={styles.left}>
             <div className={styles.cart}>
