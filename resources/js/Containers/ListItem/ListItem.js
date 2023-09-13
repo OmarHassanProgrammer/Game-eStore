@@ -312,7 +312,8 @@ const handleRemoveFromCart = (id, key, e) => {
 
         {
           auth?<div className={styles.listBody}>
-            <div className={`${styles.right} ` + (selectedGame != {} && selectedCategory != {})?"":styles.full} style={{width: selectedGame != {} && selectedCategory != {}?'60%':'100%'}}>
+            <h2 className={styles.title}><span>Sell an Item</span></h2>
+            <div className={`${styles.right} ` + ((selectedGame != {} && selectedCategory != {})?"":styles.full)} style={{width: selectedGame != {} && selectedCategory != {}?'60%':'100%'}}>
               {
                 selectedGame == false? <div className={styles.row}>Select The Game: </div>:<div className={styles.row}><span className={styles.label}>Game:</span>{selectedGame.name} <span className={styles.change} onClick={resetGame}>change</span></div>
               }
@@ -322,7 +323,6 @@ const handleRemoveFromCart = (id, key, e) => {
                     <div className={`${styles.row} ${styles.cat}`}>Select The Category: </div>:<div className={styles.row}><span className={styles.label}>Category:</span>{selectedCategory.name} <span className={styles.change} onClick={resetCategory}>change</span></div>:
                     ""
               }
-              
               {
                 selectedGame == false?
                 <div className={styles.list}><Grid 
@@ -379,9 +379,6 @@ const handleRemoveFromCart = (id, key, e) => {
                         <input className={styles.input} type="number" onChange={updateSellTime} defaultValue={1}/>
                         <span className={styles.trailer}>day/s</span>
                       </div>
-                      <div className={styles.submit}>
-                        <button onClick={submit}>Sell</button>
-                      </div>
                     </div>
               }
               
@@ -404,7 +401,11 @@ const handleRemoveFromCart = (id, key, e) => {
             You must <a href="/login">Login</a> or <a href="/signup">Register</a> to sell an item.
           </div>
         }
-        
+        {
+          selectedCategory? <div className={styles.submit}>
+            <button onClick={submit}>Sell</button>
+          </div>:null
+        }
         <Footer />
       </section>
     </>

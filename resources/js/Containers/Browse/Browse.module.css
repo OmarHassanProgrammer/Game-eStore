@@ -21,7 +21,7 @@ body {
     display: flex;
     padding-top: 25px;
     width: 100vw;
-    padding-bottom: 280px;
+    padding-bottom: 50px;
     background-color: #0f1011;
 }
 
@@ -132,6 +132,10 @@ body {
     transition: 0.3s all;
 }
 
+@media screen and (max-width: 1100px) {
+
+}
+
 @media screen and (max-width: 850px) {
     .displayStyle p {
         display: none;
@@ -152,10 +156,14 @@ body {
     .list {
         padding-left: 35px;
         padding-right: 35px;
+        text-align: center;
     }
 
     .list h1 {
         font-size: 48px;
+    }
+    .applied {
+        display: none;
     }
 }
 

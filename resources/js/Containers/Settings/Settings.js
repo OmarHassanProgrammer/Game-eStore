@@ -17,6 +17,7 @@ import Grid from '../../Components/Grid/Grid';
 import ProfileSubPage from './Pages/ProfileSubPage/ProfileSubPage';
 import SoldItemsPage from './Pages/SoldItemsPage/SoldItemsPage';
 import PurchasedItemsPage from './Pages/PurchasedItemsPage/PurchasedItemsPage';
+import BalancePage from './Pages/BalancePage/BalancePage';
 import Notifications from '../../Components/Notifications/Notifications';
 import axios from "axios";
 
@@ -290,12 +291,12 @@ const openGamePage = (e) => {
                       setUser={setUser}
                     />
                   case 'selling':
-                    return <SoldItemsPage
-
-                    />
+                    return <SoldItemsPage />
                   case 'purchase':
-                    return <PurchasedItemsPage
-
+                    return <PurchasedItemsPage />
+                  case 'balance':
+                    return <BalancePage 
+                      addNotification={setAddNotification}
                     />
                   default:
                     return null

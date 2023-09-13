@@ -220,19 +220,43 @@ body {
     .list h1 {
         font-size: 40px;
     }
+    .settingsContent {
+        padding: 0 20px 50px;
+    }
+    .settingsContent .body {
+        font-size: 0.9rem;
+    }
+    .settingsContent .body .left .block .link .icon {
+        display: none;
+    }
 }
-
+@media screen and (max-width: 750px) {
+    .settingsContent {
+        margin-top: 30px;
+    }
+}
 @media screen and (max-width: 600px) {
     .list {
         padding-left: 35px;
         padding-right: 35px;
     }
-
     .list h1 {
         font-size: 48px;
     }
+    .settingsContent .header .right {
+        display: none;
+    }
 }
-
+@media screen and (max-width: 460px) {
+    .settingsContent .body {
+        font-size: 0.85;
+    }
+}
+@media screen and (max-width: 425px) {
+    .settingsContent .body .left {
+        width: 25%;
+    }
+}
 @media screen and (max-width: 375px) {
     .list {
         padding-left: 20px;

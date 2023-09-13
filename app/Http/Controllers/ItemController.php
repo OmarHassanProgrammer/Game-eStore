@@ -11,7 +11,7 @@ use App\Models\ItemImage;
 class ItemController extends Controller
 {
     public function index() {
-        $items = Item::with("images")->get();
+        $items = Item::with(["images", "subgame.game", "seller"])->get();
         if(Auth::check()) {
             $user = Auth::user();
             foreach ($items as $key => $item) {
@@ -19,7 +19,7 @@ class ItemController extends Controller
                 $item->isLiked = $user->wishList->contains('id', $item->id);
             }
         }
-        return response()->json(["items" => $items]);
+        return response()->json(["msg" => "done", "items" => $items]);
     }
     public function getAll($id) {
         $subCategory = SubGame::find($id);

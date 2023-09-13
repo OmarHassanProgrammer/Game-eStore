@@ -33,3 +33,4 @@ import "./Containers/ListItem/ListItem";
 import "./Containers/Profile/Profile";
 import "./Containers/Settings/Settings";
 import "./Containers/Checkout/Checkout";
+import "./Containers/Admin/Admin";

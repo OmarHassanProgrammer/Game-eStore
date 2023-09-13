@@ -1,0 +1,138 @@
+.soldItemsPage {
+    margin: 0 50px;
+}
+
+.soldItemsPage .block {
+    position: relative;
+    padding: 0 0 8px 0;
+    margin-bottom: 15px;
+}
+
+.soldItemsPage .block > .title {
+    font-size: 1.6rem;
+    font-family: "GT Medium";
+    color: #f0f0f0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #333;
+}
+.con {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+.soldItemsPage .block .content {
+    padding: 15px 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.soldItemsPage .block .content .item {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 15px;
+    justify-content: space-between;
+}
+.soldItemsPage .block .content .item .p {
+    color: #fff;
+    font-family: "GT Medium";
+    text-align: center;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+.soldItemsPage .block .content .item .p .title {
+    font-size: 1.3rem;
+}
+.soldItemsPage .block .content .item .p .img {
+    
+}
+.soldItemsPage .block .content .item .p .img img {
+    width: 70px;
+    height: 70px;
+}
+.soldItemsPage .block .content .item .p .badge {
+    padding: 3px 5px;
+    font-family: "GT Light";
+    border-radius: 5px;
+    font-size: 0.9rem;
+}
+.soldItemsPage .block .content .item .p .badge.ongoing {
+    background-color: #007b24
+}
+.soldItemsPage .block .content .item .p .badge.refused {
+    background-color: #f00
+}
+.soldItemsPage .block .content .item .p .btns {
+    display: flex;
+    gap: 10px;
+}
+.soldItemsPage .block .content .item .p .btns .btn {
+    border: none;
+    outline: none;
+    padding: 5px;
+    cursor: pointer;
+    color: #fff;
+    font-family: "GT Light";
+    font-size: 1.1rem;
+    transition: all 0.5s ease-in-out;
+}
+.soldItemsPage .block .content .item .p .btns .btn.success {
+    background-color: #00a530
+}
+.soldItemsPage .block .content .item .p .btns .btn.success:hover {
+    background-color: #007b24
+}
+.soldItemsPage .block .content .item .p .btns .btn.danger {
+    background-color: #e32700
+}
+.soldItemsPage .block .content .item .p .btns .btn.danger:hover {
+    background-color: #b11e00
+}
+.soldItemsPage .block .content .pl {
+    width: 100%;
+    text-align: center;
+    color: #eee;
+    font-size: 1.3rem;
+    font-family: "GT Light";
+}
+
+@media screen and (max-width: 700px) {
+    .con {
+        flex-direction: column;
+        align-items: center;
+    }
+    .soldItemsPage .block .content .item .p {
+        flex-direction: column;
+        align-items: center;
+    }
+    .soldItemsPage .block .content {
+        align-items: center;
+    }
+    .soldItemsPage .block .content .item {
+        margin-bottom: 10px;
+        padding-bottom: 10px;
+        position: relative;
+        flex-direction: column;
+        justify-content: center;
+    }
+    .soldItemsPage .block .content .item::after {
+        position: absolute;
+        content: "";
+        left: 15%;
+        width: 70%;
+        height: 1px;
+        background-color: #333;
+        bottom: 0;
+    }
+    .con {
+        gap: 5px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .soldItemsPage {
+        margin: 0 20px;
+    }
+}

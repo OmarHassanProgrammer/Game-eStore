@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class SubGame extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'imgType']; // Fillable attributes
+    protected $fillable = ['name', 'game_id', 'imgType']; // Fillable attributes
     
     // Define relationships
     public function game()

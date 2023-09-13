@@ -132,3 +132,50 @@ body {
 .checkoutContent .right .pay:hover {
     background-color: #002e83;
 }
+@media screen and (max-width: 1000px) {
+    .checkoutContent > .left {
+        width: 70%;
+    }
+    .checkoutContent > .right {
+        width: 30%;
+    }
+}
+@media screen and (max-width: 850px) {
+    .checkoutContent {
+        flex-direction: column;
+        gap: 15px;
+    }
+    .checkoutContent > .left {
+        width: 100%;
+    }
+    .checkoutContent > .right {
+        width: 100%;
+    }
+}
+@media screen and (max-width: 425px) {
+    .checkoutContent .left .cart .cartItem .left {
+        width: 100px;
+    }
+    .checkoutContent .left .cart .cartItem .left img {
+        width: 100px;
+        height: 100px;
+    }
+}
+@media screen and (max-width: 360px) {
+    .checkoutContent .left .cart .cartItem {
+        gap: 10px;
+    }
+    .checkoutContent > .left {
+        font-size: 1rem;
+    }
+    .checkoutContent .left .cart .cartItem .left {
+        width: 80px;
+    }
+    .checkoutContent .left .cart .cartItem .left img {
+        width: 80px;
+        height: 80px;
+    }
+    .checkoutContent .left .cart .cartItem .right .title{
+        font-size: 1.1rem;
+    }
+}

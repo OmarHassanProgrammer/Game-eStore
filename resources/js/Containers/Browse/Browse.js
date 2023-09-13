@@ -725,36 +725,7 @@ useEffect(() => {
                       onClick={browseType == "/items"?clearItemFilter:clearFilter} 
                       aria-label="Clear Filters"
                     >
-                      Clear Filtev
-                    </button>
-                  </div>
-                  
-                  <div className={styles.displayStyle}>
-                    <p>Display options:</p>
-                    <button 
-                      className={styles.displayBtn} 
-                      onClick={handleLayoutSwitch} 
-                      id="grid" 
-                      aria-label='Display grids'
-                    >
-                      <img
-                        src={Grids}
-                        className={styles.displayItem} 
-                        style={{ filter: grid ? 'invert(78%) brightness(10000%)' : 'brightness(10000%) saturate(100%) invert(78%) sepia(99%) saturate(1066%) hue-rotate(183deg) brightness(50%) contrast(100%)' }}
-                      />
-                    </button>
-
-                    <button 
-                      className={styles.displayBtn} 
-                      onClick={handleLayoutSwitch} 
-                      id="columns" 
-                      aria-label='Display columns'
-                    > 
-                      <img
-                        src={Columns} 
-                        className={styles.displayItem} 
-                        style={{ filter: grid ? 'brightness(10000%) saturate(100%) invert(78%) sepia(99%) saturate(1066%) hue-rotate(183deg) brightness(50%) contrast(100%)' : 'invert(78%) brightness(10000%)' }}
-                      />
+                      Clear Filter
                     </button>
                   </div>
                 </div>

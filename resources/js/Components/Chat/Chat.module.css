@@ -198,3 +198,36 @@
 .chatWindow .bottom .send:hover {
     transform: scale(1.07);
 }
+
+.chatBtn {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    color: #fff;
+    background-color: #009225;
+    border-radius: 50%;
+    padding: 3px;
+    display: none;
+    transition: all 0.5s ease-in-out;
+    z-index: 8;
+}
+.chatBtn svg {
+    width: 30px;
+    height: 30px;
+}
+@media screen and (max-width: 769px) {
+    .chatWindow {
+        display: none;
+    }
+    .chatWindow.show {
+        display: flex;
+        width: 98%;
+        left: 1%;
+        top: 10px;
+        bottom: 0;
+        height: auto;
+    }  
+    .chatBtn:not(.hide) {
+        display: inline-block;
+    }
+}

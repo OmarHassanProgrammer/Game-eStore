@@ -1,0 +1,36 @@
+.itemsPage {
+    padding: 0 10px;
+    overflow-x: scroll;
+}
+.itemsPage table {
+    width: 100%;
+}
+.itemsPage table tr {
+    width: 100%;
+    transition: all 0.5s ease-in-out;
+}
+.itemsPage table tr:not(:nth-child(1)):hover {
+    background-color: #222;
+    cursor: pointer;
+}
+.itemsPage table tr:not(:nth-child(1)) td {
+    border: none;
+}
+.itemsPage table th {
+    color: #fff;
+    font-size: 1.2rem;
+    font-family: "GT Bold";
+    border-bottom: 2px solid #2980b9;
+}
+.itemsPage table td {
+    color: #fff;
+    font-family: "GT Medium";
+    border: none;
+}
+.itemsPage table th, .itemsPage table td {
+    padding: 12px 8px;
+    text-align: center;
+}
+.itemsPage a {
+    text-decoration: underline;
+}

@@ -262,3 +262,29 @@
 .profileSubPage .block .btn:hover {
     background-color: #226a9b;
 }
+
+@media screen and (max-width: 600px) {
+    .profileSubPage {
+        margin: 0 20px;
+    }
+    .profileSubPage .block .content .top {
+        flex-direction: column;
+        gap: 0;
+        margin-bottom: 20px;
+    }
+    .profileSubPage .block .content .top .l {
+        width: 100%;
+        margin-bottom: 0;
+    }
+    .profileSubPage .block .content .top .r .edit {
+        position: static;
+    }
+
+}
+@media screen and (max-width: 425px) {
+    .profileSubPage .block .content .inputs {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+}

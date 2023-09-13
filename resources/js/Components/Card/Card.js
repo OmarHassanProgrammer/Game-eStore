@@ -17,7 +17,9 @@ const Card = props => {
         handleHoverGame,
         handleSelectGame,
         smallFont,
-        gameKey
+        gameKey,
+        close=false,
+        closeFunc=()=>{}
       } = props;
 
     const variants = {
@@ -38,6 +40,7 @@ const Card = props => {
             animate="animate"
             exit="exit"
           >
+            {close?<span className={styles.close} onClick={closeFunc.bind(this, game.id)}><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg></span>:null}
             <img src={browseType != "/items"?'../../../assets' + browseType + '/' + game.id + '.' + game.imgType:("../../../assets/items/" + game.images[0]?.image??"d.jpg")} className={styles.img} alt="Game Cover Image" />
             { 
               browseType == "/items"?

@@ -160,7 +160,7 @@ class UserController extends Controller
         $user = Auth::user();
         $notifications = $user->notifications;
         foreach ($user->notifications as $key => $notification) {
-            $user->notifications()->detach($notification);
+            $notification->delete();
         }
         return response()->json(['msg' => "done", "notifications" => $notifications]);
     }

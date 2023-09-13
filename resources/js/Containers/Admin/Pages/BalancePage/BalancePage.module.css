@@ -1,0 +1,118 @@
+.balancePage {
+    padding: 0 15px;
+}
+.balancePage .header {
+    display: flex;
+    justify-content: space-between;
+    gap: 50px;
+}
+.balancePage .header .p {
+    color: #fff;
+    text-align: center;
+    flex: 1;
+    padding: 15px;
+    border-radius: 7px;
+}
+.balancePage .header .p:nth-child(1) {
+    background-color: #3498dbaa;
+}
+.balancePage .header .p:nth-child(2) {
+    background-color: #2ecc71aa;
+}
+.balancePage .header .p:nth-child(3) {
+    background-color: #e67e22aa;
+}
+.balancePage .header .p .label {
+    font-family: "GT Bold";
+    font-size: 1.3rem;
+    display: block;
+    margin-bottom: 5px;
+}
+.balancePage .header .p .n {
+    font-family: "GT Medium";
+    font-size: 1.2rem;
+}
+.balancePage .header .p .symbol {
+    font-family: "GT Light";
+    font-size: 1rem;
+}
+
+.balancePage .block:nth-child(2) {
+    margin-top: 30px;
+}
+.balancePage .block .title {
+    font-size: 1.6rem;
+    font-family: "GT Medium";
+    color: #f0f0f0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #333;
+}
+.balancePage .block .content {
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+    gap: 15px;
+}
+.balancePage .block .content .record {
+    display: flex;
+    justify-content: space-between;
+}
+.balancePage .block .content .record .label {
+    font-family: "GT Light";
+    color: #fff;
+    font-size: 1.4rem;
+}
+.balancePage .block .content .record .n {
+    color: #fff;
+    font-size: 1.6rem;
+    font-family: "GT Medium";
+    display: flex;
+    align-items: center;
+}
+.balancePage .block .content .record .n.pos {
+    color: #27ae60;
+}
+.balancePage .block .content .record .n.neg {
+    color: #c0392b;
+}
+.balancePage .block .content .record .n.pos:before {
+    content: "+ ";
+}
+.balancePage .block .content .record .n.neg:before {
+    content: "- ";
+}
+
+@media screen and (max-width: 600px) {
+    .balancePage .header {
+        flex-direction: column;
+        gap: 5px;
+    }
+    .balancePage .header .p {
+        padding: 5px;
+    }
+    .balancePage .header .p .label {
+        font-size: 1.1rem;
+    }
+    .balancePage .header .p .n {
+        font-size: 1rem;
+    }
+    .balancePage .header .p .symbol {
+        font-size: 0.9rem;
+    }
+}
+@media screen and (max-width: 425px) {
+    .balancePage .block .content .record .label {
+        font-size: 1.2rem;
+    }
+    .balancePage .block .content .record .n {
+        font-size: 1.2rem;
+    }
+}
+@media screen and (max-width: 375px) {
+    .balancePage .block .content .record .label {
+        font-size: 1.1rem;
+    }
+    .balancePage .block .content .record .n {
+        font-size: 1.1rem;
+    }
+}

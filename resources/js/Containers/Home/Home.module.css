@@ -232,9 +232,10 @@ a {
 
     .buttons {
         width: 276px;
-        height: 190px;
+        height: auto;
         align-self: center;
         flex-direction: column;
+        gap: 5px;
     }
 
     .buttons button {

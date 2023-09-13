@@ -17,7 +17,11 @@ const Grid = props => {
         search,
         searching,
         handleSelectGame,
-        cartDisplayed
+        cartDisplayed,
+        add=false,
+        addFunc=()=>{},
+        close=false,
+        closeFunc=()=>{}
     } = props;
 
     useEffect(() => {
@@ -52,6 +56,8 @@ const Grid = props => {
                 handleAddToCart={handleAddToCart} 
                 handleSelectGame={handleSelectGame}
                 gameKey={i}
+                close={close}
+                closeFunc={closeFunc}
                 />
             }
         }) : shownGames.map((game, i) => {
@@ -64,6 +70,8 @@ const Grid = props => {
                         handleAddToCart={handleAddToCart} 
                         handleSelectGame={handleSelectGame}
                         gameKey={i}
+                        close={close}
+                        closeFunc={closeFunc}
                     />
         }) : shownGames.map((game, i) => {
             if (game.name.toLowerCase().includes(search.toLowerCase())) {
@@ -76,10 +84,19 @@ const Grid = props => {
                             handleAddToCart={handleAddToCart} 
                             handleSelectGame={handleSelectGame}
                             gameKey={i}
+                            close={close}
+                            closeFunc={closeFunc}
                         />
             }
         })}
+        {
+            add?
+            <div className={styles.add} onClick={addFunc}>
+                <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/></svg>
+            </div>:null
+        }
         </div>
+        
     </>
     );
   }

@@ -9,6 +9,7 @@ use App\Http\Controllers\GenreController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\BalanceController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -29,11 +30,15 @@ Route::prefix('/games')->group(function () {
     Route::get('/get/{id}', [GameController::class, 'get']);
     Route::get('/getRandom/{n}', [GameController::class, 'getRandom']);
     Route::get('/getCategories/{id}', [GameController::class, 'getCategories']);
+    Route::post('/add', [GameController::class, 'add'])->middleware('auth:sanctum', 'admin');
+    Route::post('/delete/{id}', [GameController::class, 'delete'])->middleware('auth:sanctum', 'admin');
 });
 
 Route::prefix('/categories')->group(function () {
     Route::get('/getAll', [SubGameController::class, 'index']);
     Route::get('/get/{id}', [SubGameController::class, 'get']);
+    Route::post('/add', [SubGameController::class, 'add'])->middleware('auth:sanctum', 'admin');
+    Route::post('/delete/{id}', [SubGameController::class, 'delete'])->middleware('auth:sanctum', 'admin');
 });
 
 Route::prefix('/items')->group(function () {
@@ -41,6 +46,19 @@ Route::prefix('/items')->group(function () {
     Route::get('/getAll/{subGame}', [ItemController::class, 'getAll']);
     Route::get('/get/{id}', [ItemController::class, 'get']);
     Route::post('/add', [ItemController::class, 'add'])->middleware('auth:sanctum');
+});
+
+Route::prefix('/orders')->group(function () {
+    Route::get('/getAll', [OrderController::class, 'getAll'])->middleware('auth:sanctum', 'admin');
+    Route::get('/success', [OrderController::class, 'success'])->middleware('auth:sanctum')->name('order_success');
+    Route::get('/failed', [OrderController::class, 'failed'])->middleware('auth:sanctum')->name('order_failed');
+    Route::get('/withdraw', [OrderController::class, 'withdraw'])->middleware('auth:sanctum');
+    Route::get('/info', [OrderController::class, 'info'])->middleware('auth:sanctum');
+});
+
+Route::prefix('/balances')->group(function () {
+    Route::get('/getAll', [BalanceController::class, 'getAll'])->middleware('auth:sanctum', 'admin');
+    Route::get('/get', [BalanceController::class, 'get'])->middleware('auth:sanctum');
 });
 
 Route::prefix('/genres')->group(function () {

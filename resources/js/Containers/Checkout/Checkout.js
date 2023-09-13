@@ -89,7 +89,7 @@ const Checkout = props => {
       if(type == "categories") {
         window.location.href = "categories?" + (window.location.search.indexOf('game=') != -1?"game=" + currentGameId:"");
       } 
-    }, 1500);
+    }, 500);
   }
 
   const handleHome = () => {
@@ -156,7 +156,8 @@ const Checkout = props => {
         if(response.data.msg = "done") {
           setCart([]);
           setCartAmount(0);
-          location.href = "/settings?page=purchase";
+          //location.href = "/settings?page=purchase";
+          location = response.data.payment.approvalUrl;
         }
       })
       .catch(error => {

@@ -23,7 +23,8 @@ class User extends Authenticatable
         'password',
         'imgType',
         'rate',
-        'bio'
+        'bio',
+        'rank'
     ];
 
     /**
@@ -69,4 +70,7 @@ class User extends Authenticatable
     public function notifications() {
         return $this->hasMany(Notification::class, 'user_id');
     }
+    public function balances() {
+        return $this->hasMany(Balance::class);
+    } 
 }

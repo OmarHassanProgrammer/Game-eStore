@@ -38,6 +38,10 @@
     color: #ccc;
 }
 
+.gridContainer.c4 {
+    /*grid-template-columns: 1fr 1fr 1fr 1fr;*/
+}
+
 @media screen and (max-width: 1700px) {
     .gridContainer {
         grid-template-rows: 290px;
@@ -96,25 +100,14 @@
     }
 }
 
-@media screen and (max-width: 840px) {
-    .gridContainer {
-        grid-template-rows: 270px;
-        grid-auto-rows: 270px;
+@media screen and (max-width: 850px) {
+    .gridContainer:not(.c4) {
+        grid-template-columns: 1fr;
     }
-}
-
-@media screen and (max-width: 800px) {
-    .gridContainer {
-        grid-template-rows: 250px;
-        grid-auto-rows: 250px;
-    }
-}
-
-@media screen and (max-width: 770px) {
     .gridContainer {
         grid-template-rows: 390px;
         grid-auto-rows: 390px;
-        grid-template-columns: 1fr;
+        justify-items: center;
     }
 }
 
@@ -125,10 +118,13 @@
     }
 }
 
-@media screen and (max-width: 635px) {
+@media screen and (max-width: 650px) {
     .gridContainer {
         grid-template-rows: 335px;
         grid-auto-rows: 335px;
+    }
+    .gridContainer.c4 {
+        grid-template-columns: 1fr;
     }
 }
 
@@ -174,6 +170,24 @@
     }
 }
 
-.gridContainer.c4 {
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+
+.gridContainer .add {
+    width: 285px;
+    position: relative;
+    background-color: #202020;
+    border-radius: 12px;
+    transition: all 0.5s ease-in-out;
+    cursor: pointer;
+}
+.gridContainer .add:hover {
+    background-color: #2d2d2d;
+}
+.gridContainer .add svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    fill: #fff;
+    width: 100px;
+    height: 100px;
 }

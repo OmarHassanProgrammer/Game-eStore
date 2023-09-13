@@ -73,3 +73,9 @@ body {
 .form .bottom .part .link:hover {
     color: #4834d4;
 }
+
+@media (max-width: 425px) {
+    .form {
+        width: 95%;
+    }
+}
