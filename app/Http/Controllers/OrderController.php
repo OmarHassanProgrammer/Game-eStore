@@ -124,7 +124,7 @@ class OrderController extends Controller
                 [
                     "recipient_type" => "EMAIL",
                     "amount" => [
-                        "value" => "9.87",
+                        "value" => $amount,
                         "currency" => "USD"
                     ],
                     "note" => "Thanks for your patronage!",
