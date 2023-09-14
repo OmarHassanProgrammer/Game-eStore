@@ -22,20 +22,8 @@ class ChatController extends Controller
     }
 
     public function getChat($id) {
-        $chat = [];
-        $c = Chat::get()->where("to", Auth::user()->id)->where("from", $id);
-        if(is_object($c) or is_array($c)) {
-            array_push($chat, ...$c); 
-        } else {
-            array_push($chat, $c);
-        }
-        $c = Chat::get()->where("from", Auth::user()->id)->where("to", $id);
-        if(is_object($c) or is_array($c)) {
-            array_push($chat, ...$c); 
-        } else {
-            array_push($chat, $c);
-        }
-        
+        $chat = Chat::where("to", Auth::user()->id)->where("from", $id)
+                            ->orWhere("from", Auth::user()->id)->where("to", $id)->get();
         
         return response()->json(['msg' => 'done', 'chat' => $chat]);
     } 

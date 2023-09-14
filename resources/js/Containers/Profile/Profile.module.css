@@ -89,15 +89,40 @@ body {
 }
 .profileContent .left .accounts {
     margin-top: 8px;
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+.profileContent .left .accounts .games:first-child:after {
+    content: "";
+    right: -20px;
+    width: 3px;
+    height: 80%;
+    border-radius: 5px;
+    background-color:#2980b9;
+    position: absolute;
+    top: 10%;
 }
 .profileContent .left .accounts .games {
     display: flex;
     gap: 7px;
+    position: relative;
 }
 .profileContent .left .accounts .games .account img {
     width: 30px;
     height: 30px;
     cursor: pointer;
+}
+.profileContent .left .accounts .games .letter {
+    font-size: 1.3rem;
+    color: #fff;
+    font-family: "GT Bold";
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
 }
 .profileContent .left .edit {
     width: 100%;

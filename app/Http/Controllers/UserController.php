@@ -107,7 +107,7 @@ class UserController extends Controller
         }
         if(isset($request->gameLinks)) {
             foreach ($request->gameLinks as $key => $value) {
-                $user->gameLinks()->create(['link' => $value->value, 'game' => $value->game]);
+                $user->gameLinks()->create(['link' => explode(',', $value)[0], 'game' => explode(',', $value)[1]]);
             }
         }
 

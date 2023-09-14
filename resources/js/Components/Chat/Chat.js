@@ -5,11 +5,12 @@ import Cross from "../../../assets/icons/cross.svg";
 import { motion, AnimatePresence } from "framer-motion";
 import AnimatedChat from '../../Containers/AnimatedPage/AnimatedChat';
 import AnimatedCard from '../../Containers/AnimatedPage/AnimatedCard';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import axios from 'axios';
 
 const Chat = props => {
     const {
+        setAddPerson,
         addPerson
     } = props;
 
@@ -19,6 +20,13 @@ const Chat = props => {
     const [msg, setMsg] = useState("");
     const [chat, setChat] = useState([]);
 
+    const divRef = useRef(null);
+    const scrollToBottom = () => {
+        if (divRef.current) {
+            divRef.current.scrollTop = divRef.current.scrollHeight;
+        }
+    };
+    
     const handleCloseChat = () => {
         setChatDisplayed(false);
     }
@@ -29,13 +37,17 @@ const Chat = props => {
     }, [addPerson]);
 
     const addPersonF = (id) => {
+        setChatDisplayed(true);
         let exist = false;
         people?.forEach(person => {
             if(person.id == id) exist = true;
         });
+        console.log("aaa");
+        console.log(exist?"yeah":"nope");
         if(exist) {
             changeChat(id);
         } else {
+            console.log("ggg");
             const apiUrl = '/api/user/getSimpleData/'; // Replace with your actual API endpoint
             axios.post(apiUrl, {
                 ids: [id]
@@ -50,6 +62,7 @@ const Chat = props => {
                     changeChat(id);
                     if(!chatDisplayed) setChatDisplayed(true);
                 }
+                setAddPerson("");
             })
             .catch(error => {
             console.error('Error fetching data:', error);
@@ -98,6 +111,7 @@ const Chat = props => {
             .then(response => {
                 if(response.data.msg = "done") {
                     setChat(response.data.chat);
+                    scrollToBottom();
                     if(change) {
                         setActiveChat(a);
                         localStorage.setItem("activeChat", a);
@@ -193,7 +207,7 @@ const Chat = props => {
                         </div>
                     })}
                 </div>
-                <div className={styles.middle}>
+                <div className={styles.middle} ref={divRef}>
                     {
                         chat.map((msg, key) => {
                             return <div key={key} 

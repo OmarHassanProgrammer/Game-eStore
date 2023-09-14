@@ -50,6 +50,7 @@ export default function Browse (props) {
   const [isFav, setIsFav] = useState({});
   const [addPerson, setAddPerson] = useState();
   const [addNotification, setAddNotification] = useState();
+  const [onlyavailable, setOnlyavailable] = useState();
   const [hoverState, setHoverState] = useState([
     {
         hovered: false,
@@ -202,7 +203,11 @@ const handleSearchSubmit = (e) => {
   }
 }
 const handleSelectItemFilter = (filter, e) => {
-  setCurrentItemFilter(filter);
+  switch(filter) {
+    case "Price":
+
+    return;
+  }
 }
 
 const handleSelectGenre  = (genre) => {
@@ -360,12 +365,19 @@ const handleRemoveFromCart = (id, key, e) => {
   const apiUrl = '/api/user/cart/remove/' + id; // Replace with your actual API endpoint
   axios.get(apiUrl)
     .then(response => {
-      setCart(response.data.cart);S
-      let c = cart.filter((cart_item) => {});
+      setCart(response.data.cart);
+      let c = cart.filter((cart_item) => {
+        return cart_item.id != id;
+      });
+      setCart(c);
 
       setCartAmount(cartAmount - 1);
       let s = shownGames;
-      s[key].inCart = false;
+      s.forEach(element => {
+        if(element.id == id) {
+          element.inCart = false;          
+        }
+      });
       setShownGames([...s]);
     })
     .catch(error => {
@@ -702,6 +714,7 @@ useEffect(() => {
 
                 <div className={styles.applied}>
                   <div className={styles.filterList}>
+                    
                     <button 
                       className={styles.filterButton} 
                       aria-label="Current Filter"

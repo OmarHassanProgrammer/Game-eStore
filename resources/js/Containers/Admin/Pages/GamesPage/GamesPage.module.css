@@ -86,6 +86,47 @@
     font-family: "GT Medium";
     align-items: center;
 }
+
+.row.genresRow {
+    flex-direction: column;
+    gap: 5px;
+    align-items: flex-start;
+}
+.row.genresRow select {
+    width: 100%;
+    padding: 5px;
+}
+.popOver .pop .form .row .genres {
+    display: flex;
+    gap: 3px;
+    flex-wrap: wrap;
+}
+.popOver .pop .form .row .genres .genre {
+    color: #fff;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    padding: 4px 5px;
+    font-family: "GT LIGHT";
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+.popOver .pop .form .row .genres .genre .delete {
+    background-color:#e74c3c;
+    color: #fff;
+    border-radius: 50%;
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.5s ease-in-out;
+    width: 17px;
+    height: 17px;
+}
+.popOver .pop .form .row .genres .genre .delete:hover {
+    background-color: #c0392b;
+}
 .popOver .pop .form .row .input {
     flex: 1;
     padding: 8px;
@@ -103,6 +144,16 @@
 .popOver .pop .form .row.i {
     flex-direction: column;
     justify-content: center;
+}
+
+.row.genresRow {
+    flex-direction: column;
+    gap: 5px;
+    align-items: flex-start !important;
+}
+.row.genresRow select {
+    width: 100%;
+    padding: 5px;
 }
 .popOver .pop .form .row .imgContainer {
     width: 80%;

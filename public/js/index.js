@@ -5439,7 +5439,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 var Chat = function Chat(props) {
-  var addPerson = props.addPerson;
+  var setAddPerson = props.setAddPerson,
+    addPerson = props.addPerson;
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(true),
     _useState2 = _slicedToArray(_useState, 2),
     chatDisplayed = _useState2[0],
@@ -5460,6 +5461,12 @@ var Chat = function Chat(props) {
     _useState10 = _slicedToArray(_useState9, 2),
     chat = _useState10[0],
     setChat = _useState10[1];
+  var divRef = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)(null);
+  var scrollToBottom = function scrollToBottom() {
+    if (divRef.current) {
+      divRef.current.scrollTop = divRef.current.scrollHeight;
+    }
+  };
   var handleCloseChat = function handleCloseChat() {
     setChatDisplayed(false);
   };
@@ -5467,13 +5474,17 @@ var Chat = function Chat(props) {
     if (addPerson) addPersonF(addPerson);
   }, [addPerson]);
   var addPersonF = function addPersonF(id) {
+    setChatDisplayed(true);
     var exist = false;
     people === null || people === void 0 ? void 0 : people.forEach(function (person) {
       if (person.id == id) exist = true;
     });
+    console.log("aaa");
+    console.log(exist ? "yeah" : "nope");
     if (exist) {
       changeChat(id);
     } else {
+      console.log("ggg");
       var apiUrl = '/api/user/getSimpleData/'; // Replace with your actual API endpoint
       axios__WEBPACK_IMPORTED_MODULE_7__["default"].post(apiUrl, {
         ids: [id]
@@ -5484,6 +5495,7 @@ var Chat = function Chat(props) {
           changeChat(id);
           if (!chatDisplayed) setChatDisplayed(true);
         }
+        setAddPerson("");
       })["catch"](function (error) {
         console.error('Error fetching data:', error);
       });
@@ -5526,6 +5538,7 @@ var Chat = function Chat(props) {
       axios__WEBPACK_IMPORTED_MODULE_7__["default"].get(apiUrl).then(function (response) {
         if (response.data.msg = "done") {
           setChat(response.data.chat);
+          scrollToBottom();
           if (change) {
             setActiveChat(a);
             localStorage.setItem("activeChat", a);
@@ -5661,6 +5674,7 @@ var Chat = function Chat(props) {
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
         className: _Chat_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].middle,
+        ref: divRef,
         children: chat.map(function (msg, key) {
           var _chat, _chat2;
           return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
@@ -5833,7 +5847,7 @@ var Filters = function Filters(props) {
           }, index);
         }) : ""]
       })
-    }) : window.location.pathname + window.location.search == "/categories" ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+    }) : window.location.pathname == "/categories" ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h2", {
         onClick: handleBrowse.bind(_this, "games"),
         children: "Games"
@@ -5937,26 +5951,6 @@ var Filters = function Filters(props) {
               className: _Filters_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].Wishlist
             })
           }), "Wishlist"]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
-          className: _Filters_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].filterDiv,
-          id: "9",
-          onMouseEnter: handleHover,
-          onMouseLeave: handleHover,
-          onClick: handleSelectItemFilter.bind(_this, "Ratings"),
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
-            className: "".concat(_Filters_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].filterBtn2, " ").concat(_Filters_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].Ratings),
-            style: {
-              backgroundColor: currentItemFilter == "Ratings" ? "#fff" : "#2d2d2d"
-            },
-            "aria-label": "Sort after ratings",
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("img", {
-              src: _assets_icons_ratings_svg__WEBPACK_IMPORTED_MODULE_3__["default"],
-              className: "".concat(_Filters_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].filterSVG2, " ").concat(_Filters_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].Ratings),
-              style: {
-                filter: currentItemFilter == "Ratings" ? "" : "grayscale(100%) invert(1)"
-              }
-            })
-          }), "Ratings"]
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
           className: _Filters_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].filterDiv,
           id: "10",
@@ -7609,6 +7603,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var framer_motion__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! framer-motion */ "./node_modules/framer-motion/dist/es/render/dom/motion.mjs");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+var _this = undefined;
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
@@ -7661,7 +7656,21 @@ var GamesPage = function GamesPage(props) {
     _useState16 = _slicedToArray(_useState15, 2),
     deleteId = _useState16[0],
     setDeleteId = _useState16[1];
+  var _useState17 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(),
+    _useState18 = _slicedToArray(_useState17, 2),
+    genres = _useState18[0],
+    setGenres = _useState18[1];
+  var _useState19 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(),
+    _useState20 = _slicedToArray(_useState19, 2),
+    selectedGenres = _useState20[0],
+    setSelectedGenres = _useState20[1];
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
+    var apiUrl = '/api/genres/getAll'; // Replace with your actual API endpoint
+    axios__WEBPACK_IMPORTED_MODULE_4__["default"].get(apiUrl).then(function (response) {
+      setGenres(response.data.genres);
+    })["catch"](function (error) {
+      console.error('Error fetching data:', error);
+    });
     var api = axios__WEBPACK_IMPORTED_MODULE_4__["default"].create({
       baseURL: '/api'
     });
@@ -7696,6 +7705,10 @@ var GamesPage = function GamesPage(props) {
     var data = new FormData();
     data.append('name', name);
     data.append('img', img === null || img === void 0 ? void 0 : img.file);
+    console.log("Agd");
+    selectedGenres.forEach(function (genre) {
+      data.append('genres[]', genre === null || genre === void 0 ? void 0 : genre.id);
+    });
     api.post('/games/add/', data, {
       headers: {
         'Content-Type': 'multipart/form-data'
@@ -7810,6 +7823,28 @@ var GamesPage = function GamesPage(props) {
       console.error('Error fetching data:', error);
     });
   };
+  var handleGenres = function handleGenres(e) {
+    var genre = genres.filter(function (g) {
+      return g.id == e.target.value;
+    });
+    genre[0].color = ['#16a085', '#27ae60', '#2980b9', '#8e44ad', '#2c3e50', '#c0392b', '#d35400'][Math.floor(Math.random() * 7)];
+    console.log(genre);
+    if (genre) {
+      if (selectedGenres) {
+        console.log("aaa");
+        setSelectedGenres([].concat(_toConsumableArray(selectedGenres), _toConsumableArray(genre)));
+      } else {
+        console.log("bbb");
+        setSelectedGenres(_toConsumableArray(genre));
+      }
+    }
+  };
+  var deleteGenre = function deleteGenre(id, e) {
+    var g = selectedGenres.filter(function (genre) {
+      return genre.id != id;
+    });
+    setSelectedGenres(_toConsumableArray(g));
+  };
   var variants = {
     initial: {
       opacity: 0
@@ -7918,6 +7953,37 @@ var GamesPage = function GamesPage(props) {
               onChange: function onChange(e) {
                 setName(e.target.value);
               }
+            })]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+            className: "".concat(_GamesPage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].row, " ").concat(_GamesPage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].genresRow),
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+              className: _GamesPage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].label,
+              children: "Genres: "
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+              className: _GamesPage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].genres,
+              children: selectedGenres === null || selectedGenres === void 0 ? void 0 : selectedGenres.map(function (genre, key) {
+                return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("span", {
+                  className: _GamesPage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].genre,
+                  style: {
+                    backgroundColor: genre.color
+                  },
+                  children: [genre.name, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("span", {
+                    className: _GamesPage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"]["delete"],
+                    onClick: deleteGenre.bind(_this, genre.id),
+                    children: "x"
+                  })]
+                }, key);
+              })
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("select", {
+              id: "mySelect",
+              name: "genres",
+              onChange: handleGenres,
+              children: genres === null || genres === void 0 ? void 0 : genres.map(function (genre, key) {
+                return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+                  value: genre.id,
+                  children: genre.name
+                }, key);
+              })
             })]
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
             className: "".concat(_GamesPage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].row, " ").concat(_GamesPage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].i),
@@ -9040,7 +9106,11 @@ function Browse(props) {
     _useState56 = _slicedToArray(_useState55, 2),
     addNotification = _useState56[0],
     setAddNotification = _useState56[1];
-  var _useState57 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)([{
+  var _useState57 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(),
+    _useState58 = _slicedToArray(_useState57, 2),
+    onlyavailable = _useState58[0],
+    setOnlyavailable = _useState58[1];
+  var _useState59 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)([{
       hovered: false,
       selected: false
     }, {
@@ -9092,9 +9162,9 @@ function Browse(props) {
       hovered: false,
       selected: false
     }]),
-    _useState58 = _slicedToArray(_useState57, 2),
-    hoverState = _useState58[0],
-    setHoverState = _useState58[1];
+    _useState60 = _slicedToArray(_useState59, 2),
+    hoverState = _useState60[0],
+    setHoverState = _useState60[1];
   (0,react__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
     var apiUrl = '/api/genres/getAll'; // Replace with your actual API endpoint
     axios__WEBPACK_IMPORTED_MODULE_17__["default"].get(apiUrl).then(function (response) {
@@ -9159,7 +9229,10 @@ function Browse(props) {
     }
   };
   var handleSelectItemFilter = function handleSelectItemFilter(filter, e) {
-    setCurrentItemFilter(filter);
+    switch (filter) {
+      case "Price":
+        return;
+    }
   };
   var handleSelectGenre = function handleSelectGenre(genre) {
     setActiveGenre(genre);
@@ -9296,11 +9369,17 @@ function Browse(props) {
     var apiUrl = '/api/user/cart/remove/' + id; // Replace with your actual API endpoint
     axios__WEBPACK_IMPORTED_MODULE_17__["default"].get(apiUrl).then(function (response) {
       setCart(response.data.cart);
-      S;
-      var c = cart.filter(function (cart_item) {});
+      var c = cart.filter(function (cart_item) {
+        return cart_item.id != id;
+      });
+      setCart(c);
       setCartAmount(cartAmount - 1);
       var s = shownGames;
-      s[key].inCart = false;
+      s.forEach(function (element) {
+        if (element.id == id) {
+          element.inCart = false;
+        }
+      });
       setShownGames(_toConsumableArray(s));
     })["catch"](function (error) {
       console.error('Error fetching data:', error);
@@ -9335,10 +9414,10 @@ function Browse(props) {
       document.body.style.overflow = "scroll !important";
     }
   }, [cartDisplayed]);
-  var _useState59 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(false),
-    _useState60 = _slicedToArray(_useState59, 2),
-    browsing = _useState60[0],
-    setBrowsing = _useState60[1];
+  var _useState61 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(false),
+    _useState62 = _slicedToArray(_useState61, 2),
+    browsing = _useState62[0],
+    setBrowsing = _useState62[1];
   var handleHover = function handleHover(e) {
     var newHoverState = hoverState[e.target.id];
     newHoverState.hovered = !newHoverState.hovered;
@@ -9412,14 +9491,14 @@ function Browse(props) {
       }
     }
   };
-  var _useState61 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(false),
-    _useState62 = _slicedToArray(_useState61, 2),
-    landingPage = _useState62[0],
-    setLandingPage = _useState62[1];
-  var _useState63 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(true),
+  var _useState63 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(false),
     _useState64 = _slicedToArray(_useState63, 2),
-    grid = _useState64[0],
-    setGrid = _useState64[1];
+    landingPage = _useState64[0],
+    setLandingPage = _useState64[1];
+  var _useState65 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(true),
+    _useState66 = _slicedToArray(_useState65, 2),
+    grid = _useState66[0],
+    setGrid = _useState66[1];
   var handleLayoutSwitch = function handleLayoutSwitch(e) {
     if (e.target.id == "grid") {
       setGrid(true);
@@ -10361,11 +10440,17 @@ var GamePage = function GamePage(props) {
     var apiUrl = '/api/user/cart/remove/' + id; // Replace with your actual API endpoint
     axios__WEBPACK_IMPORTED_MODULE_14__["default"].get(apiUrl).then(function (response) {
       setCart(response.data.cart);
-      S;
-      var c = cart.filter(function (cart_item) {});
+      var c = cart.filter(function (cart_item) {
+        return cart_item.id != id;
+      });
+      setCart(c);
       setCartAmount(cartAmount - 1);
       var s = shownGames;
-      s[key].inCart = false;
+      s.forEach(function (element) {
+        if (element.id == id) {
+          element.inCart = false;
+        }
+      });
       setShownGames(_toConsumableArray(s));
     })["catch"](function (error) {
       console.error('Error fetching data:', error);
@@ -11192,7 +11277,7 @@ function Home(props) {
   };
   var handleNavGamePage = function handleNavGamePage() {
     setHoverState([].concat(_toConsumableArray(hoverState), [hoverState[21].hovered = false]));
-    window.location.href = '/game/riseofthetombraider';
+    window.location.href = '/games';
   };
   var handleNavNotFoundPage = function handleNavNotFoundPage() {
     window.location.href = '/this-page';
@@ -11367,33 +11452,6 @@ function Home(props) {
                 src: _assets_icons_game_svg__WEBPACK_IMPORTED_MODULE_8__["default"],
                 className: _Home_module_css__WEBPACK_IMPORTED_MODULE_2__["default"].ctaSVG
               }), "Games"]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsxs)("button", {
-              className: _Home_module_css__WEBPACK_IMPORTED_MODULE_2__["default"].cta,
-              onClick: handleNavNotFoundPage,
-              "aria-label": "Open 404 page",
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)("svg", {
-                xmlns: "http://www.w3.org/2000/svg",
-                className: _Home_module_css__WEBPACK_IMPORTED_MODULE_2__["default"].ctaSVG,
-                viewBox: "0 0 576 512",
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)("path", {
-                  d: "M264.5 5.2c14.9-6.9 32.1-6.9 47 0l218.6 101c8.5 3.9 13.9 12.4 13.9 21.8s-5.4 17.9-13.9 21.8l-218.6 101c-14.9 6.9-32.1 6.9-47 0L45.9 149.8C37.4 145.8 32 137.3 32 128s5.4-17.9 13.9-21.8L264.5 5.2zM476.9 209.6l53.2 24.6c8.5 3.9 13.9 12.4 13.9 21.8s-5.4 17.9-13.9 21.8l-218.6 101c-14.9 6.9-32.1 6.9-47 0L45.9 277.8C37.4 273.8 32 265.3 32 256s5.4-17.9 13.9-21.8l53.2-24.6 152 70.2c23.4 10.8 50.4 10.8 73.8 0l152-70.2zm-152 198.2l152-70.2 53.2 24.6c8.5 3.9 13.9 12.4 13.9 21.8s-5.4 17.9-13.9 21.8l-218.6 101c-14.9 6.9-32.1 6.9-47 0L45.9 405.8C37.4 401.8 32 393.3 32 384s5.4-17.9 13.9-21.8l53.2-24.6 152 70.2c23.4 10.8 50.4 10.8 73.8 0z"
-                })
-              }), "Categories"]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsxs)("button", {
-              className: "".concat(_Home_module_css__WEBPACK_IMPORTED_MODULE_2__["default"].cta, " ").concat(_Home_module_css__WEBPACK_IMPORTED_MODULE_2__["default"].lastChild),
-              onClick: handleNavNotFoundQuery,
-              "aria-label": "open 404 query page",
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)("svg", {
-                xmlns: "http://www.w3.org/2000/svg",
-                className: "".concat(_Home_module_css__WEBPACK_IMPORTED_MODULE_2__["default"].ctaSVG),
-                fill: "#000000",
-                height: "800px",
-                width: "800px",
-                viewBox: "0 0 57 57",
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)("path", {
-                  d: "M57,0h-8.837L18.171,29.992l-4.076-4.076l-1.345-4.034c-0.22-0.663-0.857-1.065-1.55-0.98  c-0.693,0.085-1.214,0.63-1.268,1.327l-0.572,7.438l5.982,5.982L4.992,46H2.274C1.02,46,0,47.02,0,48.274v6.452  C0,55.98,1.02,57,2.274,57h6.452C9.98,57,11,55.98,11,54.726v-3.421l10-10l6.021,6.021l6.866-1.145  c0.685-0.113,1.182-0.677,1.21-1.37c0.028-0.693-0.422-1.295-1.096-1.464l-3.297-0.824l-4.043-4.043L57,8.489V0z M9,54.726  C9,54.877,8.877,55,8.726,55H2.274C2.123,55,2,54.877,2,54.726v-6.452C2,48.123,2.123,48,2.274,48h0.718h5.734  C8.877,48,9,48.123,9,48.274v5.031V54.726z M11,48.477v-0.203C11,47.02,9.98,46,8.726,46H7.82l8.938-8.938l1.417,1.417l1.411,1.411  L11,48.477z M30.942,44.645l-3.235,0.54l-5.293-5.293l0,0l-2.833-2.833l-8.155-8.155l0.292-3.796l0.63,1.89l4.41,4.41l0,0  l4.225,4.225l8.699,8.699L30.942,44.645z M25.247,37.066l-2.822-2.822l-2.839-2.839L48.991,2h4.243L23.829,31.406  c-0.391,0.391-0.391,1.023,0,1.414c0.195,0.195,0.451,0.293,0.707,0.293s0.512-0.098,0.707-0.293L55,3.062v4.592L25.247,37.066z"
-                })
-              }), "Items"]
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)("a", {
               href: "https://github.com/gianlucajahn/react-ecommerce-store/commits/main",
               target: "_blank",
@@ -11407,10 +11465,10 @@ function Home(props) {
                   children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)("path", {
                     d: "M47.6 300.4L228.3 469.1c7.5 7 17.4 10.9 27.7 10.9s20.2-3.9 27.7-10.9L464.4 300.4c30.4-28.3 47.6-68 47.6-109.5v-5.8c0-69.9-50.5-129.5-119.4-141C347 36.5 300.6 51.4 268 84L256 96 244 84c-32.6-32.6-79-47.5-124.6-39.9C50.5 55.6 0 115.2 0 185.1v5.8c0 41.5 17.2 81.2 47.6 109.5z"
                   })
-                }), "Favourites"]
+                }), "Wish List"]
               })
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)("a", {
-              href: "https://github.com/gianlucajahn/react-ecommerce-store/blob/main/README.md#performance",
+              href: "/checkout",
               target: "_blank",
               children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsxs)("button", {
                 className: "".concat(_Home_module_css__WEBPACK_IMPORTED_MODULE_2__["default"].cta, " ").concat(_Home_module_css__WEBPACK_IMPORTED_MODULE_2__["default"].lastChild),
@@ -11419,32 +11477,6 @@ function Home(props) {
                   src: _assets_icons_cart_svg__WEBPACK_IMPORTED_MODULE_11__["default"],
                   className: "".concat(_Home_module_css__WEBPACK_IMPORTED_MODULE_2__["default"].ctaSVG)
                 }), "Cart"]
-              })
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)("a", {
-              href: "https://github.com/gianlucajahn/react-ecommerce-store/blob/main/README.md#technologies-used",
-              target: "_blank",
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsxs)("button", {
-                className: "".concat(_Home_module_css__WEBPACK_IMPORTED_MODULE_2__["default"].cta, " ").concat(_Home_module_css__WEBPACK_IMPORTED_MODULE_2__["default"].lastChild),
-                "aria-label": "View technologies used",
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)("svg", {
-                  xmlns: "http://www.w3.org/2000/svg",
-                  className: "".concat(_Home_module_css__WEBPACK_IMPORTED_MODULE_2__["default"].ctaSVG),
-                  viewBox: "0 0 512 512",
-                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)("path", {
-                    d: "M464 256A208 208 0 1 1 48 256a208 208 0 1 1 416 0zM0 256a256 256 0 1 0 512 0A256 256 0 1 0 0 256zM232 120V256c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2V120c0-13.3-10.7-24-24-24s-24 10.7-24 24z"
-                  })
-                }), "Saved For Later"]
-              })
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)("a", {
-              href: "https://github.com/gianlucajahn/react-ecommerce-store/blob/main/README.md#sources",
-              target: "_blank",
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsxs)("button", {
-                className: "".concat(_Home_module_css__WEBPACK_IMPORTED_MODULE_2__["default"].cta, " ").concat(_Home_module_css__WEBPACK_IMPORTED_MODULE_2__["default"].lastChild),
-                "aria-label": "View Sources",
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)("img", {
-                  src: _assets_icons_sources_svg__WEBPACK_IMPORTED_MODULE_14__["default"],
-                  className: "".concat(_Home_module_css__WEBPACK_IMPORTED_MODULE_2__["default"].ctaSVG)
-                }), "About us"]
               })
             })]
           })
@@ -12272,7 +12304,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 var Profile = function Profile(props) {
-  var _userProfile$items;
+  var _userProfile$game_lin, _userProfile$social_l, _userProfile$items;
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(true),
     _useState2 = _slicedToArray(_useState, 2),
     auth = _useState2[0],
@@ -12540,7 +12572,8 @@ var Profile = function Profile(props) {
         handleRemoveFromCart: handleRemoveFromCart,
         openGamePage: openGamePage
       }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)(_Components_Chat_Chat__WEBPACK_IMPORTED_MODULE_10__["default"], {
-        addPerson: addPerson
+        addPerson: addPerson,
+        setAddPerson: setAddPerson
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)(_Components_Notifications_Notifications__WEBPACK_IMPORTED_MODULE_14__["default"], {
         addNotification: addNotification
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)(_Components_NavBar_NavBar__WEBPACK_IMPORTED_MODULE_5__["default"], {
@@ -12579,9 +12612,7 @@ var Profile = function Profile(props) {
                     id: "Communication / Chat_Circle",
                     children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("path", {
                       id: "Vector",
-                      d: "M7.50977 19.8018C8.83126 20.5639 10.3645 21 11.9996 21C16.9702 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 13.6351 3.43604 15.1684 4.19819 16.4899L4.20114 16.495C4.27448 16.6221 4.31146 16.6863 4.32821 16.7469C4.34401 16.804 4.34842 16.8554 4.34437 16.9146C4.34003 16.9781 4.3186 17.044 4.27468 17.1758L3.50586 19.4823L3.50489 19.4853C3.34268 19.9719 3.26157 20.2152 3.31938 20.3774C3.36979 20.5187 3.48169 20.6303 3.62305 20.6807C3.78482 20.7384 4.02705 20.6577 4.51155 20.4962L4.51758 20.4939L6.82405 19.7251C6.95537 19.6813 7.02214 19.6591 7.08559 19.6548C7.14475 19.6507 7.19578 19.6561 7.25293 19.6719C7.31368 19.6887 7.37783 19.7257 7.50563 19.7994L7.50977 19.8018Z",
-                      "stroke-linecap": "round",
-                      "stroke-linejoin": "round"
+                      d: "M7.50977 19.8018C8.83126 20.5639 10.3645 21 11.9996 21C16.9702 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 13.6351 3.43604 15.1684 4.19819 16.4899L4.20114 16.495C4.27448 16.6221 4.31146 16.6863 4.32821 16.7469C4.34401 16.804 4.34842 16.8554 4.34437 16.9146C4.34003 16.9781 4.3186 17.044 4.27468 17.1758L3.50586 19.4823L3.50489 19.4853C3.34268 19.9719 3.26157 20.2152 3.31938 20.3774C3.36979 20.5187 3.48169 20.6303 3.62305 20.6807C3.78482 20.7384 4.02705 20.6577 4.51155 20.4962L4.51758 20.4939L6.82405 19.7251C6.95537 19.6813 7.02214 19.6591 7.08559 19.6548C7.14475 19.6507 7.19578 19.6561 7.25293 19.6719C7.31368 19.6887 7.37783 19.7257 7.50563 19.7994L7.50977 19.8018Z"
                     })
                   })
                 })
@@ -12648,30 +12679,57 @@ var Profile = function Profile(props) {
                 }, stars.length + key);
               })]
             })]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("div", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsxs)("div", {
             className: _Profile_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].accounts,
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsxs)("div", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("div", {
               className: _Profile_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].games,
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("span", {
-                className: _Profile_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].account,
-                onClick: copyLink.bind(_this, 'roblox'),
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("img", {
-                  src: "../images/roblox.png"
-                })
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("span", {
-                className: _Profile_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].account,
-                onClick: copyLink.bind(_this, 'fortnite'),
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("img", {
-                  src: "../images/fortnite.jpg"
-                })
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("span", {
-                className: _Profile_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].account,
-                onClick: copyLink.bind(_this, 'fdsr'),
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("img", {
-                  src: "../images/minecraft.svg"
-                })
-              })]
-            })
+              children: userProfile === null || userProfile === void 0 || (_userProfile$game_lin = userProfile.game_links) === null || _userProfile$game_lin === void 0 ? void 0 : _userProfile$game_lin.map(function (link, key) {
+                return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("span", {
+                  className: _Profile_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].account,
+                  onClick: copyLink.bind(_this, link.value),
+                  children: ['LOL', 'COC', 'Minecraft', 'Fortnite', 'Roblox'].includes(link.game) ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("img", {
+                    src: '../images/' + link.game + '.png'
+                  }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("span", {
+                    className: _Profile_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].letter,
+                    style: {
+                      backgroundColor: ['#16a085', '#27ae60', '#2980b9', '#8e44ad', '#2c3e50', '#c0392b', '#d35400'][Math.floor(Math.random() * 7)]
+                    },
+                    children: link.game[0]
+                  })
+                }, key);
+              })
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("div", {
+              className: _Profile_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].games,
+              children: userProfile === null || userProfile === void 0 || (_userProfile$social_l = userProfile.social_links) === null || _userProfile$social_l === void 0 ? void 0 : _userProfile$social_l.map(function (link, key) {
+                return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("a", {
+                  target: "_blank",
+                  href: link.link,
+                  className: _Profile_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].account,
+                  onClick: copyLink.bind(_this, link.value),
+                  children: function () {
+                    var type = "";
+                    ['facebook', 'instagram', 'linkedin', 'twitter', 'snapchat'].forEach(function (element) {
+                      if (link.link.includes(element)) {
+                        type = element;
+                      }
+                    });
+                    if (type != "") {
+                      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("img", {
+                        src: '../images/' + type + '.png'
+                      });
+                    } else {
+                      /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("span", {
+                        className: _Profile_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].letter,
+                        style: {
+                          backgroundColor: ['#16a085', '#27ae60', '#2980b9', '#8e44ad', '#2c3e50', '#c0392b', '#d35400'][Math.floor(Math.random() * 7)]
+                        },
+                        children: link.link[link.link.indexOf("www.") + 4]
+                      });
+                    }
+                  }()
+                }, key);
+              })
+            })]
           }), (user === null || user === void 0 ? void 0 : user.id) == (userProfile === null || userProfile === void 0 ? void 0 : userProfile.id) ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("button", {
             className: _Profile_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].edit,
             onClick: function onClick() {
@@ -13013,18 +13071,18 @@ var ProfileSubPage = function ProfileSubPage(props) {
     }
   };
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
-    var _userProfile$socialLi, _userProfile$gameLink;
+    var _userProfile$social_l, _userProfile$game_lin;
     setName(userProfile.name);
     setEmail(userProfile.email);
     setBio(userProfile.bio);
     var l = [];
-    userProfile === null || userProfile === void 0 || (_userProfile$socialLi = userProfile.socialLinks) === null || _userProfile$socialLi === void 0 ? void 0 : _userProfile$socialLi.forEach(function (link) {
+    userProfile === null || userProfile === void 0 || (_userProfile$social_l = userProfile.social_links) === null || _userProfile$social_l === void 0 ? void 0 : _userProfile$social_l.forEach(function (link) {
       l.push(link.link);
     });
     l.push(" ");
     setLinks(_toConsumableArray(l));
     l = [];
-    userProfile === null || userProfile === void 0 || (_userProfile$gameLink = userProfile.gameLinks) === null || _userProfile$gameLink === void 0 ? void 0 : _userProfile$gameLink.forEach(function (link) {
+    userProfile === null || userProfile === void 0 || (_userProfile$game_lin = userProfile.game_links) === null || _userProfile$game_lin === void 0 ? void 0 : _userProfile$game_lin.forEach(function (link) {
       l.push({
         game: link.game,
         value: link.link,
@@ -13113,7 +13171,7 @@ var ProfileSubPage = function ProfileSubPage(props) {
       data.append('socialLinks[]', link);
     });
     gLinks.forEach(function (link) {
-      data.append('gameLinks[]', link);
+      data.append('gameLinks[]', link.value + ',' + link.game);
     });
     data.append('img', img === null || img === void 0 ? void 0 : img.file);
     api.post('/user/updateProfile', data, {
@@ -17764,7 +17822,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "* {\n    margin: 0;\n    padding: 0;\n}\n\n.p7uXSbRi3I1FAcN\\+238xPA\\=\\= {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    padding: 5px 40px 2px 30px;\n    z-index: 12;\n}\n\nform {\n    display: flex;\n    align-items: center;\n}\n\nform button {\n    background: transparent;\n    cursor: pointer;\n    border: 1px transparent;\n}\n\n.c-l9MYeDZtiUiVXjBouC9A\\=\\= {\n    display: flex;\n    gap: 25px;\n}\n\n.X7rwHhv7tgml1SJgoxRyjA\\=\\= {\n    display: flex;\n    gap: 50px;\n}\n\n.xzl\\+IdFwP2Mpc\\+ihXXSm\\+g\\=\\=,\n.\\+bsSPzFbDJcHbPzb6J8iJg\\=\\=,\n.X7DxtjyXlyGbTp70MOf\\+vA\\=\\=,\n.WG9Ph7odDCcRke3YRBjwAw\\=\\=,\n._6F1UmIML-eU0bptlOfUlZw\\=\\=,\n.eoD5wKwnoyIyJI9tqA76gg\\=\\= {\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    gap: 6px;\n    cursor: pointer;\n    transition: ease-in-out 0.2s;\n    z-index: 9;\n}\n\n.xzl\\+IdFwP2Mpc\\+ihXXSm\\+g\\=\\= *,\n.X7DxtjyXlyGbTp70MOf\\+vA\\=\\= *,\n.WG9Ph7odDCcRke3YRBjwAw\\=\\= * {\n    pointer-events: none;\n}\n\n.xzl\\+IdFwP2Mpc\\+ihXXSm\\+g\\=\\=:active,\n.X7DxtjyXlyGbTp70MOf\\+vA\\=\\=:active,\n.eoD5wKwnoyIyJI9tqA76gg\\=\\=:active,\n.WG9Ph7odDCcRke3YRBjwAw\\=\\=:active {\n    transform: scale(0.945);\n}\n\n.HwrLl2s2aHRPieF92pK5pw\\=\\= {\n    transform: scale(0.525);\n    fill: #CCCCCC;\n    padding-top: 3px;\n    transition: 0.3s;\n}\n\n.IaDzA3yKjsX-J9VQwYejVg\\=\\= {\n    width: 20px;\n    height: 20px;\n    margin-right: 6px;\n    transition: 0.3s;\n}\n\n.WG9Ph7odDCcRke3YRBjwAw\\=\\= {\n    gap: 18px;\n}\n\n.Pza2i8i9GJra-dqsZDpNxQ\\=\\= {\n    padding-bottom: 3px;\n    transform: scale(1.5);\n    fill: white;\n    padding-top: 3px;\n    transition: 0.3s;\n}\n\n.X7DxtjyXlyGbTp70MOf\\+vA\\=\\= h3,\n.xzl\\+IdFwP2Mpc\\+ihXXSm\\+g\\=\\= h3,\n.\\+bsSPzFbDJcHbPzb6J8iJg\\=\\= h3,\n.WG9Ph7odDCcRke3YRBjwAw\\=\\= h3 {\n    color: white;\n    font-family: \"GT Bold\";\n}\n\n.\\+bsSPzFbDJcHbPzb6J8iJg\\=\\= h3,\n.X7rwHhv7tgml1SJgoxRyjA\\=\\= h3 {\n    font-family: \"GT Bold\";\n}\n\n._6F1UmIML-eU0bptlOfUlZw\\=\\= input {\n    margin-left: 55px;\n    background-color: #262626;\n    border: 1px transparent;\n    border-radius: 8px;\n    height: 35px;\n    width: 333px;\n    padding-left: 18px;\n    font-size: 0.92em;\n    font-family: \"GT Medium\";\n    color: #CCCCCC;\n    outline: none;\n    transition: all .3s\n}\n\n._6F1UmIML-eU0bptlOfUlZw\\=\\= input:hover {\n    background-color: #2d2d2d;\n}\n\n._6F1UmIML-eU0bptlOfUlZw\\=\\= input:focus {\n    background-color: #333;\n}\n\nform input:active {\n    transform: scale(0.97);\n}\n\nform button {\n    transition: 0.2s all;\n}\n\nform button:active {\n    transform: scale(0.9);\n}\n.x05V89Oy0tqlziF7hSyd6g\\=\\= {\n    position: relative;\n}\n.oBMG6cMlnl9JQPCrMlPHuA\\=\\= {\n    position: absolute;\n    top: calc(100% - 20px);\n    right: -20px;\n    min-width: 200px;\n    background-color: #fff5;\n    border-radius: 5px;\n    display: flex;\n    flex-direction: column;\n    z-index: 4;\n}\n.oBMG6cMlnl9JQPCrMlPHuA\\=\\=::before {\n    content: \"\";\n    position: absolute;\n    top: -20px;\n    right: 15px;\n    border-width: 10px;\n    border-color: transparent transparent #fff5 transparent;\n    border-style: solid;\n}\n.oBMG6cMlnl9JQPCrMlPHuA\\=\\= .g7y-jggEuv7vh17B8DWMcA\\=\\= {\n    width: 100%;\n    padding: 10px 20px;\n    cursor: pointer;\n    font-size: 1.1rem;\n    transition: all 0.5s ease-in-out;\n}\n.oBMG6cMlnl9JQPCrMlPHuA\\=\\= .g7y-jggEuv7vh17B8DWMcA\\=\\=:first-child {\n    border-radius: 5px 5px 0 0;\n    border-width: 15px 20px 10px;\n}\n.oBMG6cMlnl9JQPCrMlPHuA\\=\\= .g7y-jggEuv7vh17B8DWMcA\\=\\=:last-child {\n    border-radius: 0 0 5px 5px;\n    border-width: 10px 20px 15px;\n}\n.oBMG6cMlnl9JQPCrMlPHuA\\=\\= .g7y-jggEuv7vh17B8DWMcA\\=\\=:hover {\n    background-color: #333;\n    color: #fff;\n    \n}\n\n@media screen and (max-width: 1160px) and (min-width: 1021px) {\n    ._6F1UmIML-eU0bptlOfUlZw\\=\\= input {\n        width: 350px;\n        margin-left: 20px;\n    }\n}\n\n@media screen and (max-width: 1020px) and (min-width: 926px) {\n    ._6F1UmIML-eU0bptlOfUlZw\\=\\= input {\n        width: 250px;\n        margin-left: 20px;\n    }\n}\n\n@media screen and (max-width: 925px) and (min-width: 851px) {\n    ._6F1UmIML-eU0bptlOfUlZw\\=\\= input {\n        width: 200px;\n        margin-left: 0px;\n    }\n}\n\n@media screen and (max-width: 850px) and (min-width: 770px) {\n    ._6F1UmIML-eU0bptlOfUlZw\\=\\= input {\n        width: 150px;\n        margin-left: 0px;\n    }\n\n    .c-l9MYeDZtiUiVXjBouC9A\\=\\=,\n    .X7rwHhv7tgml1SJgoxRyjA\\=\\= {\n        gap: 35px;\n    }\n}\n\n@media screen and (max-width: 770px) {\n    .xzl\\+IdFwP2Mpc\\+ihXXSm\\+g\\=\\=,\n    .WG9Ph7odDCcRke3YRBjwAw\\=\\= {\n        display: none;\n    }\n\n    ._6F1UmIML-eU0bptlOfUlZw\\=\\= input {\n        margin-left: 0px;\n    }\n\n    ._6F1UmIML-eU0bptlOfUlZw\\=\\= {\n        margin-right: 20px;\n    }\n}\n\n@media screen and (max-width: 700px) {\n    .X7DxtjyXlyGbTp70MOf\\+vA\\=\\= {\n        width: 20vw;\n    }\n\n    ._6F1UmIML-eU0bptlOfUlZw\\=\\= input {\n        width: 50vw;\n    }\n}\n\n@media screen and (max-width: 485px) {\n    ._6F1UmIML-eU0bptlOfUlZw\\=\\= {\n        margin-right: 10px;\n    }\n\n    ._6F1UmIML-eU0bptlOfUlZw\\=\\= input {\n        width: 40vw;\n    }\n\n    .p7uXSbRi3I1FAcN\\+238xPA\\=\\= {\n        padding: 5px 15px;\n    }\n\n    .X7DxtjyXlyGbTp70MOf\\+vA\\=\\= {\n        width: 25vw;\n    }\n}\n\n@media screen and (max-width: 485px) {\n    .X7DxtjyXlyGbTp70MOf\\+vA\\=\\= {\n        width: 30vw;\n    }\n}\n\n@media screen and (max-width: 325px) {\n    .X7DxtjyXlyGbTp70MOf\\+vA\\=\\= h3 {\n        font-size: 14px;\n    }\n}\n\n.\\+0YttuxcPfo9BCUCYb0gVQ\\=\\= {\n    position: absolute;\n    right: 20px;\n    top: 20px;\n    fill: #fff;\n    display: none;\n    cursor: pointer;\n    border-radius: 50%;\n    text-align: right;\n    z-index: 20;\n}\n\n.y-KWBUrmZfzSIbZ-URCx5g\\=\\= {\n    display: none;\n}\n\n@media screen and (max-width: 750px) {\n    .p7uXSbRi3I1FAcN\\+238xPA\\=\\= {\n        display: none;\n        gap: 5px;\n    } \n    .p7uXSbRi3I1FAcN\\+238xPA\\=\\=.Avzzgqs6vi-AiveMyzSE2A\\=\\= {\n        display: flex;\n        flex-direction: column;\n        padding: 10px;\n    }\n    .X7rwHhv7tgml1SJgoxRyjA\\=\\= {\n        flex-direction: column;\n        gap: 20px;\n    }\n    .X7rwHhv7tgml1SJgoxRyjA\\=\\= .X7DxtjyXlyGbTp70MOf\\+vA\\=\\= {\n        width: auto;\n    }\n    .x05V89Oy0tqlziF7hSyd6g\\=\\= {\n        display: none;\n    }\n    .\\+0YttuxcPfo9BCUCYb0gVQ\\=\\= {\n        display: inline-block;\n    }\n    ._5QxgTCTPOohf6Zzf-yjmxA\\=\\= {\n        display: flex;\n        position: fixed;\n        flex-direction: column;\n        background-color: #333333f5;\n        top: 0;\n        right: 0;\n        left: 0;\n        z-index: 4;\n    }\n    .y-KWBUrmZfzSIbZ-URCx5g\\=\\= {\n        display: flex;\n    }\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "* {\n    margin: 0;\n    padding: 0;\n}\n\n.p7uXSbRi3I1FAcN\\+238xPA\\=\\= {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    padding: 5px 40px 2px 30px;\n    z-index: 12;\n}\n\nform {\n    display: flex;\n    align-items: center;\n}\n\nform button {\n    background: transparent;\n    cursor: pointer;\n    border: 1px transparent;\n}\n\n.c-l9MYeDZtiUiVXjBouC9A\\=\\= {\n    display: flex;\n    gap: 25px;\n}\n\n.X7rwHhv7tgml1SJgoxRyjA\\=\\= {\n    display: flex;\n    gap: 50px;\n}\n\n.xzl\\+IdFwP2Mpc\\+ihXXSm\\+g\\=\\=,\n.\\+bsSPzFbDJcHbPzb6J8iJg\\=\\=,\n.X7DxtjyXlyGbTp70MOf\\+vA\\=\\=,\n.WG9Ph7odDCcRke3YRBjwAw\\=\\=,\n._6F1UmIML-eU0bptlOfUlZw\\=\\=,\n.eoD5wKwnoyIyJI9tqA76gg\\=\\= {\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    gap: 6px;\n    cursor: pointer;\n    transition: ease-in-out 0.2s;\n    z-index: 9;\n}\n\n.xzl\\+IdFwP2Mpc\\+ihXXSm\\+g\\=\\= *,\n.X7DxtjyXlyGbTp70MOf\\+vA\\=\\= *,\n.WG9Ph7odDCcRke3YRBjwAw\\=\\= * {\n    pointer-events: none;\n}\n\n.xzl\\+IdFwP2Mpc\\+ihXXSm\\+g\\=\\=:active,\n.X7DxtjyXlyGbTp70MOf\\+vA\\=\\=:active,\n.eoD5wKwnoyIyJI9tqA76gg\\=\\=:active,\n.WG9Ph7odDCcRke3YRBjwAw\\=\\=:active {\n    transform: scale(0.945);\n}\n\n.HwrLl2s2aHRPieF92pK5pw\\=\\= {\n    transform: scale(0.525);\n    fill: #CCCCCC;\n    padding-top: 3px;\n    transition: 0.3s;\n}\n\n.IaDzA3yKjsX-J9VQwYejVg\\=\\= {\n    width: 20px;\n    height: 20px;\n    margin-right: 6px;\n    transition: 0.3s;\n}\n\n.WG9Ph7odDCcRke3YRBjwAw\\=\\= {\n    gap: 18px;\n}\n\n.Pza2i8i9GJra-dqsZDpNxQ\\=\\= {\n    padding-bottom: 3px;\n    transform: scale(1.5);\n    fill: white;\n    padding-top: 3px;\n    transition: 0.3s;\n}\n\n.X7DxtjyXlyGbTp70MOf\\+vA\\=\\= h3,\n.xzl\\+IdFwP2Mpc\\+ihXXSm\\+g\\=\\= h3,\n.\\+bsSPzFbDJcHbPzb6J8iJg\\=\\= h3,\n.WG9Ph7odDCcRke3YRBjwAw\\=\\= h3 {\n    color: white;\n    font-family: \"GT Bold\";\n}\n\n.\\+bsSPzFbDJcHbPzb6J8iJg\\=\\= h3,\n.X7rwHhv7tgml1SJgoxRyjA\\=\\= h3 {\n    font-family: \"GT Bold\";\n}\n\n._6F1UmIML-eU0bptlOfUlZw\\=\\= input {\n    margin-left: 55px;\n    background-color: #262626;\n    border: 1px transparent;\n    border-radius: 8px;\n    height: 35px;\n    width: 333px;\n    padding-left: 18px;\n    font-size: 0.92em;\n    font-family: \"GT Medium\";\n    color: #CCCCCC;\n    outline: none;\n    transition: all .3s\n}\n\n._6F1UmIML-eU0bptlOfUlZw\\=\\= input:hover {\n    background-color: #2d2d2d;\n}\n\n._6F1UmIML-eU0bptlOfUlZw\\=\\= input:focus {\n    background-color: #333;\n}\n\nform input:active {\n    transform: scale(0.97);\n}\n\nform button {\n    transition: 0.2s all;\n}\n\nform button:active {\n    transform: scale(0.9);\n}\n.x05V89Oy0tqlziF7hSyd6g\\=\\= {\n    position: relative;\n}\n.oBMG6cMlnl9JQPCrMlPHuA\\=\\= {\n    position: absolute;\n    top: calc(100% + 15px);\n    right: -20px;\n    min-width: 200px;\n    background-color: #fffa;\n    border-radius: 5px;\n    display: flex;\n    flex-direction: column;\n    z-index: 9;\n}\n.oBMG6cMlnl9JQPCrMlPHuA\\=\\=::before {\n    content: \"\";\n    position: absolute;\n    top: -20px;\n    right: 15px;\n    border-width: 10px;\n    border-color: transparent transparent #fff5 transparent;\n    border-style: solid;\n}\n.oBMG6cMlnl9JQPCrMlPHuA\\=\\= .g7y-jggEuv7vh17B8DWMcA\\=\\= {\n    width: 100%;\n    padding: 10px 20px;\n    cursor: pointer;\n    font-size: 1.1rem;\n    transition: all 0.5s ease-in-out;\n}\n.oBMG6cMlnl9JQPCrMlPHuA\\=\\= .g7y-jggEuv7vh17B8DWMcA\\=\\=:first-child {\n    border-radius: 5px 5px 0 0;\n    border-width: 15px 20px 10px;\n}\n.oBMG6cMlnl9JQPCrMlPHuA\\=\\= .g7y-jggEuv7vh17B8DWMcA\\=\\=:last-child {\n    border-radius: 0 0 5px 5px;\n    border-width: 10px 20px 15px;\n}\n.oBMG6cMlnl9JQPCrMlPHuA\\=\\= .g7y-jggEuv7vh17B8DWMcA\\=\\=:hover {\n    background-color: #333;\n    color: #fff;\n    \n}\n\n@media screen and (max-width: 1160px) and (min-width: 1021px) {\n    ._6F1UmIML-eU0bptlOfUlZw\\=\\= input {\n        width: 350px;\n        margin-left: 20px;\n    }\n}\n\n@media screen and (max-width: 1020px) and (min-width: 926px) {\n    ._6F1UmIML-eU0bptlOfUlZw\\=\\= input {\n        width: 250px;\n        margin-left: 20px;\n    }\n}\n\n@media screen and (max-width: 925px) and (min-width: 851px) {\n    ._6F1UmIML-eU0bptlOfUlZw\\=\\= input {\n        width: 200px;\n        margin-left: 0px;\n    }\n}\n\n@media screen and (max-width: 850px) and (min-width: 770px) {\n    ._6F1UmIML-eU0bptlOfUlZw\\=\\= input {\n        width: 150px;\n        margin-left: 0px;\n    }\n\n    .c-l9MYeDZtiUiVXjBouC9A\\=\\=,\n    .X7rwHhv7tgml1SJgoxRyjA\\=\\= {\n        gap: 35px;\n    }\n}\n\n@media screen and (max-width: 770px) {\n    .xzl\\+IdFwP2Mpc\\+ihXXSm\\+g\\=\\=,\n    .WG9Ph7odDCcRke3YRBjwAw\\=\\= {\n        display: none;\n    }\n\n    ._6F1UmIML-eU0bptlOfUlZw\\=\\= input {\n        margin-left: 0px;\n    }\n\n    ._6F1UmIML-eU0bptlOfUlZw\\=\\= {\n        margin-right: 20px;\n    }\n}\n\n@media screen and (max-width: 700px) {\n    .X7DxtjyXlyGbTp70MOf\\+vA\\=\\= {\n        width: 20vw;\n    }\n\n    ._6F1UmIML-eU0bptlOfUlZw\\=\\= input {\n        width: 50vw;\n    }\n}\n\n@media screen and (max-width: 485px) {\n    ._6F1UmIML-eU0bptlOfUlZw\\=\\= {\n        margin-right: 10px;\n    }\n\n    ._6F1UmIML-eU0bptlOfUlZw\\=\\= input {\n        width: 40vw;\n    }\n\n    .p7uXSbRi3I1FAcN\\+238xPA\\=\\= {\n        padding: 5px 15px;\n    }\n\n    .X7DxtjyXlyGbTp70MOf\\+vA\\=\\= {\n        width: 25vw;\n    }\n}\n\n@media screen and (max-width: 485px) {\n    .X7DxtjyXlyGbTp70MOf\\+vA\\=\\= {\n        width: 30vw;\n    }\n}\n\n@media screen and (max-width: 325px) {\n    .X7DxtjyXlyGbTp70MOf\\+vA\\=\\= h3 {\n        font-size: 14px;\n    }\n}\n\n.\\+0YttuxcPfo9BCUCYb0gVQ\\=\\= {\n    position: absolute;\n    right: 20px;\n    top: 20px;\n    fill: #fff;\n    display: none;\n    cursor: pointer;\n    border-radius: 50%;\n    text-align: right;\n    z-index: 20;\n}\n\n.y-KWBUrmZfzSIbZ-URCx5g\\=\\= {\n    display: none;\n}\n\n@media screen and (max-width: 750px) {\n    .p7uXSbRi3I1FAcN\\+238xPA\\=\\= {\n        display: none;\n        gap: 5px;\n    } \n    .p7uXSbRi3I1FAcN\\+238xPA\\=\\=.Avzzgqs6vi-AiveMyzSE2A\\=\\= {\n        display: flex;\n        flex-direction: column;\n        padding: 10px;\n    }\n    .X7rwHhv7tgml1SJgoxRyjA\\=\\= {\n        flex-direction: column;\n        gap: 20px;\n    }\n    .X7rwHhv7tgml1SJgoxRyjA\\=\\= .X7DxtjyXlyGbTp70MOf\\+vA\\=\\= {\n        width: auto;\n    }\n    .x05V89Oy0tqlziF7hSyd6g\\=\\= {\n        display: none;\n    }\n    .\\+0YttuxcPfo9BCUCYb0gVQ\\=\\= {\n        display: inline-block;\n    }\n    ._5QxgTCTPOohf6Zzf-yjmxA\\=\\= {\n        display: flex;\n        position: fixed;\n        flex-direction: column;\n        background-color: #333333f5;\n        top: 0;\n        right: 0;\n        left: 0;\n        z-index: 4;\n    }\n    .y-KWBUrmZfzSIbZ-URCx5g\\=\\= {\n        display: flex;\n    }\n}\n", ""]);
 // Exports
 ___CSS_LOADER_EXPORT___.locals = {
 	"navbar": "p7uXSbRi3I1FAcN+238xPA==",
@@ -17968,7 +18026,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".i550-WvCRNblFwwjym3xZg\\=\\= {\r\n    margin: 0 50px;\r\n}\r\n\r\n.pNIdBsgUj9Jg6M20\\+3diUA\\=\\= h1,\r\n.pNIdBsgUj9Jg6M20\\+3diUA\\=\\= p {\r\n    color: white;\r\n}\r\n\r\n.pNIdBsgUj9Jg6M20\\+3diUA\\=\\= h1 {\r\n    font-family: \"GT Bold\";\r\n    font-size: 4em;\r\n}\r\n\r\n\r\n.b42QrRKJXLgTALKXHoUP8g\\=\\= {\r\n    padding: 0 10px 12px;\r\n    font-size: 1.3rem;\r\n    color: #fff;\r\n    width: 100%;\r\n    display: flex;\r\n    font-family: \"GT Bold\";\r\n}\r\n\r\n.b42QrRKJXLgTALKXHoUP8g\\=\\=.l3Tr3x2RzhWzED7\\+L3AJEA\\=\\= {\r\n    padding-top: 12px;\r\n    position: relative;\r\n}\r\n\r\n.b42QrRKJXLgTALKXHoUP8g\\=\\=.l3Tr3x2RzhWzED7\\+L3AJEA\\=\\=:before {\r\n    content: \"\";\r\n    position: absolute;\r\n    top: 0;\r\n    left: 40px;\r\n    width: 5%;\r\n    height: 2px;\r\n    background-color: #333;\r\n}\r\n\r\n.b42QrRKJXLgTALKXHoUP8g\\=\\= .M3RzxQNzjN1uywvYibuYYw\\=\\= {\r\n    font-size: 1.15rem;\r\n    color: #3498db;\r\n    transition: all 0.5 ease-in-out;\r\n    margin-left: 7px;\r\n}\r\n.b42QrRKJXLgTALKXHoUP8g\\=\\= .M3RzxQNzjN1uywvYibuYYw\\=\\= {\r\n    color: #2980b9;\r\n    text-decoration: underline;\r\n    cursor: pointer;\r\n}\r\n\r\n.b42QrRKJXLgTALKXHoUP8g\\=\\= ._7ij6JGcaS2OxKfhbG9Psqw\\=\\= {\r\n    margin-right: 10px;\r\n    display: inline-block;\r\n}\r\n\r\n.WGoL0v2dAvkk3ArVy0EeoQ\\=\\= {\r\n    \r\n}\r\n\r\n.yuzCEyPaFZYZYfJjQ7kqVQ\\=\\= {\r\n    position: fixed;\r\n    top: 0;\r\n    left: 0;\r\n    bottom: 0;\r\n    right: 0;\r\n    background-color: #aaa7;\r\n}\r\n.yuzCEyPaFZYZYfJjQ7kqVQ\\=\\= .FOEePo7woDiTEuzGVfMznQ\\=\\= {\r\n    position: absolute;\r\n    top: 50%;\r\n    left: 50%;\r\n    transform: translate(-50%, -50%);\r\n    background-color: #0f1011;\r\n    padding: 15px;\r\n    border-radius: 5px;\r\n}\r\n.yuzCEyPaFZYZYfJjQ7kqVQ\\=\\= .FOEePo7woDiTEuzGVfMznQ\\=\\= .vMfng9hrx7gAbRa\\+ocBBfg\\=\\= {\r\n    color: #fff;\r\n    font-size: 1.5rem;\r\n    font-family: \"GT Bold\";\r\n    margin-bottom: 20px;\r\n    text-align: center;\r\n}\r\n.yuzCEyPaFZYZYfJjQ7kqVQ\\=\\= .FOEePo7woDiTEuzGVfMznQ\\=\\= .b42QrRKJXLgTALKXHoUP8g\\=\\= {\r\n    font-family: \"GT Medium\";\r\n    align-items: center;\r\n}\r\n.yuzCEyPaFZYZYfJjQ7kqVQ\\=\\= .FOEePo7woDiTEuzGVfMznQ\\=\\= ._1JyLFUGV\\+kjhdASRvbrLMg\\=\\= .b42QrRKJXLgTALKXHoUP8g\\=\\= .gPZyxMCMDQfdhME-WiSwCQ\\=\\= {\r\n    flex: 1;\r\n    padding: 8px;\r\n    outline: none;\r\n    width: 100%;\r\n    background-color: #070707;\r\n    border: 1px solid #aaa;\r\n    color: #eee;\r\n    border-radius: 5px;\r\n}\r\n.yuzCEyPaFZYZYfJjQ7kqVQ\\=\\= .FOEePo7woDiTEuzGVfMznQ\\=\\= ._1JyLFUGV\\+kjhdASRvbrLMg\\=\\= .b42QrRKJXLgTALKXHoUP8g\\=\\= .gPZyxMCMDQfdhME-WiSwCQ\\=\\=:focus {\r\n    outline: none;\r\n    border: 2px solid #2980b9;\r\n}\r\n.yuzCEyPaFZYZYfJjQ7kqVQ\\=\\= .FOEePo7woDiTEuzGVfMznQ\\=\\= ._1JyLFUGV\\+kjhdASRvbrLMg\\=\\= .b42QrRKJXLgTALKXHoUP8g\\=\\=.KRAuyTlJ0zLPw-jWUxFxEw\\=\\= {\r\n    flex-direction: column;\r\n    justify-content: center;\r\n}\r\n.yuzCEyPaFZYZYfJjQ7kqVQ\\=\\= .FOEePo7woDiTEuzGVfMznQ\\=\\= ._1JyLFUGV\\+kjhdASRvbrLMg\\=\\= .b42QrRKJXLgTALKXHoUP8g\\=\\= .JMuS3eowMHrkq4syJhaRmQ\\=\\= {\r\n    width: 80%;\r\n    padding-top: 80%;\r\n    position: relative;\r\n}\r\n.yuzCEyPaFZYZYfJjQ7kqVQ\\=\\= .FOEePo7woDiTEuzGVfMznQ\\=\\= ._1JyLFUGV\\+kjhdASRvbrLMg\\=\\= .b42QrRKJXLgTALKXHoUP8g\\=\\= .JMuS3eowMHrkq4syJhaRmQ\\=\\= .ZjOrXvymhyloKIjNK90cKQ\\=\\= {\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    width: 100%;\r\n    height: 100%;\r\n}\r\n.yuzCEyPaFZYZYfJjQ7kqVQ\\=\\= .FOEePo7woDiTEuzGVfMznQ\\=\\= ._1JyLFUGV\\+kjhdASRvbrLMg\\=\\= .b42QrRKJXLgTALKXHoUP8g\\=\\=.KRAuyTlJ0zLPw-jWUxFxEw\\=\\= .ku1v4qFt-3rZtdgWv5dw2w\\=\\= {\r\n    position: relative;\r\n}\r\n.yuzCEyPaFZYZYfJjQ7kqVQ\\=\\= .FOEePo7woDiTEuzGVfMznQ\\=\\= ._1JyLFUGV\\+kjhdASRvbrLMg\\=\\= .b42QrRKJXLgTALKXHoUP8g\\=\\=.KRAuyTlJ0zLPw-jWUxFxEw\\=\\= .ku1v4qFt-3rZtdgWv5dw2w\\=\\= .QpK80\\+LekJtmQWKuSEgIyw\\=\\= {\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    right: 0;\r\n    bottom: 0;\r\n    opacity: 0;\r\n}\r\n.yuzCEyPaFZYZYfJjQ7kqVQ\\=\\= .FOEePo7woDiTEuzGVfMznQ\\=\\= ._1JyLFUGV\\+kjhdASRvbrLMg\\=\\= .b42QrRKJXLgTALKXHoUP8g\\=\\=.KRAuyTlJ0zLPw-jWUxFxEw\\=\\= .ku1v4qFt-3rZtdgWv5dw2w\\=\\= {\r\n    margin: 5px;\r\n    border: 2px solid #2980b9;\r\n    border-radius: 5px;   \r\n    padding: 7px 15px;\r\n    transition: all 0.5s ease-in-out;\r\n}\r\n.yuzCEyPaFZYZYfJjQ7kqVQ\\=\\= .FOEePo7woDiTEuzGVfMznQ\\=\\= ._1JyLFUGV\\+kjhdASRvbrLMg\\=\\= .b42QrRKJXLgTALKXHoUP8g\\=\\=.KRAuyTlJ0zLPw-jWUxFxEw\\=\\= .ku1v4qFt-3rZtdgWv5dw2w\\=\\=:after {\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    bottom: 0;\r\n    right: 0;\r\n    cursor: pointer;\r\n}\r\n.yuzCEyPaFZYZYfJjQ7kqVQ\\=\\= .FOEePo7woDiTEuzGVfMznQ\\=\\= ._1JyLFUGV\\+kjhdASRvbrLMg\\=\\= .b42QrRKJXLgTALKXHoUP8g\\=\\=.KRAuyTlJ0zLPw-jWUxFxEw\\=\\= ._2L5KVIRv16bfG8WtdFAp6Q\\=\\= {\r\n    cursor: pointer;\r\n}\r\n.yuzCEyPaFZYZYfJjQ7kqVQ\\=\\= .FOEePo7woDiTEuzGVfMznQ\\=\\= ._1JyLFUGV\\+kjhdASRvbrLMg\\=\\= .b42QrRKJXLgTALKXHoUP8g\\=\\=.KRAuyTlJ0zLPw-jWUxFxEw\\=\\= .ku1v4qFt-3rZtdgWv5dw2w\\=\\=:hover {\r\n    background-color: #2980b9;\r\n}\r\n.yuzCEyPaFZYZYfJjQ7kqVQ\\=\\= .FOEePo7woDiTEuzGVfMznQ\\=\\= ._1JyLFUGV\\+kjhdASRvbrLMg\\=\\= .nEoQD4yZ09hCedp0Dw5M-g\\=\\=, .yuzCEyPaFZYZYfJjQ7kqVQ\\=\\= .FOEePo7woDiTEuzGVfMznQ\\=\\= ._1JyLFUGV\\+kjhdASRvbrLMg\\=\\= .fbICuNdfLA\\+doUnbFW\\+7fg\\=\\= {\r\n    margin: 5px;\r\n    background-color: transparent;\r\n    width: 100%;\r\n    outline: none;\r\n    border-radius: 5px;   \r\n    padding: 7px 15px;\r\n    transition: all 0.5s ease-in-out;\r\n    cursor: pointer;\r\n    color: #fff;\r\n    font-family: \"GT Medium\";\r\n    font-size: 1.2rem;\r\n}\r\n.yuzCEyPaFZYZYfJjQ7kqVQ\\=\\= .FOEePo7woDiTEuzGVfMznQ\\=\\= ._1JyLFUGV\\+kjhdASRvbrLMg\\=\\= .nEoQD4yZ09hCedp0Dw5M-g\\=\\= {\r\n    border: 2px solid #27ae60;\r\n}\r\n.yuzCEyPaFZYZYfJjQ7kqVQ\\=\\= .FOEePo7woDiTEuzGVfMznQ\\=\\= ._1JyLFUGV\\+kjhdASRvbrLMg\\=\\= .nEoQD4yZ09hCedp0Dw5M-g\\=\\=:hover {\r\n    background-color: #27ae60;\r\n}\r\n.yuzCEyPaFZYZYfJjQ7kqVQ\\=\\= .FOEePo7woDiTEuzGVfMznQ\\=\\= ._1JyLFUGV\\+kjhdASRvbrLMg\\=\\= .fbICuNdfLA\\+doUnbFW\\+7fg\\=\\= {\r\n    border: 2px solid #c0392b;\r\n}\r\n.yuzCEyPaFZYZYfJjQ7kqVQ\\=\\= .FOEePo7woDiTEuzGVfMznQ\\=\\= ._1JyLFUGV\\+kjhdASRvbrLMg\\=\\= .fbICuNdfLA\\+doUnbFW\\+7fg\\=\\=:hover {\r\n    background-color: #c0392b;\r\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".i550-WvCRNblFwwjym3xZg\\=\\= {\r\n    margin: 0 50px;\r\n}\r\n\r\n.pNIdBsgUj9Jg6M20\\+3diUA\\=\\= h1,\r\n.pNIdBsgUj9Jg6M20\\+3diUA\\=\\= p {\r\n    color: white;\r\n}\r\n\r\n.pNIdBsgUj9Jg6M20\\+3diUA\\=\\= h1 {\r\n    font-family: \"GT Bold\";\r\n    font-size: 4em;\r\n}\r\n\r\n\r\n.b42QrRKJXLgTALKXHoUP8g\\=\\= {\r\n    padding: 0 10px 12px;\r\n    font-size: 1.3rem;\r\n    color: #fff;\r\n    width: 100%;\r\n    display: flex;\r\n    font-family: \"GT Bold\";\r\n}\r\n\r\n.b42QrRKJXLgTALKXHoUP8g\\=\\=.l3Tr3x2RzhWzED7\\+L3AJEA\\=\\= {\r\n    padding-top: 12px;\r\n    position: relative;\r\n}\r\n\r\n.b42QrRKJXLgTALKXHoUP8g\\=\\=.l3Tr3x2RzhWzED7\\+L3AJEA\\=\\=:before {\r\n    content: \"\";\r\n    position: absolute;\r\n    top: 0;\r\n    left: 40px;\r\n    width: 5%;\r\n    height: 2px;\r\n    background-color: #333;\r\n}\r\n\r\n.b42QrRKJXLgTALKXHoUP8g\\=\\= .M3RzxQNzjN1uywvYibuYYw\\=\\= {\r\n    font-size: 1.15rem;\r\n    color: #3498db;\r\n    transition: all 0.5 ease-in-out;\r\n    margin-left: 7px;\r\n}\r\n.b42QrRKJXLgTALKXHoUP8g\\=\\= .M3RzxQNzjN1uywvYibuYYw\\=\\= {\r\n    color: #2980b9;\r\n    text-decoration: underline;\r\n    cursor: pointer;\r\n}\r\n\r\n.b42QrRKJXLgTALKXHoUP8g\\=\\= ._7ij6JGcaS2OxKfhbG9Psqw\\=\\= {\r\n    margin-right: 10px;\r\n    display: inline-block;\r\n}\r\n\r\n.WGoL0v2dAvkk3ArVy0EeoQ\\=\\= {\r\n    \r\n}\r\n\r\n.yuzCEyPaFZYZYfJjQ7kqVQ\\=\\= {\r\n    position: fixed;\r\n    top: 0;\r\n    left: 0;\r\n    bottom: 0;\r\n    right: 0;\r\n    background-color: #aaa7;\r\n}\r\n.yuzCEyPaFZYZYfJjQ7kqVQ\\=\\= .FOEePo7woDiTEuzGVfMznQ\\=\\= {\r\n    position: absolute;\r\n    top: 50%;\r\n    left: 50%;\r\n    transform: translate(-50%, -50%);\r\n    background-color: #0f1011;\r\n    padding: 15px;\r\n    border-radius: 5px;\r\n}\r\n.yuzCEyPaFZYZYfJjQ7kqVQ\\=\\= .FOEePo7woDiTEuzGVfMznQ\\=\\= .vMfng9hrx7gAbRa\\+ocBBfg\\=\\= {\r\n    color: #fff;\r\n    font-size: 1.5rem;\r\n    font-family: \"GT Bold\";\r\n    margin-bottom: 20px;\r\n    text-align: center;\r\n}\r\n.yuzCEyPaFZYZYfJjQ7kqVQ\\=\\= .FOEePo7woDiTEuzGVfMznQ\\=\\= .b42QrRKJXLgTALKXHoUP8g\\=\\= {\r\n    font-family: \"GT Medium\";\r\n    align-items: center;\r\n}\r\n\r\n.b42QrRKJXLgTALKXHoUP8g\\=\\=.XIv08SSxRDa14hyhNWziPQ\\=\\= {\r\n    flex-direction: column;\r\n    gap: 5px;\r\n    align-items: flex-start;\r\n}\r\n.b42QrRKJXLgTALKXHoUP8g\\=\\=.XIv08SSxRDa14hyhNWziPQ\\=\\= select {\r\n    width: 100%;\r\n    padding: 5px;\r\n}\r\n.yuzCEyPaFZYZYfJjQ7kqVQ\\=\\= .FOEePo7woDiTEuzGVfMznQ\\=\\= ._1JyLFUGV\\+kjhdASRvbrLMg\\=\\= .b42QrRKJXLgTALKXHoUP8g\\=\\= .Ma5F\\+C4oHqRdGh8hKRF9kA\\=\\= {\r\n    display: flex;\r\n    gap: 3px;\r\n    flex-wrap: wrap;\r\n}\r\n.yuzCEyPaFZYZYfJjQ7kqVQ\\=\\= .FOEePo7woDiTEuzGVfMznQ\\=\\= ._1JyLFUGV\\+kjhdASRvbrLMg\\=\\= .b42QrRKJXLgTALKXHoUP8g\\=\\= .Ma5F\\+C4oHqRdGh8hKRF9kA\\=\\= .WixAhn8wjDQotDjJmmelGg\\=\\= {\r\n    color: #fff;\r\n    border-radius: 5px;\r\n    font-size: 0.9rem;\r\n    padding: 4px 5px;\r\n    font-family: \"GT LIGHT\";\r\n    display: flex;\r\n    gap: 5px;\r\n    align-items: center;\r\n}\r\n.yuzCEyPaFZYZYfJjQ7kqVQ\\=\\= .FOEePo7woDiTEuzGVfMznQ\\=\\= ._1JyLFUGV\\+kjhdASRvbrLMg\\=\\= .b42QrRKJXLgTALKXHoUP8g\\=\\= .Ma5F\\+C4oHqRdGh8hKRF9kA\\=\\= .WixAhn8wjDQotDjJmmelGg\\=\\= .Ai7f9yjkTYH9wP0nXOaJWw\\=\\= {\r\n    background-color:#e74c3c;\r\n    color: #fff;\r\n    border-radius: 50%;\r\n    padding: 5px;\r\n    display: flex;\r\n    justify-content: center;\r\n    align-items: center;\r\n    cursor: pointer;\r\n    transition: all 0.5s ease-in-out;\r\n    width: 17px;\r\n    height: 17px;\r\n}\r\n.yuzCEyPaFZYZYfJjQ7kqVQ\\=\\= .FOEePo7woDiTEuzGVfMznQ\\=\\= ._1JyLFUGV\\+kjhdASRvbrLMg\\=\\= .b42QrRKJXLgTALKXHoUP8g\\=\\= .Ma5F\\+C4oHqRdGh8hKRF9kA\\=\\= .WixAhn8wjDQotDjJmmelGg\\=\\= .Ai7f9yjkTYH9wP0nXOaJWw\\=\\=:hover {\r\n    background-color: #c0392b;\r\n}\r\n.yuzCEyPaFZYZYfJjQ7kqVQ\\=\\= .FOEePo7woDiTEuzGVfMznQ\\=\\= ._1JyLFUGV\\+kjhdASRvbrLMg\\=\\= .b42QrRKJXLgTALKXHoUP8g\\=\\= .gPZyxMCMDQfdhME-WiSwCQ\\=\\= {\r\n    flex: 1;\r\n    padding: 8px;\r\n    outline: none;\r\n    width: 100%;\r\n    background-color: #070707;\r\n    border: 1px solid #aaa;\r\n    color: #eee;\r\n    border-radius: 5px;\r\n}\r\n.yuzCEyPaFZYZYfJjQ7kqVQ\\=\\= .FOEePo7woDiTEuzGVfMznQ\\=\\= ._1JyLFUGV\\+kjhdASRvbrLMg\\=\\= .b42QrRKJXLgTALKXHoUP8g\\=\\= .gPZyxMCMDQfdhME-WiSwCQ\\=\\=:focus {\r\n    outline: none;\r\n    border: 2px solid #2980b9;\r\n}\r\n.yuzCEyPaFZYZYfJjQ7kqVQ\\=\\= .FOEePo7woDiTEuzGVfMznQ\\=\\= ._1JyLFUGV\\+kjhdASRvbrLMg\\=\\= .b42QrRKJXLgTALKXHoUP8g\\=\\=.KRAuyTlJ0zLPw-jWUxFxEw\\=\\= {\r\n    flex-direction: column;\r\n    justify-content: center;\r\n}\r\n\r\n.b42QrRKJXLgTALKXHoUP8g\\=\\=.XIv08SSxRDa14hyhNWziPQ\\=\\= {\r\n    flex-direction: column;\r\n    gap: 5px;\r\n    align-items: flex-start !important;\r\n}\r\n.b42QrRKJXLgTALKXHoUP8g\\=\\=.XIv08SSxRDa14hyhNWziPQ\\=\\= select {\r\n    width: 100%;\r\n    padding: 5px;\r\n}\r\n.yuzCEyPaFZYZYfJjQ7kqVQ\\=\\= .FOEePo7woDiTEuzGVfMznQ\\=\\= ._1JyLFUGV\\+kjhdASRvbrLMg\\=\\= .b42QrRKJXLgTALKXHoUP8g\\=\\= .JMuS3eowMHrkq4syJhaRmQ\\=\\= {\r\n    width: 80%;\r\n    padding-top: 80%;\r\n    position: relative;\r\n}\r\n.yuzCEyPaFZYZYfJjQ7kqVQ\\=\\= .FOEePo7woDiTEuzGVfMznQ\\=\\= ._1JyLFUGV\\+kjhdASRvbrLMg\\=\\= .b42QrRKJXLgTALKXHoUP8g\\=\\= .JMuS3eowMHrkq4syJhaRmQ\\=\\= .ZjOrXvymhyloKIjNK90cKQ\\=\\= {\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    width: 100%;\r\n    height: 100%;\r\n}\r\n.yuzCEyPaFZYZYfJjQ7kqVQ\\=\\= .FOEePo7woDiTEuzGVfMznQ\\=\\= ._1JyLFUGV\\+kjhdASRvbrLMg\\=\\= .b42QrRKJXLgTALKXHoUP8g\\=\\=.KRAuyTlJ0zLPw-jWUxFxEw\\=\\= .ku1v4qFt-3rZtdgWv5dw2w\\=\\= {\r\n    position: relative;\r\n}\r\n.yuzCEyPaFZYZYfJjQ7kqVQ\\=\\= .FOEePo7woDiTEuzGVfMznQ\\=\\= ._1JyLFUGV\\+kjhdASRvbrLMg\\=\\= .b42QrRKJXLgTALKXHoUP8g\\=\\=.KRAuyTlJ0zLPw-jWUxFxEw\\=\\= .ku1v4qFt-3rZtdgWv5dw2w\\=\\= .QpK80\\+LekJtmQWKuSEgIyw\\=\\= {\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    right: 0;\r\n    bottom: 0;\r\n    opacity: 0;\r\n}\r\n.yuzCEyPaFZYZYfJjQ7kqVQ\\=\\= .FOEePo7woDiTEuzGVfMznQ\\=\\= ._1JyLFUGV\\+kjhdASRvbrLMg\\=\\= .b42QrRKJXLgTALKXHoUP8g\\=\\=.KRAuyTlJ0zLPw-jWUxFxEw\\=\\= .ku1v4qFt-3rZtdgWv5dw2w\\=\\= {\r\n    margin: 5px;\r\n    border: 2px solid #2980b9;\r\n    border-radius: 5px;   \r\n    padding: 7px 15px;\r\n    transition: all 0.5s ease-in-out;\r\n}\r\n.yuzCEyPaFZYZYfJjQ7kqVQ\\=\\= .FOEePo7woDiTEuzGVfMznQ\\=\\= ._1JyLFUGV\\+kjhdASRvbrLMg\\=\\= .b42QrRKJXLgTALKXHoUP8g\\=\\=.KRAuyTlJ0zLPw-jWUxFxEw\\=\\= .ku1v4qFt-3rZtdgWv5dw2w\\=\\=:after {\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    bottom: 0;\r\n    right: 0;\r\n    cursor: pointer;\r\n}\r\n.yuzCEyPaFZYZYfJjQ7kqVQ\\=\\= .FOEePo7woDiTEuzGVfMznQ\\=\\= ._1JyLFUGV\\+kjhdASRvbrLMg\\=\\= .b42QrRKJXLgTALKXHoUP8g\\=\\=.KRAuyTlJ0zLPw-jWUxFxEw\\=\\= ._2L5KVIRv16bfG8WtdFAp6Q\\=\\= {\r\n    cursor: pointer;\r\n}\r\n.yuzCEyPaFZYZYfJjQ7kqVQ\\=\\= .FOEePo7woDiTEuzGVfMznQ\\=\\= ._1JyLFUGV\\+kjhdASRvbrLMg\\=\\= .b42QrRKJXLgTALKXHoUP8g\\=\\=.KRAuyTlJ0zLPw-jWUxFxEw\\=\\= .ku1v4qFt-3rZtdgWv5dw2w\\=\\=:hover {\r\n    background-color: #2980b9;\r\n}\r\n.yuzCEyPaFZYZYfJjQ7kqVQ\\=\\= .FOEePo7woDiTEuzGVfMznQ\\=\\= ._1JyLFUGV\\+kjhdASRvbrLMg\\=\\= .nEoQD4yZ09hCedp0Dw5M-g\\=\\=, .yuzCEyPaFZYZYfJjQ7kqVQ\\=\\= .FOEePo7woDiTEuzGVfMznQ\\=\\= ._1JyLFUGV\\+kjhdASRvbrLMg\\=\\= .fbICuNdfLA\\+doUnbFW\\+7fg\\=\\= {\r\n    margin: 5px;\r\n    background-color: transparent;\r\n    width: 100%;\r\n    outline: none;\r\n    border-radius: 5px;   \r\n    padding: 7px 15px;\r\n    transition: all 0.5s ease-in-out;\r\n    cursor: pointer;\r\n    color: #fff;\r\n    font-family: \"GT Medium\";\r\n    font-size: 1.2rem;\r\n}\r\n.yuzCEyPaFZYZYfJjQ7kqVQ\\=\\= .FOEePo7woDiTEuzGVfMznQ\\=\\= ._1JyLFUGV\\+kjhdASRvbrLMg\\=\\= .nEoQD4yZ09hCedp0Dw5M-g\\=\\= {\r\n    border: 2px solid #27ae60;\r\n}\r\n.yuzCEyPaFZYZYfJjQ7kqVQ\\=\\= .FOEePo7woDiTEuzGVfMznQ\\=\\= ._1JyLFUGV\\+kjhdASRvbrLMg\\=\\= .nEoQD4yZ09hCedp0Dw5M-g\\=\\=:hover {\r\n    background-color: #27ae60;\r\n}\r\n.yuzCEyPaFZYZYfJjQ7kqVQ\\=\\= .FOEePo7woDiTEuzGVfMznQ\\=\\= ._1JyLFUGV\\+kjhdASRvbrLMg\\=\\= .fbICuNdfLA\\+doUnbFW\\+7fg\\=\\= {\r\n    border: 2px solid #c0392b;\r\n}\r\n.yuzCEyPaFZYZYfJjQ7kqVQ\\=\\= .FOEePo7woDiTEuzGVfMznQ\\=\\= ._1JyLFUGV\\+kjhdASRvbrLMg\\=\\= .fbICuNdfLA\\+doUnbFW\\+7fg\\=\\=:hover {\r\n    background-color: #c0392b;\r\n}", ""]);
 // Exports
 ___CSS_LOADER_EXPORT___.locals = {
 	"gamesPage": "i550-WvCRNblFwwjym3xZg==",
@@ -17981,7 +18039,11 @@ ___CSS_LOADER_EXPORT___.locals = {
 	"popOver": "yuzCEyPaFZYZYfJjQ7kqVQ==",
 	"pop": "FOEePo7woDiTEuzGVfMznQ==",
 	"title": "vMfng9hrx7gAbRa+ocBBfg==",
+	"genresRow": "XIv08SSxRDa14hyhNWziPQ==",
 	"form": "_1JyLFUGV+kjhdASRvbrLMg==",
+	"genres": "Ma5F+C4oHqRdGh8hKRF9kA==",
+	"genre": "WixAhn8wjDQotDjJmmelGg==",
+	"delete": "Ai7f9yjkTYH9wP0nXOaJWw==",
 	"input": "gPZyxMCMDQfdhME-WiSwCQ==",
 	"i": "KRAuyTlJ0zLPw-jWUxFxEw==",
 	"imgContainer": "JMuS3eowMHrkq4syJhaRmQ==",
@@ -18367,7 +18429,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "* {\n    margin: 0;\n    padding: 0;\n}\n\nhtml,\nbody {\n    overflow-x: hidden;\n}\n\n::-webkit-scrollbar {\n    display: none;\n}\n\n._8SwNT9BzPkvkbXDCxB4bVQ\\=\\= {\n    background-color: #0f1011;\n}\n\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= {\n    margin-top: 15px;\n    display: flex;\n    width: 100vw;\n    padding: 0 60px 280px;\n    padding-bottom: 50px;\n    background-color: #0f1011;\n    gap: 50px;\n}\n\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= {\n    width: 25%;\n\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .\\+Cadz6dORBgfOvaCemfz4A\\=\\= {\n    width: 100%;\n    padding-top: 100%;\n    border-radius: 50%;\n    position: relative;\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .\\+Cadz6dORBgfOvaCemfz4A\\=\\= .YOTUjWU9MelzcoLUz61zZA\\=\\= {\n    position: absolute;\n    top: 0;\n    left: 0;\n    right: 0;\n    bottom: 0;\n    border-radius: 50%;\n    border: 2px solid #eee;\n    background-color: #aaa;\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .\\+Cadz6dORBgfOvaCemfz4A\\=\\= .YOTUjWU9MelzcoLUz61zZA\\=\\= img{\n    width: 100%;\n    height: 100%;\n    fill: #fff;\n    border-radius: 50%;\n}   \n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .\\+Cadz6dORBgfOvaCemfz4A\\=\\= .YOTUjWU9MelzcoLUz61zZA\\=\\= .noVdxnV9Dun63Ey005qEsQ\\=\\= {\n    position: absolute;\n    bottom: 10px;\n    right: 10px;\n    background-color: #009225;\n    color: #fff;\n    width: 70px;\n    height: 70px;\n    cursor: pointer;\n    font-size: 1.7rem;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    transition: all 0.5s ease-in-out;\n    border-radius: 50%;\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .\\+Cadz6dORBgfOvaCemfz4A\\=\\= .YOTUjWU9MelzcoLUz61zZA\\=\\= .noVdxnV9Dun63Ey005qEsQ\\=\\= svg {\n    width: 50px;\n    height: 50px;\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .\\+Cadz6dORBgfOvaCemfz4A\\=\\= .YOTUjWU9MelzcoLUz61zZA\\=\\= .noVdxnV9Dun63Ey005qEsQ\\=\\=:hover {\n    transform: scale(1.1);\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= ._2V7eEHcGkBNQgsrx8D0tSQ\\=\\= {\n    color: #eee;\n    margin: 20px 0 0 10px;\n    font-family: \"GT Bold\";\n    display: flex;\n    align-items: flex-end;\n    gap: 8px;\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .Q6You4mBugc0wOdQB06O-Q\\=\\= .iYcAl76P6OLx0bJJqj2zsg\\=\\= {\n    width: 20px;\n    height: 20px;\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .rOpW79udvMpJS48Pip0ojQ\\=\\= {\n    margin-top: 8px;\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .rOpW79udvMpJS48Pip0ojQ\\=\\= .gVTS30kENmU0VN-1jYGamw\\=\\= {\n    display: flex;\n    gap: 7px;\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .rOpW79udvMpJS48Pip0ojQ\\=\\= .gVTS30kENmU0VN-1jYGamw\\=\\= .jcqxcKu4bwd7X73cm4ARGg\\=\\= img {\n    width: 30px;\n    height: 30px;\n    cursor: pointer;\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .GVwJW4Au7TbYH\\+Heyz00Nw\\=\\= {\n    width: 100%;\n    padding: 7px 0;\n    font-size: 1.05rem;\n    margin-top: 8px;\n    border-radius: 5px;\n    background-color: #444;\n    border: 1px solid #aaa;\n    color: #eee;\n    cursor: pointer;\n    transition: all 0.5s ease-in-out;\n    font-family: \"GT Light\";\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .GVwJW4Au7TbYH\\+Heyz00Nw\\=\\=:hover {\n    background-color: #333;\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= .lDTJOwDR36ZK2BZhq\\+F9\\+Q\\=\\= {\n    width: 75%;\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= .lDTJOwDR36ZK2BZhq\\+F9\\+Q\\=\\= .RJe6nQ3wW2sPrUrzB-IFkA\\=\\= {\n    font-family: \"GT Light\";\n    font-size: 1.1rem;\n    color: #eee;\n}\n\n.gNwByqAKejAD6VSPSjbSgw\\=\\= {\n    font-family: \"GT Bold\" !important;\n}\n\n\n.CEGPR\\+SJzkr5jedeCU\\+xuA\\=\\= {\n    display: flex;\n    flex-direction: column;\n    width: 100%;\n    padding-right: 60px;\n}\n\n.CEGPR\\+SJzkr5jedeCU\\+xuA\\=\\= h1,\n.CEGPR\\+SJzkr5jedeCU\\+xuA\\=\\= p {\n    color: white;\n}\n\n.CEGPR\\+SJzkr5jedeCU\\+xuA\\=\\= h1 {\n    font-family: \"GT Bold\";\n    font-size: 4em;\n}\n\n._4lbWM8lmxXMBZXbk2nYGTA\\=\\= {\n    margin-top: 28px;\n    display: flex;\n    justify-content: space-between;\n}\n\n._6tbfiVBLi-9-6LU4Revlyw\\=\\= {\n    padding: 8px 22px;\n    height: 40px;\n    background-color: #262626;\n    color: #fff;\n    font-family: \"GT Light\";\n    font-size: 0.95em;\n    border: 1px transparent;\n    border-radius: 10px;\n    cursor: pointer;\n    transition: all 0.3s;\n}\n\n._6tbfiVBLi-9-6LU4Revlyw\\=\\=:hover {\n    background-color: #2d2d2d;\n}\n\n._6tbfiVBLi-9-6LU4Revlyw\\=\\=:active {\n    transform: scale(0.9);\n}\n\n._4lbWM8lmxXMBZXbk2nYGTA\\=\\= button span {\n    color: #fff;\n    font-family: \"GT Bold\";\n}\n\n.Pb06kHq2POdSj68kzZolMQ\\=\\= {\n    display: flex;\n    gap: 8px;\n    align-items: center;\n}\n\n.Pb06kHq2POdSj68kzZolMQ\\=\\= p {\n    color: #696969;\n    font-family: \"GT Medium\";\n}\n\n.HnxTJOANz9eW9ATV5bbRzg\\=\\= {\n    border: 1px transparent;\n    border-radius: 8px;\n    outline: none;\n    background-color: #282828;\n    transition: 0.3s all;\n    padding: 0px 3px;\n}\n\n.HnxTJOANz9eW9ATV5bbRzg\\=\\= * {\n    pointer-events: none;\n}\n\n.HnxTJOANz9eW9ATV5bbRzg\\=\\=:hover {\n    background-color: #313131;\n}\n\n.HnxTJOANz9eW9ATV5bbRzg\\=\\=:active {\n    transform: scale(0.9125);\n}\n\n.\\+bEbBIZWC8mLWDjGTmMgIg\\=\\= {\n    transform: scale(0.9);\n    transition: 0.3s all;\n}\n\n@media screen and (max-width: 850px) {\n    .Pb06kHq2POdSj68kzZolMQ\\=\\= p {\n        display: none;\n    }\n}\n\n@media screen and (max-width: 770px) {\n    .Pb06kHq2POdSj68kzZolMQ\\=\\= {\n        display: none;\n    }\n\n    .CEGPR\\+SJzkr5jedeCU\\+xuA\\=\\= h1 {\n        font-size: 40px;\n    }\n}\n\n@media screen and (max-width: 600px) {\n    .CEGPR\\+SJzkr5jedeCU\\+xuA\\=\\= {\n        padding-left: 35px;\n        padding-right: 35px;\n    }\n\n    .CEGPR\\+SJzkr5jedeCU\\+xuA\\=\\= h1 {\n        font-size: 48px;\n    }\n}\n\n@media screen and (max-width: 375px) {\n    .CEGPR\\+SJzkr5jedeCU\\+xuA\\=\\= {\n        padding-left: 20px;\n        padding-right: 20px;\n    }\n\n    .CEGPR\\+SJzkr5jedeCU\\+xuA\\=\\= h1 {\n        font-size: 38px;\n    }\n}\n\n@media screen and (max-width: 320px) {\n    ._6tbfiVBLi-9-6LU4Revlyw\\=\\= {\n        font-size: 12px;\n    }\n}\n\n.uNmspEGYhOMITMdpWThLRg\\=\\= {\n    padding: 0 10px 12px;\n    font-size: 1.3rem;\n    color: #fff;\n    width: 100%;\n    display: flex\n}\n\n.uNmspEGYhOMITMdpWThLRg\\=\\=.xbNoY1OorNaG13SlowV2tw\\=\\= {\n    padding-top: 12px;\n    position: relative;\n}\n\n.uNmspEGYhOMITMdpWThLRg\\=\\=.xbNoY1OorNaG13SlowV2tw\\=\\=:before {\n    content: \"\";\n    position: absolute;\n    top: 0;\n    left: 40px;\n    width: 5%;\n    height: 2px;\n    background-color: #333;\n}\n\n.uNmspEGYhOMITMdpWThLRg\\=\\= .q0wlAfowlZbqDuNOjhDugg\\=\\= {\n    font-size: 1.15rem;\n    color: #3498db;\n    transition: all 0.5 ease-in-out;\n    margin-left: 7px;\n}\n.uNmspEGYhOMITMdpWThLRg\\=\\= .q0wlAfowlZbqDuNOjhDugg\\=\\= {\n    color: #2980b9;\n    text-decoration: underline;\n    cursor: pointer;\n}\n\n.uNmspEGYhOMITMdpWThLRg\\=\\= .JPdpGiNLdnW6CmwQMSdnHQ\\=\\= {\n    width: 150px;\n    display: inline-block;\n}\n\n@media screen and (max-width: 1000px) {\n    ._2V7eEHcGkBNQgsrx8D0tSQ\\=\\= {\n        flex-direction: column;\n        text-align: center;\n    }\n    .SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .\\+Cadz6dORBgfOvaCemfz4A\\=\\= .YOTUjWU9MelzcoLUz61zZA\\=\\= .noVdxnV9Dun63Ey005qEsQ\\=\\= {\n        width: 40px;\n        height: 40px;\n    }\n    .SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .\\+Cadz6dORBgfOvaCemfz4A\\=\\= .YOTUjWU9MelzcoLUz61zZA\\=\\= .noVdxnV9Dun63Ey005qEsQ\\=\\= svg {\n        width: 30px;\n        height: 30px;\n    }\n\n}\n@media screen and (max-width: 750px) {\n    .SgQlBqI14hwX7C09ZkhKbQ\\=\\= {\n        margin-top: 50px;\n    }\n}\n@media screen and (max-width: 700px) {\n    .SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .\\+Cadz6dORBgfOvaCemfz4A\\=\\= .YOTUjWU9MelzcoLUz61zZA\\=\\= .noVdxnV9Dun63Ey005qEsQ\\=\\= {\n        width: 30px;\n        height: 30px;\n        bottom: 0;\n        right: 0;\n    }\n    .SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .\\+Cadz6dORBgfOvaCemfz4A\\=\\= .YOTUjWU9MelzcoLUz61zZA\\=\\= .noVdxnV9Dun63Ey005qEsQ\\=\\= svg {\n        width: 22px;\n        height: 22px;\n    }\n}\n@media screen and (max-width: 600px) {\n    .SgQlBqI14hwX7C09ZkhKbQ\\=\\= {\n        padding: 0 20px 280px;\n        gap: 20px;\n    }\n}\n@media screen and (max-width: 425px) {\n    .SgQlBqI14hwX7C09ZkhKbQ\\=\\= {\n        flex-direction: column;\n    }\n    ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= {\n        width: 100% !important;\n    }\n    .SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .\\+Cadz6dORBgfOvaCemfz4A\\=\\= {\n        width: 80%;\n        padding-top: 80%;\n        margin-left: 10%;\n    }\n    .SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .\\+Cadz6dORBgfOvaCemfz4A\\=\\= .YOTUjWU9MelzcoLUz61zZA\\=\\= .noVdxnV9Dun63Ey005qEsQ\\=\\= {\n        width: 50px;\n        height: 50px;\n        bottom: 20px;\n        right: 20px;\n    }\n    .SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .\\+Cadz6dORBgfOvaCemfz4A\\=\\= .YOTUjWU9MelzcoLUz61zZA\\=\\= .noVdxnV9Dun63Ey005qEsQ\\=\\= svg {\n        width: 35px;\n        height: 35px;\n    }\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "* {\n    margin: 0;\n    padding: 0;\n}\n\nhtml,\nbody {\n    overflow-x: hidden;\n}\n\n::-webkit-scrollbar {\n    display: none;\n}\n\n._8SwNT9BzPkvkbXDCxB4bVQ\\=\\= {\n    background-color: #0f1011;\n}\n\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= {\n    margin-top: 15px;\n    display: flex;\n    width: 100vw;\n    padding: 0 60px 280px;\n    padding-bottom: 50px;\n    background-color: #0f1011;\n    gap: 50px;\n}\n\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= {\n    width: 25%;\n\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .\\+Cadz6dORBgfOvaCemfz4A\\=\\= {\n    width: 100%;\n    padding-top: 100%;\n    border-radius: 50%;\n    position: relative;\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .\\+Cadz6dORBgfOvaCemfz4A\\=\\= .YOTUjWU9MelzcoLUz61zZA\\=\\= {\n    position: absolute;\n    top: 0;\n    left: 0;\n    right: 0;\n    bottom: 0;\n    border-radius: 50%;\n    border: 2px solid #eee;\n    background-color: #aaa;\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .\\+Cadz6dORBgfOvaCemfz4A\\=\\= .YOTUjWU9MelzcoLUz61zZA\\=\\= img{\n    width: 100%;\n    height: 100%;\n    fill: #fff;\n    border-radius: 50%;\n}   \n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .\\+Cadz6dORBgfOvaCemfz4A\\=\\= .YOTUjWU9MelzcoLUz61zZA\\=\\= .noVdxnV9Dun63Ey005qEsQ\\=\\= {\n    position: absolute;\n    bottom: 10px;\n    right: 10px;\n    background-color: #009225;\n    color: #fff;\n    width: 70px;\n    height: 70px;\n    cursor: pointer;\n    font-size: 1.7rem;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    transition: all 0.5s ease-in-out;\n    border-radius: 50%;\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .\\+Cadz6dORBgfOvaCemfz4A\\=\\= .YOTUjWU9MelzcoLUz61zZA\\=\\= .noVdxnV9Dun63Ey005qEsQ\\=\\= svg {\n    width: 50px;\n    height: 50px;\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .\\+Cadz6dORBgfOvaCemfz4A\\=\\= .YOTUjWU9MelzcoLUz61zZA\\=\\= .noVdxnV9Dun63Ey005qEsQ\\=\\=:hover {\n    transform: scale(1.1);\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= ._2V7eEHcGkBNQgsrx8D0tSQ\\=\\= {\n    color: #eee;\n    margin: 20px 0 0 10px;\n    font-family: \"GT Bold\";\n    display: flex;\n    align-items: flex-end;\n    gap: 8px;\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .Q6You4mBugc0wOdQB06O-Q\\=\\= .iYcAl76P6OLx0bJJqj2zsg\\=\\= {\n    width: 20px;\n    height: 20px;\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .rOpW79udvMpJS48Pip0ojQ\\=\\= {\n    margin-top: 8px;\n    display: flex;\n    gap: 40px;\n    flex-wrap: wrap;\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .rOpW79udvMpJS48Pip0ojQ\\=\\= .gVTS30kENmU0VN-1jYGamw\\=\\=:first-child:after {\n    content: \"\";\n    right: -20px;\n    width: 3px;\n    height: 80%;\n    border-radius: 5px;\n    background-color:#2980b9;\n    position: absolute;\n    top: 10%;\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .rOpW79udvMpJS48Pip0ojQ\\=\\= .gVTS30kENmU0VN-1jYGamw\\=\\= {\n    display: flex;\n    gap: 7px;\n    position: relative;\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .rOpW79udvMpJS48Pip0ojQ\\=\\= .gVTS30kENmU0VN-1jYGamw\\=\\= .jcqxcKu4bwd7X73cm4ARGg\\=\\= img {\n    width: 30px;\n    height: 30px;\n    cursor: pointer;\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .rOpW79udvMpJS48Pip0ojQ\\=\\= .gVTS30kENmU0VN-1jYGamw\\=\\= .lEVNjRPeneyutv7pOwemoQ\\=\\= {\n    font-size: 1.3rem;\n    color: #fff;\n    font-family: \"GT Bold\";\n    width: 30px;\n    height: 30px;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    border-radius: 50%;\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .GVwJW4Au7TbYH\\+Heyz00Nw\\=\\= {\n    width: 100%;\n    padding: 7px 0;\n    font-size: 1.05rem;\n    margin-top: 8px;\n    border-radius: 5px;\n    background-color: #444;\n    border: 1px solid #aaa;\n    color: #eee;\n    cursor: pointer;\n    transition: all 0.5s ease-in-out;\n    font-family: \"GT Light\";\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .GVwJW4Au7TbYH\\+Heyz00Nw\\=\\=:hover {\n    background-color: #333;\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= .lDTJOwDR36ZK2BZhq\\+F9\\+Q\\=\\= {\n    width: 75%;\n}\n.SgQlBqI14hwX7C09ZkhKbQ\\=\\= .lDTJOwDR36ZK2BZhq\\+F9\\+Q\\=\\= .RJe6nQ3wW2sPrUrzB-IFkA\\=\\= {\n    font-family: \"GT Light\";\n    font-size: 1.1rem;\n    color: #eee;\n}\n\n.gNwByqAKejAD6VSPSjbSgw\\=\\= {\n    font-family: \"GT Bold\" !important;\n}\n\n\n.CEGPR\\+SJzkr5jedeCU\\+xuA\\=\\= {\n    display: flex;\n    flex-direction: column;\n    width: 100%;\n    padding-right: 60px;\n}\n\n.CEGPR\\+SJzkr5jedeCU\\+xuA\\=\\= h1,\n.CEGPR\\+SJzkr5jedeCU\\+xuA\\=\\= p {\n    color: white;\n}\n\n.CEGPR\\+SJzkr5jedeCU\\+xuA\\=\\= h1 {\n    font-family: \"GT Bold\";\n    font-size: 4em;\n}\n\n._4lbWM8lmxXMBZXbk2nYGTA\\=\\= {\n    margin-top: 28px;\n    display: flex;\n    justify-content: space-between;\n}\n\n._6tbfiVBLi-9-6LU4Revlyw\\=\\= {\n    padding: 8px 22px;\n    height: 40px;\n    background-color: #262626;\n    color: #fff;\n    font-family: \"GT Light\";\n    font-size: 0.95em;\n    border: 1px transparent;\n    border-radius: 10px;\n    cursor: pointer;\n    transition: all 0.3s;\n}\n\n._6tbfiVBLi-9-6LU4Revlyw\\=\\=:hover {\n    background-color: #2d2d2d;\n}\n\n._6tbfiVBLi-9-6LU4Revlyw\\=\\=:active {\n    transform: scale(0.9);\n}\n\n._4lbWM8lmxXMBZXbk2nYGTA\\=\\= button span {\n    color: #fff;\n    font-family: \"GT Bold\";\n}\n\n.Pb06kHq2POdSj68kzZolMQ\\=\\= {\n    display: flex;\n    gap: 8px;\n    align-items: center;\n}\n\n.Pb06kHq2POdSj68kzZolMQ\\=\\= p {\n    color: #696969;\n    font-family: \"GT Medium\";\n}\n\n.HnxTJOANz9eW9ATV5bbRzg\\=\\= {\n    border: 1px transparent;\n    border-radius: 8px;\n    outline: none;\n    background-color: #282828;\n    transition: 0.3s all;\n    padding: 0px 3px;\n}\n\n.HnxTJOANz9eW9ATV5bbRzg\\=\\= * {\n    pointer-events: none;\n}\n\n.HnxTJOANz9eW9ATV5bbRzg\\=\\=:hover {\n    background-color: #313131;\n}\n\n.HnxTJOANz9eW9ATV5bbRzg\\=\\=:active {\n    transform: scale(0.9125);\n}\n\n.\\+bEbBIZWC8mLWDjGTmMgIg\\=\\= {\n    transform: scale(0.9);\n    transition: 0.3s all;\n}\n\n@media screen and (max-width: 850px) {\n    .Pb06kHq2POdSj68kzZolMQ\\=\\= p {\n        display: none;\n    }\n}\n\n@media screen and (max-width: 770px) {\n    .Pb06kHq2POdSj68kzZolMQ\\=\\= {\n        display: none;\n    }\n\n    .CEGPR\\+SJzkr5jedeCU\\+xuA\\=\\= h1 {\n        font-size: 40px;\n    }\n}\n\n@media screen and (max-width: 600px) {\n    .CEGPR\\+SJzkr5jedeCU\\+xuA\\=\\= {\n        padding-left: 35px;\n        padding-right: 35px;\n    }\n\n    .CEGPR\\+SJzkr5jedeCU\\+xuA\\=\\= h1 {\n        font-size: 48px;\n    }\n}\n\n@media screen and (max-width: 375px) {\n    .CEGPR\\+SJzkr5jedeCU\\+xuA\\=\\= {\n        padding-left: 20px;\n        padding-right: 20px;\n    }\n\n    .CEGPR\\+SJzkr5jedeCU\\+xuA\\=\\= h1 {\n        font-size: 38px;\n    }\n}\n\n@media screen and (max-width: 320px) {\n    ._6tbfiVBLi-9-6LU4Revlyw\\=\\= {\n        font-size: 12px;\n    }\n}\n\n.uNmspEGYhOMITMdpWThLRg\\=\\= {\n    padding: 0 10px 12px;\n    font-size: 1.3rem;\n    color: #fff;\n    width: 100%;\n    display: flex\n}\n\n.uNmspEGYhOMITMdpWThLRg\\=\\=.xbNoY1OorNaG13SlowV2tw\\=\\= {\n    padding-top: 12px;\n    position: relative;\n}\n\n.uNmspEGYhOMITMdpWThLRg\\=\\=.xbNoY1OorNaG13SlowV2tw\\=\\=:before {\n    content: \"\";\n    position: absolute;\n    top: 0;\n    left: 40px;\n    width: 5%;\n    height: 2px;\n    background-color: #333;\n}\n\n.uNmspEGYhOMITMdpWThLRg\\=\\= .q0wlAfowlZbqDuNOjhDugg\\=\\= {\n    font-size: 1.15rem;\n    color: #3498db;\n    transition: all 0.5 ease-in-out;\n    margin-left: 7px;\n}\n.uNmspEGYhOMITMdpWThLRg\\=\\= .q0wlAfowlZbqDuNOjhDugg\\=\\= {\n    color: #2980b9;\n    text-decoration: underline;\n    cursor: pointer;\n}\n\n.uNmspEGYhOMITMdpWThLRg\\=\\= .JPdpGiNLdnW6CmwQMSdnHQ\\=\\= {\n    width: 150px;\n    display: inline-block;\n}\n\n@media screen and (max-width: 1000px) {\n    ._2V7eEHcGkBNQgsrx8D0tSQ\\=\\= {\n        flex-direction: column;\n        text-align: center;\n    }\n    .SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .\\+Cadz6dORBgfOvaCemfz4A\\=\\= .YOTUjWU9MelzcoLUz61zZA\\=\\= .noVdxnV9Dun63Ey005qEsQ\\=\\= {\n        width: 40px;\n        height: 40px;\n    }\n    .SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .\\+Cadz6dORBgfOvaCemfz4A\\=\\= .YOTUjWU9MelzcoLUz61zZA\\=\\= .noVdxnV9Dun63Ey005qEsQ\\=\\= svg {\n        width: 30px;\n        height: 30px;\n    }\n\n}\n@media screen and (max-width: 750px) {\n    .SgQlBqI14hwX7C09ZkhKbQ\\=\\= {\n        margin-top: 50px;\n    }\n}\n@media screen and (max-width: 700px) {\n    .SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .\\+Cadz6dORBgfOvaCemfz4A\\=\\= .YOTUjWU9MelzcoLUz61zZA\\=\\= .noVdxnV9Dun63Ey005qEsQ\\=\\= {\n        width: 30px;\n        height: 30px;\n        bottom: 0;\n        right: 0;\n    }\n    .SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .\\+Cadz6dORBgfOvaCemfz4A\\=\\= .YOTUjWU9MelzcoLUz61zZA\\=\\= .noVdxnV9Dun63Ey005qEsQ\\=\\= svg {\n        width: 22px;\n        height: 22px;\n    }\n}\n@media screen and (max-width: 600px) {\n    .SgQlBqI14hwX7C09ZkhKbQ\\=\\= {\n        padding: 0 20px 280px;\n        gap: 20px;\n    }\n}\n@media screen and (max-width: 425px) {\n    .SgQlBqI14hwX7C09ZkhKbQ\\=\\= {\n        flex-direction: column;\n    }\n    ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= {\n        width: 100% !important;\n    }\n    .SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .\\+Cadz6dORBgfOvaCemfz4A\\=\\= {\n        width: 80%;\n        padding-top: 80%;\n        margin-left: 10%;\n    }\n    .SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .\\+Cadz6dORBgfOvaCemfz4A\\=\\= .YOTUjWU9MelzcoLUz61zZA\\=\\= .noVdxnV9Dun63Ey005qEsQ\\=\\= {\n        width: 50px;\n        height: 50px;\n        bottom: 20px;\n        right: 20px;\n    }\n    .SgQlBqI14hwX7C09ZkhKbQ\\=\\= ._8rZeyBFGsNcAnW5IGwASjQ\\=\\= .\\+Cadz6dORBgfOvaCemfz4A\\=\\= .YOTUjWU9MelzcoLUz61zZA\\=\\= .noVdxnV9Dun63Ey005qEsQ\\=\\= svg {\n        width: 35px;\n        height: 35px;\n    }\n}", ""]);
 // Exports
 ___CSS_LOADER_EXPORT___.locals = {
 	"Profile": "_8SwNT9BzPkvkbXDCxB4bVQ==",
@@ -18382,6 +18444,7 @@ ___CSS_LOADER_EXPORT___.locals = {
 	"accounts": "rOpW79udvMpJS48Pip0ojQ==",
 	"games": "gVTS30kENmU0VN-1jYGamw==",
 	"account": "jcqxcKu4bwd7X73cm4ARGg==",
+	"letter": "lEVNjRPeneyutv7pOwemoQ==",
 	"edit": "GVwJW4Au7TbYH+Heyz00Nw==",
 	"right": "lDTJOwDR36ZK2BZhq+F9+Q==",
 	"title": "RJe6nQ3wW2sPrUrzB-IFkA==",

@@ -264,12 +264,19 @@ const handleRemoveFromCart = (id, key, e) => {
   const apiUrl = '/api/user/cart/remove/' + id; // Replace with your actual API endpoint
   axios.get(apiUrl)
     .then(response => {
-      setCart(response.data.cart);S
-      let c = cart.filter((cart_item) => {});
+      setCart(response.data.cart);
+      let c = cart.filter((cart_item) => {
+        return cart_item.id != id;
+      });
+      setCart(c);
 
       setCartAmount(cartAmount - 1);
       let s = shownGames;
-      s[key].inCart = false;
+      s.forEach(element => {
+        if(element.id == id) {
+          element.inCart = false;          
+        }
+      });
       setShownGames([...s]);
     })
     .catch(error => {

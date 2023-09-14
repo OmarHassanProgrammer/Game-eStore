@@ -35,14 +35,14 @@ const ProfileSubPage = props => {
       setBio(userProfile.bio);
 
       let l = [];
-      userProfile?.socialLinks?.forEach(link => {
+      userProfile?.social_links?.forEach(link => {
         l.push(link.link);
       });
       l.push(" ");
       setLinks([...l]);
       
       l = [];
-      userProfile?.gameLinks?.forEach(link => {
+      userProfile?.game_links?.forEach(link => {
         l.push({game: link.game, value: link.link, cust: false});
       });
       l.push({game: "", value: "", cust: false});
@@ -128,7 +128,7 @@ const ProfileSubPage = props => {
         data.append('socialLinks[]', link);
       });
       gLinks.forEach(link => {
-        data.append('gameLinks[]', link);
+        data.append('gameLinks[]', link.value + ',' + link.game);
       });
       data.append('img', img?.file);
 

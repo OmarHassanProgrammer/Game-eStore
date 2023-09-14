@@ -17,6 +17,8 @@ return new class extends Migration
             $table->integer("amount");
             $table->unsignedBigInteger("order_id")->nullable();
             $table->string("type");
+            $table->string("payout_patch_id")->nullable();
+            $table->string("access_token")->nullable();
             $table->float("after")->nullable();
             $table->timestamps();
         });

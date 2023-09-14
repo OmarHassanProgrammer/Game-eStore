@@ -17,8 +17,19 @@ const GamesPage = props => {
     const [name, setName] = useState("");
     const [close, setClose] = useState("");
     const [deleteId, setDeleteId] = useState("");
+    const [genres, setGenres] = useState();
+    const [selectedGenres, setSelectedGenres] = useState();
     
   useEffect(() => {
+    const apiUrl = '/api/genres/getAll'; // Replace with your actual API endpoint
+    axios.get(apiUrl)
+      .then(response => {
+        setGenres(response.data.genres);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+
 
     const api = axios.create({
       baseURL: '/api'
@@ -62,7 +73,10 @@ const GamesPage = props => {
       const data = new FormData();
       data.append('name', name);
       data.append('img', img?.file);
-      
+      console.log("Agd");
+      selectedGenres.forEach(genre => {
+        data.append('genres[]', genre?.id);
+      });
       api.post('/games/add/', data, {
         headers: {
             'Content-Type': 'multipart/form-data',
@@ -188,6 +202,26 @@ const GamesPage = props => {
         });
     }
 
+    const handleGenres = (e) => {
+      let genre = genres.filter((g) => { return g.id == e.target.value });
+      genre[0].color = ['#16a085', '#27ae60', '#2980b9', '#8e44ad', '#2c3e50', '#c0392b', '#d35400'][Math.floor(Math.random() * 7)];
+      console.log(genre);
+      if(genre) {
+        if(selectedGenres) {
+          console.log("aaa");
+          setSelectedGenres([...selectedGenres, ...genre]);
+        } else {
+          console.log("bbb");
+          setSelectedGenres([...genre]);
+        }
+      }
+    }
+
+    const deleteGenre = (id, e) => {
+      let g = selectedGenres.filter((genre) => { return genre.id != id });
+      setSelectedGenres([...g]);
+    }
+
     const variants = {
         initial: { opacity: 0 },
         animate: { opacity: 1 },
@@ -254,6 +288,26 @@ const GamesPage = props => {
                           <div className={styles.row}>
                               <label className={styles.label}>Name: </label>
                               <input className={styles.input} onChange={(e) => {setName(e.target.value)}} />
+                          </div>
+                          <div className={`${styles.row} ${styles.genresRow}`} >
+                              <label className={styles.label}>Genres: </label>
+                              <div className={styles.genres}>
+                                {
+                                  selectedGenres?.map((genre, key) => {
+                                    return <span key={key} className={styles.genre} style={{backgroundColor: genre.color}}>
+                                      {genre.name}
+                                      <span className={styles.delete} onClick={deleteGenre.bind(this, genre.id)}>x</span>
+                                    </span>
+                                  })
+                                }
+                              </div>
+                              <select id="mySelect" name="genres" onChange={handleGenres}>
+                                {
+                                  genres?.map((genre, key) => {
+                                    return <option value={genre.id} key={key}>{ genre.name }</option>
+                                  })
+                                }
+                              </select>
                           </div>
                           <div className={`${styles.row} ${styles.i}`}>
                               {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Game;
+use App\Models\Genre;
 
 class GameController extends Controller
 {
@@ -48,6 +49,11 @@ class GameController extends Controller
             $game->update([
                 'imgType' => $image->getClientOriginalExtension()
             ]);
+            if(isset($request['genres'])) {
+                foreach ($request['genres'] as $key => $genre) {
+                    $game->genres()->attach($genre);
+                }
+            }
             return response()->json(['msg' => 'done', 'game' => $game]);
         } else {
             return response()->json(['msg' => 'nogame']);

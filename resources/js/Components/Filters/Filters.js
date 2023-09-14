@@ -139,7 +139,7 @@ const Filters = props => {
                 }
               </div>
             </div>:
-            (window.location.pathname + window.location.search) == "/categories"?
+            (window.location.pathname) == "/categories"?
             <div>
               <h2 onClick={handleBrowse.bind(this, "games")}>Games</h2>
 
@@ -258,27 +258,6 @@ const Filters = props => {
                   </div>
         
                   <div 
-                    className={styles.filterDiv} 
-                    id="9" 
-                    onMouseEnter={handleHover} 
-                    onMouseLeave={handleHover} 
-                    onClick={handleSelectItemFilter.bind(this, "Ratings")}
-                  >
-                    <button 
-                      className={`${styles.filterBtn2} ${styles.Ratings}`} 
-                      style={{ backgroundColor: (currentItemFilter == "Ratings") ? "#fff" : "#2d2d2d" }}
-                      aria-label="Sort after ratings"
-                    >
-                        <img 
-                          src={Ratings}
-                          className={`${styles.filterSVG2} ${styles.Ratings}`} 
-                          style={{ filter: (currentItemFilter == "Ratings") ? "" : "grayscale(100%) invert(1)" }} 
-                        />
-                    </button>
-                    Ratings
-                  </div>
-        
-                  <div 
                     className={styles.filterDiv}
                     id="10" 
                     onMouseEnter={handleHover} 
@@ -302,7 +281,7 @@ const Filters = props => {
                     </button>
                     Price
                   </div>
-              </div>
+            </div>
           </div>
           }
         </div>

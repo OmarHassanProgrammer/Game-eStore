@@ -138,14 +138,14 @@ form button:active {
 }
 .userDropbox {
     position: absolute;
-    top: calc(100% - 20px);
+    top: calc(100% + 15px);
     right: -20px;
     min-width: 200px;
-    background-color: #fff5;
+    background-color: #fffa;
     border-radius: 5px;
     display: flex;
     flex-direction: column;
-    z-index: 4;
+    z-index: 9;
 }
 .userDropbox::before {
     content: "";

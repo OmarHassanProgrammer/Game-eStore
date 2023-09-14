@@ -264,7 +264,7 @@ const handleCloseCart = () => {
               handleRemoveFromCart={handleRemoveFromCart}
               openGamePage={openGamePage}
         /> : null}
-        <Chat addPerson={addPerson}/>
+        <Chat addPerson={addPerson} setAddPerson={setAddPerson}/>
         <Notifications addNotification={addNotification} />
         <NavBar
           handleBrowse={handleBrowse.bind(this, "games")}
@@ -287,7 +287,7 @@ const handleCloseCart = () => {
               <div className={styles.content}>
                 <img src={userProfile.imgType != null?'../assets/users/' + userProfile.id + '.' + userProfile.imgType:'../images/profile2.svg'} />
                 <span className={styles.c} onClick={() => {setAddPerson(userProfile.id)}}>
-                  <svg viewBox="0 0 24 24" fill="#fff" xmlns="http://www.w3.org/2000/svg"><g id="Communication / Chat_Circle"><path id="Vector" d="M7.50977 19.8018C8.83126 20.5639 10.3645 21 11.9996 21C16.9702 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 13.6351 3.43604 15.1684 4.19819 16.4899L4.20114 16.495C4.27448 16.6221 4.31146 16.6863 4.32821 16.7469C4.34401 16.804 4.34842 16.8554 4.34437 16.9146C4.34003 16.9781 4.3186 17.044 4.27468 17.1758L3.50586 19.4823L3.50489 19.4853C3.34268 19.9719 3.26157 20.2152 3.31938 20.3774C3.36979 20.5187 3.48169 20.6303 3.62305 20.6807C3.78482 20.7384 4.02705 20.6577 4.51155 20.4962L4.51758 20.4939L6.82405 19.7251C6.95537 19.6813 7.02214 19.6591 7.08559 19.6548C7.14475 19.6507 7.19578 19.6561 7.25293 19.6719C7.31368 19.6887 7.37783 19.7257 7.50563 19.7994L7.50977 19.8018Z" stroke-linecap="round" stroke-linejoin="round"/></g></svg>
+                  <svg viewBox="0 0 24 24" fill="#fff" xmlns="http://www.w3.org/2000/svg"><g id="Communication / Chat_Circle"><path id="Vector" d="M7.50977 19.8018C8.83126 20.5639 10.3645 21 11.9996 21C16.9702 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 13.6351 3.43604 15.1684 4.19819 16.4899L4.20114 16.495C4.27448 16.6221 4.31146 16.6863 4.32821 16.7469C4.34401 16.804 4.34842 16.8554 4.34437 16.9146C4.34003 16.9781 4.3186 17.044 4.27468 17.1758L3.50586 19.4823L3.50489 19.4853C3.34268 19.9719 3.26157 20.2152 3.31938 20.3774C3.36979 20.5187 3.48169 20.6303 3.62305 20.6807C3.78482 20.7384 4.02705 20.6577 4.51155 20.4962L4.51758 20.4939L6.82405 19.7251C6.95537 19.6813 7.02214 19.6591 7.08559 19.6548C7.14475 19.6507 7.19578 19.6561 7.25293 19.6719C7.31368 19.6887 7.37783 19.7257 7.50563 19.7994L7.50977 19.8018Z"/></g></svg>
                 </span>
               </div>
             </div>
@@ -308,9 +308,40 @@ const handleCloseCart = () => {
             </div>
             <div className={styles.accounts}>
               <div className={styles.games}>
-                <span className={styles.account} onClick={copyLink.bind(this, 'roblox')}><img src='../images/roblox.png' /></span>
-                <span className={styles.account} onClick={copyLink.bind(this, 'fortnite')}><img src='../images/fortnite.jpg' /></span>
-                <span className={styles.account} onClick={copyLink.bind(this, 'fdsr')}><img src='../images/minecraft.svg' /></span>
+                {
+                  userProfile?.game_links?.map((link, key) => {
+                    return <span key={key} className={styles.account} onClick={copyLink.bind(this, link.value)}>
+                      {
+                        ['LOL', 'COC', 'Minecraft', 'Fortnite', 'Roblox'].includes(link.game)?
+                          <img src={'../images/' + link.game + '.png'} />:
+                          <span className={styles.letter} style={{backgroundColor: ['#16a085', '#27ae60', '#2980b9', '#8e44ad', '#2c3e50', '#c0392b', '#d35400'][Math.floor(Math.random() * 7)]}}>{link.game[0]}</span>
+                      }
+                    </span>
+                  })
+                }
+              </div>
+              <div className={styles.games}>
+                {
+                  userProfile?.social_links?.map((link, key) => {
+                    return <a target="_blank" href={link.link} key={key} className={styles.account} onClick={copyLink.bind(this, link.value)}>
+                      {
+                        (() => {
+                          let type = "";
+                          ['facebook', 'instagram', 'linkedin', 'twitter', 'snapchat'].forEach(element => {
+                            if(link.link.includes(element)) {
+                              type = element;
+                            }
+                          });
+                          if(type != "") {
+                            return <img src={'../images/' + type + '.png'} />
+                          } else {
+                            <span className={styles.letter} style={{backgroundColor: ['#16a085', '#27ae60', '#2980b9', '#8e44ad', '#2c3e50', '#c0392b', '#d35400'][Math.floor(Math.random() * 7)]}}>{link.link[link.link.indexOf("www.") + 4]}</span>
+                          }
+                        })()
+                      }
+                    </a>
+                  })
+                }
               </div>
             </div>
             {
