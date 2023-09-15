@@ -67,13 +67,13 @@ Route::prefix('/genres')->group(function () {
 
 Route::prefix('/user')->group(function () {
     Route::get('/me', [UserController::class, 'me'])->middleware('auth:sanctum');
+    Route::post('/data', [UserController::class, 'data']);
     Route::get('/get/{id}', [UserController::class, 'get']);
     Route::get('/logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
     Route::post('/updateProfile', [UserController::class, 'updateProfile'])->middleware('auth:sanctum');
     Route::post('/updatePassword', [UserController::class, 'updatePassword'])->middleware('auth:sanctum');
     Route::get('/getSoldOrders', [UserController::class, 'getSoldOrders'])->middleware('auth:sanctum');
     Route::get('/getPurchasedOrders', [UserController::class, 'getPurchasedOrders'])->middleware('auth:sanctum');
-    Route::post('/getSimpleData', [UserController::class, 'getSimpleData']);
     Route::get('/getNewNotifications', [UserController::class, 'getNewNotifications'])->middleware('auth:sanctum');
     
     Route::prefix('/cart')->group(function () {

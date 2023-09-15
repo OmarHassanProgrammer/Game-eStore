@@ -143,7 +143,7 @@ class UserController extends Controller
         return response()->json(['msg' => 'done', 'orders' => $orders]);
     }
 
-    public function getSimpleData() {
+    public function data() {
         /*$people = [];
 
         if($request->ids) {
