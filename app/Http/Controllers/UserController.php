@@ -144,16 +144,20 @@ class UserController extends Controller
     }
 
     public function getSimpleData(Request $request) {
-        $people = [];
+        try {
+            $people = [];
 
-        if($request->ids) {
-            foreach ($request->ids as $key => $id) {
-                $user = User::find($id)->only(["id", "name", "imgType"]);
-                array_push($people, $user);
+            if($request->ids) {
+                foreach ($request->ids as $key => $id) {
+                    $user = User::find($id)->only(["id", "name", "imgType"]);
+                    array_push($people, $user);
+                }
             }
-        }
 
-        return response()->json(["msg" => "done", "people" => $people]);
+            return response()->json(["msg" => "done", "people" => $people]);
+        } catch (Excexption) {
+            return response()->json(['msg', 'errro']);
+        }
     }
     
     public function getNewNotifications() {
