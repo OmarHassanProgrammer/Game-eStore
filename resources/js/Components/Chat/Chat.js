@@ -48,7 +48,7 @@ const Chat = props => {
             changeChat(id);
         } else {
             console.log("ggg");
-            const apiUrl = '/api/user/data/'; // Replace with your actual API endpoint
+            const apiUrl = '/api/user/data/2'; // Replace with your actual API endpoint
             axios.post(apiUrl/*, {
                 ids: [id]
             }*/)
@@ -73,7 +73,7 @@ const Chat = props => {
     useEffect(() => {
         let ids = localStorage.getItem('people')?.split(',');
         if(ids && ids.length != 0) {
-            const apiUrl = '/api/user/data/'; // Replace with your actual API endpoint
+            const apiUrl = '/api/user/data/1'; // Replace with your actual API endpoint
             axios.post(apiUrl/*, {
                 ids
             }*/)
