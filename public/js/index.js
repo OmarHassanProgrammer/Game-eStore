@@ -5486,9 +5486,9 @@ var Chat = function Chat(props) {
     } else {
       console.log("ggg");
       var apiUrl = '/api/user/getSimpleData/'; // Replace with your actual API endpoint
-      axios__WEBPACK_IMPORTED_MODULE_7__["default"].post(apiUrl, {
-        ids: [id]
-      }).then(function (response) {
+      axios__WEBPACK_IMPORTED_MODULE_7__["default"].post(apiUrl /*, {
+                        ids: [id]
+                        }*/).then(function (response) {
         if (response.data.msg = "done") {
           localStorage.setItem('people', localStorage.getItem('people') ? localStorage.getItem('people') + ',' + id : id);
           if (people) setPeople([].concat(_toConsumableArray(people), [response.data.people[0]]));else setPeople([response.data.people[0]]);
@@ -5506,9 +5506,9 @@ var Chat = function Chat(props) {
     var ids = (_localStorage$getItem = localStorage.getItem('people')) === null || _localStorage$getItem === void 0 ? void 0 : _localStorage$getItem.split(',');
     if (ids && ids.length != 0) {
       var apiUrl = '/api/user/getSimpleData/'; // Replace with your actual API endpoint
-      axios__WEBPACK_IMPORTED_MODULE_7__["default"].post(apiUrl, {
-        ids: ids
-      }).then(function (response) {
+      axios__WEBPACK_IMPORTED_MODULE_7__["default"].post(apiUrl /*, {
+                        ids
+                        }*/).then(function (response) {
         if (response.data.msg = "done") {
           setPeople(response.data.people);
         }
