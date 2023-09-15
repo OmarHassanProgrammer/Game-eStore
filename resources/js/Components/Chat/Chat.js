@@ -49,9 +49,9 @@ const Chat = props => {
         } else {
             console.log("ggg");
             const apiUrl = '/api/user/getSimpleData/'; // Replace with your actual API endpoint
-            axios.post(apiUrl, {
+            axios.post(apiUrl/*, {
                 ids: [id]
-            })
+            }*/)
             .then(response => {
                 if(response.data.msg = "done") {
                     localStorage.setItem('people', localStorage.getItem('people')?localStorage.getItem('people') + ',' + id:id);
@@ -74,9 +74,9 @@ const Chat = props => {
         let ids = localStorage.getItem('people')?.split(',');
         if(ids && ids.length != 0) {
             const apiUrl = '/api/user/getSimpleData/'; // Replace with your actual API endpoint
-            axios.post(apiUrl, {
+            axios.post(apiUrl/*, {
                 ids
-            })
+            }*/)
             .then(response => {
                 if(response.data.msg = "done") {
                     setPeople(response.data.people);

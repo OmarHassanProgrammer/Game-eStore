@@ -143,21 +143,18 @@ class UserController extends Controller
         return response()->json(['msg' => 'done', 'orders' => $orders]);
     }
 
-    public function getSimpleData(Request $request) {
-        try {
-            $people = [];
+    public function getSimpleData() {
+        /*$people = [];
 
-            if($request->ids) {
-                foreach ($request->ids as $key => $id) {
-                    $user = User::find($id)->only(["id", "name", "imgType"]);
-                    array_push($people, $user);
-                }
+        if($request->ids) {
+            foreach ($request->ids as $key => $id) {
+                $user = User::find($id)->only(["id", "name", "imgType"]);
+                array_push($people, $user);
             }
-
-            return response()->json(["msg" => "done", "people" => $people]);
-        } catch (Excexption) {
-            return response()->json(['msg', 'errro']);
         }
+
+        return response()->json(["msg" => "done", "people" => $people]);*/
+        return response()->json(["msg" => "done"]);
     }
     
     public function getNewNotifications() {
