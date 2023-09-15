@@ -143,7 +143,7 @@ class UserController extends Controller
         return response()->json(['msg' => 'done', 'orders' => $orders]);
     }
 
-    public function data($i, Request $request) {
+    public function data(Request $request) {
         /*$people = [];
 
         if($request->ids) {
@@ -154,7 +154,7 @@ class UserController extends Controller
         }
 
         return response()->json(["msg" => "done", "people" => $people]);*/
-        return response()->json(["msg" => $i, $request]);
+        return response()->json(["msg" => $request]);
     }
     
     public function getNewNotifications() {

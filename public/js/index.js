@@ -5485,7 +5485,7 @@ var Chat = function Chat(props) {
       changeChat(id);
     } else {
       console.log("ggg");
-      var apiUrl = '/api/user/data/2'; // Replace with your actual API endpoint
+      var apiUrl = '/api/user/gdata'; // Replace with your actual API endpoint
       axios__WEBPACK_IMPORTED_MODULE_7__["default"].post(apiUrl, {
         ids: [id]
       }).then(function (response) {
@@ -5505,7 +5505,7 @@ var Chat = function Chat(props) {
     var _localStorage$getItem;
     var ids = (_localStorage$getItem = localStorage.getItem('people')) === null || _localStorage$getItem === void 0 ? void 0 : _localStorage$getItem.split(',');
     if (ids && ids.length != 0) {
-      var apiUrl = '/api/user/data/1'; // Replace with your actual API endpoint
+      var apiUrl = '/api/user/gdata'; // Replace with your actual API endpoint
       axios__WEBPACK_IMPORTED_MODULE_7__["default"].post(apiUrl, {
         ids: ids
       }).then(function (response) {

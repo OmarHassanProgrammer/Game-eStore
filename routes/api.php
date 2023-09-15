@@ -68,7 +68,7 @@ Route::prefix('/genres')->group(function () {
 Route::prefix('/user')->group(function () {
     Route::get('/me', [UserController::class, 'me'])->middleware('auth:sanctum');
     //Route::post('/data', [UserController::class, 'data'])->middleware('auth:sanctum');
-    Route::post('/data/{i}', [UserController::class, 'data'])->middleware('auth:sanctum');
+    Route::post('/gdata', [UserController::class, 'data'])->middleware('auth:sanctum');
     Route::get('/get/{id}', [UserController::class, 'get']);
     Route::get('/logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
     Route::post('/updateProfile', [UserController::class, 'updateProfile'])->middleware('auth:sanctum');
