@@ -278,7 +278,7 @@ const handleSelectGame = (id, e) => {
 }
 
 const handleLike = (id, key, e) => {
-  const apiUrl = '/api/user/wishlist/toggle/' //+ id; // Replace with your actual API endpoint
+  const apiUrl = '/api/user/wishlist/toggle/' + id; // Replace with your actual API endpoint
   axios.post(apiUrl)
     .then(response => {
       let s = shownGames;
