@@ -85,7 +85,7 @@ Route::prefix('/user')->group(function () {
     })->middleware('auth:sanctum');
 
     Route::prefix('/wishlist')->group(function () {
-        Route::post('/toggle/{item_id}', [UserController::class, 'toggleWishlist']);
+        Route::post('/toggle', [UserController::class, 'toggleWishlist']);
     });
 
 });

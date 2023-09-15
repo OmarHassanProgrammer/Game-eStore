@@ -9297,7 +9297,7 @@ function Browse(props) {
     }
   };
   var handleLike = function handleLike(id, key, e) {
-    var apiUrl = '/api/user/wishlist/toggle/' + id; // Replace with your actual API endpoint
+    var apiUrl = '/api/user/wishlist/toggle/'; //+ id; // Replace with your actual API endpoint
     axios__WEBPACK_IMPORTED_MODULE_17__["default"].post(apiUrl).then(function (response) {
       var s = shownGames;
       s[key].isLiked = response.data.fav;

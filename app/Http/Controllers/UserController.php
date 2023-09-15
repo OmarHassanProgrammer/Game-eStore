@@ -50,10 +50,10 @@ class UserController extends Controller
         return response()->json(['msg' => 'done']);
     }
 
-    public function toggleWishlist($item_id) {
+    public function toggleWishlist(/*$item_id*/) {
         $user = Auth::user();
-        $item = Item::find($item_id);
-        if(!$user->wishList->contains('id', $item_id)) {
+        $item = Item::find(4/*$item_id*/);
+        if(!$user->wishList->contains('id', 4/*$item_id*/)) {
             $cart = $user->wishList()->attach($item);
             return response()->json(['msg' => 'done', 'fav' => true]);
         } else {
