@@ -34,8 +34,8 @@ const Profile = props => {
   const [userProfile, setUserProfile] = useState({});
   const [stars, setStars] = useState([]);
   const [addPerson, setAddPerson] = useState();
-  const [emptyStars, setEmptyStars] = useState([0,0,0,0,0]);
   const [addNotification, setAddNotification] = useState();
+  const [emptyStars, setEmptyStars] = useState([0,0,0,0,0]);
   const firstUpdate = useRef(true);
 
   useLayoutEffect(() => {

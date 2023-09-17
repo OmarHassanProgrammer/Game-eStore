@@ -24,7 +24,8 @@ class User extends Authenticatable
         'imgType',
         'rate',
         'bio',
-        'rank'
+        'rank',
+        'banned'
     ];
 
     /**

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('password');
             $table->tinyInteger('rank')->default(0);
             $table->string('imgType')->nullable();
+            $tabel->tinyInteger('banned')->default(0);
             $table->float('rate')->default(0.0);
             $table->rememberToken();
             $table->timestamps();

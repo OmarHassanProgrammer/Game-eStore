@@ -54,10 +54,18 @@
     border-radius: 5px;
     font-size: 0.9rem;
 }
-.soldItemsPage .block .content .item .p .badge.ongoing {
+.soldItemsPage .block .content .item .p .badge.shipped {
+    background-color: #2980b9;
+}
+.soldItemsPage .block .content .item .p .badge.under-dispute {
+    background-color: #d35400;
+}
+.soldItemsPage .block .content .item .p .badge.completed,
+    .soldItemsPage .block .content .item .p .badge.ongoing {
     background-color: #007b24
 }
-.soldItemsPage .block .content .item .p .badge.refused {
+.soldItemsPage .block .content .item .p .badge.cancelled,
+    .soldItemsPage .block .content .item .p .badge.expired {
     background-color: #f00
 }
 .soldItemsPage .block .content .item .p .btns {
@@ -94,6 +102,11 @@
     font-family: "GT Light";
 }
 
+.con {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
 
 @media screen and (max-width: 700px) {
     .con {

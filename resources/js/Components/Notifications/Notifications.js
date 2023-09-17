@@ -67,6 +67,7 @@ const Notifications = props => {
     }, []);
 
     useEffect(() => {
+        console.log(addNotification);
         if(f) setF(false);
         else {
             let newNotifications = [...notifications, addNotification];
@@ -129,9 +130,9 @@ const Notifications = props => {
                             { 
                                 notification?.msg?.split("++").map((m, k) => {
                                     if(m.split("--")[1]) {
-                                        return <a href={m.split("--")[1]} className={`${styles.p} ${styles.l}`}>{m.split("--")[0]}</a>
+                                        return <a key={k} href={m.split("--")[1]} className={`${styles.p} ${styles.l}`}>{m.split("--")[0]}</a>
                                     } else {
-                                        return <span className={styles.p}>{m.split("--")[0]}</span>
+                                        return <span key={k} className={styles.p}>{m.split("--")[0]}</span>
                                     }
                                 })
                             }

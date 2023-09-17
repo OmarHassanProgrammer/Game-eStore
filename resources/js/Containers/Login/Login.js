@@ -58,6 +58,16 @@ const Login = props => {
           location.href = "/games";
         } else if (response.data.msg == "authAlready") {
           location.href = "/games";
+        } else if (response.data.msg == "banned") {
+          console.log("aaa");
+          setAddNotification({
+            type: "danger",
+            msg: "You are banned. ++Contact us--/contactus++ if you think there is a problem.",
+            time: 10000,
+            key: Math.floor(Math.random() * 10000)
+          });
+          setEmail('');
+          setPassword('');
         }
       })
       .catch(error => {
@@ -78,7 +88,7 @@ const Login = props => {
         </form>
         <div className={styles.bottom}>
           <span className={styles.part}><span className={styles.label}>Don't have acount?</span><a className={styles.link} href="/signup">create new account</a></span>
-          <span className={styles.part}><span className={styles.label}>Forgot your password?</span><a className={styles.link} href="/reset-password">reset password</a></span>
+          {false?<span className={styles.part}><span className={styles.label}>Forgot your password?</span><a className={styles.link} href="/reset-password">reset password</a></span>:null }
         </div>
       </div>
     </>

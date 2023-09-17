@@ -35,6 +35,12 @@
 .NotificationsWidget .notification.success {
     background-color: #009225;
 }
+.NotificationsWidget .notification.danger {
+    background-color: #c0392b;
+}
+.NotificationsWidget .notification.normal {
+    background-color: #2c3e50;
+}
 .NotificationsWidget .notification .delete {
     position: absolute;
     right: 12px;

@@ -5,6 +5,7 @@ import axios from 'axios';
 
 const PurchasedItemsPage = props => {
     const { 
+      setAddNotification
       } = props;
       const [orders, setOrders] = useState([]);
 
@@ -32,6 +33,7 @@ const PurchasedItemsPage = props => {
             order.hours = Math.max(0, hoursDifference);
             order.date = myDate;
             o.push(order);
+
           });
           setOrders([...o]);
         }
@@ -40,6 +42,106 @@ const PurchasedItemsPage = props => {
           console.error('Error fetching data:', error);
         });
     }, []);
+
+    const complete = (id, e) => {
+      const apiUrl = '/api/orders/buyerComplete/' + id; // Replace with your actual API endpoint
+      axios.get(apiUrl)
+      .then(response => {
+        if(response.data.msg == "done") {
+          setAddNotification({
+            type: "success",
+            msg: "Order completed successfully",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
+          let o = orders;
+          o.forEach(order => {
+            if(order.id == id) {
+              order.status = "completed";
+            }
+          });
+          setOrders([...o]);
+          
+        } else {
+          setAddNotification({
+            type: "danger",
+            msg: "There is an error while completing the order please try again later.",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
+        }
+        })
+        .catch(error => {
+          console.error('Error fetching data:', error);
+        });
+    }
+
+    const cancel = (id, e) => {
+      const apiUrl = '/api/orders/buyerCancel/' + id; // Replace with your actual API endpoint
+      axios.get(apiUrl)
+      .then(response => {
+        if(response.data.msg == "done") {
+          setAddNotification({
+            type: "success",
+            msg: "Order canceled successfully",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
+          let o = orders;
+          o.forEach(order => {
+            if(order.id == id) {
+              order.status = "cancelled";
+            }
+          });
+          setOrders([...o]);
+          
+        } else {
+          setAddNotification({
+            type: "danger",
+            msg: "There is an error while canceling the order please try again later.",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
+        }
+        })
+        .catch(error => {
+          console.error('Error fetching data:', error);
+        });
+    }
+
+    
+    const dispute = (id, e) => {
+      const apiUrl = '/api/orders/buyerRefuse/' + id; // Replace with your actual API endpoint
+      axios.get(apiUrl)
+      .then(response => {
+        if(response.data.msg == "done") {
+          setAddNotification({
+            type: "success",
+            msg: "The argument was issued successfully. Wait untill the admin solve it.",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
+          let o = orders;
+          o.forEach(order => {
+            if(order.id == id) {
+              order.status = "under-dispute";
+            }
+          });
+          setOrders([...o]);
+          
+        } else {
+          setAddNotification({
+            type: "danger",
+            msg: "There is a problem while issuing the problem. Please try again later.",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
+        }
+        })
+        .catch(error => {
+          console.error('Error fetching data:', error);
+        });
+    }
 
     return (
           <motion.div 
@@ -54,11 +156,10 @@ const PurchasedItemsPage = props => {
               <div className={styles.content}>
                 {
                   orders?orders.map((order) => {
-                    if(!['refused', 'delivered'].includes(order.status)) {
+                    if(!['cancelled', 'completed'].includes(order.status)) {
                       return <div className={styles.item}>
                         <div className={styles.p}>
                           <div className={styles.img}><img src={"../../../assets/items/" + order.item?.images[0]?.image??"d.jpg"} /></div>
-                        
                           <div className={styles.con}>
                             <div className={styles.title}>{order.item.name}</div>
                             <span className={`${styles.badge} ${styles[order.status]}`}>{order.status}</span>
@@ -68,11 +169,11 @@ const PurchasedItemsPage = props => {
                             </div>
                             {
                               (order.days==0 && order.hours==0)?
-                              <span className={`${styles.badge} ${styles.refused}`}>expired</span>:
+                              null:order.status=="ongoing"?
                               <div className={styles.expires}>
                                 <span className={styles.label}>Expires in: </span>
                                 <span className={styles.l}>{ order.days!=0?order.days + ' day':null }{order.days > 1?'s':''} { order.hours!=0?order.hours + ' hour':null }{order.hours > 1?'s':''}</span>
-                              </div>
+                              </div>:null
                             }
                             <div className={styles.seller}>
                               <span className={styles.label}>Ordered at: </span>
@@ -84,10 +185,14 @@ const PurchasedItemsPage = props => {
                           <div className={styles.btns}>
                             { (() => {
                                 switch(order.status) {
-                                  case 'ongoing':
+                                  case 'shipped':
                                     return <>
-                                      <button className={`${styles.btn} ${styles.danger}`}>Refuse</button>
-                                      <button className={`${styles.btn} ${styles.success}`}>Delivered</button>
+                                      <button className={`${styles.btn} ${styles.success}`} onClick={complete.bind(this, order.id)}>Complete</button>
+                                      <button className={`${styles.btn} ${styles.danger}`} onClick={dispute.bind(this, order.id)}>Didn't recieve</button>
+                                    </>
+                                  case 'expired':
+                                    return <>
+                                      <button className={`${styles.btn} ${styles.danger}`} onClick={cancel.bind(this, order.id)}>Cancel</button>
                                     </>
                                   default:
                                     return null
@@ -107,7 +212,7 @@ const PurchasedItemsPage = props => {
               <div className={styles.content}>
               {
                   orders?orders.map((order) => {
-                    if(['refused', 'delivered'].includes(order.status)) {
+                    if(['cancelled', 'completed'].includes(order.status)) {
                       return <div className={styles.item}>
                         <div className={styles.p}>
                           <div className={styles.img}><img src={"../../../assets/items/" + order.item?.images[0]?.image??"d.jpg"} /></div>

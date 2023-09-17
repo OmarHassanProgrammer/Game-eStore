@@ -32,6 +32,7 @@ body {
 
 .filterList {
     display: flex;
+    flex-wrap: wrap;
     gap: 8px;
 }
 
@@ -79,11 +80,28 @@ body {
     border: 1px transparent;
     border-radius: 10px;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: all 0.3s ease-in-out;
+    border: 2px solid transparent;
+    display: flex;
 }
-
-.filterButton:hover {
+.filterButton:not(.filterActice):hover {
     background-color: #2d2d2d;
+}
+.filterActice {
+    background-color: #2980b9;
+}
+.filterInput {
+    width: 64px;
+    padding: 5px;
+    background-color: #454545;
+    margin: 0 5px;
+    outline: none;
+    border-radius: 5px;
+    border: 1px solid transparent;
+    color: #fff;
+}
+.filterInput:focus {
+    border: 1px solid #2980b9;
 }
 
 .filterButton:active {
@@ -162,7 +180,7 @@ body {
     .list h1 {
         font-size: 48px;
     }
-    .applied {
+    .filterButton.notPhone {
         display: none;
     }
 }
@@ -179,7 +197,7 @@ body {
 }
 
 @media screen and (max-width: 320px) {
-    .filterButton {
+    .filterButton.notPhone {
         font-size: 12px;
     }
 }

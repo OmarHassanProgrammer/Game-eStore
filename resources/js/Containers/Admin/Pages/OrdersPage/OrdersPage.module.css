@@ -58,10 +58,35 @@
     border-radius: 5px;
     font-size: 0.9rem;
 }
-.soldItemsPage .block .content .item .p .badge.ongoing {
+.soldItemsPage .block .content .item .p .chat {
+    background-color: #009225;
+    color: #fff;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    font-size: 1.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.5s ease-in-out;
+    border-radius: 50%;
+}
+.soldItemsPage .block .content .item .p .chat svg {
+    width: 20px;
+    height: 20px;
+}
+.soldItemsPage .block .content .item .p .badge.shipped {
+    background-color: #2980b9;
+}
+.soldItemsPage .block .content .item .p .badge.under-dispute {
+    background-color: #d35400;
+}
+.soldItemsPage .block .content .item .p .badge.completed,
+    .soldItemsPage .block .content .item .p .badge.ongoing {
     background-color: #007b24
 }
-.soldItemsPage .block .content .item .p .badge.refused {
+.soldItemsPage .block .content .item .p .badge.cancelled,
+    .soldItemsPage .block .content .item .p .badge.expired {
     background-color: #f00
 }
 .soldItemsPage .block .content .item .p .btns {

@@ -64,32 +64,38 @@ class OrderController extends Controller
         $response = $provider->capturePaymentOrder($request->token);
 
         foreach ($items as $key => $item) {
-            $order = [
-                "item_id" => $item->id,
-                "client_id" => $user->id,
-                "status" => "ongoing",
-                "moneyPaid" => $item->price,
-            ];
-            $order = Order::create($order);
-            $user->balances()->create([
-                "order_id" => $order->id,
-                "type" => "pay",
-                "amount" => $item->price
-            ]);
-            $items = Item::with('orders')->get()->where('seller_id', $item->seller->id);
-            $n = 0;
-            foreach ($items as $key => $item) {
-                foreach ($item->orders as $key => $order) {
-                    $n += 1;
+            if($item->amount > 0) {
+                $item->amount -= 1;
+                $item->sold += 1;
+                $item->save();
+
+                $order = [
+                    "item_id" => $item->id,
+                    "client_id" => $user->id,
+                    "status" => "ongoing",
+                    "moneyPaid" => $item->price,
+                ];
+                $order = Order::create($order);
+                $user->balances()->create([
+                    "order_id" => $order->id,
+                    "type" => "pay",
+                    "amount" => $item->price
+                ]);
+                $items = Item::with('orders')->get()->where('seller_id', $item->seller->id);
+                $n = 0;
+                foreach ($items as $key => $item) {
+                    foreach ($item->orders as $key => $order) {
+                        $n += 1;
+                    }
                 }
+                Balance::create([
+                    "user_id" => $item->seller->id,
+                    "order_id" => $order->id,
+                    "type" => "get",
+                    "after" => ($n > 200)?0:(($n > 100)?12:(($n > 50)?24:48)),
+                    "amount" => $item->price * 0.95
+                ]);
             }
-            Balance::create([
-                "user_id" => $item->seller->id,
-                "order_id" => $order->id,
-                "type" => "get",
-                "after" => ($n > 200)?0:(($n > 100)?12:(($n > 50)?24:48)),
-                "amount" => $item->price * 0.95
-            ]);
             $user->cart()->detach($item);
         }
 
@@ -160,6 +166,84 @@ class OrderController extends Controller
         $response = $provider->showPayoutItemDetails('9HU3QM2R622GW');
 
         return response()->json(['msg' => 'done', 'response' => $response]);
+    }
+
+    public function sellerComplete($order_id) {
+        $order = Order::with('item')->find($order_id);
+        $user = Auth::user();
+
+        if($order->status == "ongoing" && $user->id == $order->item->seller_id) {
+            $order->status = "shipped";
+            $order->shipped_at = now();
+            $order->save();
+            return response()->json(['msg' => 'done']);
+        } else {
+            return response()->json(['msg' => 'not']);
+        }
+    }
+
+    public function buyerComplete($order_id) {
+        $order = Order::with('item')->find($order_id);
+        $user = Auth::user();
+
+        if($order->status == "shipped" && $user->id == $order->client_id) {
+            $order->status = "completed";
+            $order->save();
+            return response()->json(['msg' => 'done']);
+        } else {
+            return response()->json(['msg' => 'not']);
+        }        
+    }
+
+    public function buyerRefuse($order_id) {
+        $order = Order::with('item')->find($order_id);
+        $user = Auth::user();
+
+        if($order->status == "shipped" && $user->id == $order->client_id) {
+            $order->status = "under-dispute";
+            $order->save();
+            return response()->json(['msg' => 'done']);
+        } else {
+            return response()->json(['msg' => 'not']);
+        }         
+    }
+
+    public function adminComplete($order_id) {
+        $order = Order::with('item')->find($order_id);
+        $user = Auth::user();
+
+        if($order->status == "under-dispute" && $user->rank == 1) {
+            $order->status = "completed";
+            $order->save();
+            return response()->json(['msg' => 'done']);
+        } else {
+            return response()->json(['msg' => 'not']);
+        }
+    }
+
+    public function adminCancel($order_id) {
+        $order = Order::with('item')->find($order_id);
+        $user = Auth::user();
+
+        if($order->status == "under-dispute" && $user->rank == 1) {
+            $order->status = "cancelled";
+            $order->save();
+            return response()->json(['msg' => 'done']);
+        } else {
+            return response()->json(['msg' => 'not']);
+        }    
+    }
+    public function buyerCancel($order_id) {
+        $order = Order::with('item')->find($order_id);
+        $user = Auth::user();
+
+        if($order->status == "expired" && $user->id == $order->client_id) {
+            $order->status = "cancelled";
+            $order->save();
+            return response()->json(['msg' => 'done']);
+        } else {
+            return response()->json(['msg' => 'not']);
+        }    
     }
     
 } 

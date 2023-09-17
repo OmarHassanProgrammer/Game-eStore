@@ -1,0 +1,60 @@
+.usersPage {
+    padding: 0 10px;
+    overflow-x: scroll;
+}
+.usersPage table {
+    width: 100%;
+}
+.usersPage table tr {
+    width: 100%;
+    transition: all 0.5s ease-in-out;
+}
+.usersPage table tr:not(:nth-child(1)):hover {
+    background-color: #222;
+    cursor: pointer;
+}
+.usersPage table tr:not(:nth-child(1)) td {
+    border: none;
+}
+.usersPage table th {
+    color: #fff;
+    font-size: 1.2rem;
+    font-family: "GT Bold";
+    border-bottom: 2px solid #2980b9;
+}
+.usersPage table td {
+    color: #fff;
+    font-family: "GT Medium";
+    border: none;
+}
+.usersPage table th, .usersPage table td {
+    padding: 12px 8px;
+    text-align: center;
+}
+.usersPage a {
+    text-decoration: underline;
+}
+
+.usersPage .btn {
+    padding: 5px;
+    font-family: "GT Medium";
+    cursor: pointer;
+    color: #fff;
+    border: none;
+    outline: none;
+    transition: all 0.5s ease-in-out;
+}
+
+.usersPage .btn.ban {
+    background-color: #e74c3c;
+}
+.usersPage .btn.ban:hover {
+    background-color: #c0392b;
+}
+
+.usersPage .btn.unban {
+    background-color: #2ecc71;
+}
+.usersPage .btn.unban:hover {
+    background-color: #27ae60;
+}

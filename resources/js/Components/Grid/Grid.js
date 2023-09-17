@@ -21,7 +21,10 @@ const Grid = props => {
         add=false,
         addFunc=()=>{},
         close=false,
-        closeFunc=()=>{}
+        closeFunc=()=>{},
+        onlyAvailable = false,
+        minPrice = 0,
+        maxPrice = 10000
     } = props;
 
     useEffect(() => {
@@ -58,6 +61,9 @@ const Grid = props => {
                 gameKey={i}
                 close={close}
                 closeFunc={closeFunc}
+                onlyAvailable={onlyAvailable}
+                minPrice={minPrice}
+                maxPrice={maxPrice}
                 />
             }
         }) : shownGames.map((game, i) => {
@@ -72,6 +78,9 @@ const Grid = props => {
                         gameKey={i}
                         close={close}
                         closeFunc={closeFunc}
+                        onlyAvailable={onlyAvailable}
+                        minPrice={minPrice}
+                        maxPrice={maxPrice}
                     />
         }) : shownGames.map((game, i) => {
             if (game.name.toLowerCase().includes(search.toLowerCase())) {
@@ -86,6 +95,9 @@ const Grid = props => {
                             gameKey={i}
                             close={close}
                             closeFunc={closeFunc}
+                            onlyAvailable={onlyAvailable}
+                            minPrice={minPrice}
+                            maxPrice={maxPrice}
                         />
             }
         })}

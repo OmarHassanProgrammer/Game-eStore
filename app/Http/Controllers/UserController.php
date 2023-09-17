@@ -18,6 +18,23 @@ class UserController extends Controller
         return response()->json(array("user" => Auth::user(), "msg" => "done"));
     }
 
+    public function getAll() {
+        $users = User::with('items')->get();
+        foreach ($users as $key => $user) {
+            $balances = $user->balances;
+            $b = 0;
+            foreach ($balances as $key => $balance) {
+                if($balance->type == "get") {
+                    $b += $balance->amount;
+                } else if ($balance->type == "withdraw") {
+                    $b -= $balance->amount;
+                }
+            }
+            $user->balance = $b;
+        }
+        return response()->json(['msg' => 'done',  'users' => $users]);
+    }
+
     public function getCart() {
         $user = Auth::user();
         $fullData = User::with(["cart.images", "cart.seller"])->find($user->id);
@@ -133,8 +150,12 @@ class UserController extends Controller
 
     public function getSoldOrders() {
         $user = Auth::user();
-        $fullData = user::with('items.orders')->find($user->id);
-        return response()->json(['msg' => 'done', 'items' => $fullData->items]); // TO FIX
+        $fullData = user::with(['items.orders.item.seller', 'items.orders.item.images'])->find($user->id);
+        $orders = [];
+        foreach ($fullData->items as $key => $item) {
+            array_push($orders, ...$item->orders);
+        }
+        return response()->json(['msg' => 'done', 'orders' => $orders]); // TO FIX
     }
     
     public function getPurchasedOrders() {
@@ -170,5 +191,25 @@ class UserController extends Controller
     {
         Auth::logout(); // Log out the currently authenticated user
         return respons()->json(array('msg' => 'done')); 
+    }
+
+    public function ban($user_id) {
+        $user = User::find($user_id);
+        $user->banned = 1;
+        $user->save();
+
+        return response()->json(['msg' => 'done']);
+    }
+    
+    public function unban($user_id) {
+        $user = User::find($user_id);
+        $user->banned = 0;
+        $user->save();
+
+        return response()->json(['msg' => 'done']);
+    }
+    
+    public function banned() {
+        return response()->json(['msg' => 'banned']);
     }
 }

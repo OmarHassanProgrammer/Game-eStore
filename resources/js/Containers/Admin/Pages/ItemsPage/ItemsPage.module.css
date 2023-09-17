@@ -34,3 +34,170 @@
 .itemsPage a {
     text-decoration: underline;
 }
+.itemsPage .del {
+    padding: 5px;
+    font-family: "GT Medium";
+    cursor: pointer;
+    color: #fff;
+    border: none;
+    outline: none;
+    transition: all 0.5s ease-in-out;
+    background-color: #e74c3c;
+}
+.itemsPage .del:hover {
+    background-color: #c0392b;
+}
+
+
+.popOver {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: #aaa7;
+}
+.popOver .pop {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #0f1011;
+    padding: 15px;
+    border-radius: 5px;
+}
+.popOver .pop .title {
+    color: #fff;
+    font-size: 1.5rem;
+    font-family: "GT Bold";
+    margin-bottom: 20px;
+    text-align: center;
+}
+.popOver .pop .form .row .genres {
+    display: flex;
+    gap: 3px;
+    flex-wrap: wrap;
+}
+.popOver .pop .form .row .genres .genre {
+    color: #fff;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    padding: 4px 5px;
+    font-family: "GT LIGHT";
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+.popOver .pop .form .row .genres .genre .delete {
+    background-color:#e74c3c;
+    color: #fff;
+    border-radius: 50%;
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.5s ease-in-out;
+    width: 17px;
+    height: 17px;
+}
+.popOver .pop .form .row .genres .genre .delete:hover {
+    background-color: #c0392b;
+}
+.popOver .pop .form .row .input {
+    flex: 1;
+    padding: 8px;
+    outline: none;
+    width: 100%;
+    background-color: #070707;
+    border: 1px solid #aaa;
+    color: #eee;
+    border-radius: 5px;
+}
+.popOver .pop .form .row .input:focus {
+    outline: none;
+    border: 2px solid #2980b9;
+}
+.popOver .pop .form .row.i {
+    flex-direction: column;
+    justify-content: center;
+}
+
+.row.genresRow {
+    flex-direction: column;
+    gap: 5px;
+    align-items: flex-start !important;
+}
+.row.genresRow select {
+    width: 100%;
+    padding: 5px;
+}
+.popOver .pop .form .row .imgContainer {
+    width: 80%;
+    padding-top: 80%;
+    position: relative;
+}
+.popOver .pop .form .row .imgContainer .img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.popOver .pop .form .row.i .f {
+    position: relative;
+}
+.popOver .pop .form .row.i .f .file {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0;
+}
+.popOver .pop .form .row.i .f {
+    margin: 5px;
+    border: 2px solid #2980b9;
+    border-radius: 5px;   
+    padding: 7px 15px;
+    transition: all 0.5s ease-in-out;
+}
+.popOver .pop .form .row.i .f:after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    cursor: pointer;
+}
+.popOver .pop .form .row.i .filel {
+    cursor: pointer;
+}
+.popOver .pop .form .row.i .f:hover {
+    background-color: #2980b9;
+}
+.popOver .pop .form .save, .popOver .pop .form .del {
+    margin: 5px;
+    background-color: transparent;
+    width: 100%;
+    outline: none;
+    border-radius: 5px;   
+    padding: 7px 15px;
+    transition: all 0.5s ease-in-out;
+    cursor: pointer;
+    color: #fff;
+    font-family: "GT Medium";
+    font-size: 1.2rem;
+}
+.popOver .pop .form .save {
+    border: 2px solid #27ae60;
+}
+.popOver .pop .form .save:hover {
+    background-color: #27ae60;
+}
+.popOver .pop .form .del {
+    border: 2px solid #c0392b;
+}
+.popOver .pop .form .del:hover {
+    background-color: #c0392b;
+}

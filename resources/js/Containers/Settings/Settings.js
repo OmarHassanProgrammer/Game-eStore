@@ -206,6 +206,7 @@ const openGamePage = (e) => {
       .then(response => {
         if(response.data.msg = "done") {
           setUser(null);
+          location.href = "/games";
         }
       })
       .catch(error => {
@@ -291,9 +292,9 @@ const openGamePage = (e) => {
                       setUser={setUser}
                     />
                   case 'selling':
-                    return <SoldItemsPage />
+                    return <SoldItemsPage setAddNotification={setAddNotification} />
                   case 'purchase':
-                    return <PurchasedItemsPage />
+                    return <PurchasedItemsPage setAddNotification={setAddNotification} />
                   case 'balance':
                     return <BalancePage 
                       addNotification={setAddNotification}

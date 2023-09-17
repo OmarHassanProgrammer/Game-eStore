@@ -165,7 +165,7 @@
 
 @media screen and (max-width: 320px) {
     .gridContainer {
-        grid-template-rows: 285px;
+        grid-template-rows: min-content;
         grid-auto-rows: 285px;
     }
 }

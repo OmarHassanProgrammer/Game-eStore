@@ -51,6 +51,8 @@ export default function Browse (props) {
   const [addPerson, setAddPerson] = useState();
   const [addNotification, setAddNotification] = useState();
   const [onlyavailable, setOnlyavailable] = useState();
+  const [minPrice, setMinPrice] = useState();
+  const [maxPrice, setMaxPrice] = useState();
   const [hoverState, setHoverState] = useState([
     {
         hovered: false,
@@ -714,9 +716,19 @@ useEffect(() => {
 
                 <div className={styles.applied}>
                   <div className={styles.filterList}>
-                    
+                    {
+                      browseType == "/items"?
+                      <>
+                        <span className={styles.filterButton}>
+                          Price from <input className={styles.filterInput} type="number" onChange={(e) => { setMinPrice(e.target.value) }} /> to <input className={styles.filterInput} type="number" onChange={(e) => { setMaxPrice(e.target.value) }} />
+                        </span>
+                        <button className={`${styles.filterButton} ` + (onlyavailable?styles.filterActice:null)} onClick={() => {setOnlyavailable(!onlyavailable)}}>
+                          Only Available
+                        </button>
+                      </>:null
+                    }
                     <button 
-                      className={styles.filterButton} 
+                      className={`${styles.filterButton} ${styles.notPhone}`} 
                       aria-label="Current Filter"
                     >
                       Filter by:
@@ -734,7 +746,7 @@ useEffect(() => {
                       </span>
                     </button>
                     <button 
-                      className={`${styles.filterButton} ${styles.clearButton}`}
+                      className={`${styles.filterButton} ${styles.clearButton}  ${styles.notPhone}`}
                       onClick={browseType == "/items"?clearItemFilter:clearFilter} 
                       aria-label="Clear Filters"
                     >
@@ -757,6 +769,9 @@ useEffect(() => {
                       hoverState={hoverState}
                       smallFont={false}
                       limit="0"
+                      onlyAvailable={onlyavailable}
+                      minPrice={minPrice}
+                      maxPrice={maxPrice}
                     />
               </div>
             </div>

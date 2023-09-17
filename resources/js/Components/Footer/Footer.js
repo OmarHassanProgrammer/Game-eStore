@@ -15,55 +15,26 @@ const Footer = props => {
                 <h2>Game Store</h2>
             </div>
             <div className={styles.sections}>
+              <div className={`${styles.section} ${styles.section3}`}>
+                <p>This is a Game Store where you can sell and/or buy any gaming-related product like accounts, items, skins, coins and others.</p>
+              </div>
               <div className={`${styles.section} ${styles.section1}`}>
-                <h3 className={styles.first}>Company</h3>
-                <h3>About</h3>
-                <h3>Press Center</h3>
-                <h3>Careers</h3>
+                <h3 className={ styles.first}>Site Map</h3>
+                <h3><a href="/games">Games</a></h3>
+                <h3><a href="/checkout">Checkout</a></h3>
+                <h3><a href="/profile">Profile</a></h3>
+                <h3><a href="/settings?page=profile">Dashboard</a></h3>
               </div>
               <div className={`${styles.section} ${styles.section2}`}>
-                <h3 className={styles.first}>Consoles</h3>
-                <h3>Playstation 5</h3>
-                <h3>Xbox One</h3>
-                <h3>Switch</h3>
-              </div>
-              <div className={`${styles.section} ${styles.section3}`}>
-                <h3 className={styles.first}>Resources</h3>
-                <h3>Help Center</h3>
-                <h3>Contact</h3>
-              </div>
-              <div className={`${styles.section} ${styles.section4}`}>
-                <h3 className={styles.first}>Product Help</h3>
-                <h3>Support</h3>
-                <h3>File a Bug</h3>
+                <h3 className={styles.first}>Contact Us</h3>
+                <h3><a href="/contactus">Website</a></h3>
+                <h3><a href="/contactus">Facebook</a></h3>
+                <h3><a href="/contactus">Instagram</a></h3>
+                <h3><a href="/contactus">Twitter</a></h3>
               </div>
             </div>
     
-            <div className={styles.footerInfo}>
-              <div className={styles.infoLeft}>
-                <p>This page was built by Gianluca Jahn with React.</p>
-                <p>Portions of this page are inspired by <span>RAWG, RAWG.io</span>. This page was built solely for educational purposes.</p>
-              </div>
-              <div className={styles.infoRight}>
-                <img className={styles.google} src={require("../../../assets/icons/googleplaybadge.png")} alt="Google Play Badge" />
-                <img src={AppStore} className={styles.apple} />
-              </div>
-            </div>
-    
-            <div className={styles.footerEnd}>
-              <div className={styles.endLeft}>
-                <h4>Privacy</h4>
-                <h4>Security</h4>
-                <h4>Cookies</h4>
-                <h4>Legal</h4>
-                <h4>Collaborative Guidelines</h4>
-              </div>
-    
-              <div className={styles.endRight}>
-                <img className={styles.social} src={require("../../../assets/icons/twitter.png")} alt="Twitter Logo" />
-                <img className={styles.social} src={require("../../../assets/icons/instagram.png")} alt="Instagram Logo" />
-              </div>
-            </div>
+
         </div>
     );
   }

@@ -19,7 +19,10 @@ const Card = props => {
         smallFont,
         gameKey,
         close=false,
-        closeFunc=()=>{}
+        closeFunc=()=>{},
+        onlyAvailable = false,
+        minPrice = 0,
+        maxPrice = 10000
       } = props;
 
     const variants = {
@@ -30,6 +33,9 @@ const Card = props => {
 
 
     return (
+      <>
+        {
+          (browseType != "/items" || ((!onlyAvailable || game.amount > 0) && (parseFloat(game.price) >= minPrice && parseFloat(game.price) <= maxPrice)))?
           <motion.div 
             className={styles.cardHome}
             onClick={handleSelectGame.bind(this, game.id)}
@@ -55,14 +61,22 @@ const Card = props => {
                   ${game.price}
               </div>:""
             }
-                <h2 className={styles.name} style={
-                    browseType == "/items"?{fontSize: smallFont? "1.3rem":"", padding: smallFont?"10px 0 0 0":""}:{paddingTop:"20px",paddingBottom:"20px", fontSize: smallFont? "1.3rem":"", padding: smallFont?"10px 0 0 0":""}
-                  }
-                  >{game.name}</h2>
+            <h2 className={styles.name} style={
+                browseType == "/items"?{fontSize: smallFont? "1.3rem":"", padding: smallFont?"10px 0 0 0":""}:{paddingTop:"20px",paddingBottom:"20px", fontSize: smallFont? "1.3rem":"", padding: smallFont?"10px 0 0 0":""}
+              }>
+              {game.name}
+            </h2>
             
             
             {
               browseType == "/items"?
+              <>
+                <span className={`${styles.quant} ` + (game.amount == 0?styles.sold:null)}>
+                  {
+                    game.amount > 0?<>{game.amount} pieces available</>:"Sold out"
+                  }
+                  
+                </span>
                 <button 
                   className={styles.like} 
                   id={game.id} 
@@ -74,9 +88,12 @@ const Card = props => {
                       style={{ filter: game.isLiked ? '' :  'invert(78%) brightness(10000%)' }}
                       className={styles.likeSVG}
                     />
-                </button>:""
+                </button>
+              </>:""
             }
-          </motion.div>
+          </motion.div>:null
+        }
+      </>          
     );
   }
   

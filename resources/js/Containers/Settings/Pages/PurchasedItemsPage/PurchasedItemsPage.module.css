@@ -54,10 +54,18 @@
     border-radius: 5px;
     font-size: 0.9rem;
 }
-.purchasedItemsPage .block .content .item .p .badge.ongoing {
+.purchasedItemsPage .block .content .item .p .badge.shipped {
+    background-color: #2980b9;
+}
+.purchasedItemsPage .block .content .item .p .badge.under-dispute {
+    background-color: #d35400;
+}
+.purchasedItemsPage .block .content .item .p .badge.completed,
+    .purchasedItemsPage .block .content .item .p .badge.ongoing {
     background-color: #007b24
 }
-.purchasedItemsPage .block .content .item .p .badge.refused {
+.purchasedItemsPage .block .content .item .p .badge.cancelled,
+    .purchasedItemsPage .block .content .item .p .badge.expired {
     background-color: #f00
 }
 .purchasedItemsPage .block .content .item .p .btns {

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Chat;
+use App\Models\ClosedChat;
 
 class ChatController extends Controller
 {
@@ -25,6 +26,46 @@ class ChatController extends Controller
         $chat = Chat::where("to", Auth::user()->id)->where("from", $id)
                             ->orWhere("from", Auth::user()->id)->where("to", $id)->get();
         
-        return response()->json(['msg' => 'done', 'chat' => $chat]);
+        $closed = ClosedChat::where("to", Auth::user()->id)->where("from", $id)
+            ->orWhere("from", Auth::user()->id)->where("to", $id)->get();
+
+
+        return response()->json(['msg' => 'done', 'chat' => $chat, 'closed' => count($closed)]);
+    } 
+
+    public function getChatAdmin($ids) {
+        $chat = Chat::where("to", explode('-', $ids)[0])->where("from", explode('-', $ids)[1])
+                            ->orWhere("from", explode('-', $ids)[0])->where("to", explode('-', $ids)[1])->get();
+        
+        $closed = ClosedChat::where("to", explode('-', $ids)[0])->where("from", explode('-', $ids)[1])
+            ->orWhere("from", explode('-', $ids)[1])->where("to", explode('-', $ids)[0])->get();
+
+        
+        return response()->json(['msg' => 'done', 'chat' => $chat, 'closed' => count($closed)]);
+    } 
+    
+    public function close($ids) {
+        $closed = ClosedChat::where("to", explode('-', $ids)[0])->where("from", explode('-', $ids)[1])
+            ->orWhere("from", explode('-', $ids)[1])->where("to", explode('-', $ids)[0])->get();
+
+        if(count($closed) == 0) {
+            ClosedChat::create([
+                'to' => explode('-', $ids)[0],
+                'from' => explode('-', $ids)[1]
+            ]);
+        }
+        
+        return response()->json(['msg' => 'done']);
+    } 
+    
+    public function open($ids) {
+        $closed = ClosedChat::where("to", explode('-', $ids)[0])->where("from", explode('-', $ids)[1])
+        ->orWhere("from", explode('-', $ids)[1])->where("to", explode('-', $ids)[0])->get();
+
+        if(count($closed) == 1) {
+            $closed[0]->delete();
+        }
+        
+        return response()->json(['msg' => 'done']);
     } 
 }

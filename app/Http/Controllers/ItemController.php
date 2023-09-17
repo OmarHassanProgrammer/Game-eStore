@@ -88,4 +88,14 @@ class ItemController extends Controller
         return response()->json(['msg' => 'done', 'item' => $item]);
     
     }
+
+    public function delete($id) {
+        $item = Item::find($id);
+        foreach ($items->orders as $key => $order) {
+            $order->delete();
+        }
+        $item->delete();
+
+        return response()->json(['msg' => 'done']);
+    }
 }

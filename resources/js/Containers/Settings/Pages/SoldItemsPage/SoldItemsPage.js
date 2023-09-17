@@ -5,6 +5,7 @@ import axios from 'axios';
 
 const SoldItemsPage = props => {
     const { 
+      setAddNotification
       } = props;
     const [orders, setOrders] = useState([]);
 
@@ -41,6 +42,39 @@ const SoldItemsPage = props => {
         });
     }, []);
 
+    const complete = (id, e) => {
+      const apiUrl = '/api/orders/sellerComplete/' + id; // Replace with your actual API endpoint
+      axios.get(apiUrl)
+      .then(response => {
+        if(response.data.msg == "done") {
+          setAddNotification({
+            type: "success",
+            msg: "Order shipped successfully. Wait untill the client response.",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
+          let o = orders;
+          o.forEach(order => {
+            if(order.id == id) {
+              order.status = "shipped";
+            }
+          });
+          setOrders([...o]);
+          
+        } else {
+          setAddNotification({
+            type: "danger",
+            msg: "There is an error while shipping the order please try again later.",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
+        }
+        })
+        .catch(error => {
+          console.error('Error fetching data:', error);
+        });
+    }
+
     return (
       <motion.div 
         className={styles.soldItemsPage}
@@ -54,7 +88,7 @@ const SoldItemsPage = props => {
           <div className={styles.content}>
             {
               orders?orders.map((order) => {
-                if(!['refused', 'delivered'].includes(order.status)) {
+                if(!['cancelled', 'completed'].includes(order.status)) {
                   return <div className={styles.item}>
                     <div className={styles.p}>
                       <div className={styles.img}><img src={"../../../assets/items/" + order.item?.images[0]?.image??"d.jpg"} /></div>
@@ -67,11 +101,11 @@ const SoldItemsPage = props => {
                         </div>
                         {
                           (order.days==0 && order.hours==0)?
-                          <span className={`${styles.badge} ${styles.refused}`}>expired</span>:
+                          null:order.status=="ongoing"?
                           <div className={styles.expires}>
                             <span className={styles.label}>Expires in: </span>
                             <span className={styles.l}>{ order.days!=0?order.days + ' day':null }{order.days > 1?'s':''} { order.hours!=0?order.hours + ' hour':null }{order.hours > 1?'s':''}</span>
-                          </div>
+                          </div>:null
                         }
                         <div className={styles.seller}>
                           <span className={styles.label}>Ordered at: </span>
@@ -84,9 +118,9 @@ const SoldItemsPage = props => {
                         { (() => {
                             switch(order.status) {
                               case 'ongoing':
+                              case 'expired':
                                 return <>
-                                  <button className={`${styles.btn} ${styles.danger}`}>Refuse</button>
-                                  <button className={`${styles.btn} ${styles.success}`}>Delivered</button>
+                                  <button className={`${styles.btn} ${styles.success}`} onClick={complete.bind(this, order.id)}>Complete</button>
                                 </>
                               default:
                                 return null
@@ -106,7 +140,7 @@ const SoldItemsPage = props => {
           <div className={styles.content}>
           {
               orders?orders.map((order) => {
-                if(['refused', 'delivered'].includes(order.status)) {
+                if(['cancelled', 'completed'].includes(order.status)) {
                   return <div className={styles.item}>
                     <div className={styles.p}>
                       <div className={styles.img}><img src={"../../../assets/items/" + order.item?.images[0]?.image??"d.jpg"} /></div>

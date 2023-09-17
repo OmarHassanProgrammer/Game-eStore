@@ -19,6 +19,9 @@ const Chat = props => {
     const [activeChat, setActiveChat] = useState(null);
     const [msg, setMsg] = useState("");
     const [chat, setChat] = useState([]);
+    const [adminChat, setAdminChat] = useState(0);
+    const [firstPerson, setFirstPerson] = useState();
+    const [chatClosed, setChatClosed] = useState();
 
     const divRef = useRef(null);
     const scrollToBottom = () => {
@@ -32,9 +35,41 @@ const Chat = props => {
     }
 
     useEffect(() => {
-        if(addPerson)
-            addPersonF(addPerson);
+        if(addPerson) {
+            if(typeof addPerson == "string") {
+                addPersonAdmin(addPerson);
+            } else {
+                addPersonF(addPerson);
+            }
+        }
     }, [addPerson]);
+
+    const addPersonAdmin = (ids) => {
+        setChatDisplayed(true);
+        setAdminChat(1);
+        setPeople(null);
+        setChat([]);
+        setActiveChat(null);
+        console.log(ids);
+        const apiUrl = '/api/user/gdata'; // Replace with your actual API endpoint
+        axios.post(apiUrl, {
+            ids: ids.split(',')
+        })
+        .then(response => {
+            if(response.data.msg = "done") {
+                localStorage.setItem('people', ids);
+                setPeople([...response.data.people]);
+                setFirstPerson(ids.split(',')[0]);
+                loadAdminChat(ids);
+                localStorage.setItem('activeChat', null);
+                if(!chatDisplayed) setChatDisplayed(true);
+                localStorage.setItem('adminChat', 1);
+            }
+        })
+        .catch(error => {
+        console.error('Error fetching data:', error);
+        });
+    }
 
     const addPersonF = (id) => {
         setChatDisplayed(true);
@@ -42,12 +77,10 @@ const Chat = props => {
         people?.forEach(person => {
             if(person.id == id) exist = true;
         });
-        console.log("aaa");
-        console.log(exist?"yeah":"nope");
+
         if(exist) {
             changeChat(id);
         } else {
-            console.log("ggg");
             const apiUrl = '/api/user/gdata'; // Replace with your actual API endpoint
             axios.post(apiUrl, {
                 ids: [id]
@@ -62,7 +95,6 @@ const Chat = props => {
                     changeChat(id);
                     if(!chatDisplayed) setChatDisplayed(true);
                 }
-                setAddPerson("");
             })
             .catch(error => {
             console.error('Error fetching data:', error);
@@ -71,26 +103,30 @@ const Chat = props => {
     }
 
     useEffect(() => {
-        let ids = localStorage.getItem('people')?.split(',');
-        if(ids && ids.length != 0) {
-            const apiUrl = '/api/user/gdata'; // Replace with your actual API endpoint
-            axios.post(apiUrl, {
-                ids
-            })
-            .then(response => {
-                if(response.data.msg = "done") {
-                    setPeople(response.data.people);
-                }
-            })
-            .catch(error => {
-            console.error('Error fetching data:', error);
-            });
-        }
-        let a = localStorage.getItem('activeChat');
-        if(a) {
-            setActiveChat(a);
-
-            loadChat(a);
+        if(localStorage.getItem('adminChat')) {
+            localStorage.removeItem('adminChat');
+        } else {
+            let ids = localStorage.getItem('people')?.split(',');
+            if(ids && ids.length != 0) {
+                const apiUrl = '/api/user/gdata'; // Replace with your actual API endpoint
+                axios.post(apiUrl, {
+                    ids
+                })
+                .then(response => {
+                    if(response.data.msg = "done") {
+                        setPeople(response.data.people);
+                    }
+                })
+                .catch(error => {
+                console.error('Error fetching data:', error);
+                });
+            }
+            let a = localStorage.getItem('activeChat');
+            if(a) {
+                setActiveChat(a);
+    
+                loadChat(a);
+            }
         }
     }, []);
 
@@ -100,27 +136,46 @@ const Chat = props => {
         }, 3000);
     }, []);
 
-    const loadChat = (a, change = false) => {
-        let ac = localStorage.getItem("activeChat");
-        if(ac || a) {
-            if(!a) {
-                a = ac;
-            } 
-            const apiUrl = '/api/chat/get/' + a; // Replace with your actual API endpoint
+    const loadAdminChat = (a) => {
+        const apiUrl = '/api/chat/getAdmin/' + a.replace(',', '-'); // Replace with your actual API endpoint
             axios.get(apiUrl)
             .then(response => {
                 if(response.data.msg = "done") {
                     setChat(response.data.chat);
+                    setChatClosed(response.data.closed);
                     scrollToBottom();
-                    if(change) {
-                        setActiveChat(a);
-                        localStorage.setItem("activeChat", a);
-                    }
                 }
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
             });
+    }
+    const loadChat = (a, change = false) => {
+        if(localStorage.getItem("adminChat")) {
+            loadAdminChat(localStorage.getItem("people").split(',')[0] + ',' + localStorage.getItem("people").split(',')[1]);
+        } else {
+            let ac = localStorage.getItem("activeChat");
+            if(ac || a) {
+                if(!a) {
+                    a = ac;
+                } 
+                const apiUrl = '/api/chat/get/' + a; // Replace with your actual API endpoint
+                axios.get(apiUrl)
+                .then(response => {
+                    if(response.data.msg = "done") {
+                        setChatClosed(response.data.closed);
+                        setChat(response.data.chat);
+                        scrollToBottom();
+                        if(change) {
+                            setActiveChat(a);
+                            localStorage.setItem("activeChat", a);
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                });
+            }
         }
     }
 
@@ -155,16 +210,40 @@ const Chat = props => {
     }
 
     const closeChat = (key, id, e) => {
-        if(id == activeChat) {
-            if(people.length == 1) {
-                setPeople(null);
-                setActiveChat(null);
-                localStorage.removeItem("activeChat");
-                localStorage.removeItem("people");
+        if(adminChat) {
+            setPeople(null);
+            setActiveChat(null);
+            localStorage.removeItem("activeChat");
+            localStorage.removeItem("people");
+            localStorage.removeItem("adminChat");
+            setAdminChat(0);
+            setChatClosed(null);
+            setFirstPerson(null);
+            setAddPerson(null);
+        } else {
+            if(id == addPerson) {
+                setAddPerson(null);
+            }
+            if(id == activeChat) {
+                if(people.length == 1) {
+                    setPeople(null);
+                    setActiveChat(null);
+                    localStorage.removeItem("activeChat");
+                    localStorage.removeItem("people");
+                } else {
+                    let k = people[(key + 1) % people.length].id;
+                    setActiveChat(k);
+                    localStorage.setItem("activeChat", k);
+                    let p = people;
+                    p.splice(key, 1);
+                    setPeople([...p]);
+                    let ids = "";
+                    p.forEach(person => {
+                        ids += person.id + ","
+                    });
+                    localStorage.setItem("people", ids.slice(0, ids.length - 1));
+                }
             } else {
-                let k = people[(key + 1) % people.length].id;
-                setActiveChat(k);
-                localStorage.setItem("activeChat", k);
                 let p = people;
                 p.splice(key, 1);
                 setPeople([...p]);
@@ -174,16 +253,32 @@ const Chat = props => {
                 });
                 localStorage.setItem("people", ids.slice(0, ids.length - 1));
             }
-        } else {
-            let p = people;
-            p.splice(key, 1);
-            setPeople([...p]);
-            let ids = "";
-            p.forEach(person => {
-                ids += person.id + ","
-            });
-            localStorage.setItem("people", ids.slice(0, ids.length - 1));
         }
+    }
+
+    const openChatAdmin = () => {
+        const apiUrl = '/api/chat/open/' + people[0].id + '-' + people[1].id; // Replace with your actual API endpoint
+            axios.get(apiUrl)
+            .then(response => {
+                if(response.data.msg = "done") {
+                    setChatClosed(0);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+    }
+    const closeChatAdmin = () => {
+        const apiUrl = '/api/chat/close/' + people[0].id + '-' + people[1].id; // Replace with your actual API endpoint
+            axios.get(apiUrl)
+            .then(response => {
+                if(response.data.msg = "done") {
+                    setChatClosed(1);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
     }
 
     return (
@@ -192,12 +287,12 @@ const Chat = props => {
                 <svg viewBox="0 0 24 24" fill="#fff" xmlns="http://www.w3.org/2000/svg"><g id="Communication / Chat_Circle"><path id="Vector" d="M7.50977 19.8018C8.83126 20.5639 10.3645 21 11.9996 21C16.9702 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 13.6351 3.43604 15.1684 4.19819 16.4899L4.20114 16.495C4.27448 16.6221 4.31146 16.6863 4.32821 16.7469C4.34401 16.804 4.34842 16.8554 4.34437 16.9146C4.34003 16.9781 4.3186 17.044 4.27468 17.1758L3.50586 19.4823L3.50489 19.4853C3.34268 19.9719 3.26157 20.2152 3.31938 20.3774C3.36979 20.5187 3.48169 20.6303 3.62305 20.6807C3.78482 20.7384 4.02705 20.6577 4.51155 20.4962L4.51758 20.4939L6.82405 19.7251C6.95537 19.6813 7.02214 19.6591 7.08559 19.6548C7.14475 19.6507 7.19578 19.6561 7.25293 19.6719C7.31368 19.6887 7.37783 19.7257 7.50563 19.7994L7.50977 19.8018Z" /></g></svg>
             </span>
             <div className={`${styles.chatWindow} ` + (chatDisplayed?styles.show:'')}>
-                <div className={styles.top}>
+                <div className={`${styles.top} ` + (adminChat?styles.admin:null)}>
                     <span className={chatDisplayed?styles.close:styles.open} onClick={toggleChat}>
                         <svg className={styles.cross} version="1.1" id="Capa_1" fill="#fff" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 94.926 94.926" xmlSpace="preserve"><g><path d="M55.931,47.463L94.306,9.09c0.826-0.827,0.826-2.167,0-2.994L88.833,0.62C88.436,0.224,87.896,0,87.335,0 c-0.562,0-1.101,0.224-1.498,0.62L47.463,38.994L9.089,0.62c-0.795-0.795-2.202-0.794-2.995,0L0.622,6.096 c-0.827,0.827-0.827,2.167,0,2.994l38.374,38.373L0.622,85.836c-0.827,0.827-0.827,2.167,0,2.994l5.473,5.476 c0.397,0.396,0.936,0.62,1.498,0.62s1.1-0.224,1.497-0.62l38.374-38.374l38.374,38.374c0.397,0.396,0.937,0.62,1.498,0.62 s1.101-0.224,1.498-0.62l5.473-5.476c0.826-0.827,0.826-2.167,0-2.994L55.931,47.463z"/></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>
                     </span>
                     {people.map((person, key) => {
-                        return <div className={`${styles.person} ` + (person.id == activeChat?styles.active:"")} key={key}>
+                        return <div className={`${styles.person} ` + (person.id == activeChat?styles.active:"") + ' ' + (adminChat?styles.admin:null)} key={key}>
                             <span className={styles.c} onClick={closeChat.bind(this, key, person.id)}>x</span>
                             { person.imgType!=null?
                                 <img className={styles.img} src={"../../assets/users/" + person.id + "." + person.imgType} onClick={changeChat.bind(this,person.id)} />:
@@ -212,7 +307,7 @@ const Chat = props => {
                         chat.map((msg, key) => {
                             return <div key={key} 
                                 className={`${styles.chat_text} ` + 
-                                    (msg.to == activeChat?styles.me:styles.him) + " " +
+                                    ((msg.to == activeChat || msg.to == firstPerson)?styles.me:styles.him) + " " +
                                     (chat[key + 1]?.to != msg.to?styles.end:"") + " " +
                                     (chat[key - 1]?.to != msg.to?styles.start:"")}>
                                 <span className={styles.msg}>{msg.msg}</span>
@@ -221,8 +316,23 @@ const Chat = props => {
                     }
                 </div>
                 <div className={styles.bottom}>
-                    <input className={styles.input} value={msg} onChange={handleMsg}/>
-                    <button className={styles.send} onClick={sendMsg}>{'>'}</button>
+                    {
+                        adminChat?<>
+                            { 
+                                chatClosed?<button className={`${styles.chatControlBtn} ${styles.allow}`} onClick={openChatAdmin}>Open Chat</button>:
+                                    <button className={`${styles.chatControlBtn} ${styles.disallow}`} onClick={closeChatAdmin}>Close Chat</button>
+                            }
+                        </>:<>
+                            {
+                                chatClosed?<>
+                                    <span className={styles.chatclosed}>The admins have closed this chat.</span>
+                                </>:<>
+                                    <input className={styles.input} value={msg} onChange={handleMsg}/>
+                                    <button className={styles.send} onClick={sendMsg}>{'>'}</button>
+                                </>
+                            }
+                        </>
+                    }
                 </div>
         </div>
         </AnimatedChat>:null

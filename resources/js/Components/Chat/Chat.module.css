@@ -44,6 +44,10 @@
     padding: 10px;
     margin-bottom: 15px;
 }
+.chatWindow .top.admin {
+    justify-content: space-between;
+    padding-right: 65px;
+}
 .chatWindow .top:after {
     content: "";
     bottom: -15px;
@@ -81,6 +85,9 @@
     border-radius: 50%;
     transition: all 0.5s ease-in-out
 }
+.chatWindow .top .person.admin .c {
+    cursor: default;
+}
 .chatWindow .top .person .c:hover {
     background-color: rgb(150, 0, 0);
 }
@@ -101,7 +108,8 @@
     font-family: "GT Light";
     font-size: 0.9rem;
 }
-.chatWindow.show .top .person.active .name {
+.chatWindow.show .top .person.active .name,
+    .chatWindow.show .top .person.admin .name {
     display: inline-block;
 }
 .chatWindow .middle {
@@ -215,6 +223,38 @@
     width: 30px;
     height: 30px;
 }
+
+.chatControlBtn {
+    width: 100%;
+    padding: 5px;
+    font-family: "GT Medium";
+    color: #fff;
+    border: none;
+    outline: none;
+    font-size: 1.1rem;
+    transition: all 0.5s ease-in-out;
+    cursor: pointer;
+}
+.chatControlBtn.allow {
+    background-color: #2ecc71;
+}
+.chatControlBtn.allow:hover {
+    background-color: #27ae60;
+}
+.chatControlBtn.disallow {
+    background-color: #e74c3c;
+}
+.chatControlBtn.disallow:hover {
+    background-color: #c0392b;
+}
+
+.chatclosed {
+    width: 100%;
+    display: inline-block;
+    text-align: center;
+    color: #d35400;
+}
+
 @media screen and (max-width: 769px) {
     .chatWindow {
         display: none;

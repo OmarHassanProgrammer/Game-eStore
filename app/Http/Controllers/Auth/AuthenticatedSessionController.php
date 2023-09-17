@@ -19,7 +19,13 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return response()->json(array("user" => Auth::user(), "msg" => "done"));
+        if(Auth::user()->banned) {
+            auth()->logout();
+            return response()->json(['msg' => 'banned']);
+        } else {
+            return response()->json(array("user" => Auth::user(), "msg" => "done"));
+        }
+
     }
 
     /**

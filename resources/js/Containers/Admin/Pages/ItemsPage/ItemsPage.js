@@ -5,8 +5,10 @@ import axios from 'axios';
 
 const ItemsPage = props => {
     const { 
+      setAddNotification
       } = props;
       const [items, setItems] = useState([]);
+      const [deleteItem, setDeleteItem] = useState();
 
     const variants = {
         initial: { opacity: 0 },
@@ -27,6 +29,27 @@ const ItemsPage = props => {
         });
     }, []);
 
+    const deleteItemFunc = () => {
+      const apiUrl = '/api/items/delete/' + deleteItem; // Replace with your actual API endpoint
+      axios.get(apiUrl)
+      .then(response => {
+        if(response.data.msg == "done") {
+          let i = items.filter((item) => { return item.id != deleteItem });
+          setItems([...i]);
+          setAddNotification({
+            type: "success",
+            time: 5000,
+            msg: "The item has been deleted successfully",
+            key: Math.floor(Math.random() * 10000)
+          });
+          setDeleteItem();
+        }
+        })
+        .catch(error => {
+          console.error('Error fetching data:', error);
+        });    
+    }
+
     return (
           <motion.div 
             className={styles.itemsPage}
@@ -45,6 +68,7 @@ const ItemsPage = props => {
                 <th>Quantity Sold</th>
                 <th>Delivery time</th>
                 <th>Price</th>
+                <th>Actions</th>
               </tr>
               {items?items.map((item) => {
                 return <tr onClick={() => {location.href = "/game?id=" + item.id}}>
@@ -56,10 +80,24 @@ const ItemsPage = props => {
                   <td>{ item.sold }</td>
                   <td>{ item.sellTime } day{ item.sellTime==1?"":"s" }</td>
                   <td>{ item.price }</td>
+                  <td>
+                    <button className={styles.del} onClick={(e) => { e.stopPropagation(); setDeleteItem(item.id); }}>Delete</button>
+                  </td>
                 </tr>;
               }):null
               }
             </table>
+
+            {
+              deleteItem?<div className={styles.popOver} onClick={(e) => {setDeleteItem()}}>
+              <div className={styles.pop} onClick={(e) => {e.stopPropagation();}}>
+                  <h3 className={styles.title}>Are you sure you want to delete this item?</h3>
+                  <div className={styles.form}>
+                      <button className={styles.del} onClick={deleteItemFunc}>delete</button>
+                  </div>
+              </div>
+          </div>:null
+            }
           </motion.div>
     );
   }
