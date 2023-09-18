@@ -30,11 +30,13 @@ class ItemController extends Controller
                 $item->inCart = $user->cart->contains('id', $item->id);
                 $item->isLiked = $user->wishList->contains('id', $item->id);
             }
+            foreach ($items as $key => $item) {
+                $item->_images = $item->images;
+            }
+            return response()->json(["msg" => "done", "items" => $items]);
+        } else {
+            return response()->json(["msg" => "not"]);
         }
-        foreach ($items as $key => $item) {
-            $item->_images = $item->images;
-        }
-        return response()->json(["items" => $items]);
     }
 
     public function get($id) {

@@ -58,6 +58,12 @@ const ListItem = props => {
         }
       })
       .catch(error => {
+setAddNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
         if(error.code == "ERR_BAD_REQUEST") {
           setAuth(false);
         }
@@ -71,6 +77,12 @@ const ListItem = props => {
         }
       })
       .catch(error => {
+setAddNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
         console.error('Error fetching data:', error);
       });
   }, []);
@@ -132,6 +144,12 @@ const ListItem = props => {
         }
       })
       .catch(error => {
+setAddNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
         console.error('Error fetching data:', error);
       });
   }
@@ -151,6 +169,12 @@ const ListItem = props => {
         }
       })
       .catch(error => {
+setAddNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
         console.error('Error fetching data:', error);
       });
 
@@ -226,9 +250,28 @@ const ListItem = props => {
         .then(response => {
           if(response.data.msg == "done") {
             location.href = "/game?id=" + response.data.item.id;
+            setAddNotification({
+              type: "success",
+              msg: "Item was listed successfully.",
+              time: 5000,
+              key: Math.floor(Math.random() * 10000)
+            });
+          } else {
+            setAddNotification({
+              type: "danger",
+              msg: "There is some problem",
+              time: 5000,
+              key: Math.floor(Math.random() * 10000)
+            });
           }
         })
         .catch(error => {
+          setAddNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
           console.error('Error fetching data:', error);
         });
     } else {
@@ -236,25 +279,6 @@ const ListItem = props => {
     }
   }
 
-const clearCart = () => {
-  const apiUrl = '/api/user/cart/clear/'; // Replace with your actual API endpoint
-  axios.get(apiUrl)
-  .then(response => {
-    if(response.data.msg == "done") {
-      setCart([]);
-      setCartAmount(0);
-      let s = shownGames;
-      s.forEach(element => {
-        if(element.inCart) element.inCart = false;
-      });
-      setShownGames([...s]);
-      console.log(s);
-    }
-    })
-    .catch(error => {
-      console.error('Error fetching data:', error);
-    });
-}
 
 const openGamePage = (e) => {
   setCartDisplayed(false);
@@ -267,15 +291,60 @@ const handleRemoveFromCart = (id, key, e) => {
   const apiUrl = '/api/user/cart/remove/' + id; // Replace with your actual API endpoint
   axios.get(apiUrl)
     .then(response => {
-      setCart(response.data.cart);
-      let c = cart.filter((cart_item) => {});
-
-      setCartAmount(cartAmount - 1);
-      let s = shownGames;
-      s[key].inCart = false;
-      setShownGames([...s]);
+      if(response.data.msg == "done") {
+        setCart(response.data.cart);
+        let c = cart.filter((cart_item) => {});
+  
+        setCartAmount(cartAmount - 1);
+        let s = shownGames;
+        setAddNotification({
+          type: "success",
+          msg: "Item was removed from the cart successfully.",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+      } else {
+        setAddNotification({
+          type: "danger",
+          msg: "There is some problem",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+      }
     })
     .catch(error => {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
+      console.error('Error fetching data:', error);
+    });
+}
+
+const clearCart = () => {
+  const apiUrl = '/api/user/cart/clear/'; // Replace with your actual API endpoint
+  axios.get(apiUrl)
+  .then(response => {
+    if(response.data.msg == "done") {
+      setCart([]);
+      setCartAmount(0);
+      setAddNotification({
+        type: "success",
+        msg: "Cart is cleared successfully.",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
+    }
+    })
+    .catch(error => {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
 }

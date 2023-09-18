@@ -24,6 +24,12 @@ const ItemsPage = props => {
         }
         })
         .catch(error => {
+setAddNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
           console.error('Error fetching data:', error);
         });
     }, []);
@@ -47,9 +53,22 @@ const ItemsPage = props => {
             msg: "The user has been banned successfully",
             key: Math.floor(Math.random() * 10000)
           });
+        } else {
+          setAddNotification({
+            type: "danger",
+            time: 5000,
+            msg: "There was a problem while banning this user. Please try again later.",
+            key: Math.floor(Math.random() * 10000)
+          });
         }
         })
         .catch(error => {
+setAddNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
           console.error('Error fetching data:', error);
         });
     }
@@ -73,9 +92,22 @@ const ItemsPage = props => {
             msg: "The user has been unbanned successfully",
             key: Math.floor(Math.random() * 10000)
           });
+        } else {
+          setAddNotification({
+            type: "danger",
+            time: 5000,
+            msg: "There was a problem while unbanning this user. Please try again later.",
+            key: Math.floor(Math.random() * 10000)
+          });
         }
         })
         .catch(error => {
+setAddNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
           console.error('Error fetching data:', error);
         });
     }

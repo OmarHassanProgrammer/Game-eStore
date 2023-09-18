@@ -47,32 +47,82 @@ const Login = props => {
 
   const submit = (e) => {
     e.preventDefault();
-
-    const apiUrl = '/api/login'; // Replace with your actual API endpoint
-    axios.post(apiUrl, {
-      email,
-      password
-    })
-      .then(response => {
-        if(response.data.msg == "done") {
-          location.href = "/games";
-        } else if (response.data.msg == "authAlready") {
-          location.href = "/games";
-        } else if (response.data.msg == "banned") {
-          console.log("aaa");
+    const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
+    if(!email) {
+      setAddNotification({
+        type: "danger",
+        msg: "Email is required",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
+    } else if (!pattern.test(email)) {
+      setAddNotification({
+        type: "danger",
+        msg: "Email is not valid",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
+    } else if (!password) {
+      setAddNotification({
+        type: "danger",
+        msg: "Password is required",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
+    } else {
+      const apiUrl = '/api/login'; // Replace with your actual API endpoint
+      axios.post(apiUrl, {
+        email,
+        password
+      })
+        .then(response => {
+          if(response.data.msg == "done") {
+            location.href = "/games";
+            setAddNotification({
+              type: "success",
+              msg: "You have logged in successfully",
+              time: 5000,
+              key: Math.floor(Math.random() * 10000)
+            });
+          } else if (response.data.msg == "authAlready") {
+            location.href = "/games";
+            setAddNotification({
+              type: "normal",
+              msg: "You are already logged in",
+              time: 5000,
+              key: Math.floor(Math.random() * 10000)
+            });
+          } else if (response.data.msg == "banned") {
+            console.log("aaa");
+            setAddNotification({
+              type: "danger",
+              msg: "You are banned. ++Contact us--/contactus++ if you think there is a problem.",
+              time: 10000,
+              key: Math.floor(Math.random() * 10000)
+            });
+            setEmail('');
+            setPassword('');
+          } else {
+            setAddNotification({
+              type: "danger",
+              msg: "There is a problem. Check your credintals or try again later.",
+              time: 5000,
+              key: Math.floor(Math.random() * 10000)
+            });
+          }
+        })
+        .catch(error => {
           setAddNotification({
             type: "danger",
-            msg: "You are banned. ++Contact us--/contactus++ if you think there is a problem.",
-            time: 10000,
+            msg: "There is a problem. Check your credintals or try again later.",
+            time: 5000,
             key: Math.floor(Math.random() * 10000)
           });
-          setEmail('');
-          setPassword('');
-        }
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-      });
+          console.error('Error fetching data:', error);
+        });
+    }
+    
   }
 
   return (

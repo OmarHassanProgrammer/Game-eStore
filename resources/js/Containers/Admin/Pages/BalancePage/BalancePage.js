@@ -26,13 +26,13 @@ const BalancePage = props => {
           let undrawnMoney = 0;
           response.data.balances.forEach(balance => {
             if(balance.type == "pay") {
-              profit += balance.amount;
+              profit += parseFloat(balance.amount);
             }
-            if(balance.type == "get") {
-              undrawnMoney += balance.amount;
+            if(balance.type == "get" || balance.type == "pending") {
+              undrawnMoney += parseFloat(balance.amount);
             }
             if(balance.type == "withdraw") {
-              profit -= balance.amount;
+              profit -= parseFloat(balance.amount);
             }
           });
           setProfit(profit);
@@ -40,6 +40,12 @@ const BalancePage = props => {
         }
         })
         .catch(error => {
+setAddNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
           console.error('Error fetching data:', error);
         });
     }, []);

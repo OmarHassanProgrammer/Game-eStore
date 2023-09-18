@@ -64,11 +64,23 @@ const Checkout = props => {
             }
           })
           .catch(error => {
+setAddNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
             console.error('Error fetching data:', error);
           });
         }
       })
       .catch(error => {
+setAddNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
         if(error.code == "ERR_BAD_REQUEST") {
           setAuth(false);
         }
@@ -120,33 +132,64 @@ const Checkout = props => {
       .then(response => {
         if(response.data.msg = "done") {
           setUser(null);
+          setAddNotification({
+            type: "success",
+            msg: "You have logout successfully",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
         }
       })
       .catch(error => {
+setAddNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
         console.error('Error fetching data:', error);
       });
   }
 
+const handleRemoveFromCart = (id, key, e) => {
+  e.stopPropagation();
+  const apiUrl = '/api/user/cart/remove/' + id; // Replace with your actual API endpoint
+  axios.get(apiUrl)
+    .then(response => {
+      if(response.data.msg == "done") {
+        setCart(response.data.cart);
+        let c = cart.filter((cart_item) => {});
   
-  const handleRemoveFromCart = (id, key, e) => {
-    e.stopPropagation();
-    const apiUrl = '/api/user/cart/remove/' + id; // Replace with your actual API endpoint
-    axios.get(apiUrl)
-      .then(response => {
-        let c = cart.filter((cart_item) => {return cart_item.id != id});
-        setCart([...c]);
         setCartAmount(cartAmount - 1);
-        let p = 0;
-        c.forEach(item => {
-          p += parseFloat(item.price);
+        let s = shownGames;
+        s[key].inCart = false;
+        s[key].amount += 1;
+        setShownGames([...s]);
+        setAddNotification({
+          type: "success",
+          msg: "Item was removed from the cart successfully.",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
         });
-        setTotalPrice(p);
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
+      } else {
+        setAddNotification({
+          type: "danger",
+          msg: "There is some problem",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+      }
+    })
+    .catch(error => {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
       });
-  }
-
+      console.error('Error fetching data:', error);
+    });
+}
   const orderCart = () => {
     const api = axios.create({
       baseURL: '/api'
@@ -161,6 +204,12 @@ const Checkout = props => {
         }
       })
       .catch(error => {
+setAddNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
         console.error('Error fetching data:', error);
       });
   }

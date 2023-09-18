@@ -55,23 +55,74 @@ const Signup = props => {
   const submit = (e) => {
     e.preventDefault();
 
-    const apiUrl = '/api/register'; // Replace with your actual API endpoint
-    axios.post(apiUrl, {
-      name,
-      email,
-      password,
-      password_confirmation: confirmPassword
-    })
-      .then(response => {
-        if(response.data.msg == "done") {
-          location.href = "/games";
-        } else if (response.data.msg == "authAlready") {
-          location.href = "/games";
-        }
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
+    const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
+    if(!email) {
+      setAddNotification({
+        type: "danger",
+        msg: "Email is required",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
       });
+    } else if (!pattern.test(email)) {
+      setAddNotification({
+        type: "danger",
+        msg: "Email is not valid",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
+    } else if (!name) {
+      setAddNotification({
+        type: "danger",
+        msg: "Name is required",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
+    } else if (!password) {
+      setAddNotification({
+        type: "danger",
+        msg: "Password is required",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
+    } else if (password !== confirmPassword) {
+      setAddNotification({
+        type: "danger",
+        msg: "Password doesn't match confirm password",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
+    } else {
+      const apiUrl = '/api/register'; // Replace with your actual API endpoint
+      axios.post(apiUrl, {
+        name,
+        email,
+        password,
+        password_confirmation: confirmPassword
+      })
+        .then(response => {
+          if(response.data.msg == "done") {
+            location.href = "/games";
+            setAddNotification({
+              type: "success",
+              msg: "You have registered successfully.",
+              time: 5000,
+              key: Math.floor(Math.random() * 10000)
+            });
+          } else if (response.data.msg == "authAlready") {
+            location.href = "/games";
+            setAddNotification({
+              type: "normal",
+              msg: "You are already logged in",
+              time: 5000,
+              key: Math.floor(Math.random() * 10000)
+            });
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching data:', error);
+        });
+      }
   }
 
   return (

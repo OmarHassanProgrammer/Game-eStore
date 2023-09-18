@@ -57,7 +57,7 @@ Route::prefix('/orders')->group(function () {
     Route::get('/withdraw', [OrderController::class, 'withdraw'])->middleware('auth:sanctum', 'checkBanned');
     Route::get('/info', [OrderController::class, 'info'])->middleware('auth:sanctum', 'checkBanned');
     Route::get('/sellerComplete/{order_id}', [OrderController::class, 'sellerComplete'])->middleware('auth:sanctum', 'checkBanned');
-    Route::get('/buyerComplete/{order_id}', [OrderController::class, 'buyerComplete'])->middleware('auth:sanctum', 'checkBanned');
+    Route::get('/buyerComplete/{order_id}/{stars}', [OrderController::class, 'buyerComplete'])->middleware('auth:sanctum', 'checkBanned');
     Route::get('/buyerRefuse/{order_id}', [OrderController::class, 'buyerRefuse'])->middleware('auth:sanctum', 'checkBanned');
     Route::get('/adminComplete/{order_id}', [OrderController::class, 'adminComplete'])->middleware('auth:sanctum', 'checkBanned');
     Route::get('/adminCancel/{order_id}', [OrderController::class, 'adminCancel'])->middleware('auth:sanctum', 'checkBanned');

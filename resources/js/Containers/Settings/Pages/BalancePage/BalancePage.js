@@ -9,6 +9,7 @@ const BalancePage = props => {
       } = props;
     const [balances, setBalances] = useState();
     const [profit, setProfit] = useState(0);
+    const [pending, setPending] = useState(0);
     const [usableMoney, setUsableMoney] = useState(0);
 
     const variants = {
@@ -39,6 +40,12 @@ const BalancePage = props => {
           }
         })
         .catch(error => {
+addNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
           if(error.code == "ERR_BAD_REQUEST") {
             setAuth(false);
           }
@@ -58,6 +65,12 @@ const BalancePage = props => {
           }
         })
         .catch(error => {
+addNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
           if(error.code == "ERR_BAD_REQUEST") {
             setAuth(false);
           }
@@ -72,29 +85,40 @@ const BalancePage = props => {
         if(response.data.msg == "done") {
           setBalances(response.data.balances);
           let money = 0;
+          let pendingMoney = 0;
           let usable = 0;
           console.log(Object.values(response.data.balances));
           Object.values(response.data.balances).map(balance => {
             console.log(balance);
             if(balance.type == "get") {
-              money += balance.amount;
+              money += parseFloat(balance.amount);
+              const myDate = new Date(balance.created_at); 
+              myDate.setDate(myDate.getDate() + parseInt(balance.after / 24));
+              const currentDate = new Date();
+              const timeDifferenceMilliseconds = myDate - currentDate;
+              if(timeDifferenceMilliseconds > 0) {
+                usable += parseFloat(balance.amount);
+              }
+            }
+            if(balance.type == "pending") {
+              pendingMoney += parseFloat(balance.amount);
             }
             if(balance.type == "withdraw") {
-              money -= balance.amount;
-            }
-            const myDate = new Date(balance.created_at); 
-            myDate.setDate(myDate.getDate() + parseInt(order.item.after / 24));
-            const currentDate = new Date();
-            const timeDifferenceMilliseconds = myDate - currentDate;
-            if(timeDifferenceMilliseconds > 0) {
-              usable += balance.amount;
+              money -= parseFloat(balance.amount);
             }
           });
           setProfit(money);
           setUsableMoney(usable);
+          setPending(pendingMoney);
         }
         })
         .catch(error => {
+addNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
           console.error('Error fetching data:', error);
         });
     }, []);
@@ -109,6 +133,11 @@ const BalancePage = props => {
       >
         <div className={styles.block}>
           <div className={styles.header}>
+            <div className={styles.p}>
+              <span className={styles.label}>Pending Money</span>
+              <span className={styles.n}>{ pending }</span>
+              <span className={styles.symbol}>$</span>
+            </div>
             <div className={styles.p}>
               <span className={styles.label}>Balance Money</span>
               <span className={styles.n}>{ profit }</span>
@@ -129,10 +158,12 @@ const BalancePage = props => {
           <div className={styles.content}>
             {
               balances?Object.values(balances).map((balance, key) => {
-                return <div className={styles.record} key={key}>
-                  <span className={styles.label}>{balance.type=="pay"?"You bought item " + balance.order?.item?.name +  " from " + balance.order?.item?.seller?.name:balance.type=="withdraw"?"You have withdrawn " + balance.amount + "$":balance.type=="get"?"Item: " + balance.order?.item?.name + " was sold for " + balance.order?.client?.name:null}</span>
-                  <span className={`${styles.n} ` + (balance.type=="pay"?styles.neg:balance.type=="withdraw"?styles.med:balance.type=="get"?styles.pos:null)}>{ balance.amount }$</span>
-                </div>
+                if(["get", "withdraw", "pay"].includes(balance.type)) {
+                  return <div className={styles.record} key={key}>
+                    <span className={styles.label}>{balance.type=="pay"?"You bought item " + balance.order?.item?.name +  " from " + balance.order?.item?.seller?.name:balance.type=="withdraw"?"You have withdrawn " + balance.amount + "$":balance.type=="get"?"Item: " + balance.order?.item?.name + " was sold for " + balance.order?.client?.name:null}</span>
+                    <span className={`${styles.n} ` + (balance.type=="pay"?styles.neg:balance.type=="withdraw"?styles.med:balance.type=="get"?styles.pos:null)}>{ balance.amount }$</span>
+                  </div>
+                }
               }):null
             }
           </div>

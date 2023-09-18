@@ -7,7 +7,9 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Game;
 use App\Models\Balance;
 use App\Models\Order;
+use App\Models\User;
 use App\Models\Item;
+use App\Models\Rate;
 use Srmklive\PayPal\Services\Paypal as PayPalClient;
 
 class OrderController extends Controller
@@ -91,9 +93,15 @@ class OrderController extends Controller
                 Balance::create([
                     "user_id" => $item->seller->id,
                     "order_id" => $order->id,
-                    "type" => "get",
+                    "type" => "pending",
                     "after" => ($n > 200)?0:(($n > 100)?12:(($n > 50)?24:48)),
                     "amount" => $item->price * 0.95
+                ]);
+                
+                User::find($item->seller->id)->notifications()->create([
+                    "status" => "success",
+                    "msg" => $user->name . " has bought item " . $item->name . ". View it ++here--/settings?page=selling++",
+                    "time" => 5000
                 ]);
             }
             $user->cart()->detach($item);
@@ -176,19 +184,36 @@ class OrderController extends Controller
             $order->status = "shipped";
             $order->shipped_at = now();
             $order->save();
+
+            User::find($order->client_id)->notifications()->create([
+                "status" => "success",
+                "msg" => $user->name . " have shipped the order. Confirm it to complete the order. View it ++here--/settings?page=purchase++",
+                "time" => 5000
+            ]);
             return response()->json(['msg' => 'done']);
         } else {
             return response()->json(['msg' => 'not']);
         }
     }
 
-    public function buyerComplete($order_id) {
+    public function buyerComplete($order_id, $stars) {
         $order = Order::with('item')->find($order_id);
         $user = Auth::user();
 
         if($order->status == "shipped" && $user->id == $order->client_id) {
             $order->status = "completed";
             $order->save();
+            Rate::create([
+                'stars' => $stars,
+                'user_id' => $order->item->seller_id,
+                'client_id' => $user->id
+            ]);
+            User::find($order->item->seller_id)->notifications()->create([
+                "status" => "success",
+                "msg" => $user->name . " have completed the order. The money has transfered to your account. View it ++here--/settings?page=balance++",
+                "time" => 5000
+            ]);
+            Balance::where('order_id', $order->id)->where('type', 'pending')->update(['type' => 'get']);
             return response()->json(['msg' => 'done']);
         } else {
             return response()->json(['msg' => 'not']);
@@ -202,6 +227,11 @@ class OrderController extends Controller
         if($order->status == "shipped" && $user->id == $order->client_id) {
             $order->status = "under-dispute";
             $order->save();
+            User::find($order->item->seller_id)->notifications()->create([
+                "status" => "danger",
+                "msg" => $user->name . " have started a dispute. Wait until the admin look at it.",
+                "time" => 5000
+            ]);
             return response()->json(['msg' => 'done']);
         } else {
             return response()->json(['msg' => 'not']);
@@ -215,6 +245,18 @@ class OrderController extends Controller
         if($order->status == "under-dispute" && $user->rank == 1) {
             $order->status = "completed";
             $order->save();
+            User::find($order->client_id)->notifications()->create([
+                "status" => "success",
+                "msg" => "The admin have completed the order.",
+                "time" => 5000
+            ]);
+            User::find($order->item->seller_id)->notifications()->create([
+                "status" => "success",
+                "msg" => "The admin have completed the order. The money has transfered to your account. View it ++here--/settings?page=balance++",
+                "time" => 5000
+            ]);
+            $b = Balance::where('order_id', $order->id)->where('type', 'pending')->get();
+            if($b) $b->update(['status' => 'get']);
             return response()->json(['msg' => 'done']);
         } else {
             return response()->json(['msg' => 'not']);
@@ -228,11 +270,24 @@ class OrderController extends Controller
         if($order->status == "under-dispute" && $user->rank == 1) {
             $order->status = "cancelled";
             $order->save();
+            User::find($order->item->seller_id)->notifications()->create([
+                "status" => "danger",
+                "msg" => "The admin have cancelled the order.",
+                "time" => 5000
+            ]);
+            User::find($order->client_id)->notifications()->create([
+                "status" => "success",
+                "msg" => "The admin have cancelled the order. You have refunded your money",
+                "time" => 5000
+            ]);
+            $b = Balance::where('order_id', $order->id)->where('type', 'pending')->get();
+            if($b) $b->delete;
             return response()->json(['msg' => 'done']);
         } else {
             return response()->json(['msg' => 'not']);
         }    
     }
+    
     public function buyerCancel($order_id) {
         $order = Order::with('item')->find($order_id);
         $user = Auth::user();
@@ -240,6 +295,13 @@ class OrderController extends Controller
         if($order->status == "expired" && $user->id == $order->client_id) {
             $order->status = "cancelled";
             $order->save();
+            User::find($order->item->seller_id)->notifications()->create([
+                "status" => "danger",
+                "msg" => $user->name . " have cancelled the order after it expired.",
+                "time" => 5000
+            ]);
+            $b = Balance::where('order_id', $order->id)->where('type', 'pending')->get();
+            if($b) $b->delete;
             return response()->json(['msg' => 'done']);
         } else {
             return response()->json(['msg' => 'not']);

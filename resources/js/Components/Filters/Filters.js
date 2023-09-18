@@ -53,6 +53,12 @@ const Filters = props => {
               setCurrentGame({});
           })
           .catch(error => {
+setAddNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
             console.error('Error fetching data:', error);
           });
       }
@@ -75,6 +81,12 @@ const Filters = props => {
               setCurrentCategory({});
           })
           .catch(error => {
+setAddNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
             console.error('Error fetching data:', error);
           });
         
@@ -90,6 +102,12 @@ const Filters = props => {
               setRandomGames(response.data.games);
           })
           .catch(error => {
+setAddNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
             console.error('Error fetching data:', error);
           });
       }

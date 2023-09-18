@@ -52,11 +52,23 @@ const Contactus = props => {
             }
           })
           .catch(error => {
+setAddNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
             console.error('Error fetching data:', error);
           });
         }
       })
       .catch(error => {
+setAddNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
         if(error.code == "ERR_BAD_REQUEST") {
           setAuth(false);
         }
@@ -81,6 +93,12 @@ const Contactus = props => {
       }
       })
       .catch(error => {
+setAddNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
         console.error('Error fetching data:', error);
       });
   }
@@ -99,6 +117,12 @@ const Contactus = props => {
         setShownGames([...s]);
       })
       .catch(error => {
+setAddNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
         console.error('Error fetching data:', error);
       });
   }
@@ -165,9 +189,21 @@ const Contactus = props => {
       .then(response => {
         if(response.data.msg = "done") {
           setUser(null);
+          setAddNotification({
+            type: "success",
+            msg: "You have logout successfully",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          })
         }
       })
       .catch(error => {
+setAddNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
         console.error('Error fetching data:', error);
       });
   }
@@ -196,6 +232,12 @@ const Contactus = props => {
         }
       })
       .catch(error => {
+setAddNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
         console.error('Error fetching data:', error);
       });
   }

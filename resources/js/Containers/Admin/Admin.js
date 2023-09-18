@@ -61,6 +61,12 @@ const Admin = props => {
                 }
               })
               .catch(error => {
+setAddNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
                 console.error('Error fetching data:', error);
               });
             } else if (response.data.message == "Unauthenticated.") {
@@ -68,6 +74,12 @@ const Admin = props => {
             }
           })
           .catch(error => {
+setAddNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
             if(error.code == "ERR_BAD_REQUEST") {
               setAuth(false);
             }
@@ -126,6 +138,46 @@ const handleCloseCart = () => {
 }
 
 
+const handleRemoveFromCart = (id, key, e) => {
+  e.stopPropagation();
+  const apiUrl = '/api/user/cart/remove/' + id; // Replace with your actual API endpoint
+  axios.get(apiUrl)
+    .then(response => {
+      if(response.data.msg == "done") {
+        setCart(response.data.cart);
+        let c = cart.filter((cart_item) => {});
+  
+        setCartAmount(cartAmount - 1);
+        let s = shownGames;
+        s[key].inCart = false;
+        s[key].amount += 1;
+        setShownGames([...s]);
+        setAddNotification({
+          type: "success",
+          msg: "Item was removed from the cart successfully.",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+      } else {
+        setAddNotification({
+          type: "danger",
+          msg: "There is some problem",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+      }
+    })
+    .catch(error => {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
+      console.error('Error fetching data:', error);
+    });
+}
+
 const clearCart = () => {
   const apiUrl = '/api/user/cart/clear/'; // Replace with your actual API endpoint
   axios.get(apiUrl)
@@ -135,31 +187,25 @@ const clearCart = () => {
       setCartAmount(0);
       let s = shownGames;
       s.forEach(element => {
-        if(element.inCart) element.inCart = false;
+        if(element.inCart) {element.inCart = false; element.amount += 1; };
       });
       setShownGames([...s]);
       console.log(s);
+      setAddNotification({
+        type: "success",
+        msg: "Cart is cleared successfully.",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
     }
     })
     .catch(error => {
-      console.error('Error fetching data:', error);
-    });
-}
-
-const handleRemoveFromCart = (id, key, e) => {
-  e.stopPropagation();
-  const apiUrl = '/api/user/cart/remove/' + id; // Replace with your actual API endpoint
-  axios.get(apiUrl)
-    .then(response => {
-      setCart(response.data.cart);
-      let c = cart.filter((cart_item) => {});
-
-      setCartAmount(cartAmount - 1);
-      let s = shownGames;
-      s[key].inCart = false;
-      setShownGames([...s]);
-    })
-    .catch(error => {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
 }
@@ -204,9 +250,21 @@ const openGamePage = (e) => {
         if(response.data.msg = "done") {
           setUser(null);
           location.href = "/games";
+          setAddNotification({
+            type: "success",
+            msg: "You have logout successfully",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
         }
       })
       .catch(error => {
+setAddNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
         console.error('Error fetching data:', error);
       });
   }
@@ -291,7 +349,7 @@ const openGamePage = (e) => {
                   case "orders":
                     return <OrdersPage setAddNotification={setAddNotification} setAddPerson={setAddPerson}/>
                   case "balance":
-                    return <BalancePage />
+                    return <BalancePage setAddNotification={setAddNotification} />
                   default:
                     return null
                 }

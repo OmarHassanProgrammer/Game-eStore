@@ -25,6 +25,12 @@ const ItemsPage = props => {
         }
         })
         .catch(error => {
+setAddNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
           console.error('Error fetching data:', error);
         });
     }, []);
@@ -43,9 +49,22 @@ const ItemsPage = props => {
             key: Math.floor(Math.random() * 10000)
           });
           setDeleteItem();
+        } else {
+          setAddNotification({
+            type: "danger",
+            time: 5000,
+            msg: "There was a problem while deleting the item. Please try again later.",
+            key: Math.floor(Math.random() * 10000)
+          });
         }
         })
         .catch(error => {
+setAddNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
           console.error('Error fetching data:', error);
         });    
     }

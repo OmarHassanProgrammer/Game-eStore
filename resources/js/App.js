@@ -288,6 +288,12 @@ const clearCart = () => {
     }
     })
     .catch(error => {
+setAddNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
       console.error('Error fetching data:', error);
     });
 }
@@ -306,6 +312,12 @@ const handleRemoveFromCart = (id, key, e) => {
       setShownGames([...s]);
     })
     .catch(error => {
+setAddNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
       console.error('Error fetching data:', error);
     });
 }

@@ -45,23 +45,38 @@ class UserController extends Controller
         $user = Auth::user();
         if(!$user->cart->contains('id', $item_id)) {
             $item = Item::find($item_id);
-            $cart = $user->cart()->attach($item);
+            if($item->amount > 0) {
+                $item->amount -= 1;
+                $item->save();
+                $cart = $user->cart()->attach($item);
+                return response()->json(['msg' => 'done', 'cart' => [...$user->cart, $item]]);
+            } else {
+                return response()->json(['msg' => 'finished']);
+            }
+        } else {
+            return response()->json(['msg' => 'not']);
         }
-        return response()->json(['msg' => 'done', 'cart' => [...$user->cart, $item]]);
     }
 
     public function removeFromCart($item_id) {
         $user = Auth::user();
         if($user->cart->contains('id', $item_id)) {
             $item = Item::find($item_id);
+            $item->amount += 1;
+            $item->save();
             $cart = $user->cart()->detach($item);
+            return response()->json(['msg' => 'done', 'cart' => $user->cart]);
+        } else {
+            return response()->json(['msg' => 'not']);
         }
-        return response()->json(['msg' => 'done', 'cart' => $user->cart]);
+
     }
 
     public function clearCart() {
         $user = Auth::user();
         foreach ($user->cart as $key => $item) {
+            $item->amount -= 1;
+            $item->save();
             $cart = $user->cart()->detach($item);
         }
         return response()->json(['msg' => 'done']);
@@ -81,7 +96,20 @@ class UserController extends Controller
 
     public function get($id) {
         $user = User::with('items.images', 'socialLinks', 'gameLinks')->find($id);
-
+        $r = 0;
+        $me = Auth::user();
+        foreach ($user->items as $key => $item) {
+            $item->inCart = $me->cart->contains('id', $item->id);
+            $item->isLiked = $me->wishList->contains('id', $item->id);
+        }
+        if(count($user->rates) > 0) {
+            foreach ($user->rates as $key => $rate) {
+                $r += $rate->stars;
+            }
+            $user->rate = $r / count($user->rates);
+        } else {
+            $user->rate = 0;
+        }
         return response()->json(['msg' => 'done', 'user' => $user]);
     }
 

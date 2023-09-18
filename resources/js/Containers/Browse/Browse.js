@@ -131,6 +131,12 @@ useEffect(() => {
       setGenres(response.data.genres);
     })
     .catch(error => {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
 
@@ -156,6 +162,12 @@ useEffect(() => {
         }
       })
       .catch(error => {
+setAddNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
         console.error('Error fetching data:', error);
       });
 }, []);
@@ -170,9 +182,21 @@ const logout = () => {
     .then(response => {
       if(response.data.msg = "done") {
         setUser(null);
+        setAddNotification({
+          type: "success",
+          msg: "You have logout successfully",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        })
       }
     })
     .catch(error => {
+setAddNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
       console.error('Error fetching data:', error);
     });
 }
@@ -279,15 +303,153 @@ const handleSelectGame = (id, e) => {
   }
 }
 
+const clearCart = () => {
+  const apiUrl = '/api/user/cart/clear/'; // Replace with your actual API endpoint
+  axios.get(apiUrl)
+  .then(response => {
+    if(response.data.msg == "done") {
+      setCart([]);
+      setCartAmount(0);
+      let s = shownGames;
+      s.forEach(element => {
+        if(element.inCart) {element.inCart = false; element.amount += 1; };
+      });
+      setShownGames([...s]);
+      console.log(s);
+      setAddNotification({
+        type: "success",
+        msg: "Cart is cleared successfully.",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
+    }
+    })
+    .catch(error => {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
+      console.error('Error fetching data:', error);
+    });
+}
+
 const handleLike = (id, key, e) => {
+  e.stopPropagation();
   const apiUrl = '/api/user/wishlist/toggle/' + id; // Replace with your actual API endpoint
   axios.post(apiUrl)
     .then(response => {
-      let s = shownGames;
-      s[key].isLiked = response.data.fav;
-      setShownGames([...s]);
+      if(response.data.msg == "done") {
+        let s = shownGames;
+        s[key].isLiked = response.data.fav;
+        setShownGames([...s]);
+        setAddNotification({
+          type: "success",
+          msg: response.data.fav?"Item was added to wishlist successfully":"Item was removed wishlist successfully",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+      } else {
+        setAddNotification({
+          type: "danger",
+          msg: "There is some problem",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+      }
     })
     .catch(error => {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
+    });
+}
+
+const handleAddToCart = (id, key, e) => {
+  e.stopPropagation();
+  const apiUrl = '/api/user/cart/add/' + id; // Replace with your actual API endpoint
+  axios.get(apiUrl)
+    .then(response => {
+      if(response.data.msg == "done") {
+        setCart(response.data.cart);
+        setCartAmount(response.data.cart.length);
+        let s = shownGames;
+        s[key].inCart = true;
+        s[key].amount -= 1;
+        setShownGames([...s]);
+        setAddNotification({
+          type: "success",
+          msg: "Item was added to cart successfully",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+      } else if (response.data.msg == "finished") {
+        setAddNotification({
+          type: "danger",
+          msg: "The item is sold out",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        })
+      } else {
+        setAddNotification({
+          type: "danger",
+          msg: "There is some problem",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        })
+      }
+    })
+    .catch(error => {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem.",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
+    });
+
+}
+
+const handleRemoveFromCart = (id, key, e) => {
+  e.stopPropagation();
+  const apiUrl = '/api/user/cart/remove/' + id; // Replace with your actual API endpoint
+  axios.get(apiUrl)
+    .then(response => {
+      if(response.data.msg == "done") {
+        setCart(response.data.cart);
+        let c = cart.filter((cart_item) => {});
+  
+        setCartAmount(cartAmount - 1);
+        let s = shownGames;
+        s[key].inCart = false;
+        s[key].amount += 1;
+        setShownGames([...s]);
+        setAddNotification({
+          type: "success",
+          msg: "Item was removed from the cart successfully.",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+      } else {
+        setAddNotification({
+          type: "danger",
+          msg: "There is some problem",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+      }
+    })
+    .catch(error => {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
 }
@@ -324,67 +486,6 @@ const handleHoverGame = (e) => {
   });
 
   setAllGames(handledHoveredGame);
-}
-
-const handleAddToCart = (id, key, e) => {
-  e.stopPropagation();
-  const apiUrl = '/api/user/cart/add/' + id; // Replace with your actual API endpoint
-  axios.get(apiUrl)
-    .then(response => {
-      setCart(response.data.cart);
-      setCartAmount(response.data.cart.length);
-      let s = shownGames;
-      s[key].inCart = true;
-      setShownGames([...s]);
-    })
-    .catch(error => {
-      console.error('Error fetching data:', error);
-    });
-
-}
-const clearCart = () => {
-  const apiUrl = '/api/user/cart/clear/'; // Replace with your actual API endpoint
-  axios.get(apiUrl)
-  .then(response => {
-    if(response.data.msg == "done") {
-      setCart([]);
-      setCartAmount(0);
-      let s = shownGames;
-      s.forEach(element => {
-        if(element.inCart) element.inCart = false;
-      });
-      setShownGames([...s]);
-      console.log(s);
-    }
-    })
-    .catch(error => {
-      console.error('Error fetching data:', error);
-    });
-}
-
-const handleRemoveFromCart = (id, key, e) => {
-  e.stopPropagation();
-  const apiUrl = '/api/user/cart/remove/' + id; // Replace with your actual API endpoint
-  axios.get(apiUrl)
-    .then(response => {
-      setCart(response.data.cart);
-      let c = cart.filter((cart_item) => {
-        return cart_item.id != id;
-      });
-      setCart(c);
-
-      setCartAmount(cartAmount - 1);
-      let s = shownGames;
-      s.forEach(element => {
-        if(element.id == id) {
-          element.inCart = false;          
-        }
-      });
-      setShownGames([...s]);
-    })
-    .catch(error => {
-      console.error('Error fetching data:', error);
-    });
 }
 
 useEffect(() => {
@@ -512,6 +613,12 @@ useEffect(() => {
               setShownGames(response.data.games);          
             })
             .catch(error => {
+setAddNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
               console.error('Error fetching data:', error);
             });
         } else if (browseType == "/categories") {
@@ -524,6 +631,12 @@ useEffect(() => {
               g = response.data.games;
             })
             .catch(error => {
+setAddNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
               console.error('Error fetching data:', error);
             });
           } else {
@@ -535,6 +648,12 @@ useEffect(() => {
               g = response.data.games;
             })
             .catch(error => {
+setAddNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
               console.error('Error fetching data:', error);
             });
           }
@@ -546,6 +665,12 @@ useEffect(() => {
                 setShownGames(response.data.items);
               })
               .catch(error => {
+setAddNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
                 console.error('Error fetching data:', error);
               });
           } else {
@@ -555,6 +680,12 @@ useEffect(() => {
                 setShownGames(response.data.items);
               })
               .catch(error => {
+setAddNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
                 console.error('Error fetching data:', error);
               });
           }

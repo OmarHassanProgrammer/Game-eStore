@@ -161,6 +161,12 @@ const GamePage = props => {
         }
       })
       .catch(error => {
+setAddNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
         console.error('Error fetching data:', error);
       });
   }
@@ -182,11 +188,23 @@ const GamePage = props => {
             }
           })
           .catch(error => {
+setAddNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
             console.error('Error fetching data:', error);
           });
         }
       })
       .catch(error => {
+setAddNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
         console.error('Error fetching data:', error);
       });
   }, []);
@@ -201,43 +219,17 @@ useEffect(() => {
       setIsFav(response.data.isFav);
     })
     .catch(error => {
+setAddNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
       console.error('Error fetching data:', error);
     });
 }, []);
 
-const handleLike = (id, e) => {
-  const apiUrl = '/api/user/wishlist/toggle/' + id; // Replace with your actual API endpoint
-  axios.post(apiUrl)
-    .then(response => {
-      setIsFav(response.data.fav);
-    })
-    .catch(error => {
-      console.error('Error fetching data:', error);
-    });
-}
 
-const openGamePage = (e) => {
-  setCartDisplayed(false);
-  let selectedGameSurname = e.target.id;
-  window.location.href += `/game/${selectedGameSurname}`;
-}
-
-
-const handleAddToCart = (id, e) => {
-  e.stopPropagation();
-  
-  const apiUrl = '/api/user/cart/add/' + id; // Replace with your actual API endpoint
-  axios.get(apiUrl)
-    .then(response => {
-      setCart(response.data.cart);
-      setCartAmount(response.data.cart.length);
-      setIsCart(true);
-    })
-    .catch(error => {
-      console.error('Error fetching data:', error);
-    });
-
-}
 
 const clearCart = () => {
   const apiUrl = '/api/user/cart/clear/'; // Replace with your actual API endpoint
@@ -246,17 +238,98 @@ const clearCart = () => {
     if(response.data.msg == "done") {
       setCart([]);
       setCartAmount(0);
-      let s = shownGames;
-      s.forEach(element => {
-        if(element.inCart) element.inCart = false;
+      setIsCart(false);
+      setAddNotification({
+        type: "success",
+        msg: "Cart is cleared successfully.",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
       });
-      setShownGames([...s]);
-      console.log(s);
     }
     })
     .catch(error => {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
+}
+
+const handleLike = (id, e) => {
+  e.stopPropagation();
+  const apiUrl = '/api/user/wishlist/toggle/' + id; // Replace with your actual API endpoint
+  axios.post(apiUrl)
+    .then(response => {
+      if(response.data.msg == "done") {
+        setIsFav(response.data.fav);
+        setAddNotification({
+          type: "success",
+          msg: response.data.fav?"Item was added to wishlist successfully":"Item was removed wishlist successfully",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+      } else {
+        setAddNotification({
+          type: "danger",
+          msg: "There is some problem",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+      }
+    })
+    .catch(error => {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
+    });
+}
+
+const handleAddToCart = (id, key, e) => {
+  e.stopPropagation();
+  const apiUrl = '/api/user/cart/add/' + id; // Replace with your actual API endpoint
+  axios.get(apiUrl)
+    .then(response => {
+      if(response.data.msg == "done") {
+        setCart(response.data.cart);
+        setCartAmount(response.data.cart.length);
+        setIsCart(true);
+        setAddNotification({
+          type: "success",
+          msg: "Item was added to cart successfully",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+      } else if (response.data.msg == "finished") {
+        setAddNotification({
+          type: "danger",
+          msg: "The item is sold out",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        })
+      } else {
+        setAddNotification({
+          type: "danger",
+          msg: "There is some problem",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        })
+      }
+    })
+    .catch(error => {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
+    });
+
 }
 
 const handleRemoveFromCart = (id, key, e) => {
@@ -264,25 +337,47 @@ const handleRemoveFromCart = (id, key, e) => {
   const apiUrl = '/api/user/cart/remove/' + id; // Replace with your actual API endpoint
   axios.get(apiUrl)
     .then(response => {
-      setCart(response.data.cart);
-      let c = cart.filter((cart_item) => {
-        return cart_item.id != id;
-      });
-      setCart(c);
-
-      setCartAmount(cartAmount - 1);
-      let s = shownGames;
-      s.forEach(element => {
-        if(element.id == id) {
-          element.inCart = false;          
-        }
-      });
-      setShownGames([...s]);
+      if(response.data.msg == "done") {
+        setCart(response.data.cart);
+        let c = cart.filter((cart_item) => {});
+  
+        setCartAmount(cartAmount - 1);
+        let s = shownGames;
+        setIsCart(false);
+        setAddNotification({
+          type: "success",
+          msg: "Item was removed from the cart successfully.",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+      } else {
+        setAddNotification({
+          type: "danger",
+          msg: "There is some problem",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+      }
     })
     .catch(error => {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
 }
+
+
+const openGamePage = (e) => {
+  setCartDisplayed(false);
+  let selectedGameSurname = e.target.id;
+  window.location.href += `/game/${selectedGameSurname}`;
+}
+
+
 
 
 const handleOpenCart = () => {
@@ -647,7 +742,7 @@ useEffect(() => {
                           <path d="M54.454,23.18l-18.609-0.002L35.844,5.91C35.845,2.646,33.198,0,29.934,0c-3.263,0-5.909,2.646-5.909,5.91v17.269
                             L5.91,23.178C2.646,23.179,0,25.825,0,29.088c0.002,3.264,2.646,5.909,5.91,5.909h18.115v19.457c0,3.267,2.646,5.91,5.91,5.91
                             c3.264,0,5.909-2.646,5.91-5.908V34.997h18.611c3.262,0,5.908-2.645,5.908-5.907C60.367,25.824,57.718,23.178,54.454,23.18z"/>
-                        </g>
+                        </g><g></g>
                         <g>
                         </g>
                         <g>
@@ -670,15 +765,7 @@ useEffect(() => {
                         </g>
                         <g>
                         </g>
-                        <g>
-                        </g>
-                        <g>
-                        </g>
-                        <g>
-                        </g>
-                        <g>
-                        </g>
-                        </svg>
+                        <g></g><g></g><g></g></svg>
                       </button>}
                     </div>
                   </div>

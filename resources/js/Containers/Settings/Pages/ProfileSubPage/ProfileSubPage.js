@@ -13,7 +13,7 @@ const ProfileSubPage = props => {
       } = props;
 
     const [name, setName] = useState('');
-    const [bio, setBio] = useState('');
+    const [bio, setBio] = useState(' ');
     const [email, setEmail] = useState('');
     const [links, setLinks] = useState(["a", "b", "c", " "]);
     const [gameLinks, setGameLinks] = useState([{game: "Fortnite", value: "AFSEFE", cust: false}, {game: "", value: "", cust: false}]);
@@ -116,40 +116,75 @@ const ProfileSubPage = props => {
         baseURL: '/api'
       });
       
-      let socialLinks = links;
-      socialLinks.pop();
-      let gLinks = gameLinks;
-      gLinks.pop();
-      const data = new FormData();
-      data.append('name', name);
-      data.append('email', email);
-      data.append('bio', bio);
-      socialLinks.forEach(link => {
-        data.append('socialLinks[]', link);
-      });
-      gLinks.forEach(link => {
-        data.append('gameLinks[]', link.value + ',' + link.game);
-      });
-      data.append('img', img?.file);
-
-      api.post('/user/updateProfile', data, {
-        headers: {
-            'Content-Type': 'multipart/form-data',
-        },
-      })
-        .then(response => {
-          if(response.data.msg == "done") {
-            setUserProfile(response.data.user);
-            setUser({
-              name: response.data.user.name,
-              email: response.data.user.email,
-              bio: response.data.user.bio,
-            });
-          }
+      if(!name) {
+        setAddNotification({
+          type: "danger",
+          msg: "Name can't be empty.",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+      } else if (!email) {
+        setAddNotification({
+          type: "danger",
+          msg: "Email can't be empty.",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+      } else {
+        let socialLinks = links;
+        socialLinks.pop();
+        let gLinks = gameLinks;
+        gLinks.pop();
+        const data = new FormData();
+        data.append('name', name);
+        data.append('email', email);
+        data.append('bio', bio);
+        socialLinks.forEach(link => {
+          data.append('socialLinks[]', link);
+        });
+        gLinks.forEach(link => {
+          data.append('gameLinks[]', link.value + ',' + link.game);
+        });
+        data.append('img', img?.file);
+  
+        api.post('/user/updateProfile', data, {
+          headers: {
+              'Content-Type': 'multipart/form-data',
+          },
         })
-        .catch(error => {
-          console.error('Error fetching data:', error);
-        }); 
+          .then(response => {
+            if(response.data.msg == "done") {
+              setUserProfile(response.data.user);
+              setUser({
+                name: response.data.user.name,
+                email: response.data.user.email,
+                bio: response.data.user.bio,
+              });
+              setAddNotification({
+                type: "success",
+                msg: "Profile has been updated successfully.",
+                time: 5000,
+                key: Math.floor(Math.random() * 10000)
+              });
+            } else {
+              setAddNotification({
+                type: "danger",
+                msg: "There is some problem while updating the profile. Please try again later.",
+                time: 5000,
+                key: Math.floor(Math.random() * 10000)
+              });
+            }
+          })
+          .catch(error => {
+            setAddNotification({
+              type: "danger",
+              msg: "There is some problem",
+              time: 5000,
+              key: Math.floor(Math.random() * 10000)
+            });
+            console.error('Error fetching data:', error);
+          }); 
+      }
     }
 
     const updateProfileImg = (e) => {
@@ -161,11 +196,24 @@ const ProfileSubPage = props => {
     }
 
     const changePassword = () => {
-      let api = axios.create({
-        baseURL: '/api'
-      });
-      
-      if(oldPassword && newPassword) {
+      if(!oldPassword) {
+        setAddNotification({
+          type: "danger",
+          msg: "Old password is required to update the password",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+      } else if (!newPassword) {
+        setAddNotification({
+          type: "danger",
+          msg: "New password is required to update the password",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+      } else {
+        let api = axios.create({
+          baseURL: '/api'
+        });
         api.post('/user/updatePassword', {
           oldPassword,
           newPassword
@@ -177,6 +225,12 @@ const ProfileSubPage = props => {
             }
           })
           .catch(error => {
+setAddNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
             console.error('Error fetching data:', error);
           }); 
       }

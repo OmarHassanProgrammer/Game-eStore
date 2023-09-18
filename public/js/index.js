@@ -5529,6 +5529,12 @@ var Chat = function Chat(props) {
         localStorage.setItem('adminChat', 1);
       }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   };
@@ -5552,6 +5558,12 @@ var Chat = function Chat(props) {
           if (!chatDisplayed) setChatDisplayed(true);
         }
       })["catch"](function (error) {
+        setAddNotification({
+          type: "danger",
+          msg: "There is some problem",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
         console.error('Error fetching data:', error);
       });
     }
@@ -5571,6 +5583,12 @@ var Chat = function Chat(props) {
             setPeople(response.data.people);
           }
         })["catch"](function (error) {
+          setAddNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
           console.error('Error fetching data:', error);
         });
       }
@@ -5595,6 +5613,12 @@ var Chat = function Chat(props) {
         scrollToBottom();
       }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   };
@@ -5620,6 +5644,12 @@ var Chat = function Chat(props) {
             }
           }
         })["catch"](function (error) {
+          setAddNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
           console.error('Error fetching data:', error);
         });
       }
@@ -5644,6 +5674,12 @@ var Chat = function Chat(props) {
         setChat([].concat(_toConsumableArray(chat), [response.data.message]));
       }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
     setMsg("");
@@ -5701,6 +5737,12 @@ var Chat = function Chat(props) {
         setChatClosed(0);
       }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   };
@@ -5711,6 +5753,12 @@ var Chat = function Chat(props) {
         setChatClosed(1);
       }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   };
@@ -5912,6 +5960,12 @@ var Filters = function Filters(props) {
           setCurrentGameId(response.data.game.id);
         } else setCurrentGame({});
       })["catch"](function (error) {
+        setAddNotification({
+          type: "danger",
+          msg: "There is some problem",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
         console.error('Error fetching data:', error);
       });
     }
@@ -5928,6 +5982,12 @@ var Filters = function Filters(props) {
           setCurrentCategoryId(response.data.category.id);
         } else setCurrentCategory({});
       })["catch"](function (error) {
+        setAddNotification({
+          type: "danger",
+          msg: "There is some problem",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
         console.error('Error fetching data:', error);
       });
     }
@@ -5938,6 +5998,12 @@ var Filters = function Filters(props) {
       axios__WEBPACK_IMPORTED_MODULE_6__["default"].get(apiUrl).then(function (response) {
         setRandomGames(response.data.games);
       })["catch"](function (error) {
+        setAddNotification({
+          type: "danger",
+          msg: "There is some problem",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
         console.error('Error fetching data:', error);
       });
     }
@@ -6838,6 +6904,12 @@ var Notifications = function Notifications(props) {
         localStorage.setItem("notifications", localSN.slice(0, localSN.length - 1));
       }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   }, []);
@@ -7254,12 +7326,24 @@ var Admin = function Admin(props) {
                 setCartAmount(response.data.cart.length);
               }
             })["catch"](function (error) {
+              setAddNotification({
+                type: "danger",
+                msg: "There is some problem",
+                time: 5000,
+                key: Math.floor(Math.random() * 10000)
+              });
               console.error('Error fetching data:', error);
             });
           } else if (response.data.message == "Unauthenticated.") {
             setAuth(false);
           }
         })["catch"](function (error) {
+          setAddNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
           if (error.code == "ERR_BAD_REQUEST") {
             setAuth(false);
           }
@@ -7310,6 +7394,42 @@ var Admin = function Admin(props) {
   var handleCloseCart = function handleCloseCart() {
     setCartDisplayed(false);
   };
+  var handleRemoveFromCart = function handleRemoveFromCart(id, key, e) {
+    e.stopPropagation();
+    var apiUrl = '/api/user/cart/remove/' + id; // Replace with your actual API endpoint
+    axios__WEBPACK_IMPORTED_MODULE_17__["default"].get(apiUrl).then(function (response) {
+      if (response.data.msg == "done") {
+        setCart(response.data.cart);
+        var c = cart.filter(function (cart_item) {});
+        setCartAmount(cartAmount - 1);
+        var s = shownGames;
+        s[key].inCart = false;
+        s[key].amount += 1;
+        setShownGames(_toConsumableArray(s));
+        setAddNotification({
+          type: "success",
+          msg: "Item was removed from the cart successfully.",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+      } else {
+        setAddNotification({
+          type: "danger",
+          msg: "There is some problem",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+      }
+    })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
+      console.error('Error fetching data:', error);
+    });
+  };
   var clearCart = function clearCart() {
     var apiUrl = '/api/user/cart/clear/'; // Replace with your actual API endpoint
     axios__WEBPACK_IMPORTED_MODULE_17__["default"].get(apiUrl).then(function (response) {
@@ -7318,26 +7438,28 @@ var Admin = function Admin(props) {
         setCartAmount(0);
         var s = shownGames;
         s.forEach(function (element) {
-          if (element.inCart) element.inCart = false;
+          if (element.inCart) {
+            element.inCart = false;
+            element.amount += 1;
+          }
+          ;
         });
         setShownGames(_toConsumableArray(s));
         console.log(s);
+        setAddNotification({
+          type: "success",
+          msg: "Cart is cleared successfully.",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
       }
     })["catch"](function (error) {
-      console.error('Error fetching data:', error);
-    });
-  };
-  var handleRemoveFromCart = function handleRemoveFromCart(id, key, e) {
-    e.stopPropagation();
-    var apiUrl = '/api/user/cart/remove/' + id; // Replace with your actual API endpoint
-    axios__WEBPACK_IMPORTED_MODULE_17__["default"].get(apiUrl).then(function (response) {
-      setCart(response.data.cart);
-      var c = cart.filter(function (cart_item) {});
-      setCartAmount(cartAmount - 1);
-      var s = shownGames;
-      s[key].inCart = false;
-      setShownGames(_toConsumableArray(s));
-    })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   };
@@ -7372,8 +7494,20 @@ var Admin = function Admin(props) {
       if (response.data.msg = "done") {
         setUser(null);
         location.href = "/games";
+        setAddNotification({
+          type: "success",
+          msg: "You have logout successfully",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
       }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   };
@@ -7552,7 +7686,9 @@ var Admin = function Admin(props) {
                     setAddPerson: setAddPerson
                   });
                 case "balance":
-                  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)(_Pages_BalancePage_BalancePage__WEBPACK_IMPORTED_MODULE_11__["default"], {});
+                  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)(_Pages_BalancePage_BalancePage__WEBPACK_IMPORTED_MODULE_11__["default"], {
+                    setAddNotification: setAddNotification
+                  });
                 default:
                   return null;
               }
@@ -7633,19 +7769,25 @@ var BalancePage = function BalancePage(props) {
         var _undrawnMoney = 0;
         response.data.balances.forEach(function (balance) {
           if (balance.type == "pay") {
-            _profit += balance.amount;
+            _profit += parseFloat(balance.amount);
           }
-          if (balance.type == "get") {
-            _undrawnMoney += balance.amount;
+          if (balance.type == "get" || balance.type == "pending") {
+            _undrawnMoney += parseFloat(balance.amount);
           }
           if (balance.type == "withdraw") {
-            _profit -= balance.amount;
+            _profit -= parseFloat(balance.amount);
           }
         });
         setProfit(_profit);
         setUndrawnMoney(_undrawnMoney);
       }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   }, []);
@@ -7811,6 +7953,12 @@ var GamesPage = function GamesPage(props) {
     axios__WEBPACK_IMPORTED_MODULE_4__["default"].get(apiUrl).then(function (response) {
       setGenres(response.data.genres);
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
     var api = axios__WEBPACK_IMPORTED_MODULE_4__["default"].create({
@@ -7821,6 +7969,12 @@ var GamesPage = function GamesPage(props) {
         setGames(response.data.games);
       }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   }, []);
@@ -7837,6 +7991,12 @@ var GamesPage = function GamesPage(props) {
         setCategories(response.data.categories);
       }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   };
@@ -7874,6 +8034,12 @@ var GamesPage = function GamesPage(props) {
         });
       }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   };
@@ -7908,6 +8074,12 @@ var GamesPage = function GamesPage(props) {
         });
       }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   };
@@ -7935,6 +8107,12 @@ var GamesPage = function GamesPage(props) {
         setClose("");
       }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   };
@@ -7962,6 +8140,12 @@ var GamesPage = function GamesPage(props) {
         setClose("");
       }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   };
@@ -8327,6 +8511,12 @@ var ItemsPage = function ItemsPage(props) {
         setItems(response.data.items);
       }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   }, []);
@@ -8345,8 +8535,21 @@ var ItemsPage = function ItemsPage(props) {
           key: Math.floor(Math.random() * 10000)
         });
         setDeleteItem();
+      } else {
+        setAddNotification({
+          type: "danger",
+          time: 5000,
+          msg: "There was a problem while deleting the item. Please try again later.",
+          key: Math.floor(Math.random() * 10000)
+        });
       }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   };
@@ -8517,6 +8720,12 @@ var OrdersPage = function OrdersPage(props) {
         setOrders([].concat(o));
       }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   }, []);
@@ -8546,6 +8755,12 @@ var OrdersPage = function OrdersPage(props) {
         });
       }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   };
@@ -8575,6 +8790,12 @@ var OrdersPage = function OrdersPage(props) {
         });
       }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   };
@@ -8808,6 +9029,12 @@ var ItemsPage = function ItemsPage(props) {
         setUsers(response.data.users);
       }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   }, []);
@@ -8829,8 +9056,21 @@ var ItemsPage = function ItemsPage(props) {
           msg: "The user has been banned successfully",
           key: Math.floor(Math.random() * 10000)
         });
+      } else {
+        setAddNotification({
+          type: "danger",
+          time: 5000,
+          msg: "There was a problem while banning this user. Please try again later.",
+          key: Math.floor(Math.random() * 10000)
+        });
       }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   };
@@ -8852,8 +9092,21 @@ var ItemsPage = function ItemsPage(props) {
           msg: "The user has been unbanned successfully",
           key: Math.floor(Math.random() * 10000)
         });
+      } else {
+        setAddNotification({
+          type: "danger",
+          time: 5000,
+          msg: "There was a problem while unbanning this user. Please try again later.",
+          key: Math.floor(Math.random() * 10000)
+        });
       }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   };
@@ -9633,6 +9886,12 @@ function Browse(props) {
     axios__WEBPACK_IMPORTED_MODULE_17__["default"].get(apiUrl).then(function (response) {
       setGenres(response.data.genres);
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
     var api = axios__WEBPACK_IMPORTED_MODULE_17__["default"].create({
@@ -9651,6 +9910,12 @@ function Browse(props) {
         });
       }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   }, []);
@@ -9661,8 +9926,20 @@ function Browse(props) {
     api.post('/logout').then(function (response) {
       if (response.data.msg = "done") {
         setUser(null);
+        setAddNotification({
+          type: "success",
+          msg: "You have logout successfully",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
       }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   };
@@ -9759,13 +10036,144 @@ function Browse(props) {
       }
     }
   };
+  var clearCart = function clearCart() {
+    var apiUrl = '/api/user/cart/clear/'; // Replace with your actual API endpoint
+    axios__WEBPACK_IMPORTED_MODULE_17__["default"].get(apiUrl).then(function (response) {
+      if (response.data.msg == "done") {
+        setCart([]);
+        setCartAmount(0);
+        var s = shownGames;
+        s.forEach(function (element) {
+          if (element.inCart) {
+            element.inCart = false;
+            element.amount += 1;
+          }
+          ;
+        });
+        setShownGames(_toConsumableArray(s));
+        console.log(s);
+        setAddNotification({
+          type: "success",
+          msg: "Cart is cleared successfully.",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+      }
+    })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
+      console.error('Error fetching data:', error);
+    });
+  };
   var handleLike = function handleLike(id, key, e) {
+    e.stopPropagation();
     var apiUrl = '/api/user/wishlist/toggle/' + id; // Replace with your actual API endpoint
     axios__WEBPACK_IMPORTED_MODULE_17__["default"].post(apiUrl).then(function (response) {
-      var s = shownGames;
-      s[key].isLiked = response.data.fav;
-      setShownGames(_toConsumableArray(s));
+      if (response.data.msg == "done") {
+        var s = shownGames;
+        s[key].isLiked = response.data.fav;
+        setShownGames(_toConsumableArray(s));
+        setAddNotification({
+          type: "success",
+          msg: response.data.fav ? "Item was added to wishlist successfully" : "Item was removed wishlist successfully",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+      } else {
+        setAddNotification({
+          type: "danger",
+          msg: "There is some problem",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+      }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
+    });
+  };
+  var handleAddToCart = function handleAddToCart(id, key, e) {
+    e.stopPropagation();
+    var apiUrl = '/api/user/cart/add/' + id; // Replace with your actual API endpoint
+    axios__WEBPACK_IMPORTED_MODULE_17__["default"].get(apiUrl).then(function (response) {
+      if (response.data.msg == "done") {
+        setCart(response.data.cart);
+        setCartAmount(response.data.cart.length);
+        var s = shownGames;
+        s[key].inCart = true;
+        s[key].amount -= 1;
+        setShownGames(_toConsumableArray(s));
+        setAddNotification({
+          type: "success",
+          msg: "Item was added to cart successfully",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+      } else if (response.data.msg == "finished") {
+        setAddNotification({
+          type: "danger",
+          msg: "The item is sold out",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+      } else {
+        setAddNotification({
+          type: "danger",
+          msg: "There is some problem",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+      }
+    })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem.",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
+    });
+  };
+  var handleRemoveFromCart = function handleRemoveFromCart(id, key, e) {
+    e.stopPropagation();
+    var apiUrl = '/api/user/cart/remove/' + id; // Replace with your actual API endpoint
+    axios__WEBPACK_IMPORTED_MODULE_17__["default"].get(apiUrl).then(function (response) {
+      if (response.data.msg == "done") {
+        setCart(response.data.cart);
+        var c = cart.filter(function (cart_item) {});
+        setCartAmount(cartAmount - 1);
+        var s = shownGames;
+        s[key].inCart = false;
+        s[key].amount += 1;
+        setShownGames(_toConsumableArray(s));
+        setAddNotification({
+          type: "success",
+          msg: "Item was removed from the cart successfully.",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+      } else {
+        setAddNotification({
+          type: "danger",
+          msg: "There is some problem",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+      }
+    })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   };
@@ -9796,57 +10204,6 @@ function Browse(props) {
       }
     });
     setAllGames(handledHoveredGame);
-  };
-  var handleAddToCart = function handleAddToCart(id, key, e) {
-    e.stopPropagation();
-    var apiUrl = '/api/user/cart/add/' + id; // Replace with your actual API endpoint
-    axios__WEBPACK_IMPORTED_MODULE_17__["default"].get(apiUrl).then(function (response) {
-      setCart(response.data.cart);
-      setCartAmount(response.data.cart.length);
-      var s = shownGames;
-      s[key].inCart = true;
-      setShownGames(_toConsumableArray(s));
-    })["catch"](function (error) {
-      console.error('Error fetching data:', error);
-    });
-  };
-  var clearCart = function clearCart() {
-    var apiUrl = '/api/user/cart/clear/'; // Replace with your actual API endpoint
-    axios__WEBPACK_IMPORTED_MODULE_17__["default"].get(apiUrl).then(function (response) {
-      if (response.data.msg == "done") {
-        setCart([]);
-        setCartAmount(0);
-        var s = shownGames;
-        s.forEach(function (element) {
-          if (element.inCart) element.inCart = false;
-        });
-        setShownGames(_toConsumableArray(s));
-        console.log(s);
-      }
-    })["catch"](function (error) {
-      console.error('Error fetching data:', error);
-    });
-  };
-  var handleRemoveFromCart = function handleRemoveFromCart(id, key, e) {
-    e.stopPropagation();
-    var apiUrl = '/api/user/cart/remove/' + id; // Replace with your actual API endpoint
-    axios__WEBPACK_IMPORTED_MODULE_17__["default"].get(apiUrl).then(function (response) {
-      setCart(response.data.cart);
-      var c = cart.filter(function (cart_item) {
-        return cart_item.id != id;
-      });
-      setCart(c);
-      setCartAmount(cartAmount - 1);
-      var s = shownGames;
-      s.forEach(function (element) {
-        if (element.id == id) {
-          element.inCart = false;
-        }
-      });
-      setShownGames(_toConsumableArray(s));
-    })["catch"](function (error) {
-      console.error('Error fetching data:', error);
-    });
   };
   (0,react__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
     setOverlap(false);
@@ -9977,6 +10334,12 @@ function Browse(props) {
           setAllGames(response.data.games);
           setShownGames(response.data.games);
         })["catch"](function (error) {
+          setAddNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
           console.error('Error fetching data:', error);
         });
       } else if (browseType == "/categories") {
@@ -9987,6 +10350,12 @@ function Browse(props) {
             setShownGames(response.data.categories);
             g = response.data.games;
           })["catch"](function (error) {
+            setAddNotification({
+              type: "danger",
+              msg: "There is some problem",
+              time: 5000,
+              key: Math.floor(Math.random() * 10000)
+            });
             console.error('Error fetching data:', error);
           });
         } else {
@@ -9996,6 +10365,12 @@ function Browse(props) {
             setShownGames(response.data.categories);
             g = response.data.games;
           })["catch"](function (error) {
+            setAddNotification({
+              type: "danger",
+              msg: "There is some problem",
+              time: 5000,
+              key: Math.floor(Math.random() * 10000)
+            });
             console.error('Error fetching data:', error);
           });
         }
@@ -10005,6 +10380,12 @@ function Browse(props) {
           axios__WEBPACK_IMPORTED_MODULE_17__["default"].get(_apiUrl3).then(function (response) {
             setShownGames(response.data.items);
           })["catch"](function (error) {
+            setAddNotification({
+              type: "danger",
+              msg: "There is some problem",
+              time: 5000,
+              key: Math.floor(Math.random() * 10000)
+            });
             console.error('Error fetching data:', error);
           });
         } else {
@@ -10012,6 +10393,12 @@ function Browse(props) {
           axios__WEBPACK_IMPORTED_MODULE_17__["default"].get(_apiUrl4).then(function (response) {
             setShownGames(response.data.items);
           })["catch"](function (error) {
+            setAddNotification({
+              type: "danger",
+              msg: "There is some problem",
+              time: 5000,
+              key: Math.floor(Math.random() * 10000)
+            });
             console.error('Error fetching data:', error);
           });
         }
@@ -10396,10 +10783,22 @@ var Checkout = function Checkout(props) {
             setTotalPrice(p);
           }
         })["catch"](function (error) {
+          setAddNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
           console.error('Error fetching data:', error);
         });
       }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       if (error.code == "ERR_BAD_REQUEST") {
         setAuth(false);
       }
@@ -10443,8 +10842,20 @@ var Checkout = function Checkout(props) {
     api.post('/logout').then(function (response) {
       if (response.data.msg = "done") {
         setUser(null);
+        setAddNotification({
+          type: "success",
+          msg: "You have logout successfully",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
       }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   };
@@ -10452,17 +10863,35 @@ var Checkout = function Checkout(props) {
     e.stopPropagation();
     var apiUrl = '/api/user/cart/remove/' + id; // Replace with your actual API endpoint
     axios__WEBPACK_IMPORTED_MODULE_16__["default"].get(apiUrl).then(function (response) {
-      var c = cart.filter(function (cart_item) {
-        return cart_item.id != id;
-      });
-      setCart(_toConsumableArray(c));
-      setCartAmount(cartAmount - 1);
-      var p = 0;
-      c.forEach(function (item) {
-        p += parseFloat(item.price);
-      });
-      setTotalPrice(p);
+      if (response.data.msg == "done") {
+        setCart(response.data.cart);
+        var c = cart.filter(function (cart_item) {});
+        setCartAmount(cartAmount - 1);
+        var s = shownGames;
+        s[key].inCart = false;
+        s[key].amount += 1;
+        setShownGames(_toConsumableArray(s));
+        setAddNotification({
+          type: "success",
+          msg: "Item was removed from the cart successfully.",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+      } else {
+        setAddNotification({
+          type: "danger",
+          msg: "There is some problem",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+      }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   };
@@ -10478,6 +10907,12 @@ var Checkout = function Checkout(props) {
         location = response.data.payment.approvalUrl;
       }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   };
@@ -10729,10 +11164,22 @@ var Contactus = function Contactus(props) {
             setCartAmount(response.data.cart.length);
           }
         })["catch"](function (error) {
+          setAddNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
           console.error('Error fetching data:', error);
         });
       }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       if (error.code == "ERR_BAD_REQUEST") {
         setAuth(false);
       }
@@ -10753,6 +11200,12 @@ var Contactus = function Contactus(props) {
         console.log(s);
       }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   };
@@ -10767,6 +11220,12 @@ var Contactus = function Contactus(props) {
       s[key].inCart = false;
       setShownGames(_toConsumableArray(s));
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   };
@@ -10821,8 +11280,20 @@ var Contactus = function Contactus(props) {
     api.post('/logout').then(function (response) {
       if (response.data.msg = "done") {
         setUser(null);
+        setAddNotification({
+          type: "success",
+          msg: "You have logout successfully",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
       }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   };
@@ -10849,6 +11320,12 @@ var Contactus = function Contactus(props) {
         });
       }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   };
@@ -11190,6 +11667,12 @@ var GamePage = function GamePage(props) {
         setUser(null);
       }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   };
@@ -11206,10 +11689,22 @@ var GamePage = function GamePage(props) {
             setCartAmount(response.data.cart.length);
           }
         })["catch"](function (error) {
+          setAddNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
           console.error('Error fetching data:', error);
         });
       }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   }, []);
@@ -11221,14 +11716,137 @@ var GamePage = function GamePage(props) {
       setIsCart(response.data.isCart);
       setIsFav(response.data.isFav);
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   }, []);
+  var clearCart = function clearCart() {
+    var apiUrl = '/api/user/cart/clear/'; // Replace with your actual API endpoint
+    axios__WEBPACK_IMPORTED_MODULE_14__["default"].get(apiUrl).then(function (response) {
+      if (response.data.msg == "done") {
+        setCart([]);
+        setCartAmount(0);
+        setIsCart(false);
+        setAddNotification({
+          type: "success",
+          msg: "Cart is cleared successfully.",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+      }
+    })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
+      console.error('Error fetching data:', error);
+    });
+  };
   var handleLike = function handleLike(id, e) {
+    e.stopPropagation();
     var apiUrl = '/api/user/wishlist/toggle/' + id; // Replace with your actual API endpoint
     axios__WEBPACK_IMPORTED_MODULE_14__["default"].post(apiUrl).then(function (response) {
-      setIsFav(response.data.fav);
+      if (response.data.msg == "done") {
+        setIsFav(response.data.fav);
+        setAddNotification({
+          type: "success",
+          msg: response.data.fav ? "Item was added to wishlist successfully" : "Item was removed wishlist successfully",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+      } else {
+        setAddNotification({
+          type: "danger",
+          msg: "There is some problem",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+      }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
+    });
+  };
+  var handleAddToCart = function handleAddToCart(id, key, e) {
+    e.stopPropagation();
+    var apiUrl = '/api/user/cart/add/' + id; // Replace with your actual API endpoint
+    axios__WEBPACK_IMPORTED_MODULE_14__["default"].get(apiUrl).then(function (response) {
+      if (response.data.msg == "done") {
+        setCart(response.data.cart);
+        setCartAmount(response.data.cart.length);
+        setIsCart(true);
+        setAddNotification({
+          type: "success",
+          msg: "Item was added to cart successfully",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+      } else if (response.data.msg == "finished") {
+        setAddNotification({
+          type: "danger",
+          msg: "The item is sold out",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+      } else {
+        setAddNotification({
+          type: "danger",
+          msg: "There is some problem",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+      }
+    })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
+    });
+  };
+  var handleRemoveFromCart = function handleRemoveFromCart(id, key, e) {
+    e.stopPropagation();
+    var apiUrl = '/api/user/cart/remove/' + id; // Replace with your actual API endpoint
+    axios__WEBPACK_IMPORTED_MODULE_14__["default"].get(apiUrl).then(function (response) {
+      if (response.data.msg == "done") {
+        setCart(response.data.cart);
+        var c = cart.filter(function (cart_item) {});
+        setCartAmount(cartAmount - 1);
+        var s = shownGames;
+        setIsCart(false);
+        setAddNotification({
+          type: "success",
+          msg: "Item was removed from the cart successfully.",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+      } else {
+        setAddNotification({
+          type: "danger",
+          msg: "There is some problem",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+      }
+    })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   };
@@ -11236,55 +11854,6 @@ var GamePage = function GamePage(props) {
     setCartDisplayed(false);
     var selectedGameSurname = e.target.id;
     window.location.href += "/game/".concat(selectedGameSurname);
-  };
-  var handleAddToCart = function handleAddToCart(id, e) {
-    e.stopPropagation();
-    var apiUrl = '/api/user/cart/add/' + id; // Replace with your actual API endpoint
-    axios__WEBPACK_IMPORTED_MODULE_14__["default"].get(apiUrl).then(function (response) {
-      setCart(response.data.cart);
-      setCartAmount(response.data.cart.length);
-      setIsCart(true);
-    })["catch"](function (error) {
-      console.error('Error fetching data:', error);
-    });
-  };
-  var clearCart = function clearCart() {
-    var apiUrl = '/api/user/cart/clear/'; // Replace with your actual API endpoint
-    axios__WEBPACK_IMPORTED_MODULE_14__["default"].get(apiUrl).then(function (response) {
-      if (response.data.msg == "done") {
-        setCart([]);
-        setCartAmount(0);
-        var s = shownGames;
-        s.forEach(function (element) {
-          if (element.inCart) element.inCart = false;
-        });
-        setShownGames(_toConsumableArray(s));
-        console.log(s);
-      }
-    })["catch"](function (error) {
-      console.error('Error fetching data:', error);
-    });
-  };
-  var handleRemoveFromCart = function handleRemoveFromCart(id, key, e) {
-    e.stopPropagation();
-    var apiUrl = '/api/user/cart/remove/' + id; // Replace with your actual API endpoint
-    axios__WEBPACK_IMPORTED_MODULE_14__["default"].get(apiUrl).then(function (response) {
-      setCart(response.data.cart);
-      var c = cart.filter(function (cart_item) {
-        return cart_item.id != id;
-      });
-      setCart(c);
-      setCartAmount(cartAmount - 1);
-      var s = shownGames;
-      s.forEach(function (element) {
-        if (element.id == id) {
-          element.inCart = false;
-        }
-      });
-      setShownGames(_toConsumableArray(s));
-    })["catch"](function (error) {
-      console.error('Error fetching data:', error);
-    });
   };
   var handleOpenCart = function handleOpenCart() {
     setCartDisplayed(true);
@@ -11922,10 +12491,22 @@ function Home(props) {
             setCartAmount(response.data.cart.length);
           }
         })["catch"](function (error) {
+          setAddNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
           console.error('Error fetching data:', error);
         });
       }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   }, []);
@@ -11938,6 +12519,12 @@ function Home(props) {
         setUser(null);
       }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   };
@@ -12008,16 +12595,36 @@ function Home(props) {
     });
     setAllGames(handledHoveredGame);
   };
-  var handleAddToCart = function handleAddToCart(id, key, e) {
+  var handleRemoveFromCart = function handleRemoveFromCart(id, key, e) {
     e.stopPropagation();
-    var apiUrl = '/api/user/cart/add/' + id; // Replace with your actual API endpoint
+    var apiUrl = '/api/user/cart/remove/' + id; // Replace with your actual API endpoint
     axios__WEBPACK_IMPORTED_MODULE_23__["default"].get(apiUrl).then(function (response) {
-      setCart(response.data.cart);
-      setCartAmount(response.data.cart.length);
-      var s = shownGames;
-      s[key].inCart = true;
-      setShownGames(_toConsumableArray(s));
+      if (response.data.msg == "done") {
+        setCart(response.data.cart);
+        var c = cart.filter(function (cart_item) {});
+        setCartAmount(cartAmount - 1);
+        var s = shownGames;
+        setAddNotification({
+          type: "success",
+          msg: "Item was removed from the cart successfully.",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+      } else {
+        setAddNotification({
+          type: "danger",
+          msg: "There is some problem",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+      }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   };
@@ -12027,28 +12634,20 @@ function Home(props) {
       if (response.data.msg == "done") {
         setCart([]);
         setCartAmount(0);
-        var s = shownGames;
-        s.forEach(function (element) {
-          if (element.inCart) element.inCart = false;
+        setAddNotification({
+          type: "success",
+          msg: "Cart is cleared successfully.",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
         });
-        setShownGames(_toConsumableArray(s));
-        console.log(s);
       }
     })["catch"](function (error) {
-      console.error('Error fetching data:', error);
-    });
-  };
-  var handleRemoveFromCart = function handleRemoveFromCart(id, key, e) {
-    e.stopPropagation();
-    var apiUrl = '/api/user/cart/remove/' + id; // Replace with your actual API endpoint
-    axios__WEBPACK_IMPORTED_MODULE_23__["default"].get(apiUrl).then(function (response) {
-      setCart(response.data.cart);
-      var c = cart.filter(function (cart_item) {});
-      setCartAmount(cartAmount - 1);
-      var s = shownGames;
-      s[key].inCart = false;
-      setShownGames(_toConsumableArray(s));
-    })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   };
@@ -12503,6 +13102,12 @@ var ListItem = function ListItem(props) {
         setUser(response.data.user);
       }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       if (error.code == "ERR_BAD_REQUEST") {
         setAuth(false);
       }
@@ -12513,6 +13118,12 @@ var ListItem = function ListItem(props) {
         setGames(response.data.games);
       }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   }, []);
@@ -12561,6 +13172,12 @@ var ListItem = function ListItem(props) {
         setUser(null);
       }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   };
@@ -12577,6 +13194,12 @@ var ListItem = function ListItem(props) {
         setCategories(response.data.categories);
       }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   };
@@ -12646,30 +13269,32 @@ var ListItem = function ListItem(props) {
       }).then(function (response) {
         if (response.data.msg == "done") {
           location.href = "/game?id=" + response.data.item.id;
+          setAddNotification({
+            type: "success",
+            msg: "Item was listed successfully.",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
+        } else {
+          setAddNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
         }
       })["catch"](function (error) {
+        setAddNotification({
+          type: "danger",
+          msg: "There is some problem",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
         console.error('Error fetching data:', error);
       });
     } else {
       setTriedSubmit(true);
     }
-  };
-  var clearCart = function clearCart() {
-    var apiUrl = '/api/user/cart/clear/'; // Replace with your actual API endpoint
-    axios__WEBPACK_IMPORTED_MODULE_16__["default"].get(apiUrl).then(function (response) {
-      if (response.data.msg == "done") {
-        setCart([]);
-        setCartAmount(0);
-        var s = shownGames;
-        s.forEach(function (element) {
-          if (element.inCart) element.inCart = false;
-        });
-        setShownGames(_toConsumableArray(s));
-        console.log(s);
-      }
-    })["catch"](function (error) {
-      console.error('Error fetching data:', error);
-    });
   };
   var openGamePage = function openGamePage(e) {
     setCartDisplayed(false);
@@ -12680,13 +13305,55 @@ var ListItem = function ListItem(props) {
     e.stopPropagation();
     var apiUrl = '/api/user/cart/remove/' + id; // Replace with your actual API endpoint
     axios__WEBPACK_IMPORTED_MODULE_16__["default"].get(apiUrl).then(function (response) {
-      setCart(response.data.cart);
-      var c = cart.filter(function (cart_item) {});
-      setCartAmount(cartAmount - 1);
-      var s = shownGames;
-      s[key].inCart = false;
-      setShownGames(_toConsumableArray(s));
+      if (response.data.msg == "done") {
+        setCart(response.data.cart);
+        var c = cart.filter(function (cart_item) {});
+        setCartAmount(cartAmount - 1);
+        var s = shownGames;
+        setAddNotification({
+          type: "success",
+          msg: "Item was removed from the cart successfully.",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+      } else {
+        setAddNotification({
+          type: "danger",
+          msg: "There is some problem",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+      }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
+      console.error('Error fetching data:', error);
+    });
+  };
+  var clearCart = function clearCart() {
+    var apiUrl = '/api/user/cart/clear/'; // Replace with your actual API endpoint
+    axios__WEBPACK_IMPORTED_MODULE_16__["default"].get(apiUrl).then(function (response) {
+      if (response.data.msg == "done") {
+        setCart([]);
+        setCartAmount(0);
+        setAddNotification({
+          type: "success",
+          msg: "Cart is cleared successfully.",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+      }
+    })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   };
@@ -13002,29 +13669,78 @@ var Login = function Login(props) {
   };
   var submit = function submit(e) {
     e.preventDefault();
-    var apiUrl = '/api/login'; // Replace with your actual API endpoint
-    axios__WEBPACK_IMPORTED_MODULE_13__["default"].post(apiUrl, {
-      email: email,
-      password: password
-    }).then(function (response) {
-      if (response.data.msg == "done") {
-        location.href = "/games";
-      } else if (response.data.msg == "authAlready") {
-        location.href = "/games";
-      } else if (response.data.msg == "banned") {
-        console.log("aaa");
+    var pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email) {
+      setAddNotification({
+        type: "danger",
+        msg: "Email is required",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
+    } else if (!pattern.test(email)) {
+      setAddNotification({
+        type: "danger",
+        msg: "Email is not valid",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
+    } else if (!password) {
+      setAddNotification({
+        type: "danger",
+        msg: "Password is required",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
+    } else {
+      var apiUrl = '/api/login'; // Replace with your actual API endpoint
+      axios__WEBPACK_IMPORTED_MODULE_13__["default"].post(apiUrl, {
+        email: email,
+        password: password
+      }).then(function (response) {
+        if (response.data.msg == "done") {
+          location.href = "/games";
+          setAddNotification({
+            type: "success",
+            msg: "You have logged in successfully",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
+        } else if (response.data.msg == "authAlready") {
+          location.href = "/games";
+          setAddNotification({
+            type: "normal",
+            msg: "You are already logged in",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
+        } else if (response.data.msg == "banned") {
+          console.log("aaa");
+          setAddNotification({
+            type: "danger",
+            msg: "You are banned. ++Contact us--/contactus++ if you think there is a problem.",
+            time: 10000,
+            key: Math.floor(Math.random() * 10000)
+          });
+          setEmail('');
+          setPassword('');
+        } else {
+          setAddNotification({
+            type: "danger",
+            msg: "There is a problem. Check your credintals or try again later.",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
+        }
+      })["catch"](function (error) {
         setAddNotification({
           type: "danger",
-          msg: "You are banned. ++Contact us--/contactus++ if you think there is a problem.",
-          time: 10000,
+          msg: "There is a problem. Check your credintals or try again later.",
+          time: 5000,
           key: Math.floor(Math.random() * 10000)
         });
-        setEmail('');
-        setPassword('');
-      }
-    })["catch"](function (error) {
-      console.error('Error fetching data:', error);
-    });
+        console.error('Error fetching data:', error);
+      });
+    }
   };
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.Fragment, {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Components_Notifications_Notifications__WEBPACK_IMPORTED_MODULE_11__["default"], {
@@ -13144,7 +13860,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 var Profile = function Profile(props) {
-  var _userProfile$game_lin, _userProfile$social_l, _userProfile$items;
+  var _userProfile$game_lin, _userProfile$social_l;
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(true),
     _useState2 = _slicedToArray(_useState, 2),
     auth = _useState2[0],
@@ -13217,6 +13933,10 @@ var Profile = function Profile(props) {
     _useState36 = _slicedToArray(_useState35, 2),
     emptyStars = _useState36[0],
     setEmptyStars = _useState36[1];
+  var _useState37 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]),
+    _useState38 = _slicedToArray(_useState37, 2),
+    shownGames = _useState38[0],
+    setShownGames = _useState38[1];
   var firstUpdate = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)(true);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useLayoutEffect)(function () {
     if (firstUpdate.current) {
@@ -13237,10 +13957,22 @@ var Profile = function Profile(props) {
             setCartAmount(response.data.cart.length);
           }
         })["catch"](function (error) {
+          setAddNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
           console.error('Error fetching data:', error);
         });
       }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       if (error.code == "ERR_BAD_REQUEST") {
         setAuth(false);
       }
@@ -13269,13 +14001,21 @@ var Profile = function Profile(props) {
       });
       api.get('/user/get/' + q).then(function (response) {
         if (response.data.msg == "done") {
+          var _response$data$user$i;
           var l = Math.round(response.data.user.rate);
           var _l = 5 - Math.round(response.data.user.rate);
           setStars(new Array(l).fill(undefined));
           setEmptyStars(new Array(_l).fill(undefined));
           setUserProfile(response.data.user);
+          setShownGames((_response$data$user$i = response.data.user.items) !== null && _response$data$user$i !== void 0 ? _response$data$user$i : []);
         }
       })["catch"](function (error) {
+        setAddNotification({
+          type: "danger",
+          msg: "There is some problem",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
         if (error.code == "ERR_BAD_REQUEST") {
           setAuth(false);
         }
@@ -13291,26 +14031,136 @@ var Profile = function Profile(props) {
         setCartAmount(0);
         var s = shownGames;
         s.forEach(function (element) {
-          if (element.inCart) element.inCart = false;
+          if (element.inCart) {
+            element.inCart = false;
+            element.amount += 1;
+          }
+          ;
         });
         setShownGames(_toConsumableArray(s));
         console.log(s);
+        setAddNotification({
+          type: "success",
+          msg: "Cart is cleared successfully.",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
       }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
+    });
+  };
+  var handleLike = function handleLike(id, key, e) {
+    e.stopPropagation();
+    var apiUrl = '/api/user/wishlist/toggle/' + id; // Replace with your actual API endpoint
+    axios__WEBPACK_IMPORTED_MODULE_16__["default"].post(apiUrl).then(function (response) {
+      if (response.data.msg == "done") {
+        var s = shownGames;
+        s[key].isLiked = response.data.fav;
+        setShownGames(_toConsumableArray(s));
+        setAddNotification({
+          type: "success",
+          msg: response.data.fav ? "Item was added to wishlist successfully" : "Item was removed wishlist successfully",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+      } else {
+        setAddNotification({
+          type: "danger",
+          msg: "There is some problem",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+      }
+    })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
+    });
+  };
+  var handleAddToCart = function handleAddToCart(id, key, e) {
+    e.stopPropagation();
+    var apiUrl = '/api/user/cart/add/' + id; // Replace with your actual API endpoint
+    axios__WEBPACK_IMPORTED_MODULE_16__["default"].get(apiUrl).then(function (response) {
+      if (response.data.msg == "done") {
+        setCart(response.data.cart);
+        setCartAmount(response.data.cart.length);
+        var s = shownGames;
+        s[key].inCart = true;
+        s[key].amount -= 1;
+        setShownGames(_toConsumableArray(s));
+        setAddNotification({
+          type: "success",
+          msg: "Item was added to cart successfully",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+      } else if (response.data.msg == "finished") {
+        setAddNotification({
+          type: "danger",
+          msg: "The item is sold out",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+      } else {
+        setAddNotification({
+          type: "danger",
+          msg: "There is some problem",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+      }
+    })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
     });
   };
   var handleRemoveFromCart = function handleRemoveFromCart(id, key, e) {
     e.stopPropagation();
     var apiUrl = '/api/user/cart/remove/' + id; // Replace with your actual API endpoint
     axios__WEBPACK_IMPORTED_MODULE_16__["default"].get(apiUrl).then(function (response) {
-      setCart(response.data.cart);
-      var c = cart.filter(function (cart_item) {});
-      setCartAmount(cartAmount - 1);
-      var s = shownGames;
-      s[key].inCart = false;
-      setShownGames(_toConsumableArray(s));
+      if (response.data.msg == "done") {
+        setCart(response.data.cart);
+        var c = cart.filter(function (cart_item) {});
+        setCartAmount(cartAmount - 1);
+        var s = shownGames;
+        s[key].inCart = false;
+        s[key].amount += 1;
+        setShownGames(_toConsumableArray(s));
+        setAddNotification({
+          type: "success",
+          msg: "Item was removed from the cart successfully.",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+      } else {
+        setAddNotification({
+          type: "danger",
+          msg: "There is some problem",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+      }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   };
@@ -13365,8 +14215,20 @@ var Profile = function Profile(props) {
     api.post('/logout').then(function (response) {
       if (response.data.msg = "done") {
         setUser(null);
+        setAddNotification({
+          type: "success",
+          msg: "You have logout successfully",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
       }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   };
@@ -13387,7 +14249,12 @@ var Profile = function Profile(props) {
     try {
       // Copy the text to the clipboard
       document.execCommand('copy');
-      console.log('Text copied to clipboard');
+      setAddNotification({
+        type: "success",
+        msg: "Game code copied!",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
     } catch (err) {
       console.error('Unable to copy text to clipboard', err);
     }
@@ -13585,11 +14452,11 @@ var Profile = function Profile(props) {
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("div", {
             className: _Profile_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].content,
             children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)(_Components_Grid_Grid__WEBPACK_IMPORTED_MODULE_13__["default"], {
-              shownGames: (_userProfile$items = userProfile.items) !== null && _userProfile$items !== void 0 ? _userProfile$items : [],
+              shownGames: shownGames,
               reviewDisplay: reviewDisplay,
-              handleLike: function handleLike() {},
+              handleLike: handleLike,
               handleHoverGame: function handleHoverGame() {},
-              handleAddToCart: function handleAddToCart() {},
+              handleAddToCart: handleAddToCart,
               grid: grid,
               browseType: '/items',
               search: search,
@@ -13652,8 +14519,12 @@ var BalancePage = function BalancePage(props) {
     setProfit = _useState4[1];
   var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(0),
     _useState6 = _slicedToArray(_useState5, 2),
-    usableMoney = _useState6[0],
-    setUsableMoney = _useState6[1];
+    pending = _useState6[0],
+    setPending = _useState6[1];
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(0),
+    _useState8 = _slicedToArray(_useState7, 2),
+    usableMoney = _useState8[0],
+    setUsableMoney = _useState8[1];
   var variants = {
     initial: {
       opacity: 0
@@ -13684,6 +14555,12 @@ var BalancePage = function BalancePage(props) {
         });
       }
     })["catch"](function (error) {
+      addNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       if (error.code == "ERR_BAD_REQUEST") {
         setAuth(false);
       }
@@ -13697,6 +14574,12 @@ var BalancePage = function BalancePage(props) {
     api.get('/orders/info').then(function (response) {
       if (response.data.msg == "done") {}
     })["catch"](function (error) {
+      addNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       if (error.code == "ERR_BAD_REQUEST") {
         setAuth(false);
       }
@@ -13709,28 +14592,39 @@ var BalancePage = function BalancePage(props) {
       if (response.data.msg == "done") {
         setBalances(response.data.balances);
         var money = 0;
+        var pendingMoney = 0;
         var usable = 0;
         console.log(Object.values(response.data.balances));
         Object.values(response.data.balances).map(function (balance) {
           console.log(balance);
           if (balance.type == "get") {
-            money += balance.amount;
+            money += parseFloat(balance.amount);
+            var myDate = new Date(balance.created_at);
+            myDate.setDate(myDate.getDate() + parseInt(balance.after / 24));
+            var currentDate = new Date();
+            var timeDifferenceMilliseconds = myDate - currentDate;
+            if (timeDifferenceMilliseconds > 0) {
+              usable += parseFloat(balance.amount);
+            }
+          }
+          if (balance.type == "pending") {
+            pendingMoney += parseFloat(balance.amount);
           }
           if (balance.type == "withdraw") {
-            money -= balance.amount;
-          }
-          var myDate = new Date(balance.created_at);
-          myDate.setDate(myDate.getDate() + parseInt(order.item.after / 24));
-          var currentDate = new Date();
-          var timeDifferenceMilliseconds = myDate - currentDate;
-          if (timeDifferenceMilliseconds > 0) {
-            usable += balance.amount;
+            money -= parseFloat(balance.amount);
           }
         });
         setProfit(money);
         setUsableMoney(usable);
+        setPending(pendingMoney);
       }
     })["catch"](function (error) {
+      addNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   }, []);
@@ -13745,6 +14639,18 @@ var BalancePage = function BalancePage(props) {
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
         className: _BalancePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].header,
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+          className: _BalancePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].p,
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("span", {
+            className: _BalancePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].label,
+            children: "Pending Money"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("span", {
+            className: _BalancePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].n,
+            children: pending
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("span", {
+            className: _BalancePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].symbol,
+            children: "$"
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
           className: _BalancePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].p,
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("span", {
             className: _BalancePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].label,
@@ -13790,17 +14696,19 @@ var BalancePage = function BalancePage(props) {
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
         className: _BalancePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].content,
         children: balances ? Object.values(balances).map(function (balance, key) {
-          var _balance$order, _balance$order2, _balance$order3, _balance$order4;
-          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-            className: _BalancePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].record,
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("span", {
-              className: _BalancePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].label,
-              children: balance.type == "pay" ? "You bought item " + ((_balance$order = balance.order) === null || _balance$order === void 0 || (_balance$order = _balance$order.item) === null || _balance$order === void 0 ? void 0 : _balance$order.name) + " from " + ((_balance$order2 = balance.order) === null || _balance$order2 === void 0 || (_balance$order2 = _balance$order2.item) === null || _balance$order2 === void 0 || (_balance$order2 = _balance$order2.seller) === null || _balance$order2 === void 0 ? void 0 : _balance$order2.name) : balance.type == "withdraw" ? "You have withdrawn " + balance.amount + "$" : balance.type == "get" ? "Item: " + ((_balance$order3 = balance.order) === null || _balance$order3 === void 0 || (_balance$order3 = _balance$order3.item) === null || _balance$order3 === void 0 ? void 0 : _balance$order3.name) + " was sold for " + ((_balance$order4 = balance.order) === null || _balance$order4 === void 0 || (_balance$order4 = _balance$order4.client) === null || _balance$order4 === void 0 ? void 0 : _balance$order4.name) : null
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("span", {
-              className: "".concat(_BalancePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].n, " ") + (balance.type == "pay" ? _BalancePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].neg : balance.type == "withdraw" ? _BalancePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].med : balance.type == "get" ? _BalancePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].pos : null),
-              children: [balance.amount, "$"]
-            })]
-          }, key);
+          if (["get", "withdraw", "pay"].includes(balance.type)) {
+            var _balance$order, _balance$order2, _balance$order3, _balance$order4;
+            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+              className: _BalancePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].record,
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("span", {
+                className: _BalancePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].label,
+                children: balance.type == "pay" ? "You bought item " + ((_balance$order = balance.order) === null || _balance$order === void 0 || (_balance$order = _balance$order.item) === null || _balance$order === void 0 ? void 0 : _balance$order.name) + " from " + ((_balance$order2 = balance.order) === null || _balance$order2 === void 0 || (_balance$order2 = _balance$order2.item) === null || _balance$order2 === void 0 || (_balance$order2 = _balance$order2.seller) === null || _balance$order2 === void 0 ? void 0 : _balance$order2.name) : balance.type == "withdraw" ? "You have withdrawn " + balance.amount + "$" : balance.type == "get" ? "Item: " + ((_balance$order3 = balance.order) === null || _balance$order3 === void 0 || (_balance$order3 = _balance$order3.item) === null || _balance$order3 === void 0 ? void 0 : _balance$order3.name) + " was sold for " + ((_balance$order4 = balance.order) === null || _balance$order4 === void 0 || (_balance$order4 = _balance$order4.client) === null || _balance$order4 === void 0 ? void 0 : _balance$order4.name) : null
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("span", {
+                className: "".concat(_BalancePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].n, " ") + (balance.type == "pay" ? _BalancePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].neg : balance.type == "withdraw" ? _BalancePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].med : balance.type == "get" ? _BalancePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].pos : null),
+                children: [balance.amount, "$"]
+              })]
+            }, key);
+          }
         }) : null
       })]
     })]
@@ -13855,7 +14763,7 @@ var ProfileSubPage = function ProfileSubPage(props) {
     _useState2 = _slicedToArray(_useState, 2),
     name = _useState2[0],
     setName = _useState2[1];
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(' '),
     _useState4 = _slicedToArray(_useState3, 2),
     bio = _useState4[0],
     setBio = _useState4[1];
@@ -13999,37 +14907,72 @@ var ProfileSubPage = function ProfileSubPage(props) {
     var api = axios__WEBPACK_IMPORTED_MODULE_3__["default"].create({
       baseURL: '/api'
     });
-    var socialLinks = links;
-    socialLinks.pop();
-    var gLinks = gameLinks;
-    gLinks.pop();
-    var data = new FormData();
-    data.append('name', name);
-    data.append('email', email);
-    data.append('bio', bio);
-    socialLinks.forEach(function (link) {
-      data.append('socialLinks[]', link);
-    });
-    gLinks.forEach(function (link) {
-      data.append('gameLinks[]', link.value + ',' + link.game);
-    });
-    data.append('img', img === null || img === void 0 ? void 0 : img.file);
-    api.post('/user/updateProfile', data, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    }).then(function (response) {
-      if (response.data.msg == "done") {
-        setUserProfile(response.data.user);
-        setUser({
-          name: response.data.user.name,
-          email: response.data.user.email,
-          bio: response.data.user.bio
+    if (!name) {
+      setAddNotification({
+        type: "danger",
+        msg: "Name can't be empty.",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
+    } else if (!email) {
+      setAddNotification({
+        type: "danger",
+        msg: "Email can't be empty.",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
+    } else {
+      var socialLinks = links;
+      socialLinks.pop();
+      var gLinks = gameLinks;
+      gLinks.pop();
+      var data = new FormData();
+      data.append('name', name);
+      data.append('email', email);
+      data.append('bio', bio);
+      socialLinks.forEach(function (link) {
+        data.append('socialLinks[]', link);
+      });
+      gLinks.forEach(function (link) {
+        data.append('gameLinks[]', link.value + ',' + link.game);
+      });
+      data.append('img', img === null || img === void 0 ? void 0 : img.file);
+      api.post('/user/updateProfile', data, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then(function (response) {
+        if (response.data.msg == "done") {
+          setUserProfile(response.data.user);
+          setUser({
+            name: response.data.user.name,
+            email: response.data.user.email,
+            bio: response.data.user.bio
+          });
+          setAddNotification({
+            type: "success",
+            msg: "Profile has been updated successfully.",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
+        } else {
+          setAddNotification({
+            type: "danger",
+            msg: "There is some problem while updating the profile. Please try again later.",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
+        }
+      })["catch"](function (error) {
+        setAddNotification({
+          type: "danger",
+          msg: "There is some problem",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
         });
-      }
-    })["catch"](function (error) {
-      console.error('Error fetching data:', error);
-    });
+        console.error('Error fetching data:', error);
+      });
+    }
   };
   var updateProfileImg = function updateProfileImg(e) {
     if (e.target.files[0]) {
@@ -14042,10 +14985,24 @@ var ProfileSubPage = function ProfileSubPage(props) {
     }
   };
   var changePassword = function changePassword() {
-    var api = axios__WEBPACK_IMPORTED_MODULE_3__["default"].create({
-      baseURL: '/api'
-    });
-    if (oldPassword && newPassword) {
+    if (!oldPassword) {
+      setAddNotification({
+        type: "danger",
+        msg: "Old password is required to update the password",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
+    } else if (!newPassword) {
+      setAddNotification({
+        type: "danger",
+        msg: "New password is required to update the password",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
+    } else {
+      var api = axios__WEBPACK_IMPORTED_MODULE_3__["default"].create({
+        baseURL: '/api'
+      });
       api.post('/user/updatePassword', {
         oldPassword: oldPassword,
         newPassword: newPassword
@@ -14055,6 +15012,12 @@ var ProfileSubPage = function ProfileSubPage(props) {
           setNewPassword("");
         }
       })["catch"](function (error) {
+        setAddNotification({
+          type: "danger",
+          msg: "There is some problem",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
         console.error('Error fetching data:', error);
       });
     }
@@ -14307,6 +15270,14 @@ var PurchasedItemsPage = function PurchasedItemsPage(props) {
     _useState2 = _slicedToArray(_useState, 2),
     orders = _useState2[0],
     setOrders = _useState2[1];
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(),
+    _useState4 = _slicedToArray(_useState3, 2),
+    completeOrder = _useState4[0],
+    setCompleteOrder = _useState4[1];
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(0),
+    _useState6 = _slicedToArray(_useState5, 2),
+    stars = _useState6[0],
+    setStars = _useState6[1];
   var variants = {
     initial: {
       opacity: 0
@@ -14338,11 +15309,17 @@ var PurchasedItemsPage = function PurchasedItemsPage(props) {
         setOrders([].concat(o));
       }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   }, []);
   var complete = function complete(id, e) {
-    var apiUrl = '/api/orders/buyerComplete/' + id; // Replace with your actual API endpoint
+    var apiUrl = '/api/orders/buyerComplete/' + id + '/' + stars; // Replace with your actual API endpoint
     axios__WEBPACK_IMPORTED_MODULE_3__["default"].get(apiUrl).then(function (response) {
       if (response.data.msg == "done") {
         setAddNotification({
@@ -14358,6 +15335,7 @@ var PurchasedItemsPage = function PurchasedItemsPage(props) {
           }
         });
         setOrders(_toConsumableArray(o));
+        setCompleteOrder();
       } else {
         setAddNotification({
           type: "danger",
@@ -14367,6 +15345,12 @@ var PurchasedItemsPage = function PurchasedItemsPage(props) {
         });
       }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   };
@@ -14396,6 +15380,12 @@ var PurchasedItemsPage = function PurchasedItemsPage(props) {
         });
       }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   };
@@ -14425,6 +15415,12 @@ var PurchasedItemsPage = function PurchasedItemsPage(props) {
         });
       }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   };
@@ -14434,7 +15430,92 @@ var PurchasedItemsPage = function PurchasedItemsPage(props) {
     initial: "initial",
     animate: "animate",
     exit: "exit",
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+    children: [completeOrder ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+      className: _PurchasedItemsPage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].popOver,
+      onClick: function onClick(e) {
+        setCompleteOrder();
+      },
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+        className: _PurchasedItemsPage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].pop,
+        onClick: function onClick(e) {
+          e.stopPropagation();
+        },
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h3", {
+          className: _PurchasedItemsPage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].title,
+          children: "What is your rating for this service?"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+          className: _PurchasedItemsPage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].stars,
+          children: Array.from({
+            length: 5
+          }, function () {
+            return undefined;
+          }).map(function (value, i) {
+            return i <= stars ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("svg", {
+              xmlns: "http://www.w3.org/2000/svg",
+              className: _PurchasedItemsPage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].star,
+              onClick: function onClick() {
+                setStars(i);
+              },
+              viewBox: "0 0 48 48",
+              width: "96px",
+              height: "96px",
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("linearGradient", {
+                id: "q0c2dLEp_4LHk~8cW2fATa",
+                x1: "9.009",
+                x2: "38.092",
+                y1: "6.36",
+                y2: "45.266",
+                gradientUnits: "userSpaceOnUse",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("stop", {
+                  offset: "0",
+                  stopColor: "#ffda1c"
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("stop", {
+                  offset: "1",
+                  stopColor: "#feb705"
+                })]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("path", {
+                fill: "url(#q0c2dLEp_4LHk~8cW2fATa)",
+                d: "M24.913,5.186l5.478,12.288l13.378,1.413c0.861,0.091,1.207,1.158,0.564,1.737l-9.993,9.005\tl2.791,13.161c0.18,0.847-0.728,1.506-1.478,1.074L24,37.141l-11.653,6.722c-0.75,0.432-1.657-0.227-1.478-1.074l2.791-13.161\tl-9.993-9.005c-0.643-0.579-0.296-1.646,0.564-1.737l13.378-1.413l5.478-12.288C23.439,4.395,24.561,4.395,24.913,5.186z"
+              })]
+            }, i) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("svg", {
+              xmlns: "http://www.w3.org/2000/svg",
+              className: _PurchasedItemsPage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].star,
+              onClick: function onClick() {
+                setStars(i);
+              },
+              viewBox: "0 0 48 48",
+              width: "96px",
+              height: "96px",
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("linearGradient", {
+                id: "q0c2dLEp_4LHk~8cW2fATb",
+                x1: "9.009",
+                x2: "38.092",
+                y1: "6.36",
+                y2: "45.266",
+                gradientUnits: "userSpaceOnUse",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("stop", {
+                  offset: "0",
+                  stopColor: "#fbe574"
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("stop", {
+                  offset: "1",
+                  stopColor: "#ffdb80"
+                })]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("path", {
+                fill: "url(#q0c2dLEp_4LHk~8cW2fATb)",
+                d: "M24.913,5.186l5.478,12.288l13.378,1.413c0.861,0.091,1.207,1.158,0.564,1.737l-9.993,9.005\tl2.791,13.161c0.18,0.847-0.728,1.506-1.478,1.074L24,37.141l-11.653,6.722c-0.75,0.432-1.657-0.227-1.478-1.074l2.791-13.161\tl-9.993-9.005c-0.643-0.579-0.296-1.646,0.564-1.737l13.378-1.413l5.478-12.288C23.439,4.395,24.561,4.395,24.913,5.186z"
+              })]
+            }, i);
+          })
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+          className: _PurchasedItemsPage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].form,
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+            className: _PurchasedItemsPage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].sendBtn,
+            onClick: complete.bind(_this, completeOrder),
+            children: "Send Rate"
+          })
+        })]
+      })
+    }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
       className: _PurchasedItemsPage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].block,
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h2", {
         className: _PurchasedItemsPage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].title,
@@ -14501,7 +15582,9 @@ var PurchasedItemsPage = function PurchasedItemsPage(props) {
                         return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.Fragment, {
                           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
                             className: "".concat(_PurchasedItemsPage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].btn, " ").concat(_PurchasedItemsPage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].success),
-                            onClick: complete.bind(_this, order.id),
+                            onClick: function onClick() {
+                              setCompleteOrder(order.id);
+                            },
                             children: "Complete"
                           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
                             className: "".concat(_PurchasedItemsPage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].btn, " ").concat(_PurchasedItemsPage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].danger),
@@ -14653,6 +15736,12 @@ var SoldItemsPage = function SoldItemsPage(props) {
         setOrders([].concat(o));
       }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   }, []);
@@ -14682,6 +15771,12 @@ var SoldItemsPage = function SoldItemsPage(props) {
         });
       }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   };
@@ -14986,6 +16081,12 @@ var Settings = function Settings(props) {
                 setCartAmount(response.data.cart.length);
               }
             })["catch"](function (error) {
+              setAddNotification({
+                type: "danger",
+                msg: "There is some problem",
+                time: 5000,
+                key: Math.floor(Math.random() * 10000)
+              });
               console.error('Error fetching data:', error);
             });
           } else if (response.data.message == "Unauthenticated.") {
@@ -14999,6 +16100,12 @@ var Settings = function Settings(props) {
         });
       }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       if (error.code == "ERR_BAD_REQUEST") {
         setAuth(false);
       }
@@ -15042,6 +16149,47 @@ var Settings = function Settings(props) {
   var handleCloseCart = function handleCloseCart() {
     setCartDisplayed(false);
   };
+  var openGamePage = function openGamePage(e) {
+    setCartDisplayed(false);
+    var selectedGameSurname = e.target.id;
+    window.location.href = "/game/".concat(selectedGameSurname);
+  };
+  var handleRemoveFromCart = function handleRemoveFromCart(id, key, e) {
+    e.stopPropagation();
+    var apiUrl = '/api/user/cart/remove/' + id; // Replace with your actual API endpoint
+    axios__WEBPACK_IMPORTED_MODULE_20__["default"].get(apiUrl).then(function (response) {
+      if (response.data.msg == "done") {
+        setCart(response.data.cart);
+        var c = cart.filter(function (cart_item) {});
+        setCartAmount(cartAmount - 1);
+        var s = shownGames;
+        s[key].inCart = false;
+        s[key].amount += 1;
+        setShownGames(_toConsumableArray(s));
+        setAddNotification({
+          type: "success",
+          msg: "Item was removed from the cart successfully.",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+      } else {
+        setAddNotification({
+          type: "danger",
+          msg: "There is some problem",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+      }
+    })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
+      console.error('Error fetching data:', error);
+    });
+  };
   var clearCart = function clearCart() {
     var apiUrl = '/api/user/cart/clear/'; // Replace with your actual API endpoint
     axios__WEBPACK_IMPORTED_MODULE_20__["default"].get(apiUrl).then(function (response) {
@@ -15050,33 +16198,30 @@ var Settings = function Settings(props) {
         setCartAmount(0);
         var s = shownGames;
         s.forEach(function (element) {
-          if (element.inCart) element.inCart = false;
+          if (element.inCart) {
+            element.inCart = false;
+            element.amount += 1;
+          }
+          ;
         });
         setShownGames(_toConsumableArray(s));
         console.log(s);
+        setAddNotification({
+          type: "success",
+          msg: "Cart is cleared successfully.",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
       }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
-  };
-  var handleRemoveFromCart = function handleRemoveFromCart(id, key, e) {
-    e.stopPropagation();
-    var apiUrl = '/api/user/cart/remove/' + id; // Replace with your actual API endpoint
-    axios__WEBPACK_IMPORTED_MODULE_20__["default"].get(apiUrl).then(function (response) {
-      setCart(response.data.cart);
-      var c = cart.filter(function (cart_item) {});
-      setCartAmount(cartAmount - 1);
-      var s = shownGames;
-      s[key].inCart = false;
-      setShownGames(_toConsumableArray(s));
-    })["catch"](function (error) {
-      console.error('Error fetching data:', error);
-    });
-  };
-  var openGamePage = function openGamePage(e) {
-    setCartDisplayed(false);
-    var selectedGameSurname = e.target.id;
-    window.location.href = "/game/".concat(selectedGameSurname);
   };
   var handleSearch = function handleSearch(e) {
     setSearch(e.target.value);
@@ -15104,8 +16249,20 @@ var Settings = function Settings(props) {
       if (response.data.msg = "done") {
         setUser(null);
         location.href = "/games";
+        setAddNotification({
+          type: "success",
+          msg: "You have logout successfully",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
       }
     })["catch"](function (error) {
+      setAddNotification({
+        type: "danger",
+        msg: "There is some problem",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
       console.error('Error fetching data:', error);
     });
   };
@@ -15260,7 +16417,8 @@ var Settings = function Settings(props) {
                     setUserProfile: setUserProfile,
                     auth: auth,
                     setAuth: setAuth,
-                    setUser: setUser
+                    setUser: setUser,
+                    setAddNotification: setAddNotification
                   });
                 case 'selling':
                   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_19__.jsx)(_Pages_SoldItemsPage_SoldItemsPage__WEBPACK_IMPORTED_MODULE_15__["default"], {
@@ -15384,21 +16542,71 @@ var Signup = function Signup(props) {
   };
   var submit = function submit(e) {
     e.preventDefault();
-    var apiUrl = '/api/register'; // Replace with your actual API endpoint
-    axios__WEBPACK_IMPORTED_MODULE_13__["default"].post(apiUrl, {
-      name: name,
-      email: email,
-      password: password,
-      password_confirmation: confirmPassword
-    }).then(function (response) {
-      if (response.data.msg == "done") {
-        location.href = "/games";
-      } else if (response.data.msg == "authAlready") {
-        location.href = "/games";
-      }
-    })["catch"](function (error) {
-      console.error('Error fetching data:', error);
-    });
+    var pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email) {
+      setAddNotification({
+        type: "danger",
+        msg: "Email is required",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
+    } else if (!pattern.test(email)) {
+      setAddNotification({
+        type: "danger",
+        msg: "Email is not valid",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
+    } else if (!name) {
+      setAddNotification({
+        type: "danger",
+        msg: "Name is required",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
+    } else if (!password) {
+      setAddNotification({
+        type: "danger",
+        msg: "Password is required",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
+    } else if (password !== confirmPassword) {
+      setAddNotification({
+        type: "danger",
+        msg: "Password doesn't match confirm password",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
+    } else {
+      var apiUrl = '/api/register'; // Replace with your actual API endpoint
+      axios__WEBPACK_IMPORTED_MODULE_13__["default"].post(apiUrl, {
+        name: name,
+        email: email,
+        password: password,
+        password_confirmation: confirmPassword
+      }).then(function (response) {
+        if (response.data.msg == "done") {
+          location.href = "/games";
+          setAddNotification({
+            type: "success",
+            msg: "You have registered successfully.",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
+        } else if (response.data.msg == "authAlready") {
+          location.href = "/games";
+          setAddNotification({
+            type: "normal",
+            msg: "You are already logged in",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
+        }
+      })["catch"](function (error) {
+        console.error('Error fetching data:', error);
+      });
+    }
   };
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.Fragment, {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Components_Notifications_Notifications__WEBPACK_IMPORTED_MODULE_11__["default"], {
@@ -19646,7 +20854,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "._3QnjCMCesoRC1ZHwhj10XQ\\=\\= {\r\n    margin: 0 50px;\r\n}\r\n\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= {\r\n    position: relative;\r\n    padding: 0 0 8px 0;\r\n    margin-bottom: 15px;\r\n}\r\n\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= > .sg7shg3aE6xS72lqDKRZeQ\\=\\= {\r\n    font-size: 1.6rem;\r\n    font-family: \"GT Medium\";\r\n    color: #f0f0f0;\r\n    padding-bottom: 10px;\r\n    border-bottom: 1px solid #333;\r\n}\r\n\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= {\r\n    padding: 15px 0;\r\n    display: flex;\r\n    flex-direction: column;\r\n}\r\n\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= {\r\n    display: flex;\r\n    gap: 10px;\r\n    align-items: center;\r\n    width: 100%;\r\n    margin-bottom: 15px;\r\n    justify-content: space-between;\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= {\r\n    color: #fff;\r\n    font-family: \"GT Medium\";\r\n    text-align: center;\r\n    display: flex;\r\n    gap: 15px;\r\n    align-items: center;\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .sg7shg3aE6xS72lqDKRZeQ\\=\\= {\r\n    font-size: 1.3rem;\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .rrN84KtNp0-4TPfhs7lXVw\\=\\= {\r\n    \r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .rrN84KtNp0-4TPfhs7lXVw\\=\\= img {\r\n    width: 70px;\r\n    height: 70px;\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .ikicinrMPPyD8CWWUXUM\\+w\\=\\= {\r\n    padding: 3px 5px;\r\n    font-family: \"GT Light\";\r\n    border-radius: 5px;\r\n    font-size: 0.9rem;\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .ikicinrMPPyD8CWWUXUM\\+w\\=\\=._54XJAHgQuki-THAe2q4HWQ\\=\\= {\r\n    background-color: #2980b9;\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .ikicinrMPPyD8CWWUXUM\\+w\\=\\=.\\-5GgG9ge6XKyAQK46H4lnQ\\=\\= {\r\n    background-color: #d35400;\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .ikicinrMPPyD8CWWUXUM\\+w\\=\\=.UPq7hx8WezWpTYfBR2kn8g\\=\\=,\r\n    ._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .ikicinrMPPyD8CWWUXUM\\+w\\=\\=.maCpGiux1vhctDNibastqg\\=\\= {\r\n    background-color: #007b24\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .ikicinrMPPyD8CWWUXUM\\+w\\=\\=.VLidgqa3hWHs5mOKBfKr8Q\\=\\=,\r\n    ._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .ikicinrMPPyD8CWWUXUM\\+w\\=\\=._2MwFrKQkEO-68AQKGUjgFw\\=\\= {\r\n    background-color: #f00\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .VNXkaoZBoLXPmMics8L92g\\=\\= {\r\n    display: flex;\r\n    gap: 10px;\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .VNXkaoZBoLXPmMics8L92g\\=\\= .E\\+v70uhoAzn7sRUGJ3JFew\\=\\= {\r\n    border: none;\r\n    outline: none;\r\n    padding: 5px;\r\n    cursor: pointer;\r\n    color: #fff;\r\n    font-family: \"GT Light\";\r\n    font-size: 1.1rem;\r\n    transition: all 0.5s ease-in-out;\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .VNXkaoZBoLXPmMics8L92g\\=\\= .E\\+v70uhoAzn7sRUGJ3JFew\\=\\=.j4JgjsfGwFI-Sca46iuR3Q\\=\\= {\r\n    background-color: #00a530\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .VNXkaoZBoLXPmMics8L92g\\=\\= .E\\+v70uhoAzn7sRUGJ3JFew\\=\\=.j4JgjsfGwFI-Sca46iuR3Q\\=\\=:hover {\r\n    background-color: #007b24\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .VNXkaoZBoLXPmMics8L92g\\=\\= .E\\+v70uhoAzn7sRUGJ3JFew\\=\\=.MQ8F-w3s9eTxTFpdE1DELw\\=\\= {\r\n    background-color: #e32700\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .VNXkaoZBoLXPmMics8L92g\\=\\= .E\\+v70uhoAzn7sRUGJ3JFew\\=\\=.MQ8F-w3s9eTxTFpdE1DELw\\=\\=:hover {\r\n    background-color: #b11e00\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .mlLReC1n0DZewlq8eNQ60A\\=\\= {\r\n    width: 100%;\r\n    text-align: center;\r\n    color: #eee;\r\n    font-size: 1.3rem;\r\n    font-family: \"GT Light\";\r\n}\r\n\r\n.\\-3GDfhnek1RnK7ppJlPjmg\\=\\= {\r\n    display: flex;\r\n    flex-wrap: wrap;\r\n    gap: 15px;\r\n}\r\n@media screen and (max-width: 700px) {\r\n    .\\-3GDfhnek1RnK7ppJlPjmg\\=\\= {\r\n        flex-direction: column;\r\n        align-items: center;\r\n    }\r\n    ._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= {\r\n        flex-direction: column;\r\n        align-items: center;\r\n    }\r\n    ._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= {\r\n        align-items: center;\r\n    }\r\n    ._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= {\r\n        margin-bottom: 10px;\r\n        padding-bottom: 10px;\r\n        position: relative;\r\n        justify-content: center;\r\n        flex-direction: column;\r\n    }\r\n    ._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\=::after {\r\n        position: absolute;\r\n        content: \"\";\r\n        left: 15%;\r\n        width: 70%;\r\n        height: 1px;\r\n        background-color: #333;\r\n        bottom: 0;\r\n    }\r\n    .\\-3GDfhnek1RnK7ppJlPjmg\\=\\= {\r\n        gap: 5px;\r\n    }\r\n}\r\n\r\n@media screen and (max-width: 600px) {\r\n    ._3QnjCMCesoRC1ZHwhj10XQ\\=\\= {\r\n        margin: 0 20px;\r\n    }\r\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "._3QnjCMCesoRC1ZHwhj10XQ\\=\\= {\r\n    margin: 0 50px;\r\n}\r\n\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= {\r\n    position: relative;\r\n    padding: 0 0 8px 0;\r\n    margin-bottom: 15px;\r\n}\r\n\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= > .sg7shg3aE6xS72lqDKRZeQ\\=\\= {\r\n    font-size: 1.6rem;\r\n    font-family: \"GT Medium\";\r\n    color: #f0f0f0;\r\n    padding-bottom: 10px;\r\n    border-bottom: 1px solid #333;\r\n}\r\n\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= {\r\n    padding: 15px 0;\r\n    display: flex;\r\n    flex-direction: column;\r\n}\r\n\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= {\r\n    display: flex;\r\n    gap: 10px;\r\n    align-items: center;\r\n    width: 100%;\r\n    margin-bottom: 15px;\r\n    justify-content: space-between;\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= {\r\n    color: #fff;\r\n    font-family: \"GT Medium\";\r\n    text-align: center;\r\n    display: flex;\r\n    gap: 15px;\r\n    align-items: center;\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .sg7shg3aE6xS72lqDKRZeQ\\=\\= {\r\n    font-size: 1.3rem;\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .rrN84KtNp0-4TPfhs7lXVw\\=\\= {\r\n    \r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .rrN84KtNp0-4TPfhs7lXVw\\=\\= img {\r\n    width: 70px;\r\n    height: 70px;\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .ikicinrMPPyD8CWWUXUM\\+w\\=\\= {\r\n    padding: 3px 5px;\r\n    font-family: \"GT Light\";\r\n    border-radius: 5px;\r\n    font-size: 0.9rem;\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .ikicinrMPPyD8CWWUXUM\\+w\\=\\=._54XJAHgQuki-THAe2q4HWQ\\=\\= {\r\n    background-color: #2980b9;\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .ikicinrMPPyD8CWWUXUM\\+w\\=\\=.\\-5GgG9ge6XKyAQK46H4lnQ\\=\\= {\r\n    background-color: #d35400;\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .ikicinrMPPyD8CWWUXUM\\+w\\=\\=.UPq7hx8WezWpTYfBR2kn8g\\=\\=,\r\n    ._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .ikicinrMPPyD8CWWUXUM\\+w\\=\\=.maCpGiux1vhctDNibastqg\\=\\= {\r\n    background-color: #007b24\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .ikicinrMPPyD8CWWUXUM\\+w\\=\\=.VLidgqa3hWHs5mOKBfKr8Q\\=\\=,\r\n    ._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .ikicinrMPPyD8CWWUXUM\\+w\\=\\=._2MwFrKQkEO-68AQKGUjgFw\\=\\= {\r\n    background-color: #f00\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .VNXkaoZBoLXPmMics8L92g\\=\\= {\r\n    display: flex;\r\n    gap: 10px;\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .VNXkaoZBoLXPmMics8L92g\\=\\= .E\\+v70uhoAzn7sRUGJ3JFew\\=\\= {\r\n    border: none;\r\n    outline: none;\r\n    padding: 5px;\r\n    cursor: pointer;\r\n    color: #fff;\r\n    font-family: \"GT Light\";\r\n    font-size: 1.1rem;\r\n    transition: all 0.5s ease-in-out;\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .VNXkaoZBoLXPmMics8L92g\\=\\= .E\\+v70uhoAzn7sRUGJ3JFew\\=\\=.j4JgjsfGwFI-Sca46iuR3Q\\=\\= {\r\n    background-color: #00a530\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .VNXkaoZBoLXPmMics8L92g\\=\\= .E\\+v70uhoAzn7sRUGJ3JFew\\=\\=.j4JgjsfGwFI-Sca46iuR3Q\\=\\=:hover {\r\n    background-color: #007b24\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .VNXkaoZBoLXPmMics8L92g\\=\\= .E\\+v70uhoAzn7sRUGJ3JFew\\=\\=.MQ8F-w3s9eTxTFpdE1DELw\\=\\= {\r\n    background-color: #e32700\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .VNXkaoZBoLXPmMics8L92g\\=\\= .E\\+v70uhoAzn7sRUGJ3JFew\\=\\=.MQ8F-w3s9eTxTFpdE1DELw\\=\\=:hover {\r\n    background-color: #b11e00\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .mlLReC1n0DZewlq8eNQ60A\\=\\= {\r\n    width: 100%;\r\n    text-align: center;\r\n    color: #eee;\r\n    font-size: 1.3rem;\r\n    font-family: \"GT Light\";\r\n}\r\n\r\n.\\-3GDfhnek1RnK7ppJlPjmg\\=\\= {\r\n    display: flex;\r\n    flex-wrap: wrap;\r\n    gap: 15px;\r\n}\r\n\r\n\r\n._6VO0X9LLkFuYDieQLpUBJw\\=\\= {\r\n    position: fixed;\r\n    top: 0;\r\n    left: 0;\r\n    bottom: 0;\r\n    right: 0;\r\n    background-color: #aaa7;\r\n    z-index: 20;\r\n}\r\n._6VO0X9LLkFuYDieQLpUBJw\\=\\= .DfLcdEw0UkYg3HPyNOgDtQ\\=\\= {\r\n    position: absolute;\r\n    top: 50%;\r\n    left: 50%;\r\n    transform: translate(-50%, -50%);\r\n    background-color: #0f1011;\r\n    padding: 15px;\r\n    border-radius: 5px;\r\n}\r\n._6VO0X9LLkFuYDieQLpUBJw\\=\\= .DfLcdEw0UkYg3HPyNOgDtQ\\=\\= .sg7shg3aE6xS72lqDKRZeQ\\=\\= {\r\n    color: #fff;\r\n    font-size: 1.5rem;\r\n    font-family: \"GT Bold\";\r\n    margin-bottom: 10px;\r\n    text-align: center;\r\n}\r\n._6VO0X9LLkFuYDieQLpUBJw\\=\\= .DfLcdEw0UkYg3HPyNOgDtQ\\=\\= .kFK9NBhippPoHXWSrn\\+LIw\\=\\= {\r\n    font-family: \"GT Medium\";\r\n    align-items: center;\r\n}\r\n\r\n.kFK9NBhippPoHXWSrn\\+LIw\\=\\=.LOTbc-tqKqwh-sobIScMrw\\=\\= {\r\n    flex-direction: column;\r\n    gap: 5px;\r\n    align-items: flex-start;\r\n}\r\n.kFK9NBhippPoHXWSrn\\+LIw\\=\\=.LOTbc-tqKqwh-sobIScMrw\\=\\= select {\r\n    width: 100%;\r\n    padding: 5px;\r\n}\r\n._6VO0X9LLkFuYDieQLpUBJw\\=\\= .DfLcdEw0UkYg3HPyNOgDtQ\\=\\= .mNn2wg52YrzmHE05WzXV\\+A\\=\\= .kFK9NBhippPoHXWSrn\\+LIw\\=\\= .MZ9UsTNsDwC7KihQOsfF0g\\=\\= {\r\n    display: flex;\r\n    gap: 3px;\r\n    flex-wrap: wrap;\r\n}\r\n._6VO0X9LLkFuYDieQLpUBJw\\=\\= .DfLcdEw0UkYg3HPyNOgDtQ\\=\\= .mNn2wg52YrzmHE05WzXV\\+A\\=\\= .kFK9NBhippPoHXWSrn\\+LIw\\=\\= .MZ9UsTNsDwC7KihQOsfF0g\\=\\= .P8E2glpflHe6TjMsAWspfQ\\=\\= {\r\n    color: #fff;\r\n    border-radius: 5px;\r\n    font-size: 0.9rem;\r\n    padding: 4px 5px;\r\n    font-family: \"GT LIGHT\";\r\n    display: flex;\r\n    gap: 5px;\r\n    align-items: center;\r\n}\r\n._6VO0X9LLkFuYDieQLpUBJw\\=\\= .DfLcdEw0UkYg3HPyNOgDtQ\\=\\= .mNn2wg52YrzmHE05WzXV\\+A\\=\\= .kFK9NBhippPoHXWSrn\\+LIw\\=\\= .MZ9UsTNsDwC7KihQOsfF0g\\=\\= .P8E2glpflHe6TjMsAWspfQ\\=\\= .QK-S6aJJNHlokMJNs0nU4A\\=\\= {\r\n    background-color:#e74c3c;\r\n    color: #fff;\r\n    border-radius: 50%;\r\n    padding: 5px;\r\n    display: flex;\r\n    justify-content: center;\r\n    align-items: center;\r\n    cursor: pointer;\r\n    transition: all 0.5s ease-in-out;\r\n    width: 17px;\r\n    height: 17px;\r\n}\r\n._6VO0X9LLkFuYDieQLpUBJw\\=\\= .DfLcdEw0UkYg3HPyNOgDtQ\\=\\= .mNn2wg52YrzmHE05WzXV\\+A\\=\\= .kFK9NBhippPoHXWSrn\\+LIw\\=\\= .MZ9UsTNsDwC7KihQOsfF0g\\=\\= .P8E2glpflHe6TjMsAWspfQ\\=\\= .QK-S6aJJNHlokMJNs0nU4A\\=\\=:hover {\r\n    background-color: #c0392b;\r\n}\r\n._6VO0X9LLkFuYDieQLpUBJw\\=\\= .DfLcdEw0UkYg3HPyNOgDtQ\\=\\= .mNn2wg52YrzmHE05WzXV\\+A\\=\\= .kFK9NBhippPoHXWSrn\\+LIw\\=\\= ._2i8U3JVLhRQccr6ubf5ILA\\=\\= {\r\n    flex: 1;\r\n    padding: 8px;\r\n    outline: none;\r\n    width: 100%;\r\n    background-color: #070707;\r\n    border: 1px solid #aaa;\r\n    color: #eee;\r\n    border-radius: 5px;\r\n}\r\n._6VO0X9LLkFuYDieQLpUBJw\\=\\= .DfLcdEw0UkYg3HPyNOgDtQ\\=\\= .mNn2wg52YrzmHE05WzXV\\+A\\=\\= .kFK9NBhippPoHXWSrn\\+LIw\\=\\= ._2i8U3JVLhRQccr6ubf5ILA\\=\\=:focus {\r\n    outline: none;\r\n    border: 2px solid #2980b9;\r\n}\r\n._6VO0X9LLkFuYDieQLpUBJw\\=\\= .DfLcdEw0UkYg3HPyNOgDtQ\\=\\= .mNn2wg52YrzmHE05WzXV\\+A\\=\\= .kFK9NBhippPoHXWSrn\\+LIw\\=\\=.n0cYEaJOfr7-SEzuTpfZ7g\\=\\= {\r\n    flex-direction: column;\r\n    justify-content: center;\r\n}\r\n.CNTMjIeO0rJ0qPvMswzK5w\\=\\= {\r\n    text-align: center;\r\n}\r\n.CNTMjIeO0rJ0qPvMswzK5w\\=\\= .ZJf6q3dmTtRrp-n4YkstLQ\\=\\= {\r\n    width: 40px;\r\n    height: 40px;\r\n}\r\n.T1acM-cOtOesO6KXlfWuqw\\=\\= {\r\n    width: 100%;\r\n    margin-top: 10px;\r\n    padding: 5px;\r\n    font-size: 1.1rem;\r\n    font-family: \"GT MEDIUM\";\r\n    border: none;\r\n    outline: none;\r\n    cursor: pointer;\r\n    color: #fff;\r\n    background-color: #27ae60;\r\n    transition: all 0.5s ease-in-out;\r\n}\r\n.T1acM-cOtOesO6KXlfWuqw\\=\\=:hover {\r\n    background-color: #27ae60;\r\n}\r\n\r\n@media screen and (max-width: 700px) {\r\n    .\\-3GDfhnek1RnK7ppJlPjmg\\=\\= {\r\n        flex-direction: column;\r\n        align-items: center;\r\n    }\r\n    ._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= {\r\n        flex-direction: column;\r\n        align-items: center;\r\n    }\r\n    ._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= {\r\n        align-items: center;\r\n    }\r\n    ._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= {\r\n        margin-bottom: 10px;\r\n        padding-bottom: 10px;\r\n        position: relative;\r\n        justify-content: center;\r\n        flex-direction: column;\r\n    }\r\n    ._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\=::after {\r\n        position: absolute;\r\n        content: \"\";\r\n        left: 15%;\r\n        width: 70%;\r\n        height: 1px;\r\n        background-color: #333;\r\n        bottom: 0;\r\n    }\r\n    .\\-3GDfhnek1RnK7ppJlPjmg\\=\\= {\r\n        gap: 5px;\r\n    }\r\n}\r\n\r\n@media screen and (max-width: 600px) {\r\n    ._3QnjCMCesoRC1ZHwhj10XQ\\=\\= {\r\n        margin: 0 20px;\r\n    }\r\n}", ""]);
 // Exports
 ___CSS_LOADER_EXPORT___.locals = {
 	"purchasedItemsPage": "_3QnjCMCesoRC1ZHwhj10XQ==",
@@ -19668,7 +20876,20 @@ ___CSS_LOADER_EXPORT___.locals = {
 	"success": "j4JgjsfGwFI-Sca46iuR3Q==",
 	"danger": "MQ8F-w3s9eTxTFpdE1DELw==",
 	"pl": "mlLReC1n0DZewlq8eNQ60A==",
-	"con": "-3GDfhnek1RnK7ppJlPjmg=="
+	"con": "-3GDfhnek1RnK7ppJlPjmg==",
+	"popOver": "_6VO0X9LLkFuYDieQLpUBJw==",
+	"pop": "DfLcdEw0UkYg3HPyNOgDtQ==",
+	"row": "kFK9NBhippPoHXWSrn+LIw==",
+	"genresRow": "LOTbc-tqKqwh-sobIScMrw==",
+	"form": "mNn2wg52YrzmHE05WzXV+A==",
+	"genres": "MZ9UsTNsDwC7KihQOsfF0g==",
+	"genre": "P8E2glpflHe6TjMsAWspfQ==",
+	"delete": "QK-S6aJJNHlokMJNs0nU4A==",
+	"input": "_2i8U3JVLhRQccr6ubf5ILA==",
+	"i": "n0cYEaJOfr7-SEzuTpfZ7g==",
+	"stars": "CNTMjIeO0rJ0qPvMswzK5w==",
+	"star": "ZJf6q3dmTtRrp-n4YkstLQ==",
+	"sendBtn": "T1acM-cOtOesO6KXlfWuqw=="
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

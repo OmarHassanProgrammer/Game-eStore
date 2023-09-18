@@ -59,6 +59,9 @@ class User extends Authenticatable
     public function socialLinks() {
         return $this->hasMany(SocialLink::class);
     }
+    public function rates() {
+        return $this->hasMany(Rate::class);
+    }
     public function gameLinks() {
         return $this->hasMany(GameLink::class);
     }

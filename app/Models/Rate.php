@@ -5,16 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Order extends Model
+class Rate extends Model
 {
     use HasFactory;
-    protected $fillable = ["item_id", "client_id", "status", "moneyPaid", "shipped_at"];
+    protected $fillable = ['stars', 'user_id', 'client_id'];
 
-    public function item() 
+    
+    public function user()
     {
-        return $this->belongsTo(Item::class, 'item_id');
+        return $this->belongsTo(User::class);
     }
-    public function client() 
+    
+    public function client()
     {
         return $this->belongsTo(User::class, 'client_id');
     }

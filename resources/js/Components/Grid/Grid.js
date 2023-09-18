@@ -64,6 +64,7 @@ const Grid = props => {
                 onlyAvailable={onlyAvailable}
                 minPrice={minPrice}
                 maxPrice={maxPrice}
+                
                 />
             }
         }) : shownGames.map((game, i) => {
