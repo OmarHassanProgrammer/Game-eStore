@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Chat;
+use App\Models\User;
 use App\Models\ClosedChat;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ChatNotification;
