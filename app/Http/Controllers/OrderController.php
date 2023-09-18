@@ -10,7 +10,7 @@ use App\Models\Order;
 use App\Models\User;
 use App\Models\Item;
 use App\Models\Rate;
-use srmklive\paypal\Services\PayPal as PayPalClient;
+use Srmklive\PayPal\Services\PayPal as PayPalClient;
 
 class OrderController extends Controller
 {
