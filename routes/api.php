@@ -106,6 +106,7 @@ Route::prefix('/user')->group(function () {
 Route::prefix('/chat')->group(function () {
     Route::post('/send', [ChatController::class, 'sendMsg']);
     Route::get('/get/{id}', [ChatController::class, 'getChat']);
+    Route::get('/getNewChats', [ChatController::class, 'getNewChats']);
     Route::get('/getAdmin/{id}', [ChatController::class, 'getChatAdmin'])->middleware('auth:sanctum', 'admin');
     Route::get('/close/{id}', [ChatController::class, 'close'])->middleware('auth:sanctum', 'admin');
     Route::get('/open/{id}', [ChatController::class, 'open'])->middleware('auth:sanctum', 'admin');

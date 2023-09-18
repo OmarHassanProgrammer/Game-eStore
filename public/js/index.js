@@ -5574,29 +5574,43 @@ var Chat = function Chat(props) {
     } else {
       var _localStorage$getItem;
       var ids = (_localStorage$getItem = localStorage.getItem('people')) === null || _localStorage$getItem === void 0 ? void 0 : _localStorage$getItem.split(',');
-      if (ids && ids.length != 0) {
-        var apiUrl = '/api/user/gdata'; // Replace with your actual API endpoint
-        axios__WEBPACK_IMPORTED_MODULE_7__["default"].post(apiUrl, {
-          ids: ids
-        }).then(function (response) {
-          if (response.data.msg = "done") {
-            setPeople(response.data.people);
-          }
-        })["catch"](function (error) {
-          setAddNotification({
-            type: "danger",
-            msg: "There is some problem",
-            time: 5000,
-            key: Math.floor(Math.random() * 10000)
+      var apiUrl = '/api/chat/getNewChats'; // Replace with your actual API endpoint
+      axios__WEBPACK_IMPORTED_MODULE_7__["default"].get(apiUrl).then(function (response) {
+        if (response.data.msg = "done") {
+          ids = [].concat(_toConsumableArray(ids), _toConsumableArray(response.data.newChats));
+        }
+        if (ids && ids.length != 0) {
+          var _apiUrl = '/api/user/gdata'; // Replace with your actual API endpoint
+          axios__WEBPACK_IMPORTED_MODULE_7__["default"].post(_apiUrl, {
+            ids: ids
+          }).then(function (response) {
+            if (response.data.msg = "done") {
+              setPeople(response.data.people);
+            }
+          })["catch"](function (error) {
+            setAddNotification({
+              type: "danger",
+              msg: "There is some problem",
+              time: 5000,
+              key: Math.floor(Math.random() * 10000)
+            });
+            console.error('Error fetching data:', error);
           });
-          console.error('Error fetching data:', error);
+        }
+        var a = localStorage.getItem('activeChat');
+        if (a) {
+          setActiveChat(a);
+          loadChat(a);
+        }
+      })["catch"](function (error) {
+        setAddNotification({
+          type: "danger",
+          msg: "There is some problem",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
         });
-      }
-      var a = localStorage.getItem('activeChat');
-      if (a) {
-        setActiveChat(a);
-        loadChat(a);
-      }
+        console.error('Error fetching data:', error);
+      });
     }
   }, []);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('to');
             $table->unsignedBigInteger('from');
             $table->string('msg');
+            $table->dateTime('seen_at')->nullable();
             $table->timestamps();
         });
     }

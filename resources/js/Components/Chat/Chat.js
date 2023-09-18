@@ -119,32 +119,49 @@ setAddNotification({
             localStorage.removeItem('adminChat');
         } else {
             let ids = localStorage.getItem('people')?.split(',');
-            if(ids && ids.length != 0) {
-                const apiUrl = '/api/user/gdata'; // Replace with your actual API endpoint
-                axios.post(apiUrl, {
-                    ids
-                })
-                .then(response => {
-                    if(response.data.msg = "done") {
-                        setPeople(response.data.people);
-                    }
-                })
-                .catch(error => {
-setAddNotification({
-            type: "danger",
-            msg: "There is some problem",
-            time: 5000,
-            key: Math.floor(Math.random() * 10000)
-          });
-                console.error('Error fetching data:', error);
+            const apiUrl = '/api/chat/getNewChats'; // Replace with your actual API endpoint
+            axios.get(apiUrl)
+            .then(response => {
+                if(response.data.msg = "done") {
+                    ids = [...ids, ...response.data.newChats];
+                }
+                if(ids && ids.length != 0) {
+                    const apiUrl = '/api/user/gdata'; // Replace with your actual API endpoint
+                    axios.post(apiUrl, {
+                        ids
+                    })
+                    .then(response => {
+                        if(response.data.msg = "done") {
+                            setPeople(response.data.people);
+                        }
+                    })
+                    .catch(error => {
+                        setAddNotification({
+                            type: "danger",
+                            msg: "There is some problem",
+                            time: 5000,
+                            key: Math.floor(Math.random() * 10000)
+                        });
+                        console.error('Error fetching data:', error);
+                    });
+                }
+                let a = localStorage.getItem('activeChat');
+                if(a) {
+                    setActiveChat(a);
+        
+                    loadChat(a);
+                }
+            })
+            .catch(error => {
+                setAddNotification({
+                    type: "danger",
+                    msg: "There is some problem",
+                    time: 5000,
+                    key: Math.floor(Math.random() * 10000)
                 });
-            }
-            let a = localStorage.getItem('activeChat');
-            if(a) {
-                setActiveChat(a);
-    
-                loadChat(a);
-            }
+                console.error('Error fetching data:', error);
+            });
+            
         }
     }, []);
 

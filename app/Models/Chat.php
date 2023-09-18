@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Chat extends Model
 {
     use HasFactory;
-    protected $fillable = ['to', 'from', 'msg'];
+    protected $fillable = ['to', 'from', 'msg', 'seen_at'];
 
     public function to() {
         return this->belongsTo(User::class, 'to');

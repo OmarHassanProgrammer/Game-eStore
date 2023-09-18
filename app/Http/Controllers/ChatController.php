@@ -26,10 +26,23 @@ class ChatController extends Controller
         }
     }
 
+    public function getNewChats() {
+        $unseenMessages = Chat::where("to", Auth::user()->id)->whereNull('seen_at')->distinct()->pluck('from');
+
+        return response()->json(['msg' => 'done', 'newChats' => $unseenMessages]);
+    }
+
     public function getChat($id) {
         $chat = Chat::where("to", Auth::user()->id)->where("from", $id)
                             ->orWhere("from", Auth::user()->id)->where("to", $id)->get();
         
+        $unseenMessages = Chat::where("to", Auth::user()->id)->where("from", $id)->whereNull('seen_at')->get();
+        foreach ($unseenMessages as $key => $msg) {
+            $msg->update([
+                "seen_at" => now()
+            ]);
+        }
+
         $closed = ClosedChat::where("to", Auth::user()->id)->where("from", $id)
             ->orWhere("from", Auth::user()->id)->where("to", $id)->get();
 
