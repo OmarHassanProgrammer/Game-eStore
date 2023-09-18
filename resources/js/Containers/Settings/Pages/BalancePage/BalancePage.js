@@ -11,6 +11,7 @@ const BalancePage = props => {
     const [profit, setProfit] = useState(0);
     const [pending, setPending] = useState(0);
     const [usableMoney, setUsableMoney] = useState(0);
+    const [sending, setSending] = useState(false);
 
     const variants = {
         initial: { opacity: 0 },
@@ -19,38 +20,44 @@ const BalancePage = props => {
     }
 
     const withdrawMoney = () => {
-      let api = axios.create({
-        baseURL: '/api'
-      });
-      
-      api.get('/orders/withdraw')
-        .then(response => {
-          if(response.data.msg == "done") {
+      if(!sending) {
+        setSending(true);
+        let api = axios.create({
+          baseURL: '/api'
+        });
+        
+        api.get('/orders/withdraw')
+          .then(response => {
+            if(response.data.msg == "done") {
+              addNotification({
+                type: 'success',
+                msg: "The money have been withdrawn successfully. Check your account",
+                time: 5000
+              });
+              setSending(false);
+            } else if (response.data.msg == "not") {
+              addNotification({
+                type: 'danger',
+                msg: "There was a aproblem while withdrawing the money. Try again later",
+                time: 5000
+              });
+              setSending(false);
+            }
+          })
+          .catch(error => {
             addNotification({
-              type: 'success',
-              msg: "The money have been withdrawn successfully. Check your account",
-              time: 5000
+              type: "danger",
+              msg: "There is some problem",
+              time: 5000,
+              key: Math.floor(Math.random() * 10000)
             });
-          } else if (response.data.msg == "not") {
-            addNotification({
-              type: 'danger',
-              msg: "There was a aproblem while withdrawing the money. Try again later",
-              time: 5000
-            });
-          }
-        })
-        .catch(error => {
-addNotification({
-            type: "danger",
-            msg: "There is some problem",
-            time: 5000,
-            key: Math.floor(Math.random() * 10000)
-          });
-          if(error.code == "ERR_BAD_REQUEST") {
-            setAuth(false);
-          }
-          console.error('Error fetching data:', error);
-        });  
+            setSending(false);
+            if(error.code == "ERR_BAD_REQUEST") {
+              setAuth(false);
+            }
+            console.error('Error fetching data:', error);
+          });  
+      }
     }
 
     const info = () => {

@@ -5491,6 +5491,10 @@ var Chat = function Chat(props) {
     _useState16 = _slicedToArray(_useState15, 2),
     chatClosed = _useState16[0],
     setChatClosed = _useState16[1];
+  var _useState17 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+    _useState18 = _slicedToArray(_useState17, 2),
+    sending = _useState18[0],
+    setSending = _useState18[1];
   var divRef = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)(null);
   var scrollToBottom = function scrollToBottom() {
     if (divRef.current) {
@@ -5520,7 +5524,7 @@ var Chat = function Chat(props) {
     axios__WEBPACK_IMPORTED_MODULE_7__["default"].post(apiUrl, {
       ids: ids.split(',')
     }).then(function (response) {
-      if (response.data.msg = "done") {
+      if (response.data.msg == "done") {
         localStorage.setItem('people', ids);
         setPeople(_toConsumableArray(response.data.people));
         setFirstPerson(ids.split(',')[0]);
@@ -5552,7 +5556,7 @@ var Chat = function Chat(props) {
       axios__WEBPACK_IMPORTED_MODULE_7__["default"].post(apiUrl, {
         ids: [id]
       }).then(function (response) {
-        if (response.data.msg = "done") {
+        if (response.data.msg == "done") {
           localStorage.setItem('people', localStorage.getItem('people') ? localStorage.getItem('people') + ',' + id : id);
           if (people) setPeople([].concat(_toConsumableArray(people), [response.data.people[0]]));else setPeople([response.data.people[0]]);
           changeChat(id);
@@ -5575,17 +5579,26 @@ var Chat = function Chat(props) {
     } else {
       var _localStorage$getItem;
       var ids = (_localStorage$getItem = localStorage.getItem('people')) === null || _localStorage$getItem === void 0 ? void 0 : _localStorage$getItem.split(',');
+      var newActiveChat;
       var apiUrl = '/api/chat/getNewChats'; // Replace with your actual API endpoint
       axios__WEBPACK_IMPORTED_MODULE_7__["default"].get(apiUrl).then(function (response) {
-        if (response.data.msg = "done") {
-          ids = [].concat(_toConsumableArray(ids), _toConsumableArray(response.data.newChats));
+        if (response.data.msg == "done") {
+          if (response.data.newChats.length > 0) {
+            localStorage.setItem("activeChat", response.data.newChats[0]);
+            localStorage.setItem("people", response.data.newChats.join(','));
+          }
+          if (ids && ids.length != 0) {
+            ids = [].concat(_toConsumableArray(ids), _toConsumableArray(response.data.newChats));
+          } else {
+            ids = response.data.newChats;
+          }
         }
         if (ids && ids.length != 0) {
           var _apiUrl = '/api/user/gdata'; // Replace with your actual API endpoint
           axios__WEBPACK_IMPORTED_MODULE_7__["default"].post(_apiUrl, {
             ids: ids
           }).then(function (response) {
-            if (response.data.msg = "done") {
+            if (response.data.msg == "done") {
               setPeople(response.data.people);
             }
           })["catch"](function (error) {
@@ -5602,6 +5615,9 @@ var Chat = function Chat(props) {
         if (a) {
           setActiveChat(a);
           loadChat(a);
+        } else if (newActiveChat) {
+          setActiveChat(newActiveChat);
+          loadChat(newActiveChat);
         }
       })["catch"](function (error) {
         setAddNotification({
@@ -5622,7 +5638,7 @@ var Chat = function Chat(props) {
   var loadAdminChat = function loadAdminChat(a) {
     var apiUrl = '/api/chat/getAdmin/' + a.replace(',', '-'); // Replace with your actual API endpoint
     axios__WEBPACK_IMPORTED_MODULE_7__["default"].get(apiUrl).then(function (response) {
-      if (response.data.msg = "done") {
+      if (response.data.msg == "done") {
         setChat(response.data.chat);
         setChatClosed(response.data.closed);
         scrollToBottom();
@@ -5642,31 +5658,36 @@ var Chat = function Chat(props) {
     if (localStorage.getItem("adminChat")) {
       loadAdminChat(localStorage.getItem("people").split(',')[0] + ',' + localStorage.getItem("people").split(',')[1]);
     } else {
-      var ac = localStorage.getItem("activeChat");
-      if (ac || a) {
-        if (!a) {
-          a = ac;
-        }
-        var apiUrl = '/api/chat/get/' + a; // Replace with your actual API endpoint
-        axios__WEBPACK_IMPORTED_MODULE_7__["default"].get(apiUrl).then(function (response) {
-          if (response.data.msg = "done") {
-            setChatClosed(response.data.closed);
-            setChat(response.data.chat);
-            scrollToBottom();
-            if (change) {
-              setActiveChat(a);
-              localStorage.setItem("activeChat", a);
-            }
+      var _localStorage$getItem2;
+      if ((_localStorage$getItem2 = localStorage.getItem("people")) !== null && _localStorage$getItem2 !== void 0 && _localStorage$getItem2.includes(localStorage.getItem("activeChat"))) {
+        var ac = localStorage.getItem("activeChat");
+        if (ac || a) {
+          if (!a) {
+            a = ac;
           }
-        })["catch"](function (error) {
-          setAddNotification({
-            type: "danger",
-            msg: "There is some problem",
-            time: 5000,
-            key: Math.floor(Math.random() * 10000)
+          var apiUrl = '/api/chat/get/' + a; // Replace with your actual API endpoint
+          axios__WEBPACK_IMPORTED_MODULE_7__["default"].get(apiUrl).then(function (response) {
+            if (response.data.msg == "done") {
+              setChatClosed(response.data.closed);
+              setChat(response.data.chat);
+              scrollToBottom();
+              if (change) {
+                setActiveChat(a);
+                localStorage.setItem("activeChat", a);
+              }
+            }
+          })["catch"](function (error) {
+            setAddNotification({
+              type: "danger",
+              msg: "There is some problem",
+              time: 5000,
+              key: Math.floor(Math.random() * 10000)
+            });
+            console.error('Error fetching data:', error);
           });
-          console.error('Error fetching data:', error);
-        });
+        }
+      } else {
+        localStorage.removeItem("activeChat");
       }
     }
   };
@@ -5681,6 +5702,7 @@ var Chat = function Chat(props) {
   };
   var sendMsg = function sendMsg() {
     var apiUrl = '/api/chat/send'; // Replace with your actual API endpoint
+    setSending(true);
     axios__WEBPACK_IMPORTED_MODULE_7__["default"].post(apiUrl, {
       id: activeChat,
       msg: msg
@@ -5688,6 +5710,7 @@ var Chat = function Chat(props) {
       if (response.data.msg == "done") {
         setChat([].concat(_toConsumableArray(chat), [response.data.message]));
       }
+      setSending(false);
     })["catch"](function (error) {
       setAddNotification({
         type: "danger",
@@ -5696,6 +5719,7 @@ var Chat = function Chat(props) {
         key: Math.floor(Math.random() * 10000)
       });
       console.error('Error fetching data:', error);
+      setSending(false);
     });
     setMsg("");
   };
@@ -5748,7 +5772,7 @@ var Chat = function Chat(props) {
   var openChatAdmin = function openChatAdmin() {
     var apiUrl = '/api/chat/open/' + people[0].id + '-' + people[1].id; // Replace with your actual API endpoint
     axios__WEBPACK_IMPORTED_MODULE_7__["default"].get(apiUrl).then(function (response) {
-      if (response.data.msg = "done") {
+      if (response.data.msg == "done") {
         setChatClosed(0);
       }
     })["catch"](function (error) {
@@ -5764,7 +5788,7 @@ var Chat = function Chat(props) {
   var closeChatAdmin = function closeChatAdmin() {
     var apiUrl = '/api/chat/close/' + people[0].id + '-' + people[1].id; // Replace with your actual API endpoint
     axios__WEBPACK_IMPORTED_MODULE_7__["default"].get(apiUrl).then(function (response) {
-      if (response.data.msg = "done") {
+      if (response.data.msg == "done") {
         setChatClosed(1);
       }
     })["catch"](function (error) {
@@ -5885,6 +5909,7 @@ var Chat = function Chat(props) {
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
               className: _Chat_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].send,
               onClick: sendMsg,
+              disabled: sending,
               children: '>'
             })]
           })
@@ -6919,12 +6944,6 @@ var Notifications = function Notifications(props) {
         localStorage.setItem("notifications", localSN.slice(0, localSN.length - 1));
       }
     })["catch"](function (error) {
-      setAddNotification({
-        type: "danger",
-        msg: "There is some problem",
-        time: 5000,
-        key: Math.floor(Math.random() * 10000)
-      });
       console.error('Error fetching data:', error);
     });
   }, []);
@@ -7506,7 +7525,7 @@ var Admin = function Admin(props) {
       baseURL: '/api'
     });
     api.post('/logout').then(function (response) {
-      if (response.data.msg = "done") {
+      if (response.data.msg == "done") {
         setUser(null);
         location.href = "/games";
         setAddNotification({
@@ -7964,6 +7983,10 @@ var GamesPage = function GamesPage(props) {
     _useState20 = _slicedToArray(_useState19, 2),
     selectedGenres = _useState20[0],
     setSelectedGenres = _useState20[1];
+  var _useState21 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+    _useState22 = _slicedToArray(_useState21, 2),
+    sending = _useState22[0],
+    setSending = _useState22[1];
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
     var apiUrl = '/api/genres/getAll'; // Replace with your actual API endpoint
     axios__WEBPACK_IMPORTED_MODULE_4__["default"].get(apiUrl).then(function (response) {
@@ -8017,6 +8040,7 @@ var GamesPage = function GamesPage(props) {
     });
   };
   var addGame = function addGame() {
+    setSending(true);
     var api = axios__WEBPACK_IMPORTED_MODULE_4__["default"].create({
       baseURL: '/api'
     });
@@ -8041,6 +8065,7 @@ var GamesPage = function GamesPage(props) {
         });
         setGames([].concat(_toConsumableArray(games), [response.data.game]));
         setAdd("");
+        setSending(false);
       } else if (response.data.msg == "nogame") {
         setAddNotification({
           key: Math.floor(Math.random() * 10000),
@@ -8048,6 +8073,15 @@ var GamesPage = function GamesPage(props) {
           time: 3000,
           type: "error"
         });
+        setSending(false);
+      } else {
+        setAddNotification({
+          key: Math.floor(Math.random() * 10000),
+          msg: "There is some problem while adding the game please try again later.",
+          time: 3000,
+          type: "error"
+        });
+        setSending(false);
       }
     })["catch"](function (error) {
       setAddNotification({
@@ -8056,10 +8090,12 @@ var GamesPage = function GamesPage(props) {
         time: 5000,
         key: Math.floor(Math.random() * 10000)
       });
+      setSending(false);
       console.error('Error fetching data:', error);
     });
   };
   var addCategory = function addCategory() {
+    setSending(true);
     var api = axios__WEBPACK_IMPORTED_MODULE_4__["default"].create({
       baseURL: '/api'
     });
@@ -8081,6 +8117,7 @@ var GamesPage = function GamesPage(props) {
         });
         setCategories([].concat(_toConsumableArray(categories), [response.data.category]));
         setAdd("");
+        setSending(false);
       } else if (response.data.msg == "nocategory") {
         setAddNotification({
           key: Math.floor(Math.random() * 10000),
@@ -8088,6 +8125,15 @@ var GamesPage = function GamesPage(props) {
           time: 3000,
           type: "error"
         });
+        setSending(false);
+      } else {
+        setAddNotification({
+          key: Math.floor(Math.random() * 10000),
+          msg: "There is some problem while adding the category please try again later.",
+          time: 3000,
+          type: "error"
+        });
+        setSending(false);
       }
     })["catch"](function (error) {
       setAddNotification({
@@ -8096,10 +8142,12 @@ var GamesPage = function GamesPage(props) {
         time: 5000,
         key: Math.floor(Math.random() * 10000)
       });
+      setSending(false);
       console.error('Error fetching data:', error);
     });
   };
   var deleteGame = function deleteGame() {
+    setSending(true);
     var api = axios__WEBPACK_IMPORTED_MODULE_4__["default"].create({
       baseURL: '/api'
     });
@@ -8121,6 +8169,15 @@ var GamesPage = function GamesPage(props) {
         setGames(_toConsumableArray(g));
         setDeleteId();
         setClose("");
+        setSending(false);
+      } else {
+        setAddNotification({
+          key: Math.floor(Math.random() * 10000),
+          msg: "There is some problem while deleting the game please try again later.",
+          time: 3000,
+          type: "error"
+        });
+        setSending(false);
       }
     })["catch"](function (error) {
       setAddNotification({
@@ -8129,6 +8186,7 @@ var GamesPage = function GamesPage(props) {
         time: 5000,
         key: Math.floor(Math.random() * 10000)
       });
+      setSending(false);
       console.error('Error fetching data:', error);
     });
   };
@@ -8136,6 +8194,7 @@ var GamesPage = function GamesPage(props) {
     var api = axios__WEBPACK_IMPORTED_MODULE_4__["default"].create({
       baseURL: '/api'
     });
+    setSending(true);
     api.post('/categories/delete/' + deleteId, {}, {
       headers: {
         'Content-Type': 'multipart/form-data'
@@ -8154,6 +8213,15 @@ var GamesPage = function GamesPage(props) {
         setCategories(_toConsumableArray(g));
         setDeleteId();
         setClose("");
+        setSending(false);
+      } else {
+        setAddNotification({
+          key: Math.floor(Math.random() * 10000),
+          msg: "There is some problem while deleting the category please try again later.",
+          time: 3000,
+          type: "error"
+        });
+        setSending(false);
       }
     })["catch"](function (error) {
       setAddNotification({
@@ -8162,6 +8230,7 @@ var GamesPage = function GamesPage(props) {
         time: 5000,
         key: Math.floor(Math.random() * 10000)
       });
+      setSending(false);
       console.error('Error fetching data:', error);
     });
   };
@@ -8354,6 +8423,7 @@ var GamesPage = function GamesPage(props) {
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
             className: _GamesPage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].save,
             onClick: addGame,
+            disabled: sending,
             children: "Save"
           })]
         })]
@@ -8411,6 +8481,7 @@ var GamesPage = function GamesPage(props) {
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
             className: _GamesPage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].save,
             onClick: addCategory,
+            disabled: sending,
             children: "Save"
           })]
         })]
@@ -8433,6 +8504,7 @@ var GamesPage = function GamesPage(props) {
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
             className: _GamesPage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].del,
             onClick: deleteGame,
+            disabled: sending,
             children: "delete"
           })
         })]
@@ -8455,6 +8527,7 @@ var GamesPage = function GamesPage(props) {
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
             className: _GamesPage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].del,
             onClick: deleteCategory,
+            disabled: sending,
             children: "delete"
           })
         })]
@@ -9940,7 +10013,7 @@ function Browse(props) {
       baseURL: '/api'
     });
     api.post('/logout').then(function (response) {
-      if (response.data.msg = "done") {
+      if (response.data.msg == "done") {
         setUser(null);
         setAddNotification({
           type: "success",
@@ -10776,6 +10849,10 @@ var Checkout = function Checkout(props) {
     _useState28 = _slicedToArray(_useState27, 2),
     addNotification = _useState28[0],
     setAddNotification = _useState28[1];
+  var _useState29 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+    _useState30 = _slicedToArray(_useState29, 2),
+    sending = _useState30[0],
+    setSending = _useState30[1];
   var firstUpdate = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)(true);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useLayoutEffect)(function () {
     if (firstUpdate.current) {
@@ -10858,7 +10935,7 @@ var Checkout = function Checkout(props) {
       baseURL: '/api'
     });
     api.post('/logout').then(function (response) {
-      if (response.data.msg = "done") {
+      if (response.data.msg == "done") {
         setUser(null);
         setAddNotification({
           type: "success",
@@ -10914,15 +10991,24 @@ var Checkout = function Checkout(props) {
     });
   };
   var orderCart = function orderCart() {
+    setSending(true);
     var api = axios__WEBPACK_IMPORTED_MODULE_16__["default"].create({
       baseURL: '/api'
     });
     api.post('/user/cart/order').then(function (response) {
-      if (response.data.msg = "done") {
+      if (response.data.msg == "done") {
         setCart([]);
         setCartAmount(0);
         //location.href = "/settings?page=purchase";
         location = response.data.payment.approvalUrl;
+      } else {
+        setAddNotification({
+          type: "danger",
+          msg: "There is some problem while ordering.",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+        setSending(false);
       }
     })["catch"](function (error) {
       setAddNotification({
@@ -10931,6 +11017,7 @@ var Checkout = function Checkout(props) {
         time: 5000,
         key: Math.floor(Math.random() * 10000)
       });
+      setSending(false);
       console.error('Error fetching data:', error);
     });
   };
@@ -11035,6 +11122,7 @@ var Checkout = function Checkout(props) {
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("button", {
             className: _Checkout_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].pay,
             onClick: orderCart,
+            disabled: sending,
             children: "Pay with PayPal"
           })]
         })]
@@ -11171,6 +11259,10 @@ var Contactus = function Contactus(props) {
     _useState32 = _slicedToArray(_useState31, 2),
     name = _useState32[0],
     setName = _useState32[1];
+  var _useState33 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+    _useState34 = _slicedToArray(_useState33, 2),
+    sending = _useState34[0],
+    setSending = _useState34[1];
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
     var api = axios__WEBPACK_IMPORTED_MODULE_16__["default"].create({
       baseURL: '/api'
@@ -11298,7 +11390,7 @@ var Contactus = function Contactus(props) {
       baseURL: '/api'
     });
     api.post('/logout').then(function (response) {
-      if (response.data.msg = "done") {
+      if (response.data.msg == "done") {
         setUser(null);
         setAddNotification({
           type: "success",
@@ -11320,6 +11412,7 @@ var Contactus = function Contactus(props) {
   var send = function send(e) {
     e.stopPropagation();
     e.preventDefault();
+    setSending(true);
     var api = axios__WEBPACK_IMPORTED_MODULE_16__["default"].create({
       baseURL: '/api'
     });
@@ -11328,7 +11421,7 @@ var Contactus = function Contactus(props) {
       email: email,
       msg: msg
     }).then(function (response) {
-      if (response.data.msg = "done") {
+      if (response.data.msg == "done") {
         setName("");
         setEmail("");
         setMsg("");
@@ -11338,6 +11431,18 @@ var Contactus = function Contactus(props) {
           time: 5000,
           key: Math.floor(Math.random() * 10000)
         });
+        setSending(false);
+      } else {
+        setName("");
+        setEmail("");
+        setMsg("");
+        setAddNotification({
+          type: "danger",
+          msg: "There was some problem while sending the message. Please try again later.",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+        setSending(false);
       }
     })["catch"](function (error) {
       setAddNotification({
@@ -11346,6 +11451,7 @@ var Contactus = function Contactus(props) {
         time: 5000,
         key: Math.floor(Math.random() * 10000)
       });
+      setSending(false);
       console.error('Error fetching data:', error);
     });
   };
@@ -11417,6 +11523,7 @@ var Contactus = function Contactus(props) {
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("button", {
               className: _Contactus_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].btn,
               onClick: send,
+              disabled: sending,
               children: "Send"
             })]
           })]
@@ -11683,7 +11790,7 @@ var GamePage = function GamePage(props) {
       baseURL: '/api'
     });
     api.post('/logout').then(function (response) {
-      if (response.data.msg = "done") {
+      if (response.data.msg == "done") {
         setUser(null);
       }
     })["catch"](function (error) {
@@ -12537,7 +12644,7 @@ function Home(props) {
       baseURL: '/api'
     });
     api.post('/logout').then(function (response) {
-      if (response.data.msg = "done") {
+      if (response.data.msg == "done") {
         setUser(null);
       }
     })["catch"](function (error) {
@@ -13192,7 +13299,7 @@ var ListItem = function ListItem(props) {
       baseURL: '/api'
     });
     api.post('/logout').then(function (response) {
-      if (response.data.msg = "done") {
+      if (response.data.msg == "done") {
         setUser(null);
       }
     })["catch"](function (error) {
@@ -13672,6 +13779,10 @@ var Login = function Login(props) {
     _useState8 = _slicedToArray(_useState7, 2),
     counter = _useState8[0],
     setCounter = _useState8[1];
+  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+    _useState10 = _slicedToArray(_useState9, 2),
+    sending = _useState10[0],
+    setSending = _useState10[1];
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
     var api = axios__WEBPACK_IMPORTED_MODULE_13__["default"].create({
       baseURL: '/api'
@@ -13696,6 +13807,7 @@ var Login = function Login(props) {
   var submit = function submit(e) {
     e.preventDefault();
     var pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    setSending(true);
     if (!email) {
       setAddNotification({
         type: "danger",
@@ -13703,6 +13815,7 @@ var Login = function Login(props) {
         time: 5000,
         key: Math.floor(Math.random() * 10000)
       });
+      setSending(false);
     } else if (!pattern.test(email)) {
       setAddNotification({
         type: "danger",
@@ -13710,6 +13823,7 @@ var Login = function Login(props) {
         time: 5000,
         key: Math.floor(Math.random() * 10000)
       });
+      setSending(false);
     } else if (!password) {
       setAddNotification({
         type: "danger",
@@ -13717,6 +13831,7 @@ var Login = function Login(props) {
         time: 5000,
         key: Math.floor(Math.random() * 10000)
       });
+      setSending(false);
     } else {
       var apiUrl = '/api/login'; // Replace with your actual API endpoint
       axios__WEBPACK_IMPORTED_MODULE_13__["default"].post(apiUrl, {
@@ -13749,6 +13864,7 @@ var Login = function Login(props) {
           });
           setEmail('');
           setPassword('');
+          setSending(false);
         } else {
           setAddNotification({
             type: "danger",
@@ -13756,6 +13872,8 @@ var Login = function Login(props) {
             time: 5000,
             key: Math.floor(Math.random() * 10000)
           });
+          setPassword('');
+          setSending(false);
         }
       })["catch"](function (error) {
         setAddNotification({
@@ -13765,6 +13883,9 @@ var Login = function Login(props) {
           key: Math.floor(Math.random() * 10000)
         });
         console.error('Error fetching data:', error);
+        setEmail('');
+        setPassword('');
+        setSending(false);
       });
     }
   };
@@ -13802,6 +13923,7 @@ var Login = function Login(props) {
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("button", {
           className: _Login_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].btn,
           onClick: submit,
+          disabled: sending,
           children: "Login"
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
@@ -14239,7 +14361,7 @@ var Profile = function Profile(props) {
       baseURL: '/api'
     });
     api.post('/logout').then(function (response) {
-      if (response.data.msg = "done") {
+      if (response.data.msg == "done") {
         setUser(null);
         setAddNotification({
           type: "success",
@@ -14551,6 +14673,10 @@ var BalancePage = function BalancePage(props) {
     _useState8 = _slicedToArray(_useState7, 2),
     usableMoney = _useState8[0],
     setUsableMoney = _useState8[1];
+  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+    _useState10 = _slicedToArray(_useState9, 2),
+    sending = _useState10[0],
+    setSending = _useState10[1];
   var variants = {
     initial: {
       opacity: 0
@@ -14563,35 +14689,41 @@ var BalancePage = function BalancePage(props) {
     }
   };
   var withdrawMoney = function withdrawMoney() {
-    var api = axios__WEBPACK_IMPORTED_MODULE_3__["default"].create({
-      baseURL: '/api'
-    });
-    api.get('/orders/withdraw').then(function (response) {
-      if (response.data.msg == "done") {
-        addNotification({
-          type: 'success',
-          msg: "The money have been withdrawn successfully. Check your account",
-          time: 5000
-        });
-      } else if (response.data.msg == "not") {
-        addNotification({
-          type: 'danger',
-          msg: "There was a aproblem while withdrawing the money. Try again later",
-          time: 5000
-        });
-      }
-    })["catch"](function (error) {
-      addNotification({
-        type: "danger",
-        msg: "There is some problem",
-        time: 5000,
-        key: Math.floor(Math.random() * 10000)
+    if (!sending) {
+      setSending(true);
+      var api = axios__WEBPACK_IMPORTED_MODULE_3__["default"].create({
+        baseURL: '/api'
       });
-      if (error.code == "ERR_BAD_REQUEST") {
-        setAuth(false);
-      }
-      console.error('Error fetching data:', error);
-    });
+      api.get('/orders/withdraw').then(function (response) {
+        if (response.data.msg == "done") {
+          addNotification({
+            type: 'success',
+            msg: "The money have been withdrawn successfully. Check your account",
+            time: 5000
+          });
+          setSending(false);
+        } else if (response.data.msg == "not") {
+          addNotification({
+            type: 'danger',
+            msg: "There was a aproblem while withdrawing the money. Try again later",
+            time: 5000
+          });
+          setSending(false);
+        }
+      })["catch"](function (error) {
+        addNotification({
+          type: "danger",
+          msg: "There is some problem",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+        setSending(false);
+        if (error.code == "ERR_BAD_REQUEST") {
+          setAuth(false);
+        }
+        console.error('Error fetching data:', error);
+      });
+    }
   };
   var info = function info() {
     var api = axios__WEBPACK_IMPORTED_MODULE_3__["default"].create({
@@ -14833,6 +14965,14 @@ var ProfileSubPage = function ProfileSubPage(props) {
     _useState20 = _slicedToArray(_useState19, 2),
     newPassword = _useState20[0],
     setNewPassword = _useState20[1];
+  var _useState21 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+    _useState22 = _slicedToArray(_useState21, 2),
+    sending = _useState22[0],
+    setSending = _useState22[1];
+  var _useState23 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+    _useState24 = _slicedToArray(_useState23, 2),
+    sendingPassword = _useState24[0],
+    setSendingPassword = _useState24[1];
   var variants = {
     initial: {
       opacity: 0
@@ -14933,6 +15073,7 @@ var ProfileSubPage = function ProfileSubPage(props) {
     var api = axios__WEBPACK_IMPORTED_MODULE_3__["default"].create({
       baseURL: '/api'
     });
+    setSending(true);
     if (!name) {
       setAddNotification({
         type: "danger",
@@ -14940,6 +15081,7 @@ var ProfileSubPage = function ProfileSubPage(props) {
         time: 5000,
         key: Math.floor(Math.random() * 10000)
       });
+      setSending(false);
     } else if (!email) {
       setAddNotification({
         type: "danger",
@@ -14947,6 +15089,7 @@ var ProfileSubPage = function ProfileSubPage(props) {
         time: 5000,
         key: Math.floor(Math.random() * 10000)
       });
+      setSending(false);
     } else {
       var socialLinks = links;
       socialLinks.pop();
@@ -14981,6 +15124,7 @@ var ProfileSubPage = function ProfileSubPage(props) {
             time: 5000,
             key: Math.floor(Math.random() * 10000)
           });
+          setSending(false);
         } else {
           setAddNotification({
             type: "danger",
@@ -14988,6 +15132,7 @@ var ProfileSubPage = function ProfileSubPage(props) {
             time: 5000,
             key: Math.floor(Math.random() * 10000)
           });
+          setSending(false);
         }
       })["catch"](function (error) {
         setAddNotification({
@@ -14996,6 +15141,7 @@ var ProfileSubPage = function ProfileSubPage(props) {
           time: 5000,
           key: Math.floor(Math.random() * 10000)
         });
+        setSending(false);
         console.error('Error fetching data:', error);
       });
     }
@@ -15011,6 +15157,7 @@ var ProfileSubPage = function ProfileSubPage(props) {
     }
   };
   var changePassword = function changePassword() {
+    setSendingPassword(true);
     if (!oldPassword) {
       setAddNotification({
         type: "danger",
@@ -15018,6 +15165,7 @@ var ProfileSubPage = function ProfileSubPage(props) {
         time: 5000,
         key: Math.floor(Math.random() * 10000)
       });
+      setSendingPassword(false);
     } else if (!newPassword) {
       setAddNotification({
         type: "danger",
@@ -15025,6 +15173,7 @@ var ProfileSubPage = function ProfileSubPage(props) {
         time: 5000,
         key: Math.floor(Math.random() * 10000)
       });
+      setSendingPassword(false);
     } else {
       var api = axios__WEBPACK_IMPORTED_MODULE_3__["default"].create({
         baseURL: '/api'
@@ -15034,8 +15183,25 @@ var ProfileSubPage = function ProfileSubPage(props) {
         newPassword: newPassword
       }).then(function (response) {
         if (response.data.msg == "done") {
+          setAddNotification({
+            type: "success",
+            msg: "Password changed successfully.",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
           setOldPassword("");
           setNewPassword("");
+          setSendingPassword(false);
+        } else {
+          setAddNotification({
+            type: "danger",
+            msg: "There is some problem while changing the password",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
+          setOldPassword("");
+          setNewPassword("");
+          setSendingPassword(false);
         }
       })["catch"](function (error) {
         setAddNotification({
@@ -15044,6 +15210,9 @@ var ProfileSubPage = function ProfileSubPage(props) {
           time: 5000,
           key: Math.floor(Math.random() * 10000)
         });
+        setOldPassword("");
+        setNewPassword("");
+        setSendingPassword(false);
         console.error('Error fetching data:', error);
       });
     }
@@ -15163,6 +15332,7 @@ var ProfileSubPage = function ProfileSubPage(props) {
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
               className: "".concat(_ProfileSubPage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].input, " ").concat(_ProfileSubPage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].btn),
               onClick: changePassword,
+              disabled: sendingPassword,
               children: "Change"
             })]
           })]
@@ -15246,6 +15416,7 @@ var ProfileSubPage = function ProfileSubPage(props) {
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
         className: _ProfileSubPage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].btn,
         onClick: updateProfile,
+        disabled: sending,
         children: "Update Profile"
       })]
     })
@@ -16272,7 +16443,7 @@ var Settings = function Settings(props) {
       baseURL: '/api'
     });
     api.post('/logout').then(function (response) {
-      if (response.data.msg = "done") {
+      if (response.data.msg == "done") {
         setUser(null);
         location.href = "/games";
         setAddNotification({
@@ -16544,6 +16715,10 @@ var Signup = function Signup(props) {
     _useState10 = _slicedToArray(_useState9, 2),
     confirmPassword = _useState10[0],
     setConfirmPassword = _useState10[1];
+  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+    _useState12 = _slicedToArray(_useState11, 2),
+    sending = _useState12[0],
+    setSending = _useState12[1];
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
     var api = axios__WEBPACK_IMPORTED_MODULE_13__["default"].create({
       baseURL: '/api'
@@ -16570,6 +16745,7 @@ var Signup = function Signup(props) {
   };
   var submit = function submit(e) {
     e.preventDefault();
+    setSending(true);
     var pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email) {
       setAddNotification({
@@ -16578,6 +16754,7 @@ var Signup = function Signup(props) {
         time: 5000,
         key: Math.floor(Math.random() * 10000)
       });
+      setSending(false);
     } else if (!pattern.test(email)) {
       setAddNotification({
         type: "danger",
@@ -16585,6 +16762,7 @@ var Signup = function Signup(props) {
         time: 5000,
         key: Math.floor(Math.random() * 10000)
       });
+      setSending(false);
     } else if (!name) {
       setAddNotification({
         type: "danger",
@@ -16592,6 +16770,7 @@ var Signup = function Signup(props) {
         time: 5000,
         key: Math.floor(Math.random() * 10000)
       });
+      setSending(false);
     } else if (!password) {
       setAddNotification({
         type: "danger",
@@ -16599,6 +16778,15 @@ var Signup = function Signup(props) {
         time: 5000,
         key: Math.floor(Math.random() * 10000)
       });
+      setSending(false);
+    } else if (password.length < 8) {
+      setAddNotification({
+        type: "danger",
+        msg: "Password must be atleast 8 charachters",
+        time: 5000,
+        key: Math.floor(Math.random() * 10000)
+      });
+      setSending(false);
     } else if (password !== confirmPassword) {
       setAddNotification({
         type: "danger",
@@ -16606,6 +16794,7 @@ var Signup = function Signup(props) {
         time: 5000,
         key: Math.floor(Math.random() * 10000)
       });
+      setSending(false);
     } else {
       var apiUrl = '/api/register'; // Replace with your actual API endpoint
       axios__WEBPACK_IMPORTED_MODULE_13__["default"].post(apiUrl, {
@@ -16630,8 +16819,38 @@ var Signup = function Signup(props) {
             time: 5000,
             key: Math.floor(Math.random() * 10000)
           });
+        } else {
+          setAddNotification({
+            type: "danger",
+            msg: "There was a problem while signing up. Please try again",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
+          setPassword("");
+          setConfirmPassword("");
+          setSending(false);
         }
       })["catch"](function (error) {
+        if (error.response.status == 422) {
+          setAddNotification({
+            type: "danger",
+            msg: "Email already exist. Login with it or register with new email.",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
+          setName("");
+          setEmail("");
+        } else {
+          setAddNotification({
+            type: "danger",
+            msg: "There was a problem while signing up. Please try again",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
+        }
+        setPassword("");
+        setConfirmPassword("");
+        setSending(false);
         console.error('Error fetching data:', error);
       });
     }
@@ -16680,6 +16899,7 @@ var Signup = function Signup(props) {
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("button", {
           className: _Signup_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].btn,
           onClick: submit,
+          disabled: sending,
           children: "Sign Up"
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {

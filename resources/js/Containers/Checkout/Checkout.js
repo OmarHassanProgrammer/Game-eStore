@@ -32,7 +32,7 @@ const Checkout = props => {
   const [addPerson, setAddPerson] = useState();
   const [totalPrice, setTotalPrice] = useState(0);
   const [addNotification, setAddNotification] = useState();
-
+  const [sending, setSending] = useState(false);
   const firstUpdate = useRef(true);
 
   useLayoutEffect(() => {
@@ -130,7 +130,7 @@ setAddNotification({
     });    
     api.post('/logout')
       .then(response => {
-        if(response.data.msg = "done") {
+        if(response.data.msg == "done") {
           setUser(null);
           setAddNotification({
             type: "success",
@@ -191,25 +191,35 @@ const handleRemoveFromCart = (id, key, e) => {
     });
 }
   const orderCart = () => {
+    setSending(true);
     const api = axios.create({
       baseURL: '/api'
     });    
     api.post('/user/cart/order')
       .then(response => {
-        if(response.data.msg = "done") {
+        if(response.data.msg == "done") {
           setCart([]);
           setCartAmount(0);
           //location.href = "/settings?page=purchase";
           location = response.data.payment.approvalUrl;
-        }
-      })
-      .catch(error => {
-setAddNotification({
+        } else {
+          setAddNotification({
             type: "danger",
-            msg: "There is some problem",
+            msg: "There is some problem while ordering.",
             time: 5000,
             key: Math.floor(Math.random() * 10000)
           });
+          setSending(false);
+        }
+      })
+      .catch(error => {
+        setAddNotification({
+          type: "danger",
+          msg: "There is some problem",
+          time: 5000,
+          key: Math.floor(Math.random() * 10000)
+        });
+        setSending(false);
         console.error('Error fetching data:', error);
       });
   }
@@ -267,7 +277,7 @@ setAddNotification({
               <span className={styles.dollar}>$</span>
               <span className={styles.price}>{totalPrice}</span>
             </div>
-            <button className={styles.pay} onClick={orderCart}>Pay with PayPal</button>
+            <button className={styles.pay} onClick={orderCart} disabled={sending}>Pay with PayPal</button>
           </div>
         </div>
         

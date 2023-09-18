@@ -6,6 +6,7 @@ use Closure;
 
 class SearchPrompt extends Prompt
 {
+    use Concerns\ReducesScrollingToFitTerminal;
     use Concerns\Truncation;
     use Concerns\TypedValue;
 
@@ -15,6 +16,11 @@ class SearchPrompt extends Prompt
     public ?int $highlighted = null;
 
     /**
+     * The index of the first visible option.
+     */
+    public int $firstVisible = 0;
+
+    /**
      * The cached matches.
      *
      * @var array<int|string, string>|null
@@ -22,7 +28,7 @@ class SearchPrompt extends Prompt
     protected ?array $matches = null;
 
     /**
-     * Create a new SuggestPrompt instance.
+     * Create a new SearchPrompt instance.
      *
      * @param  Closure(string): array<int|string, string>  $options
      */
@@ -32,8 +38,11 @@ class SearchPrompt extends Prompt
         public string $placeholder = '',
         public int $scroll = 5,
         public ?Closure $validate = null,
+        public string $hint = ''
     ) {
         $this->trackTypedValue(submit: false);
+
+        $this->reduceScrollingToFitTerminal();
 
         $this->on('key', fn ($key) => match ($key) {
             Key::UP, Key::UP_ARROW, Key::SHIFT_TAB => $this->highlightPrevious(),
@@ -44,6 +53,9 @@ class SearchPrompt extends Prompt
         });
     }
 
+    /**
+     * Perform the search.
+     */
     protected function search(): void
     {
         $this->state = 'searching';
@@ -86,6 +98,16 @@ class SearchPrompt extends Prompt
     }
 
     /**
+     * The currently visible matches.
+     *
+     * @return array<string>
+     */
+    public function visible(): array
+    {
+        return array_slice($this->matches(), $this->firstVisible, $this->scroll, preserve_keys: true);
+    }
+
+    /**
      * Highlight the previous entry, or wrap around to the last entry.
      */
     protected function highlightPrevious(): void
@@ -98,6 +120,12 @@ class SearchPrompt extends Prompt
             $this->highlighted = null;
         } else {
             $this->highlighted = $this->highlighted - 1;
+        }
+
+        if ($this->highlighted < $this->firstVisible) {
+            $this->firstVisible--;
+        } elseif ($this->highlighted === count($this->matches) - 1) {
+            $this->firstVisible = count($this->matches) - min($this->scroll, count($this->matches));
         }
     }
 
@@ -113,13 +141,25 @@ class SearchPrompt extends Prompt
         } else {
             $this->highlighted = $this->highlighted === count($this->matches) - 1 ? null : $this->highlighted + 1;
         }
+
+        if ($this->highlighted > $this->firstVisible + $this->scroll - 1) {
+            $this->firstVisible++;
+        } elseif ($this->highlighted === 0 || $this->highlighted === null) {
+            $this->firstVisible = 0;
+        }
     }
 
+    /**
+     * Get the current search query.
+     */
     public function searchValue(): string
     {
         return $this->typedValue;
     }
 
+    /**
+     * Get the selected value.
+     */
     public function value(): int|string|null
     {
         if ($this->matches === null || $this->highlighted === null) {

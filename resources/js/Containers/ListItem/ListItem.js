@@ -139,7 +139,7 @@ setAddNotification({
     
     api.post('/logout')
       .then(response => {
-        if(response.data.msg = "done") {
+        if(response.data.msg == "done") {
           setUser(null);
         }
       })

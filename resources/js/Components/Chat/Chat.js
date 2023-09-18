@@ -23,6 +23,7 @@ const Chat = props => {
     const [adminChat, setAdminChat] = useState(0);
     const [firstPerson, setFirstPerson] = useState();
     const [chatClosed, setChatClosed] = useState();
+    const [sending, setSending] = useState(false);
 
     const divRef = useRef(null);
     const scrollToBottom = () => {
@@ -57,7 +58,7 @@ const Chat = props => {
             ids: ids.split(',')
         })
         .then(response => {
-            if(response.data.msg = "done") {
+            if(response.data.msg == "done") {
                 localStorage.setItem('people', ids);
                 setPeople([...response.data.people]);
                 setFirstPerson(ids.split(',')[0]);
@@ -93,7 +94,7 @@ setAddNotification({
                 ids: [id]
             })
             .then(response => {
-                if(response.data.msg = "done") {
+                if(response.data.msg == "done") {
                     localStorage.setItem('people', localStorage.getItem('people')?localStorage.getItem('people') + ',' + id:id);
                     if(people)
                         setPeople([...people, response.data.people[0]]);
@@ -120,11 +121,20 @@ setAddNotification({
             localStorage.removeItem('adminChat');
         } else {
             let ids = localStorage.getItem('people')?.split(',');
+            let newActiveChat;
             const apiUrl = '/api/chat/getNewChats'; // Replace with your actual API endpoint
             axios.get(apiUrl)
             .then(response => {
-                if(response.data.msg = "done") {
-                    ids = [...ids, ...response.data.newChats];
+                if(response.data.msg == "done") {
+                    if(response.data.newChats.length > 0) {
+                        localStorage.setItem("activeChat", response.data.newChats[0]);
+                        localStorage.setItem("people", response.data.newChats.join(','));
+                    }
+                    if(ids && ids.length != 0) {
+                        ids = [...ids, ...response.data.newChats];
+                    } else {
+                        ids = response.data.newChats;
+                    }
                 }
                 if(ids && ids.length != 0) {
                     const apiUrl = '/api/user/gdata'; // Replace with your actual API endpoint
@@ -132,7 +142,7 @@ setAddNotification({
                         ids
                     })
                     .then(response => {
-                        if(response.data.msg = "done") {
+                        if(response.data.msg == "done") {
                             setPeople(response.data.people);
                         }
                     })
@@ -151,6 +161,10 @@ setAddNotification({
                     setActiveChat(a);
         
                     loadChat(a);
+                } else if (newActiveChat) {
+                    setActiveChat(newActiveChat);
+        
+                    loadChat(newActiveChat);     
                 }
             })
             .catch(error => {
@@ -176,7 +190,7 @@ setAddNotification({
         const apiUrl = '/api/chat/getAdmin/' + a.replace(',', '-'); // Replace with your actual API endpoint
             axios.get(apiUrl)
             .then(response => {
-                if(response.data.msg = "done") {
+                if(response.data.msg == "done") {
                     setChat(response.data.chat);
                     setChatClosed(response.data.closed);
                     scrollToBottom();
@@ -196,33 +210,37 @@ setAddNotification({
         if(localStorage.getItem("adminChat")) {
             loadAdminChat(localStorage.getItem("people").split(',')[0] + ',' + localStorage.getItem("people").split(',')[1]);
         } else {
-            let ac = localStorage.getItem("activeChat");
-            if(ac || a) {
-                if(!a) {
-                    a = ac;
-                } 
-                const apiUrl = '/api/chat/get/' + a; // Replace with your actual API endpoint
-                axios.get(apiUrl)
-                .then(response => {
-                    if(response.data.msg = "done") {
-                        setChatClosed(response.data.closed);
-                        setChat(response.data.chat);
-                        scrollToBottom();
-                        if(change) {
-                            setActiveChat(a);
-                            localStorage.setItem("activeChat", a);
+            if(localStorage.getItem("people")?.includes(localStorage.getItem("activeChat"))) {
+                let ac = localStorage.getItem("activeChat");
+                if(ac || a) {
+                    if(!a) {
+                        a = ac;
+                    } 
+                    const apiUrl = '/api/chat/get/' + a; // Replace with your actual API endpoint
+                    axios.get(apiUrl)
+                    .then(response => {
+                        if(response.data.msg == "done") {
+                            setChatClosed(response.data.closed);
+                            setChat(response.data.chat);
+                            scrollToBottom();
+                            if(change) {
+                                setActiveChat(a);
+                                localStorage.setItem("activeChat", a);
+                            }
                         }
-                    }
-                })
-                .catch(error => {
-setAddNotification({
-            type: "danger",
-            msg: "There is some problem",
-            time: 5000,
-            key: Math.floor(Math.random() * 10000)
-          });
-                    console.error('Error fetching data:', error);
-                });
+                    })
+                    .catch(error => {
+                        setAddNotification({
+                            type: "danger",
+                            msg: "There is some problem",
+                            time: 5000,
+                            key: Math.floor(Math.random() * 10000)
+                        });
+                        console.error('Error fetching data:', error);
+                    });
+                }
+            } else {
+                localStorage.removeItem("activeChat");
             }
         }
     }
@@ -242,6 +260,7 @@ setAddNotification({
 
     const sendMsg = () => {
         const apiUrl = '/api/chat/send'; // Replace with your actual API endpoint
+        setSending(true);
         axios.post(apiUrl, {
             id: activeChat,
             msg
@@ -250,15 +269,17 @@ setAddNotification({
             if(response.data.msg == "done") {
                 setChat([...chat, response.data.message]);
             }
+            setSending(false);
         })
         .catch(error => {
-setAddNotification({
-            type: "danger",
-            msg: "There is some problem",
-            time: 5000,
-            key: Math.floor(Math.random() * 10000)
-          });
-        console.error('Error fetching data:', error);
+            setAddNotification({
+                type: "danger",
+                msg: "There is some problem",
+                time: 5000,
+                key: Math.floor(Math.random() * 10000)
+            });
+            console.error('Error fetching data:', error);
+            setSending(false);
         });
         setMsg("");
     }
@@ -314,7 +335,7 @@ setAddNotification({
         const apiUrl = '/api/chat/open/' + people[0].id + '-' + people[1].id; // Replace with your actual API endpoint
             axios.get(apiUrl)
             .then(response => {
-                if(response.data.msg = "done") {
+                if(response.data.msg == "done") {
                     setChatClosed(0);
                 }
             })
@@ -332,7 +353,7 @@ setAddNotification({
         const apiUrl = '/api/chat/close/' + people[0].id + '-' + people[1].id; // Replace with your actual API endpoint
             axios.get(apiUrl)
             .then(response => {
-                if(response.data.msg = "done") {
+                if(response.data.msg == "done") {
                     setChatClosed(1);
                 }
             })
@@ -394,7 +415,7 @@ setAddNotification({
                                     <span className={styles.chatclosed}>The admins have closed this chat.</span>
                                 </>:<>
                                     <input className={styles.input} value={msg} onChange={handleMsg}/>
-                                    <button className={styles.send} onClick={sendMsg}>{'>'}</button>
+                                    <button className={styles.send} onClick={sendMsg} disabled={sending}>{'>'}</button>
                                 </>
                             }
                         </>

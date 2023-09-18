@@ -19,6 +19,7 @@ const Login = props => {
   const [password, setPassword] = useState("");
   const [addNotification, setAddNotification] = useState();
   const [counter, setCounter] = useState(0);
+  const [sending, setSending] = useState(false);
 
   useEffect(() => {
     
@@ -48,7 +49,7 @@ const Login = props => {
   const submit = (e) => {
     e.preventDefault();
     const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    
+    setSending(true);
     if(!email) {
       setAddNotification({
         type: "danger",
@@ -56,6 +57,7 @@ const Login = props => {
         time: 5000,
         key: Math.floor(Math.random() * 10000)
       });
+      setSending(false);
     } else if (!pattern.test(email)) {
       setAddNotification({
         type: "danger",
@@ -63,6 +65,7 @@ const Login = props => {
         time: 5000,
         key: Math.floor(Math.random() * 10000)
       });
+      setSending(false);
     } else if (!password) {
       setAddNotification({
         type: "danger",
@@ -70,6 +73,7 @@ const Login = props => {
         time: 5000,
         key: Math.floor(Math.random() * 10000)
       });
+      setSending(false);
     } else {
       const apiUrl = '/api/login'; // Replace with your actual API endpoint
       axios.post(apiUrl, {
@@ -103,6 +107,7 @@ const Login = props => {
             });
             setEmail('');
             setPassword('');
+            setSending(false);
           } else {
             setAddNotification({
               type: "danger",
@@ -110,6 +115,8 @@ const Login = props => {
               time: 5000,
               key: Math.floor(Math.random() * 10000)
             });
+            setPassword('');
+            setSending(false);
           }
         })
         .catch(error => {
@@ -120,6 +127,9 @@ const Login = props => {
             key: Math.floor(Math.random() * 10000)
           });
           console.error('Error fetching data:', error);
+          setEmail('');
+          setPassword('');
+          setSending(false);
         });
     }
     
@@ -134,7 +144,7 @@ const Login = props => {
           <input className={`${styles.input} ${styles.i}`} name="e" autoComplete={"off"} value={email} type="email" placeholder='Enter your email' onChange={handleEmailInput}/>
           <input className={`${styles.input} ${styles.i}`} name="p" autoComplete={"off"} value={password} type="password" placeholder='Enter the password' onChange={handlePasswordInput}/>
           <span className={styles.input}><input type="checkbox" onChange={handlePasswordInput}/> Remember me</span>
-          <button className={styles.btn} onClick={submit}>Login</button>
+          <button className={styles.btn} onClick={submit} disabled={sending}>Login</button>
         </form>
         <div className={styles.bottom}>
           <span className={styles.part}><span className={styles.label}>Don't have acount?</span><a className={styles.link} href="/signup">create new account</a></span>

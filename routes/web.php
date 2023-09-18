@@ -46,7 +46,7 @@ Route::group(['middleware' => ['web']], function () {
     });
     Route::get('/checkout', function () {
         return view('checkout');
-    });
+    })->name('checkout');
     Route::get('/admin', function () {
         return view('admin');
     });

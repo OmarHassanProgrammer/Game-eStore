@@ -19,6 +19,7 @@ const GamesPage = props => {
     const [deleteId, setDeleteId] = useState("");
     const [genres, setGenres] = useState();
     const [selectedGenres, setSelectedGenres] = useState();
+    const [sending, setSending] = useState(false);
     
   useEffect(() => {
     const apiUrl = '/api/genres/getAll'; // Replace with your actual API endpoint
@@ -85,6 +86,7 @@ setAddNotification({
     }
     
     const addGame = () => {
+      setSending(true);
       const api = axios.create({
         baseURL: '/api'
       });
@@ -110,6 +112,7 @@ setAddNotification({
             });
             setGames([...games, response.data.game]);
             setAdd("");
+            setSending(false);
           } else if (response.data.msg == "nogame") {
             setAddNotification({
               key: Math.floor(Math.random() * 10000),
@@ -117,6 +120,15 @@ setAddNotification({
               time: 3000,
               type: "error"
             });
+            setSending(false);
+          } else {
+            setAddNotification({
+              key: Math.floor(Math.random() * 10000),
+              msg: "There is some problem while adding the game please try again later.",
+              time: 3000,
+              type: "error"
+            });            
+            setSending(false);
           }
         })
         .catch(error => {
@@ -126,11 +138,13 @@ setAddNotification({
             time: 5000,
             key: Math.floor(Math.random() * 10000)
           });
+            setSending(false);
           console.error('Error fetching data:', error);
         });
     }
     
     const addCategory = () => {
+      setSending(true);
       const api = axios.create({
         baseURL: '/api'
       });
@@ -154,6 +168,7 @@ setAddNotification({
             });
             setCategories([...categories, response.data.category]);
             setAdd("");
+            setSending(false);
           } else if (response.data.msg == "nocategory") {
             setAddNotification({
               key: Math.floor(Math.random() * 10000),
@@ -161,20 +176,31 @@ setAddNotification({
               time: 3000,
               type: "error"
             });
+            setSending(false);
+          } else {
+            setAddNotification({
+              key: Math.floor(Math.random() * 10000),
+              msg: "There is some problem while adding the category please try again later.",
+              time: 3000,
+              type: "error"
+            });   
+            setSending(false);
           }
         })
         .catch(error => {
-setAddNotification({
+          setAddNotification({
             type: "danger",
             msg: "There is some problem",
             time: 5000,
             key: Math.floor(Math.random() * 10000)
           });
+          setSending(false);
           console.error('Error fetching data:', error);
         });
     }
 
     const deleteGame = () => {
+      setSending(true);
       const api = axios.create({
         baseURL: '/api'
       });
@@ -196,6 +222,15 @@ setAddNotification({
             setGames([...g]);
             setDeleteId();
             setClose("");
+            setSending(false);
+          } else {
+            setAddNotification({
+              key: Math.floor(Math.random() * 10000),
+              msg: "There is some problem while deleting the game please try again later.",
+              time: 3000,
+              type: "error"
+            });   
+            setSending(false);
           }
         })
         .catch(error => {
@@ -205,7 +240,8 @@ setAddNotification({
             time: 5000,
             key: Math.floor(Math.random() * 10000)
           });
-          console.error('Error fetching data:', error);
+            setSending(false);
+            console.error('Error fetching data:', error);
         });
     }
 
@@ -213,7 +249,7 @@ setAddNotification({
       const api = axios.create({
         baseURL: '/api'
       });
-      
+      setSending(true);
       api.post('/categories/delete/' + deleteId, {}, {
         headers: {
             'Content-Type': 'multipart/form-data',
@@ -231,6 +267,15 @@ setAddNotification({
             setCategories([...g]);
             setDeleteId();
             setClose("");
+            setSending(false);
+          } else {
+            setAddNotification({
+              key: Math.floor(Math.random() * 10000),
+              msg: "There is some problem while deleting the category please try again later.",
+              time: 3000,
+              type: "error"
+            });   
+            setSending(false);
           }
         })
         .catch(error => {
@@ -240,6 +285,7 @@ setAddNotification({
             time: 5000,
             key: Math.floor(Math.random() * 10000)
           });
+          setSending(false);
           console.error('Error fetching data:', error);
         });
     }
@@ -361,7 +407,7 @@ setAddNotification({
                                 <input className={styles.file} onChange={(e) => {setImg({file: e.target.files[0], src: URL.createObjectURL(e.target.files[0])})}} type="file" />
                               </div>
                           </div>
-                          <button className={styles.save} onClick={addGame}>Save</button>
+                          <button className={styles.save} onClick={addGame} disabled={sending}>Save</button>
                       </div>
                   </div>
               </div>:add=="category"?
@@ -383,7 +429,7 @@ setAddNotification({
                             <input className={styles.file} onChange={(e) => {setImg({file: e.target.files[0], src: URL.createObjectURL(e.target.files[0])})}} type="file" />
                           </div>
                       </div>
-                      <button className={styles.save} onClick={addCategory}>Save</button>
+                      <button className={styles.save} onClick={addCategory} disabled={sending}>Save</button>
                   </div>
               </div>
               </div>:null:null
@@ -393,14 +439,14 @@ setAddNotification({
                 <div className={styles.pop} onClick={(e) => {e.stopPropagation();}}>
                     <h3 className={styles.title}>Are you sure you want to delete this game?</h3>
                     <div className={styles.form}>
-                        <button className={styles.del} onClick={deleteGame}>delete</button>
+                        <button className={styles.del} onClick={deleteGame} disabled={sending}>delete</button>
                     </div>
                 </div>
             </div>:close=="category"?<div className={styles.popOver} onClick={(e) => {setClose("")}}>
                 <div className={styles.pop} onClick={(e) => {e.stopPropagation();}}>
                     <h3 className={styles.title}>Are you sure you want to delete this category?</h3>
                     <div className={styles.form}>
-                        <button className={styles.del} onClick={deleteCategory}>delete</button>
+                        <button className={styles.del} onClick={deleteCategory} disabled={sending}>delete</button>
                     </div>
                 </div>
             </div>:null:null

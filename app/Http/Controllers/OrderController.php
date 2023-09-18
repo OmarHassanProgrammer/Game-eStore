@@ -10,6 +10,7 @@ use App\Models\Order;
 use App\Models\User;
 use App\Models\Item;
 use App\Models\Rate;
+use Srmklive\PayPal\Services\ExpressCheckout;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
 
 class OrderController extends Controller
@@ -19,15 +20,41 @@ class OrderController extends Controller
         $items = $user->cart;
 
         $price = 0;
+        $data = ["items" => []];
         foreach ($items as $key => $item) {
             $price += $item->price;
+            array_push($data['items'] , [
+                'name' => $item->name,
+                'price' => $item->price,
+                'desc'  => 'Description goes herem',
+                'qty' => 1
+            ]);
         }
+        
+        $data['invoice_id'] = mt_rand(1, 10000);
+        $data['invoice_description'] = "Order #{$data['invoice_id']} Invoice";
+        $data['return_url'] = route('order_success');
+        $data['cancel_url'] = route('order_failed');
+        $data['total'] = $price;
 
+        $provider = new ExpressCheckout;
+
+        $options = [
+            'SOLUTIONTYPE' => 'Sole',
+        ];
+
+        $response = $provider->addOptions($options)->setExpressCheckout($data, true);
+        
+        return response()->json(['msg' => 'done', 'payment' => [
+            'approvalUrl' => $response['paypal_link'], // URL for user approval
+        ]]);
+/*
+        
         $provider = new PayPalClient; 
         $provider->setApiCredentials(config('paypal'));
         $paypalToken = $provider->getAccessToken();
 
-        $response = $provider->createOrder([
+        $response = $provider->addOptions($options)->createOrder([
             "intent" => "CAPTURE",
             "application_context" => [
                 "return_url" => route('order_success'),
@@ -52,58 +79,49 @@ class OrderController extends Controller
                 }
             }
         }
-
+*/
         return response()->json(['msg' => 'not', 'response' => $response]);
     }
 
     public function success(Request $request) {
         $user = Auth::user();
         $items = $user->cart;
-        
-        $provider = new PayPalClient; 
-        $provider->setApiCredentials(config('paypal'));
-        $paypalToken = $provider->getAccessToken();
-        $response = $provider->capturePaymentOrder($request->token);
-
         foreach ($items as $key => $item) {
-            if($item->amount > 0) {
-                $item->amount -= 1;
-                $item->sold += 1;
-                $item->save();
+            $item->sold += 1;
+            $item->save();
 
-                $order = [
-                    "item_id" => $item->id,
-                    "client_id" => $user->id,
-                    "status" => "ongoing",
-                    "moneyPaid" => $item->price,
-                ];
-                $order = Order::create($order);
-                $user->balances()->create([
-                    "order_id" => $order->id,
-                    "type" => "pay",
-                    "amount" => $item->price
-                ]);
-                $items = Item::with('orders')->get()->where('seller_id', $item->seller->id);
-                $n = 0;
-                foreach ($items as $key => $item) {
-                    foreach ($item->orders as $key => $order) {
-                        $n += 1;
-                    }
+            $order = [
+                "item_id" => $item->id,
+                "client_id" => $user->id,
+                "status" => "ongoing",
+                "moneyPaid" => $item->price,
+            ];
+            $order = Order::create($order);
+            $user->balances()->create([
+                "order_id" => $order->id,
+                "type" => "pay",
+                "amount" => $item->price
+            ]);
+            $items = Item::with('orders')->get()->where('seller_id', $item->seller->id);
+            $n = 0;
+            foreach ($items as $key => $_item) {
+                foreach ($_item->orders as $key => $order) {
+                    $n += 1;
                 }
-                Balance::create([
-                    "user_id" => $item->seller->id,
-                    "order_id" => $order->id,
-                    "type" => "pending",
-                    "after" => ($n > 200)?0:(($n > 100)?12:(($n > 50)?24:48)),
-                    "amount" => $item->price * 0.95
-                ]);
-                
-                User::find($item->seller->id)->notifications()->create([
-                    "status" => "success",
-                    "msg" => $user->name . " has bought item " . $item->name . ". View it ++here--/settings?page=selling++",
-                    "time" => 5000
-                ]);
             }
+            Balance::create([
+                "user_id" => $item->seller->id,
+                "order_id" => $order->id,
+                "type" => "pending",
+                "after" => ($n > 200)?0:(($n > 100)?12:(($n > 50)?24:48)),
+                "amount" => $item->price * 0.95
+            ]);
+            
+            User::find($item->seller->id)->notifications()->create([
+                "status" => "success",
+                "msg" => $user->name . " has bought item " . $item->name . ". View it ++here--/settings?page=selling++",
+                "time" => 5000
+            ]);
             $user->cart()->detach($item);
         }
 
@@ -114,6 +132,10 @@ class OrderController extends Controller
         ]);
 
         return redirect()->away('/settings?page=purchase');
+    }
+
+    public function failed() {
+        return redirect(route('checkout'));
     }
 
     public function getAll() {

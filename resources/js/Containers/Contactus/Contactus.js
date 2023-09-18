@@ -34,6 +34,7 @@ const Contactus = props => {
   const [msg, setMsg] = useState("");
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
+  const [sending, setSending] = useState(false);
 
   useEffect(() => {
     let api = axios.create({
@@ -187,7 +188,7 @@ setAddNotification({
     
     api.post('/logout')
       .then(response => {
-        if(response.data.msg = "done") {
+        if(response.data.msg == "done") {
           setUser(null);
           setAddNotification({
             type: "success",
@@ -211,7 +212,7 @@ setAddNotification({
   const send = (e) => {
     e.stopPropagation();
     e.preventDefault();
-
+    setSending(true);
     const api = axios.create({
       baseURL: '/api'
     });
@@ -219,7 +220,7 @@ setAddNotification({
       name, email, msg
     })
       .then(response => {
-        if(response.data.msg = "done") {
+        if(response.data.msg == "done") {
           setName("");
           setEmail("");
           setMsg("");
@@ -229,15 +230,28 @@ setAddNotification({
             time: 5000,
             key: Math.floor(Math.random() * 10000)
           });
+          setSending(false);
+        } else {
+          setName("");
+          setEmail("");
+          setMsg("");
+          setAddNotification({
+            type: "danger",
+            msg: "There was some problem while sending the message. Please try again later.",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
+          setSending(false);
         }
       })
       .catch(error => {
-setAddNotification({
+          setAddNotification({
             type: "danger",
             msg: "There is some problem",
             time: 5000,
             key: Math.floor(Math.random() * 10000)
           });
+          setSending(false);
         console.error('Error fetching data:', error);
       });
   }
@@ -281,7 +295,7 @@ setAddNotification({
               <input className={styles.input} placeholder='name' value={name} onChange={(e) => {setName(e.target.value)}}/>
               <input className={styles.input} placeholder='email' value={email} onChange={(e) => {setEmail(e.target.value)}}/>
               <textarea className={styles.input} placeholder='message' value={msg} onChange={(e) => {setMsg(e.target.value)}}>{msg}</textarea>
-              <button className={styles.btn} onClick={send}>Send</button>
+              <button className={styles.btn} onClick={send} disabled={sending}>Send</button>
             </form>
           </div>
         </div>

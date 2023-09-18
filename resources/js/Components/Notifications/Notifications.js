@@ -61,12 +61,6 @@ const Notifications = props => {
             }
         })
         .catch(error => {
-setAddNotification({
-            type: "danger",
-            msg: "There is some problem",
-            time: 5000,
-            key: Math.floor(Math.random() * 10000)
-          });
             console.error('Error fetching data:', error);
         });
         

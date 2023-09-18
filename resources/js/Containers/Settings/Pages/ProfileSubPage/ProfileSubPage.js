@@ -22,6 +22,8 @@ const ProfileSubPage = props => {
     const [img, setImg] = useState(false)
     const [oldPassword, setOldPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
+    const [sending, setSending] = useState(false);
+    const [sendingPassword, setSendingPassword] = useState(false);
 
     const variants = {
         initial: { opacity: 0 },
@@ -115,7 +117,7 @@ const ProfileSubPage = props => {
       let api = axios.create({
         baseURL: '/api'
       });
-      
+      setSending(true);
       if(!name) {
         setAddNotification({
           type: "danger",
@@ -123,6 +125,7 @@ const ProfileSubPage = props => {
           time: 5000,
           key: Math.floor(Math.random() * 10000)
         });
+        setSending(false);
       } else if (!email) {
         setAddNotification({
           type: "danger",
@@ -130,6 +133,7 @@ const ProfileSubPage = props => {
           time: 5000,
           key: Math.floor(Math.random() * 10000)
         });
+        setSending(false);
       } else {
         let socialLinks = links;
         socialLinks.pop();
@@ -166,6 +170,7 @@ const ProfileSubPage = props => {
                 time: 5000,
                 key: Math.floor(Math.random() * 10000)
               });
+              setSending(false);
             } else {
               setAddNotification({
                 type: "danger",
@@ -173,6 +178,7 @@ const ProfileSubPage = props => {
                 time: 5000,
                 key: Math.floor(Math.random() * 10000)
               });
+              setSending(false);
             }
           })
           .catch(error => {
@@ -182,6 +188,7 @@ const ProfileSubPage = props => {
               time: 5000,
               key: Math.floor(Math.random() * 10000)
             });
+            setSending(false);
             console.error('Error fetching data:', error);
           }); 
       }
@@ -196,6 +203,7 @@ const ProfileSubPage = props => {
     }
 
     const changePassword = () => {
+      setSendingPassword(true);
       if(!oldPassword) {
         setAddNotification({
           type: "danger",
@@ -203,6 +211,7 @@ const ProfileSubPage = props => {
           time: 5000,
           key: Math.floor(Math.random() * 10000)
         });
+        setSendingPassword(false);
       } else if (!newPassword) {
         setAddNotification({
           type: "danger",
@@ -210,6 +219,7 @@ const ProfileSubPage = props => {
           time: 5000,
           key: Math.floor(Math.random() * 10000)
         });
+        setSendingPassword(false);
       } else {
         let api = axios.create({
           baseURL: '/api'
@@ -220,17 +230,37 @@ const ProfileSubPage = props => {
         })
           .then(response => {
             if(response.data.msg == "done") {
+              setAddNotification({
+                type: "success",
+                msg: "Password changed successfully.",
+                time: 5000,
+                key: Math.floor(Math.random() * 10000)
+              });
               setOldPassword("");
               setNewPassword("");
+              setSendingPassword(false);
+            } else {
+              setAddNotification({
+                type: "danger",
+                msg: "There is some problem while changing the password",
+                time: 5000,
+                key: Math.floor(Math.random() * 10000)
+              });
+              setOldPassword("");
+              setNewPassword("");
+              setSendingPassword(false);
             }
           })
           .catch(error => {
-setAddNotification({
-            type: "danger",
-            msg: "There is some problem",
-            time: 5000,
-            key: Math.floor(Math.random() * 10000)
-          });
+            setAddNotification({
+              type: "danger",
+              msg: "There is some problem",
+              time: 5000,
+              key: Math.floor(Math.random() * 10000)
+            });
+            setOldPassword("");
+            setNewPassword("");
+            setSendingPassword(false);
             console.error('Error fetching data:', error);
           }); 
       }
@@ -283,7 +313,7 @@ setAddNotification({
                   <div className={styles.inputs}>
                     <input className={styles.input} placeholder='Old Password' type="password" onChange={(e) => {setOldPassword(e.target.value)}}  />
                     <input className={styles.input} placeholder='New Password'type="password" onChange={(e) => {setNewPassword(e.target.value)}}  />
-                    <button className={`${styles.input} ${styles.btn}`} onClick={changePassword}>Change</button>
+                    <button className={`${styles.input} ${styles.btn}`} onClick={changePassword} disabled={sendingPassword}>Change</button>
                   </div>
                 </div>
                 <div className={styles.l}>
@@ -327,7 +357,7 @@ setAddNotification({
                   </div>
                 </div>
               </div>
-              <button className={styles.btn} onClick={updateProfile}>Update Profile</button>
+              <button className={styles.btn} onClick={updateProfile} disabled={sending}>Update Profile</button>
             </div>
           </motion.div>
     );
