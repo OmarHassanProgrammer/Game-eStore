@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Chat;
 use App\Models\ClosedChat;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ChatNotification;
 
 class ChatController extends Controller
 {
@@ -16,6 +18,7 @@ class ChatController extends Controller
                 'from' => Auth::user()->id,
                 'msg' => $request->msg
             ]);
+            Mail::to(User::find($request->id)->email)->send(new ChatNotification(Auth::user()->name, $request->msg));
             return response()->json(['msg' => 'done', 'message' => $msg]);
         } else {
             return response()->json(['msg' => 'err']);
