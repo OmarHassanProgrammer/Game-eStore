@@ -232,7 +232,7 @@ setAddNotification({
           logout={logout}
           showCart={false}
         />
-        <Chat addPerson={addPerson}/>
+        <Chat addPerson={addPerson} setAddPerson={setAddPerson} setAddNotification={setAddNotification} />
         <Notifications addNotification={addNotification} />
         <div className={styles.checkoutContent}>
           <div className={styles.left}>

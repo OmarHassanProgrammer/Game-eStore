@@ -796,7 +796,7 @@ setAddNotification({
               handleRemoveFromCart={handleRemoveFromCart}
               openGamePage={openGamePage}
         /> : null}
-        <Chat addPerson={addPerson}/>
+        <Chat addPerson={addPerson} setAddPerson={setAddPerson} setAddNotification={setAddNotification} />
         <Notifications addNotification={addNotification} />
         <NavBar
           handleHover={handleHover}

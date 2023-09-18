@@ -5457,7 +5457,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 var Chat = function Chat(props) {
   var setAddPerson = props.setAddPerson,
-    addPerson = props.addPerson;
+    addPerson = props.addPerson,
+    setAddNotification = props.setAddNotification;
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(true),
     _useState2 = _slicedToArray(_useState, 2),
     chatDisplayed = _useState2[0],
@@ -7543,7 +7544,8 @@ var Admin = function Admin(props) {
         openGamePage: openGamePage
       }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)(_Components_Chat_Chat__WEBPACK_IMPORTED_MODULE_6__["default"], {
         addPerson: addPerson,
-        setAddPerson: setAddPerson
+        setAddPerson: setAddPerson,
+        setAddNotification: setAddNotification
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)(_Components_Notifications_Notifications__WEBPACK_IMPORTED_MODULE_15__["default"], {
         addNotification: addNotification
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)(_Components_NavBar_NavBar__WEBPACK_IMPORTED_MODULE_5__["default"], {
@@ -10524,7 +10526,9 @@ function Browse(props) {
       handleRemoveFromCart: handleRemoveFromCart,
       openGamePage: openGamePage
     }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)(_Components_Chat_Chat__WEBPACK_IMPORTED_MODULE_11__["default"], {
-      addPerson: addPerson
+      addPerson: addPerson,
+      setAddPerson: setAddPerson,
+      setAddNotification: setAddNotification
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)(_Components_Notifications_Notifications__WEBPACK_IMPORTED_MODULE_12__["default"], {
       addNotification: addNotification
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)(_Components_NavBar_NavBar__WEBPACK_IMPORTED_MODULE_3__["default"], {
@@ -10952,7 +10956,9 @@ var Checkout = function Checkout(props) {
         logout: logout,
         showCart: false
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)(_Components_Chat_Chat__WEBPACK_IMPORTED_MODULE_10__["default"], {
-        addPerson: addPerson
+        addPerson: addPerson,
+        setAddPerson: setAddPerson,
+        setAddNotification: setAddNotification
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)(_Components_Notifications_Notifications__WEBPACK_IMPORTED_MODULE_14__["default"], {
         addNotification: addNotification
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsxs)("div", {
@@ -12045,7 +12051,9 @@ var GamePage = function GamePage(props) {
         handleRemoveFromCart: handleRemoveFromCart,
         openGamePage: openGamePage
       }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_Components_Chat_Chat__WEBPACK_IMPORTED_MODULE_9__["default"], {
-        addPerson: addPerson
+        addPerson: addPerson,
+        setAddPerson: setAddPerson,
+        setAddNotification: setAddNotification
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_Components_Notifications_Notifications__WEBPACK_IMPORTED_MODULE_12__["default"], {
         addNotification: addNotification
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_Components_NavBar_NavBar__WEBPACK_IMPORTED_MODULE_4__["default"], {
@@ -12776,7 +12784,9 @@ function Home(props) {
       initial: "hidden",
       animate: "visible"
     }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)(_Components_Chat_Chat__WEBPACK_IMPORTED_MODULE_16__["default"], {
-      addPerson: addPerson
+      addPerson: addPerson,
+      setAddPerson: setAddPerson,
+      setAddNotification: setAddNotification
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)(_Components_Notifications_Notifications__WEBPACK_IMPORTED_MODULE_21__["default"], {
       addNotification: addNotification
     }), cartDisplayed ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)(_Components_Cart_Cart__WEBPACK_IMPORTED_MODULE_17__["default"], {
@@ -13388,7 +13398,9 @@ var ListItem = function ListItem(props) {
         handleRemoveFromCart: handleRemoveFromCart,
         openGamePage: openGamePage
       }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)(_Components_Chat_Chat__WEBPACK_IMPORTED_MODULE_10__["default"], {
-        addPerson: addPerson
+        addPerson: addPerson,
+        setAddPerson: setAddPerson,
+        setAddNotification: setAddNotification
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)(_Components_Notifications_Notifications__WEBPACK_IMPORTED_MODULE_14__["default"], {
         addNotification: addNotification
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)(_Components_NavBar_NavBar__WEBPACK_IMPORTED_MODULE_5__["default"], {
@@ -16297,7 +16309,9 @@ var Settings = function Settings(props) {
         handleRemoveFromCart: handleRemoveFromCart,
         openGamePage: openGamePage
       }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_19__.jsx)(_Components_Chat_Chat__WEBPACK_IMPORTED_MODULE_10__["default"], {
-        addPerson: addPerson
+        addPerson: addPerson,
+        setAddPerson: setAddPerson,
+        setAddNotification: setAddNotification
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_19__.jsx)(_Components_Notifications_Notifications__WEBPACK_IMPORTED_MODULE_18__["default"], {
         addNotification: addNotification
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_19__.jsx)(_Components_NavBar_NavBar__WEBPACK_IMPORTED_MODULE_5__["default"], {

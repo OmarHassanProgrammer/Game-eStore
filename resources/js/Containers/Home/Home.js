@@ -460,7 +460,7 @@ useEffect(() => {
     
           </motion.div> 
       : null}
-      <Chat addPerson={addPerson}/>
+      <Chat addPerson={addPerson} setAddPerson={setAddPerson} setAddNotification={setAddNotification} />
       <Notifications addNotification={addNotification} />
       {cartDisplayed ? <Cart 
               cartDisplayed={cartDisplayed} 

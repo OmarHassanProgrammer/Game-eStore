@@ -11,7 +11,8 @@ import axios from 'axios';
 const Chat = props => {
     const {
         setAddPerson,
-        addPerson
+        addPerson,
+        setAddNotification
     } = props;
 
     const [chatDisplayed, setChatDisplayed] = useState(true);
