@@ -12,6 +12,8 @@ const BalancePage = props => {
     const [pending, setPending] = useState(0);
     const [usableMoney, setUsableMoney] = useState(0);
     const [sending, setSending] = useState(false);
+    const [withdrawOverlay, setWithdrawOverlay] = useState(false);
+    const [email, setEmail] = useState("");
 
     const variants = {
         initial: { opacity: 0 },
@@ -21,42 +23,62 @@ const BalancePage = props => {
 
     const withdrawMoney = () => {
       if(!sending) {
-        setSending(true);
-        let api = axios.create({
-          baseURL: '/api'
-        });
-        
-        api.get('/orders/withdraw')
-          .then(response => {
-            if(response.data.msg == "done") {
+        if(!email) {
+          addNotification({
+            type: 'danger',
+            msg: "Email is required.",
+            time: 5000
+          });
+        } else {
+          setSending(true);
+          let api = axios.create({
+            baseURL: '/api'
+          });
+          
+          api.get('/orders/withdraw/' + email)
+            .then(response => {
+              if(response.data.msg == "done") {
+                addNotification({
+                  type: 'success',
+                  msg: "The money have been withdrawn successfully. Check your account",
+                  time: 5000
+                });
+                setWithdrawOverlay(false);
+                location.href = "/settings?page=balance";
+                setEmail("");
+              } else if (response.data.msg == "not") {
+                addNotification({
+                  type: 'danger',
+                  msg: "There was a aproblem while withdrawing the money. Verify that you are using the correct email and try again later.",
+                  time: 5000
+                });
+                setSending(false);
+                setEmail("");
+              } else {
+                addNotification({
+                  type: 'danger',
+                  msg: "There was a aproblem while withdrawing the money. Try again later",
+                  time: 5000
+                });
+                setSending(false);
+                setEmail("");
+              }
+            })
+            .catch(error => {
               addNotification({
-                type: 'success',
-                msg: "The money have been withdrawn successfully. Check your account",
-                time: 5000
+                type: "danger",
+                msg: "There is some problem",
+                time: 5000,
+                key: Math.floor(Math.random() * 10000)
               });
+              setEmail("");
               setSending(false);
-            } else if (response.data.msg == "not") {
-              addNotification({
-                type: 'danger',
-                msg: "There was a aproblem while withdrawing the money. Try again later",
-                time: 5000
-              });
-              setSending(false);
-            }
-          })
-          .catch(error => {
-            addNotification({
-              type: "danger",
-              msg: "There is some problem",
-              time: 5000,
-              key: Math.floor(Math.random() * 10000)
-            });
-            setSending(false);
-            if(error.code == "ERR_BAD_REQUEST") {
-              setAuth(false);
-            }
-            console.error('Error fetching data:', error);
-          });  
+              if(error.code == "ERR_BAD_REQUEST") {
+                setAuth(false);
+              }
+              console.error('Error fetching data:', error);
+            });  
+        }
       }
     }
 
@@ -100,10 +122,10 @@ addNotification({
             if(balance.type == "get") {
               money += parseFloat(balance.amount);
               const myDate = new Date(balance.created_at); 
-              myDate.setDate(myDate.getDate() + parseInt(balance.after / 24));
+              myDate.setDate(myDate.getDate() + parseInt(parseFloat(balance.after) / 24));
               const currentDate = new Date();
               const timeDifferenceMilliseconds = myDate - currentDate;
-              if(timeDifferenceMilliseconds > 0) {
+              if(timeDifferenceMilliseconds <= 0) {
                 usable += parseFloat(balance.amount);
               }
             }
@@ -112,6 +134,7 @@ addNotification({
             }
             if(balance.type == "withdraw") {
               money -= parseFloat(balance.amount);
+              usable -= parseFloat(balance.amount);
             }
           });
           setProfit(money);
@@ -138,6 +161,20 @@ addNotification({
         animate="animate"
         exit="exit"
       >
+        {
+              withdrawOverlay?<div className={styles.popOver} onClick={(e) => {setWithdrawOverlay(false)}}>
+                <div className={styles.pop} onClick={(e) => {e.stopPropagation();}}>
+                    <h3 className={styles.title}>Withdraw { usableMoney }$ into your paypal</h3>
+                    <div className={styles.email}>
+                      <label className={styles.label}>Your PayPal's Email: </label>
+                      <input className={styles.input} value={email} onChange={(e) => {setEmail(e.target.value)}}/>
+                    </div>
+                    <div className={styles.form}>
+                        <button className={styles.sendBtn} onClick={withdrawMoney}>Withdraw</button>
+                    </div>
+                </div>
+            </div>:null
+            }
         <div className={styles.block}>
           <div className={styles.header}>
             <div className={styles.p}>
@@ -155,7 +192,7 @@ addNotification({
               <span className={styles.n}>{ usableMoney }</span>
               <span className={styles.symbol}>$</span>
             </div>
-            <div className={`${styles.p} ${styles.w}`} title="Withdraw the money" onClick={withdrawMoney}>
+            <div className={`${styles.p} ${styles.w}`} title="Withdraw the money" onClick={() => { setWithdrawOverlay(true) }}>
               <svg xmlns="http://www.w3.org/2000/svg" className={styles.icon} viewBox="0 -960 960 960"><path d="M441-120v-86q-53-12-91.5-46T293-348l74-30q15 48 44.5 73t77.5 25q41 0 69.5-18.5T587-356q0-35-22-55.5T463-458q-86-27-118-64.5T313-614q0-65 42-101t86-41v-84h80v84q50 8 82.5 36.5T651-650l-74 32q-12-32-34-48t-60-16q-44 0-67 19.5T393-614q0 33 30 52t104 40q69 20 104.5 63.5T667-358q0 71-42 108t-104 46v84h-80Z"/></svg>
             </div>
           </div>

@@ -5620,12 +5620,6 @@ var Chat = function Chat(props) {
           loadChat(newActiveChat);
         }
       })["catch"](function (error) {
-        setAddNotification({
-          type: "danger",
-          msg: "There is some problem",
-          time: 5000,
-          key: Math.floor(Math.random() * 10000)
-        });
         console.error('Error fetching data:', error);
       });
     }
@@ -9988,6 +9982,7 @@ function Browse(props) {
     });
     api.get('/user/me').then(function (response) {
       if (response.data.message != "Unauthenticated.") {
+        console.log("Errrrrrrrrrrrrrrrrrrrrrrrorrrrrrrrrrrrrr");
         setUser(response.data.user);
         api.get('/user/cart/get').then(function (response) {
           if (response.data.message != "Unauthenticated.") {
@@ -9995,16 +9990,16 @@ function Browse(props) {
             setCartAmount(response.data.cart.length);
           }
         })["catch"](function (error) {
+          setAddNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
           console.error('Error fetching data:', error);
         });
       }
     })["catch"](function (error) {
-      setAddNotification({
-        type: "danger",
-        msg: "There is some problem",
-        time: 5000,
-        key: Math.floor(Math.random() * 10000)
-      });
       console.error('Error fetching data:', error);
     });
   }, []);
@@ -10432,12 +10427,11 @@ function Browse(props) {
           console.error('Error fetching data:', error);
         });
       } else if (browseType == "/categories") {
-        if (currentGame.id != -1) {
+        if (currentGame !== null && currentGame !== void 0 && currentGame.id && currentGame.id != -1) {
           var _apiUrl = '/api/games/getCategories/' + currentGame.id; // Replace with your actual API endpoint
           axios__WEBPACK_IMPORTED_MODULE_17__["default"].get(_apiUrl).then(function (response) {
             setShownCategories(response.data.categories);
             setShownGames(response.data.categories);
-            g = response.data.games;
           })["catch"](function (error) {
             setAddNotification({
               type: "danger",
@@ -10452,7 +10446,6 @@ function Browse(props) {
           axios__WEBPACK_IMPORTED_MODULE_17__["default"].get(_apiUrl2).then(function (response) {
             setShownCategories(response.data.categories);
             setShownGames(response.data.categories);
-            g = response.data.games;
           })["catch"](function (error) {
             setAddNotification({
               type: "danger",
@@ -10464,7 +10457,7 @@ function Browse(props) {
           });
         }
       } else if (browseType == "/items") {
-        if (currentCategory.id != -1) {
+        if (currentCategory !== null && currentCategory !== void 0 && currentCategory.id && currentCategory.id != -1) {
           var _apiUrl3 = '/api/items/getAll/' + currentCategory.id; // Replace with your actual API endpoint
           axios__WEBPACK_IMPORTED_MODULE_17__["default"].get(_apiUrl3).then(function (response) {
             setShownGames(response.data.items);
@@ -10697,7 +10690,7 @@ function Browse(props) {
               })]
             })
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)(_Components_Grid_Grid__WEBPACK_IMPORTED_MODULE_8__["default"], {
-            shownGames: shownGames,
+            shownGames: shownGames !== null && shownGames !== void 0 ? shownGames : [],
             reviewDisplay: reviewDisplay,
             handleLike: handleLike,
             handleHoverGame: browseType == "/games" ? handleHoverGame : function () {
@@ -10888,12 +10881,6 @@ var Checkout = function Checkout(props) {
         });
       }
     })["catch"](function (error) {
-      setAddNotification({
-        type: "danger",
-        msg: "There is some problem",
-        time: 5000,
-        key: Math.floor(Math.random() * 10000)
-      });
       if (error.code == "ERR_BAD_REQUEST") {
         setAuth(false);
       }
@@ -11286,12 +11273,6 @@ var Contactus = function Contactus(props) {
         });
       }
     })["catch"](function (error) {
-      setAddNotification({
-        type: "danger",
-        msg: "There is some problem",
-        time: 5000,
-        key: Math.floor(Math.random() * 10000)
-      });
       if (error.code == "ERR_BAD_REQUEST") {
         setAuth(false);
       }
@@ -11826,12 +11807,6 @@ var GamePage = function GamePage(props) {
         });
       }
     })["catch"](function (error) {
-      setAddNotification({
-        type: "danger",
-        msg: "There is some problem",
-        time: 5000,
-        key: Math.floor(Math.random() * 10000)
-      });
       console.error('Error fetching data:', error);
     });
   }, []);
@@ -12630,12 +12605,6 @@ function Home(props) {
         });
       }
     })["catch"](function (error) {
-      setAddNotification({
-        type: "danger",
-        msg: "There is some problem",
-        time: 5000,
-        key: Math.floor(Math.random() * 10000)
-      });
       console.error('Error fetching data:', error);
     });
   }, []);
@@ -13249,12 +13218,6 @@ var ListItem = function ListItem(props) {
         setGames(response.data.games);
       }
     })["catch"](function (error) {
-      setAddNotification({
-        type: "danger",
-        msg: "There is some problem",
-        time: 5000,
-        key: Math.floor(Math.random() * 10000)
-      });
       console.error('Error fetching data:', error);
     });
   }, []);
@@ -14115,12 +14078,6 @@ var Profile = function Profile(props) {
         });
       }
     })["catch"](function (error) {
-      setAddNotification({
-        type: "danger",
-        msg: "There is some problem",
-        time: 5000,
-        key: Math.floor(Math.random() * 10000)
-      });
       if (error.code == "ERR_BAD_REQUEST") {
         setAuth(false);
       }
@@ -14541,7 +14498,7 @@ var Profile = function Profile(props) {
               children: userProfile === null || userProfile === void 0 || (_userProfile$game_lin = userProfile.game_links) === null || _userProfile$game_lin === void 0 ? void 0 : _userProfile$game_lin.map(function (link, key) {
                 return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("span", {
                   className: _Profile_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].account,
-                  onClick: copyLink.bind(_this, link.value),
+                  onClick: copyLink.bind(_this, link.link),
                   children: ['LOL', 'COC', 'Minecraft', 'Fortnite', 'Roblox'].includes(link.game) ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("img", {
                     src: '../images/' + link.game + '.png'
                   }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("span", {
@@ -14677,6 +14634,14 @@ var BalancePage = function BalancePage(props) {
     _useState10 = _slicedToArray(_useState9, 2),
     sending = _useState10[0],
     setSending = _useState10[1];
+  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+    _useState12 = _slicedToArray(_useState11, 2),
+    withdrawOverlay = _useState12[0],
+    setWithdrawOverlay = _useState12[1];
+  var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(""),
+    _useState14 = _slicedToArray(_useState13, 2),
+    email = _useState14[0],
+    setEmail = _useState14[1];
   var variants = {
     initial: {
       opacity: 0
@@ -14690,39 +14655,59 @@ var BalancePage = function BalancePage(props) {
   };
   var withdrawMoney = function withdrawMoney() {
     if (!sending) {
-      setSending(true);
-      var api = axios__WEBPACK_IMPORTED_MODULE_3__["default"].create({
-        baseURL: '/api'
-      });
-      api.get('/orders/withdraw').then(function (response) {
-        if (response.data.msg == "done") {
-          addNotification({
-            type: 'success',
-            msg: "The money have been withdrawn successfully. Check your account",
-            time: 5000
-          });
-          setSending(false);
-        } else if (response.data.msg == "not") {
-          addNotification({
-            type: 'danger',
-            msg: "There was a aproblem while withdrawing the money. Try again later",
-            time: 5000
-          });
-          setSending(false);
-        }
-      })["catch"](function (error) {
+      if (!email) {
         addNotification({
-          type: "danger",
-          msg: "There is some problem",
-          time: 5000,
-          key: Math.floor(Math.random() * 10000)
+          type: 'danger',
+          msg: "Email is required.",
+          time: 5000
         });
-        setSending(false);
-        if (error.code == "ERR_BAD_REQUEST") {
-          setAuth(false);
-        }
-        console.error('Error fetching data:', error);
-      });
+      } else {
+        setSending(true);
+        var api = axios__WEBPACK_IMPORTED_MODULE_3__["default"].create({
+          baseURL: '/api'
+        });
+        api.get('/orders/withdraw/' + email).then(function (response) {
+          if (response.data.msg == "done") {
+            addNotification({
+              type: 'success',
+              msg: "The money have been withdrawn successfully. Check your account",
+              time: 5000
+            });
+            setWithdrawOverlay(false);
+            location.href = "/settings?page=balance";
+            setEmail("");
+          } else if (response.data.msg == "not") {
+            addNotification({
+              type: 'danger',
+              msg: "There was a aproblem while withdrawing the money. Verify that you are using the correct email and try again later.",
+              time: 5000
+            });
+            setSending(false);
+            setEmail("");
+          } else {
+            addNotification({
+              type: 'danger',
+              msg: "There was a aproblem while withdrawing the money. Try again later",
+              time: 5000
+            });
+            setSending(false);
+            setEmail("");
+          }
+        })["catch"](function (error) {
+          addNotification({
+            type: "danger",
+            msg: "There is some problem",
+            time: 5000,
+            key: Math.floor(Math.random() * 10000)
+          });
+          setEmail("");
+          setSending(false);
+          if (error.code == "ERR_BAD_REQUEST") {
+            setAuth(false);
+          }
+          console.error('Error fetching data:', error);
+        });
+      }
     }
   };
   var info = function info() {
@@ -14758,10 +14743,10 @@ var BalancePage = function BalancePage(props) {
           if (balance.type == "get") {
             money += parseFloat(balance.amount);
             var myDate = new Date(balance.created_at);
-            myDate.setDate(myDate.getDate() + parseInt(balance.after / 24));
+            myDate.setDate(myDate.getDate() + parseInt(parseFloat(balance.after) / 24));
             var currentDate = new Date();
             var timeDifferenceMilliseconds = myDate - currentDate;
-            if (timeDifferenceMilliseconds > 0) {
+            if (timeDifferenceMilliseconds <= 0) {
               usable += parseFloat(balance.amount);
             }
           }
@@ -14770,6 +14755,7 @@ var BalancePage = function BalancePage(props) {
           }
           if (balance.type == "withdraw") {
             money -= parseFloat(balance.amount);
+            usable -= parseFloat(balance.amount);
           }
         });
         setProfit(money);
@@ -14792,7 +14778,41 @@ var BalancePage = function BalancePage(props) {
     initial: "initial",
     animate: "animate",
     exit: "exit",
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+    children: [withdrawOverlay ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+      className: _BalancePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].popOver,
+      onClick: function onClick(e) {
+        setWithdrawOverlay(false);
+      },
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+        className: _BalancePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].pop,
+        onClick: function onClick(e) {
+          e.stopPropagation();
+        },
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("h3", {
+          className: _BalancePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].title,
+          children: ["Withdraw ", usableMoney, "$ into your paypal"]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+          className: _BalancePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].email,
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
+            className: _BalancePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].label,
+            children: "Your PayPal's Email: "
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
+            className: _BalancePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].input,
+            value: email,
+            onChange: function onChange(e) {
+              setEmail(e.target.value);
+            }
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+          className: _BalancePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].form,
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+            className: _BalancePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].sendBtn,
+            onClick: withdrawMoney,
+            children: "Withdraw"
+          })
+        })]
+      })
+    }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
       className: _BalancePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].block,
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
         className: _BalancePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].header,
@@ -14835,7 +14855,9 @@ var BalancePage = function BalancePage(props) {
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
           className: "".concat(_BalancePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].p, " ").concat(_BalancePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].w),
           title: "Withdraw the money",
-          onClick: withdrawMoney,
+          onClick: function onClick() {
+            setWithdrawOverlay(true);
+          },
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("svg", {
             xmlns: "http://www.w3.org/2000/svg",
             className: _BalancePage_module_css__WEBPACK_IMPORTED_MODULE_0__["default"].icon,
@@ -16297,12 +16319,6 @@ var Settings = function Settings(props) {
         });
       }
     })["catch"](function (error) {
-      setAddNotification({
-        type: "danger",
-        msg: "There is some problem",
-        time: 5000,
-        key: Math.floor(Math.random() * 10000)
-      });
       if (error.code == "ERR_BAD_REQUEST") {
         setAuth(false);
       }
@@ -21011,7 +21027,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".v94VG0v9bDWFXY7t\\+lqayQ\\=\\= {\r\n    padding: 0 15px;\r\n}\r\n.v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .WRaN39DpzNriChSG1yZBbw\\=\\= {\r\n    display: flex;\r\n    justify-content: space-between;\r\n    gap: 50px;\r\n}\r\n.v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .WRaN39DpzNriChSG1yZBbw\\=\\= ._5nBF\\+osjlYhp2ZWJq1Hnmw\\=\\= {\r\n    color: #fff;\r\n    text-align: center;\r\n    flex: 2;\r\n    padding: 15px;\r\n    border-radius: 7px;\r\n}\r\n.v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .WRaN39DpzNriChSG1yZBbw\\=\\= ._5nBF\\+osjlYhp2ZWJq1Hnmw\\=\\=:nth-child(1) {\r\n    background-color: #3498dbaa;\r\n}\r\n.v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .WRaN39DpzNriChSG1yZBbw\\=\\= ._5nBF\\+osjlYhp2ZWJq1Hnmw\\=\\=:nth-child(2) {\r\n    background-color: #2ecc71aa;\r\n}\r\n.v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .WRaN39DpzNriChSG1yZBbw\\=\\= ._5nBF\\+osjlYhp2ZWJq1Hnmw\\=\\=:nth-child(3) {\r\n    background-color: #e67e22aa;\r\n}\r\n.v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .WRaN39DpzNriChSG1yZBbw\\=\\= ._5nBF\\+osjlYhp2ZWJq1Hnmw\\=\\=._1pO8\\+Rlz4uuZpSrFQBxfBg\\=\\= {\r\n    flex:none;\r\n    background-color: #e67e22;\r\n    transition: all 0.5s ease-in-out;\r\n    cursor: pointer;\r\n}\r\n.v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .WRaN39DpzNriChSG1yZBbw\\=\\= ._5nBF\\+osjlYhp2ZWJq1Hnmw\\=\\=._1pO8\\+Rlz4uuZpSrFQBxfBg\\=\\=:hover {\r\n    background-color: #e67e22aa;\r\n}\r\n.v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .WRaN39DpzNriChSG1yZBbw\\=\\= ._5nBF\\+osjlYhp2ZWJq1Hnmw\\=\\= .evK\\+Pm2HPnrYMSK88a\\+0jQ\\=\\= {\r\n    font-family: \"GT Bold\";\r\n    font-size: 1.3rem;\r\n    display: block;\r\n    margin-bottom: 5px;\r\n}\r\n.v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .WRaN39DpzNriChSG1yZBbw\\=\\= ._5nBF\\+osjlYhp2ZWJq1Hnmw\\=\\= ._8YZaMxaw36D4-JxdvhU9XQ\\=\\= {\r\n    font-family: \"GT Medium\";\r\n    font-size: 1.2rem;\r\n}\r\n.v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .WRaN39DpzNriChSG1yZBbw\\=\\= ._5nBF\\+osjlYhp2ZWJq1Hnmw\\=\\= .UnJ5D0gks-23K9Nig8pnAA\\=\\= {\r\n    font-family: \"GT Light\";\r\n    font-size: 1rem;\r\n}\r\n.v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .WRaN39DpzNriChSG1yZBbw\\=\\= ._5nBF\\+osjlYhp2ZWJq1Hnmw\\=\\= ._9L8eO1mFThnf0tDQAcc39A\\=\\= {\r\n    width: 50px;\r\n    fill: #fff;\r\n}\r\n.v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .KdJXQwxLxTqE-exORPmKCQ\\=\\=:nth-child(2) {\r\n    margin-top: 30px;\r\n}\r\n.v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .KdJXQwxLxTqE-exORPmKCQ\\=\\= .OuNiQ7KPFl\\+MjpXaA3epzA\\=\\= {\r\n    font-size: 1.6rem;\r\n    font-family: \"GT Medium\";\r\n    color: #f0f0f0;\r\n    padding-bottom: 10px;\r\n    border-bottom: 1px solid #333;\r\n}\r\n.v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .KdJXQwxLxTqE-exORPmKCQ\\=\\= .G-GkWsVoC5AUQ\\+t8RROFfg\\=\\= {\r\n    display: flex;\r\n    flex-direction: column;\r\n    padding: 12px;\r\n    gap: 15px;\r\n}\r\n.v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .KdJXQwxLxTqE-exORPmKCQ\\=\\= .G-GkWsVoC5AUQ\\+t8RROFfg\\=\\= .-\\+MhS6FHI1XvqM2Qc\\+ZF7g\\=\\= {\r\n    display: flex;\r\n    justify-content: space-between;\r\n}\r\n.v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .KdJXQwxLxTqE-exORPmKCQ\\=\\= .G-GkWsVoC5AUQ\\+t8RROFfg\\=\\= .-\\+MhS6FHI1XvqM2Qc\\+ZF7g\\=\\= .evK\\+Pm2HPnrYMSK88a\\+0jQ\\=\\= {\r\n    font-family: \"GT Light\";\r\n    color: #fff;\r\n    font-size: 1.4rem;\r\n}\r\n.v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .KdJXQwxLxTqE-exORPmKCQ\\=\\= .G-GkWsVoC5AUQ\\+t8RROFfg\\=\\= .-\\+MhS6FHI1XvqM2Qc\\+ZF7g\\=\\= ._8YZaMxaw36D4-JxdvhU9XQ\\=\\= {\r\n    color: #fff;\r\n    font-size: 1.6rem;\r\n    font-family: \"GT Medium\";\r\n    display: flex;\r\n    align-items: center;\r\n}\r\n.v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .KdJXQwxLxTqE-exORPmKCQ\\=\\= .G-GkWsVoC5AUQ\\+t8RROFfg\\=\\= .-\\+MhS6FHI1XvqM2Qc\\+ZF7g\\=\\= ._8YZaMxaw36D4-JxdvhU9XQ\\=\\=.HnJ8ytHHACi43ANIZvz2bQ\\=\\= {\r\n    color: #27ae60;\r\n}\r\n.v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .KdJXQwxLxTqE-exORPmKCQ\\=\\= .G-GkWsVoC5AUQ\\+t8RROFfg\\=\\= .-\\+MhS6FHI1XvqM2Qc\\+ZF7g\\=\\= ._8YZaMxaw36D4-JxdvhU9XQ\\=\\=.hEmVTGYRXae6g2dtWvN4tQ\\=\\= {\r\n    color: #c0392b;\r\n}\r\n.v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .KdJXQwxLxTqE-exORPmKCQ\\=\\= .G-GkWsVoC5AUQ\\+t8RROFfg\\=\\= .-\\+MhS6FHI1XvqM2Qc\\+ZF7g\\=\\= ._8YZaMxaw36D4-JxdvhU9XQ\\=\\=.Jhw7wK97k1e5gbSGs\\+ZJaA\\=\\= {\r\n    color: rgb(201, 187, 0)\r\n}\r\n.v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .KdJXQwxLxTqE-exORPmKCQ\\=\\= .G-GkWsVoC5AUQ\\+t8RROFfg\\=\\= .-\\+MhS6FHI1XvqM2Qc\\+ZF7g\\=\\= ._8YZaMxaw36D4-JxdvhU9XQ\\=\\=.HnJ8ytHHACi43ANIZvz2bQ\\=\\=:before {\r\n    content: \"+ \";\r\n}\r\n.v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .KdJXQwxLxTqE-exORPmKCQ\\=\\= .G-GkWsVoC5AUQ\\+t8RROFfg\\=\\= .-\\+MhS6FHI1XvqM2Qc\\+ZF7g\\=\\= ._8YZaMxaw36D4-JxdvhU9XQ\\=\\=.hEmVTGYRXae6g2dtWvN4tQ\\=\\=:before {\r\n    content: \"- \";\r\n}\r\n.v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .KdJXQwxLxTqE-exORPmKCQ\\=\\= .G-GkWsVoC5AUQ\\+t8RROFfg\\=\\= .-\\+MhS6FHI1XvqM2Qc\\+ZF7g\\=\\= ._8YZaMxaw36D4-JxdvhU9XQ\\=\\=.Jhw7wK97k1e5gbSGs\\+ZJaA\\=\\=:before {\r\n    content: \"= \";\r\n}\r\n@media screen and (max-width: 600px) {\r\n    .v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .WRaN39DpzNriChSG1yZBbw\\=\\= {\r\n        flex-direction: column;\r\n        gap: 5px;\r\n    }\r\n    .v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .WRaN39DpzNriChSG1yZBbw\\=\\= ._5nBF\\+osjlYhp2ZWJq1Hnmw\\=\\= {\r\n        padding: 5px;\r\n    }\r\n    .v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .WRaN39DpzNriChSG1yZBbw\\=\\= ._5nBF\\+osjlYhp2ZWJq1Hnmw\\=\\= .evK\\+Pm2HPnrYMSK88a\\+0jQ\\=\\= {\r\n        font-size: 1.1rem;\r\n    }\r\n    .v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .WRaN39DpzNriChSG1yZBbw\\=\\= ._5nBF\\+osjlYhp2ZWJq1Hnmw\\=\\= ._8YZaMxaw36D4-JxdvhU9XQ\\=\\= {\r\n        font-size: 1rem;\r\n    }\r\n    .v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .WRaN39DpzNriChSG1yZBbw\\=\\= ._5nBF\\+osjlYhp2ZWJq1Hnmw\\=\\= .UnJ5D0gks-23K9Nig8pnAA\\=\\= {\r\n        font-size: 0.9rem;\r\n    }\r\n}\r\n@media screen and (max-width: 425px) {\r\n    .v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .KdJXQwxLxTqE-exORPmKCQ\\=\\= .G-GkWsVoC5AUQ\\+t8RROFfg\\=\\= .-\\+MhS6FHI1XvqM2Qc\\+ZF7g\\=\\= .evK\\+Pm2HPnrYMSK88a\\+0jQ\\=\\= {\r\n        font-size: 1.2rem;\r\n    }\r\n    .v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .KdJXQwxLxTqE-exORPmKCQ\\=\\= .G-GkWsVoC5AUQ\\+t8RROFfg\\=\\= .-\\+MhS6FHI1XvqM2Qc\\+ZF7g\\=\\= ._8YZaMxaw36D4-JxdvhU9XQ\\=\\= {\r\n        font-size: 1.2rem;\r\n    }\r\n}\r\n@media screen and (max-width: 375px) {\r\n    .v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .KdJXQwxLxTqE-exORPmKCQ\\=\\= .G-GkWsVoC5AUQ\\+t8RROFfg\\=\\= .-\\+MhS6FHI1XvqM2Qc\\+ZF7g\\=\\= .evK\\+Pm2HPnrYMSK88a\\+0jQ\\=\\= {\r\n        font-size: 1.1rem;\r\n    }\r\n    .v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .KdJXQwxLxTqE-exORPmKCQ\\=\\= .G-GkWsVoC5AUQ\\+t8RROFfg\\=\\= .-\\+MhS6FHI1XvqM2Qc\\+ZF7g\\=\\= ._8YZaMxaw36D4-JxdvhU9XQ\\=\\= {\r\n        font-size: 1.1rem;\r\n    }\r\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".v94VG0v9bDWFXY7t\\+lqayQ\\=\\= {\r\n    padding: 0 15px;\r\n}\r\n.v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .WRaN39DpzNriChSG1yZBbw\\=\\= {\r\n    display: flex;\r\n    justify-content: space-between;\r\n    gap: 50px;\r\n}\r\n.v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .WRaN39DpzNriChSG1yZBbw\\=\\= ._5nBF\\+osjlYhp2ZWJq1Hnmw\\=\\= {\r\n    color: #fff;\r\n    text-align: center;\r\n    flex: 2;\r\n    padding: 15px;\r\n    border-radius: 7px;\r\n}\r\n.v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .WRaN39DpzNriChSG1yZBbw\\=\\= ._5nBF\\+osjlYhp2ZWJq1Hnmw\\=\\=:nth-child(1) {\r\n    background-color: #3498dbaa;\r\n}\r\n.v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .WRaN39DpzNriChSG1yZBbw\\=\\= ._5nBF\\+osjlYhp2ZWJq1Hnmw\\=\\=:nth-child(2) {\r\n    background-color: #2ecc71aa;\r\n}\r\n.v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .WRaN39DpzNriChSG1yZBbw\\=\\= ._5nBF\\+osjlYhp2ZWJq1Hnmw\\=\\=:nth-child(3) {\r\n    background-color: #e67e22aa;\r\n}\r\n.v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .WRaN39DpzNriChSG1yZBbw\\=\\= ._5nBF\\+osjlYhp2ZWJq1Hnmw\\=\\=._1pO8\\+Rlz4uuZpSrFQBxfBg\\=\\= {\r\n    flex:none;\r\n    background-color: #e67e22;\r\n    transition: all 0.5s ease-in-out;\r\n    cursor: pointer;\r\n}\r\n.v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .WRaN39DpzNriChSG1yZBbw\\=\\= ._5nBF\\+osjlYhp2ZWJq1Hnmw\\=\\=._1pO8\\+Rlz4uuZpSrFQBxfBg\\=\\=:hover {\r\n    background-color: #e67e22aa;\r\n}\r\n.v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .WRaN39DpzNriChSG1yZBbw\\=\\= ._5nBF\\+osjlYhp2ZWJq1Hnmw\\=\\= .evK\\+Pm2HPnrYMSK88a\\+0jQ\\=\\= {\r\n    font-family: \"GT Bold\";\r\n    font-size: 1.3rem;\r\n    display: block;\r\n    margin-bottom: 5px;\r\n}\r\n.v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .WRaN39DpzNriChSG1yZBbw\\=\\= ._5nBF\\+osjlYhp2ZWJq1Hnmw\\=\\= ._8YZaMxaw36D4-JxdvhU9XQ\\=\\= {\r\n    font-family: \"GT Medium\";\r\n    font-size: 1.2rem;\r\n}\r\n.v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .WRaN39DpzNriChSG1yZBbw\\=\\= ._5nBF\\+osjlYhp2ZWJq1Hnmw\\=\\= .UnJ5D0gks-23K9Nig8pnAA\\=\\= {\r\n    font-family: \"GT Light\";\r\n    font-size: 1rem;\r\n}\r\n.v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .WRaN39DpzNriChSG1yZBbw\\=\\= ._5nBF\\+osjlYhp2ZWJq1Hnmw\\=\\= ._9L8eO1mFThnf0tDQAcc39A\\=\\= {\r\n    width: 50px;\r\n    fill: #fff;\r\n}\r\n.v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .KdJXQwxLxTqE-exORPmKCQ\\=\\=:nth-child(2) {\r\n    margin-top: 30px;\r\n}\r\n.v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .KdJXQwxLxTqE-exORPmKCQ\\=\\= .OuNiQ7KPFl\\+MjpXaA3epzA\\=\\= {\r\n    font-size: 1.6rem;\r\n    font-family: \"GT Medium\";\r\n    color: #f0f0f0;\r\n    padding-bottom: 10px;\r\n    border-bottom: 1px solid #333;\r\n}\r\n.v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .KdJXQwxLxTqE-exORPmKCQ\\=\\= .G-GkWsVoC5AUQ\\+t8RROFfg\\=\\= {\r\n    display: flex;\r\n    flex-direction: column;\r\n    padding: 12px;\r\n    gap: 15px;\r\n}\r\n.v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .KdJXQwxLxTqE-exORPmKCQ\\=\\= .G-GkWsVoC5AUQ\\+t8RROFfg\\=\\= .-\\+MhS6FHI1XvqM2Qc\\+ZF7g\\=\\= {\r\n    display: flex;\r\n    justify-content: space-between;\r\n}\r\n.v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .KdJXQwxLxTqE-exORPmKCQ\\=\\= .G-GkWsVoC5AUQ\\+t8RROFfg\\=\\= .-\\+MhS6FHI1XvqM2Qc\\+ZF7g\\=\\= .evK\\+Pm2HPnrYMSK88a\\+0jQ\\=\\= {\r\n    font-family: \"GT Light\";\r\n    color: #fff;\r\n    font-size: 1.4rem;\r\n}\r\n.v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .KdJXQwxLxTqE-exORPmKCQ\\=\\= .G-GkWsVoC5AUQ\\+t8RROFfg\\=\\= .-\\+MhS6FHI1XvqM2Qc\\+ZF7g\\=\\= ._8YZaMxaw36D4-JxdvhU9XQ\\=\\= {\r\n    color: #fff;\r\n    font-size: 1.6rem;\r\n    font-family: \"GT Medium\";\r\n    display: flex;\r\n    align-items: center;\r\n}\r\n.v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .KdJXQwxLxTqE-exORPmKCQ\\=\\= .G-GkWsVoC5AUQ\\+t8RROFfg\\=\\= .-\\+MhS6FHI1XvqM2Qc\\+ZF7g\\=\\= ._8YZaMxaw36D4-JxdvhU9XQ\\=\\=.HnJ8ytHHACi43ANIZvz2bQ\\=\\= {\r\n    color: #27ae60;\r\n}\r\n.v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .KdJXQwxLxTqE-exORPmKCQ\\=\\= .G-GkWsVoC5AUQ\\+t8RROFfg\\=\\= .-\\+MhS6FHI1XvqM2Qc\\+ZF7g\\=\\= ._8YZaMxaw36D4-JxdvhU9XQ\\=\\=.hEmVTGYRXae6g2dtWvN4tQ\\=\\= {\r\n    color: #c0392b;\r\n}\r\n.v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .KdJXQwxLxTqE-exORPmKCQ\\=\\= .G-GkWsVoC5AUQ\\+t8RROFfg\\=\\= .-\\+MhS6FHI1XvqM2Qc\\+ZF7g\\=\\= ._8YZaMxaw36D4-JxdvhU9XQ\\=\\=.Jhw7wK97k1e5gbSGs\\+ZJaA\\=\\= {\r\n    color: rgb(201, 187, 0)\r\n}\r\n.v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .KdJXQwxLxTqE-exORPmKCQ\\=\\= .G-GkWsVoC5AUQ\\+t8RROFfg\\=\\= .-\\+MhS6FHI1XvqM2Qc\\+ZF7g\\=\\= ._8YZaMxaw36D4-JxdvhU9XQ\\=\\=.HnJ8ytHHACi43ANIZvz2bQ\\=\\=:before {\r\n    content: \"+ \";\r\n}\r\n.v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .KdJXQwxLxTqE-exORPmKCQ\\=\\= .G-GkWsVoC5AUQ\\+t8RROFfg\\=\\= .-\\+MhS6FHI1XvqM2Qc\\+ZF7g\\=\\= ._8YZaMxaw36D4-JxdvhU9XQ\\=\\=.hEmVTGYRXae6g2dtWvN4tQ\\=\\=:before {\r\n    content: \"- \";\r\n}\r\n.v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .KdJXQwxLxTqE-exORPmKCQ\\=\\= .G-GkWsVoC5AUQ\\+t8RROFfg\\=\\= .-\\+MhS6FHI1XvqM2Qc\\+ZF7g\\=\\= ._8YZaMxaw36D4-JxdvhU9XQ\\=\\=.Jhw7wK97k1e5gbSGs\\+ZJaA\\=\\=:before {\r\n    content: \"= \";\r\n}\r\n\r\n\r\n.NgQuuyNmAKitk-XBtuNvbA\\=\\= {\r\n    position: fixed;\r\n    top: 0;\r\n    left: 0;\r\n    bottom: 0;\r\n    right: 0;\r\n    background-color: #aaa7;\r\n    z-index: 20;\r\n}\r\n.NgQuuyNmAKitk-XBtuNvbA\\=\\= .i7nRwoGenHVQejYjwosVEw\\=\\= {\r\n    position: absolute;\r\n    top: 50%;\r\n    left: 50%;\r\n    transform: translate(-50%, -50%);\r\n    background-color: #0f1011;\r\n    padding: 15px;\r\n    border-radius: 5px;\r\n}\r\n.NgQuuyNmAKitk-XBtuNvbA\\=\\= .i7nRwoGenHVQejYjwosVEw\\=\\= .OuNiQ7KPFl\\+MjpXaA3epzA\\=\\= {\r\n    color: #fff;\r\n    font-size: 1.5rem;\r\n    font-family: \"GT Bold\";\r\n    margin-bottom: 10px;\r\n    text-align: center;\r\n}\r\n.NgQuuyNmAKitk-XBtuNvbA\\=\\= .i7nRwoGenHVQejYjwosVEw\\=\\= .N506a0EipkLe7nD6t\\+207w\\=\\= {\r\n    font-family: \"GT Medium\";\r\n    align-items: center;\r\n}\r\n\r\n.N506a0EipkLe7nD6t\\+207w\\=\\=.TFiRnDuQF8uYPtUeIF3UQw\\=\\= {\r\n    flex-direction: column;\r\n    gap: 5px;\r\n    align-items: flex-start;\r\n}\r\n.N506a0EipkLe7nD6t\\+207w\\=\\=.TFiRnDuQF8uYPtUeIF3UQw\\=\\= select {\r\n    width: 100%;\r\n    padding: 5px;\r\n}\r\n.NgQuuyNmAKitk-XBtuNvbA\\=\\= .i7nRwoGenHVQejYjwosVEw\\=\\= .bzeWgRESeNSUnHX89m3MFQ\\=\\= .N506a0EipkLe7nD6t\\+207w\\=\\= .eamYef4FhCi1kt1JqHkTwA\\=\\= {\r\n    display: flex;\r\n    gap: 3px;\r\n    flex-wrap: wrap;\r\n}\r\n.NgQuuyNmAKitk-XBtuNvbA\\=\\= .i7nRwoGenHVQejYjwosVEw\\=\\= .bzeWgRESeNSUnHX89m3MFQ\\=\\= .N506a0EipkLe7nD6t\\+207w\\=\\= .eamYef4FhCi1kt1JqHkTwA\\=\\= .rGqXMQ4NWVj\\+oiVfTqI9Iw\\=\\= {\r\n    color: #fff;\r\n    border-radius: 5px;\r\n    font-size: 0.9rem;\r\n    padding: 4px 5px;\r\n    font-family: \"GT LIGHT\";\r\n    display: flex;\r\n    gap: 5px;\r\n    align-items: center;\r\n}\r\n.NgQuuyNmAKitk-XBtuNvbA\\=\\= .i7nRwoGenHVQejYjwosVEw\\=\\= .bzeWgRESeNSUnHX89m3MFQ\\=\\= .N506a0EipkLe7nD6t\\+207w\\=\\= .eamYef4FhCi1kt1JqHkTwA\\=\\= .rGqXMQ4NWVj\\+oiVfTqI9Iw\\=\\= ._0gpNf1WfsPY\\+KtnT3IBKPg\\=\\= {\r\n    background-color:#e74c3c;\r\n    color: #fff;\r\n    border-radius: 50%;\r\n    padding: 5px;\r\n    display: flex;\r\n    justify-content: center;\r\n    align-items: center;\r\n    cursor: pointer;\r\n    transition: all 0.5s ease-in-out;\r\n    width: 17px;\r\n    height: 17px;\r\n}\r\n.NgQuuyNmAKitk-XBtuNvbA\\=\\= .i7nRwoGenHVQejYjwosVEw\\=\\= .bzeWgRESeNSUnHX89m3MFQ\\=\\= .N506a0EipkLe7nD6t\\+207w\\=\\= .eamYef4FhCi1kt1JqHkTwA\\=\\= .rGqXMQ4NWVj\\+oiVfTqI9Iw\\=\\= ._0gpNf1WfsPY\\+KtnT3IBKPg\\=\\=:hover {\r\n    background-color: #c0392b;\r\n}\r\n.NgQuuyNmAKitk-XBtuNvbA\\=\\= .i7nRwoGenHVQejYjwosVEw\\=\\= .bzeWgRESeNSUnHX89m3MFQ\\=\\= .N506a0EipkLe7nD6t\\+207w\\=\\= .pqFDhc4VKjIFHxQJN2UgHg\\=\\= {\r\n    flex: 1;\r\n    padding: 8px;\r\n    outline: none;\r\n    width: 100%;\r\n    background-color: #070707;\r\n    border: 1px solid #aaa;\r\n    color: #eee;\r\n    border-radius: 5px;\r\n}\r\n.NgQuuyNmAKitk-XBtuNvbA\\=\\= .i7nRwoGenHVQejYjwosVEw\\=\\= .bzeWgRESeNSUnHX89m3MFQ\\=\\= .N506a0EipkLe7nD6t\\+207w\\=\\= .pqFDhc4VKjIFHxQJN2UgHg\\=\\=:focus {\r\n    outline: none;\r\n    border: 2px solid #2980b9;\r\n}\r\n.NgQuuyNmAKitk-XBtuNvbA\\=\\= .i7nRwoGenHVQejYjwosVEw\\=\\= .bzeWgRESeNSUnHX89m3MFQ\\=\\= .N506a0EipkLe7nD6t\\+207w\\=\\=.gBabjRRYWN-P8f40jjEwgw\\=\\= {\r\n    flex-direction: column;\r\n    justify-content: center;\r\n}\r\n.sQ4WE4N2QhKMniC8zWyH4Q\\=\\= {\r\n    text-align: center;\r\n}\r\n.sQ4WE4N2QhKMniC8zWyH4Q\\=\\= .B2g0m1F5y1Jnz0sQ4Irp1w\\=\\= {\r\n    width: 40px;\r\n    height: 40px;\r\n}\r\n.u9TdOyb8HVkVMddzkj-yyw\\=\\= {\r\n    width: 100%;\r\n    margin-top: 10px;\r\n    padding: 5px;\r\n    font-size: 1.1rem;\r\n    font-family: \"GT MEDIUM\";\r\n    border: none;\r\n    outline: none;\r\n    cursor: pointer;\r\n    color: #fff;\r\n    background-color: #27ae60;\r\n    transition: all 0.5s ease-in-out;\r\n}\r\n.u9TdOyb8HVkVMddzkj-yyw\\=\\=:hover {\r\n    background-color: #27ae60;\r\n}\r\n.yH6gkbcZ9fa4D8xSkSQK1Q\\=\\= {\r\n    margin: 10px 0;\r\n}\r\n.yH6gkbcZ9fa4D8xSkSQK1Q\\=\\= .evK\\+Pm2HPnrYMSK88a\\+0jQ\\=\\= {\r\n    font-size: 1.1rem;\r\n    color: #fff;\r\n    font-family: \"GT LIGHT\";\r\n}\r\n.yH6gkbcZ9fa4D8xSkSQK1Q\\=\\= .pqFDhc4VKjIFHxQJN2UgHg\\=\\= {\r\n    padding: 3px;\r\n    font-size: 1.1rem;\r\n    border: none;\r\n    outline: none;\r\n    font-family: \"GT LIGHT\";\r\n}\r\n@media screen and (max-width: 600px) {\r\n    .v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .WRaN39DpzNriChSG1yZBbw\\=\\= {\r\n        flex-direction: column;\r\n        gap: 5px;\r\n    }\r\n    .v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .WRaN39DpzNriChSG1yZBbw\\=\\= ._5nBF\\+osjlYhp2ZWJq1Hnmw\\=\\= {\r\n        padding: 5px;\r\n    }\r\n    .v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .WRaN39DpzNriChSG1yZBbw\\=\\= ._5nBF\\+osjlYhp2ZWJq1Hnmw\\=\\= .evK\\+Pm2HPnrYMSK88a\\+0jQ\\=\\= {\r\n        font-size: 1.1rem;\r\n    }\r\n    .v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .WRaN39DpzNriChSG1yZBbw\\=\\= ._5nBF\\+osjlYhp2ZWJq1Hnmw\\=\\= ._8YZaMxaw36D4-JxdvhU9XQ\\=\\= {\r\n        font-size: 1rem;\r\n    }\r\n    .v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .WRaN39DpzNriChSG1yZBbw\\=\\= ._5nBF\\+osjlYhp2ZWJq1Hnmw\\=\\= .UnJ5D0gks-23K9Nig8pnAA\\=\\= {\r\n        font-size: 0.9rem;\r\n    }\r\n}\r\n@media screen and (max-width: 425px) {\r\n    .v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .KdJXQwxLxTqE-exORPmKCQ\\=\\= .G-GkWsVoC5AUQ\\+t8RROFfg\\=\\= .-\\+MhS6FHI1XvqM2Qc\\+ZF7g\\=\\= .evK\\+Pm2HPnrYMSK88a\\+0jQ\\=\\= {\r\n        font-size: 1.2rem;\r\n    }\r\n    .v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .KdJXQwxLxTqE-exORPmKCQ\\=\\= .G-GkWsVoC5AUQ\\+t8RROFfg\\=\\= .-\\+MhS6FHI1XvqM2Qc\\+ZF7g\\=\\= ._8YZaMxaw36D4-JxdvhU9XQ\\=\\= {\r\n        font-size: 1.2rem;\r\n    }\r\n}\r\n@media screen and (max-width: 375px) {\r\n    .v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .KdJXQwxLxTqE-exORPmKCQ\\=\\= .G-GkWsVoC5AUQ\\+t8RROFfg\\=\\= .-\\+MhS6FHI1XvqM2Qc\\+ZF7g\\=\\= .evK\\+Pm2HPnrYMSK88a\\+0jQ\\=\\= {\r\n        font-size: 1.1rem;\r\n    }\r\n    .v94VG0v9bDWFXY7t\\+lqayQ\\=\\= .KdJXQwxLxTqE-exORPmKCQ\\=\\= .G-GkWsVoC5AUQ\\+t8RROFfg\\=\\= .-\\+MhS6FHI1XvqM2Qc\\+ZF7g\\=\\= ._8YZaMxaw36D4-JxdvhU9XQ\\=\\= {\r\n        font-size: 1.1rem;\r\n    }\r\n}", ""]);
 // Exports
 ___CSS_LOADER_EXPORT___.locals = {
 	"balancePage": "v94VG0v9bDWFXY7t+lqayQ==",
@@ -21028,7 +21044,21 @@ ___CSS_LOADER_EXPORT___.locals = {
 	"record": "-+MhS6FHI1XvqM2Qc+ZF7g==",
 	"pos": "HnJ8ytHHACi43ANIZvz2bQ==",
 	"neg": "hEmVTGYRXae6g2dtWvN4tQ==",
-	"med": "Jhw7wK97k1e5gbSGs+ZJaA=="
+	"med": "Jhw7wK97k1e5gbSGs+ZJaA==",
+	"popOver": "NgQuuyNmAKitk-XBtuNvbA==",
+	"pop": "i7nRwoGenHVQejYjwosVEw==",
+	"row": "N506a0EipkLe7nD6t+207w==",
+	"genresRow": "TFiRnDuQF8uYPtUeIF3UQw==",
+	"form": "bzeWgRESeNSUnHX89m3MFQ==",
+	"genres": "eamYef4FhCi1kt1JqHkTwA==",
+	"genre": "rGqXMQ4NWVj+oiVfTqI9Iw==",
+	"delete": "_0gpNf1WfsPY+KtnT3IBKPg==",
+	"input": "pqFDhc4VKjIFHxQJN2UgHg==",
+	"i": "gBabjRRYWN-P8f40jjEwgw==",
+	"stars": "sQ4WE4N2QhKMniC8zWyH4Q==",
+	"star": "B2g0m1F5y1Jnz0sQ4Irp1w==",
+	"sendBtn": "u9TdOyb8HVkVMddzkj-yyw==",
+	"email": "yH6gkbcZ9fa4D8xSkSQK1Q=="
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -21102,7 +21132,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "._3QnjCMCesoRC1ZHwhj10XQ\\=\\= {\r\n    margin: 0 50px;\r\n}\r\n\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= {\r\n    position: relative;\r\n    padding: 0 0 8px 0;\r\n    margin-bottom: 15px;\r\n}\r\n\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= > .sg7shg3aE6xS72lqDKRZeQ\\=\\= {\r\n    font-size: 1.6rem;\r\n    font-family: \"GT Medium\";\r\n    color: #f0f0f0;\r\n    padding-bottom: 10px;\r\n    border-bottom: 1px solid #333;\r\n}\r\n\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= {\r\n    padding: 15px 0;\r\n    display: flex;\r\n    flex-direction: column;\r\n}\r\n\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= {\r\n    display: flex;\r\n    gap: 10px;\r\n    align-items: center;\r\n    width: 100%;\r\n    margin-bottom: 15px;\r\n    justify-content: space-between;\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= {\r\n    color: #fff;\r\n    font-family: \"GT Medium\";\r\n    text-align: center;\r\n    display: flex;\r\n    gap: 15px;\r\n    align-items: center;\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .sg7shg3aE6xS72lqDKRZeQ\\=\\= {\r\n    font-size: 1.3rem;\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .rrN84KtNp0-4TPfhs7lXVw\\=\\= {\r\n    \r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .rrN84KtNp0-4TPfhs7lXVw\\=\\= img {\r\n    width: 70px;\r\n    height: 70px;\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .ikicinrMPPyD8CWWUXUM\\+w\\=\\= {\r\n    padding: 3px 5px;\r\n    font-family: \"GT Light\";\r\n    border-radius: 5px;\r\n    font-size: 0.9rem;\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .ikicinrMPPyD8CWWUXUM\\+w\\=\\=._54XJAHgQuki-THAe2q4HWQ\\=\\= {\r\n    background-color: #2980b9;\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .ikicinrMPPyD8CWWUXUM\\+w\\=\\=.\\-5GgG9ge6XKyAQK46H4lnQ\\=\\= {\r\n    background-color: #d35400;\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .ikicinrMPPyD8CWWUXUM\\+w\\=\\=.UPq7hx8WezWpTYfBR2kn8g\\=\\=,\r\n    ._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .ikicinrMPPyD8CWWUXUM\\+w\\=\\=.maCpGiux1vhctDNibastqg\\=\\= {\r\n    background-color: #007b24\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .ikicinrMPPyD8CWWUXUM\\+w\\=\\=.VLidgqa3hWHs5mOKBfKr8Q\\=\\=,\r\n    ._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .ikicinrMPPyD8CWWUXUM\\+w\\=\\=._2MwFrKQkEO-68AQKGUjgFw\\=\\= {\r\n    background-color: #f00\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .VNXkaoZBoLXPmMics8L92g\\=\\= {\r\n    display: flex;\r\n    gap: 10px;\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .VNXkaoZBoLXPmMics8L92g\\=\\= .E\\+v70uhoAzn7sRUGJ3JFew\\=\\= {\r\n    border: none;\r\n    outline: none;\r\n    padding: 5px;\r\n    cursor: pointer;\r\n    color: #fff;\r\n    font-family: \"GT Light\";\r\n    font-size: 1.1rem;\r\n    transition: all 0.5s ease-in-out;\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .VNXkaoZBoLXPmMics8L92g\\=\\= .E\\+v70uhoAzn7sRUGJ3JFew\\=\\=.j4JgjsfGwFI-Sca46iuR3Q\\=\\= {\r\n    background-color: #00a530\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .VNXkaoZBoLXPmMics8L92g\\=\\= .E\\+v70uhoAzn7sRUGJ3JFew\\=\\=.j4JgjsfGwFI-Sca46iuR3Q\\=\\=:hover {\r\n    background-color: #007b24\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .VNXkaoZBoLXPmMics8L92g\\=\\= .E\\+v70uhoAzn7sRUGJ3JFew\\=\\=.MQ8F-w3s9eTxTFpdE1DELw\\=\\= {\r\n    background-color: #e32700\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .VNXkaoZBoLXPmMics8L92g\\=\\= .E\\+v70uhoAzn7sRUGJ3JFew\\=\\=.MQ8F-w3s9eTxTFpdE1DELw\\=\\=:hover {\r\n    background-color: #b11e00\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .mlLReC1n0DZewlq8eNQ60A\\=\\= {\r\n    width: 100%;\r\n    text-align: center;\r\n    color: #eee;\r\n    font-size: 1.3rem;\r\n    font-family: \"GT Light\";\r\n}\r\n\r\n.\\-3GDfhnek1RnK7ppJlPjmg\\=\\= {\r\n    display: flex;\r\n    flex-wrap: wrap;\r\n    gap: 15px;\r\n}\r\n\r\n\r\n._6VO0X9LLkFuYDieQLpUBJw\\=\\= {\r\n    position: fixed;\r\n    top: 0;\r\n    left: 0;\r\n    bottom: 0;\r\n    right: 0;\r\n    background-color: #aaa7;\r\n    z-index: 20;\r\n}\r\n._6VO0X9LLkFuYDieQLpUBJw\\=\\= .DfLcdEw0UkYg3HPyNOgDtQ\\=\\= {\r\n    position: absolute;\r\n    top: 50%;\r\n    left: 50%;\r\n    transform: translate(-50%, -50%);\r\n    background-color: #0f1011;\r\n    padding: 15px;\r\n    border-radius: 5px;\r\n}\r\n._6VO0X9LLkFuYDieQLpUBJw\\=\\= .DfLcdEw0UkYg3HPyNOgDtQ\\=\\= .sg7shg3aE6xS72lqDKRZeQ\\=\\= {\r\n    color: #fff;\r\n    font-size: 1.5rem;\r\n    font-family: \"GT Bold\";\r\n    margin-bottom: 10px;\r\n    text-align: center;\r\n}\r\n._6VO0X9LLkFuYDieQLpUBJw\\=\\= .DfLcdEw0UkYg3HPyNOgDtQ\\=\\= .kFK9NBhippPoHXWSrn\\+LIw\\=\\= {\r\n    font-family: \"GT Medium\";\r\n    align-items: center;\r\n}\r\n\r\n.kFK9NBhippPoHXWSrn\\+LIw\\=\\=.LOTbc-tqKqwh-sobIScMrw\\=\\= {\r\n    flex-direction: column;\r\n    gap: 5px;\r\n    align-items: flex-start;\r\n}\r\n.kFK9NBhippPoHXWSrn\\+LIw\\=\\=.LOTbc-tqKqwh-sobIScMrw\\=\\= select {\r\n    width: 100%;\r\n    padding: 5px;\r\n}\r\n._6VO0X9LLkFuYDieQLpUBJw\\=\\= .DfLcdEw0UkYg3HPyNOgDtQ\\=\\= .mNn2wg52YrzmHE05WzXV\\+A\\=\\= .kFK9NBhippPoHXWSrn\\+LIw\\=\\= .MZ9UsTNsDwC7KihQOsfF0g\\=\\= {\r\n    display: flex;\r\n    gap: 3px;\r\n    flex-wrap: wrap;\r\n}\r\n._6VO0X9LLkFuYDieQLpUBJw\\=\\= .DfLcdEw0UkYg3HPyNOgDtQ\\=\\= .mNn2wg52YrzmHE05WzXV\\+A\\=\\= .kFK9NBhippPoHXWSrn\\+LIw\\=\\= .MZ9UsTNsDwC7KihQOsfF0g\\=\\= .P8E2glpflHe6TjMsAWspfQ\\=\\= {\r\n    color: #fff;\r\n    border-radius: 5px;\r\n    font-size: 0.9rem;\r\n    padding: 4px 5px;\r\n    font-family: \"GT LIGHT\";\r\n    display: flex;\r\n    gap: 5px;\r\n    align-items: center;\r\n}\r\n._6VO0X9LLkFuYDieQLpUBJw\\=\\= .DfLcdEw0UkYg3HPyNOgDtQ\\=\\= .mNn2wg52YrzmHE05WzXV\\+A\\=\\= .kFK9NBhippPoHXWSrn\\+LIw\\=\\= .MZ9UsTNsDwC7KihQOsfF0g\\=\\= .P8E2glpflHe6TjMsAWspfQ\\=\\= .QK-S6aJJNHlokMJNs0nU4A\\=\\= {\r\n    background-color:#e74c3c;\r\n    color: #fff;\r\n    border-radius: 50%;\r\n    padding: 5px;\r\n    display: flex;\r\n    justify-content: center;\r\n    align-items: center;\r\n    cursor: pointer;\r\n    transition: all 0.5s ease-in-out;\r\n    width: 17px;\r\n    height: 17px;\r\n}\r\n._6VO0X9LLkFuYDieQLpUBJw\\=\\= .DfLcdEw0UkYg3HPyNOgDtQ\\=\\= .mNn2wg52YrzmHE05WzXV\\+A\\=\\= .kFK9NBhippPoHXWSrn\\+LIw\\=\\= .MZ9UsTNsDwC7KihQOsfF0g\\=\\= .P8E2glpflHe6TjMsAWspfQ\\=\\= .QK-S6aJJNHlokMJNs0nU4A\\=\\=:hover {\r\n    background-color: #c0392b;\r\n}\r\n._6VO0X9LLkFuYDieQLpUBJw\\=\\= .DfLcdEw0UkYg3HPyNOgDtQ\\=\\= .mNn2wg52YrzmHE05WzXV\\+A\\=\\= .kFK9NBhippPoHXWSrn\\+LIw\\=\\= ._2i8U3JVLhRQccr6ubf5ILA\\=\\= {\r\n    flex: 1;\r\n    padding: 8px;\r\n    outline: none;\r\n    width: 100%;\r\n    background-color: #070707;\r\n    border: 1px solid #aaa;\r\n    color: #eee;\r\n    border-radius: 5px;\r\n}\r\n._6VO0X9LLkFuYDieQLpUBJw\\=\\= .DfLcdEw0UkYg3HPyNOgDtQ\\=\\= .mNn2wg52YrzmHE05WzXV\\+A\\=\\= .kFK9NBhippPoHXWSrn\\+LIw\\=\\= ._2i8U3JVLhRQccr6ubf5ILA\\=\\=:focus {\r\n    outline: none;\r\n    border: 2px solid #2980b9;\r\n}\r\n._6VO0X9LLkFuYDieQLpUBJw\\=\\= .DfLcdEw0UkYg3HPyNOgDtQ\\=\\= .mNn2wg52YrzmHE05WzXV\\+A\\=\\= .kFK9NBhippPoHXWSrn\\+LIw\\=\\=.n0cYEaJOfr7-SEzuTpfZ7g\\=\\= {\r\n    flex-direction: column;\r\n    justify-content: center;\r\n}\r\n.CNTMjIeO0rJ0qPvMswzK5w\\=\\= {\r\n    text-align: center;\r\n}\r\n.CNTMjIeO0rJ0qPvMswzK5w\\=\\= .ZJf6q3dmTtRrp-n4YkstLQ\\=\\= {\r\n    width: 40px;\r\n    height: 40px;\r\n}\r\n.T1acM-cOtOesO6KXlfWuqw\\=\\= {\r\n    width: 100%;\r\n    margin-top: 10px;\r\n    padding: 5px;\r\n    font-size: 1.1rem;\r\n    font-family: \"GT MEDIUM\";\r\n    border: none;\r\n    outline: none;\r\n    cursor: pointer;\r\n    color: #fff;\r\n    background-color: #27ae60;\r\n    transition: all 0.5s ease-in-out;\r\n}\r\n.T1acM-cOtOesO6KXlfWuqw\\=\\=:hover {\r\n    background-color: #27ae60;\r\n}\r\n\r\n@media screen and (max-width: 700px) {\r\n    .\\-3GDfhnek1RnK7ppJlPjmg\\=\\= {\r\n        flex-direction: column;\r\n        align-items: center;\r\n    }\r\n    ._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= {\r\n        flex-direction: column;\r\n        align-items: center;\r\n    }\r\n    ._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= {\r\n        align-items: center;\r\n    }\r\n    ._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= {\r\n        margin-bottom: 10px;\r\n        padding-bottom: 10px;\r\n        position: relative;\r\n        justify-content: center;\r\n        flex-direction: column;\r\n    }\r\n    ._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\=::after {\r\n        position: absolute;\r\n        content: \"\";\r\n        left: 15%;\r\n        width: 70%;\r\n        height: 1px;\r\n        background-color: #333;\r\n        bottom: 0;\r\n    }\r\n    .\\-3GDfhnek1RnK7ppJlPjmg\\=\\= {\r\n        gap: 5px;\r\n    }\r\n}\r\n\r\n@media screen and (max-width: 600px) {\r\n    ._3QnjCMCesoRC1ZHwhj10XQ\\=\\= {\r\n        margin: 0 20px;\r\n    }\r\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "._3QnjCMCesoRC1ZHwhj10XQ\\=\\= {\r\n    margin: 0 50px;\r\n}\r\n\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= {\r\n    position: relative;\r\n    padding: 0 0 8px 0;\r\n    margin-bottom: 15px;\r\n}\r\n\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= > .sg7shg3aE6xS72lqDKRZeQ\\=\\= {\r\n    font-size: 1.6rem;\r\n    font-family: \"GT Medium\";\r\n    color: #f0f0f0;\r\n    padding-bottom: 10px;\r\n    border-bottom: 1px solid #333;\r\n}\r\n\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= {\r\n    padding: 15px 0;\r\n    display: flex;\r\n    flex-direction: column;\r\n}\r\n\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= {\r\n    display: flex;\r\n    gap: 10px;\r\n    align-items: center;\r\n    width: 100%;\r\n    margin-bottom: 15px;\r\n    justify-content: space-between;\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= {\r\n    color: #fff;\r\n    font-family: \"GT Medium\";\r\n    text-align: center;\r\n    display: flex;\r\n    gap: 15px;\r\n    align-items: center;\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .sg7shg3aE6xS72lqDKRZeQ\\=\\= {\r\n    font-size: 1.3rem;\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .rrN84KtNp0-4TPfhs7lXVw\\=\\= {\r\n    \r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .rrN84KtNp0-4TPfhs7lXVw\\=\\= img {\r\n    width: 70px;\r\n    height: 70px;\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .ikicinrMPPyD8CWWUXUM\\+w\\=\\= {\r\n    padding: 3px 5px;\r\n    font-family: \"GT Light\";\r\n    border-radius: 5px;\r\n    font-size: 0.9rem;\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .ikicinrMPPyD8CWWUXUM\\+w\\=\\=._54XJAHgQuki-THAe2q4HWQ\\=\\= {\r\n    background-color: #2980b9;\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .ikicinrMPPyD8CWWUXUM\\+w\\=\\=.\\-5GgG9ge6XKyAQK46H4lnQ\\=\\= {\r\n    background-color: #d35400;\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .ikicinrMPPyD8CWWUXUM\\+w\\=\\=.UPq7hx8WezWpTYfBR2kn8g\\=\\=,\r\n    ._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .ikicinrMPPyD8CWWUXUM\\+w\\=\\=.maCpGiux1vhctDNibastqg\\=\\= {\r\n    background-color: #007b24\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .ikicinrMPPyD8CWWUXUM\\+w\\=\\=.VLidgqa3hWHs5mOKBfKr8Q\\=\\=,\r\n    ._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .ikicinrMPPyD8CWWUXUM\\+w\\=\\=._2MwFrKQkEO-68AQKGUjgFw\\=\\= {\r\n    background-color: #f00\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .VNXkaoZBoLXPmMics8L92g\\=\\= {\r\n    display: flex;\r\n    gap: 10px;\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .VNXkaoZBoLXPmMics8L92g\\=\\= .E\\+v70uhoAzn7sRUGJ3JFew\\=\\= {\r\n    border: none;\r\n    outline: none;\r\n    padding: 5px;\r\n    cursor: pointer;\r\n    color: #fff;\r\n    font-family: \"GT Light\";\r\n    font-size: 1.1rem;\r\n    transition: all 0.5s ease-in-out;\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .VNXkaoZBoLXPmMics8L92g\\=\\= .E\\+v70uhoAzn7sRUGJ3JFew\\=\\=.j4JgjsfGwFI-Sca46iuR3Q\\=\\= {\r\n    background-color: #00a530\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .VNXkaoZBoLXPmMics8L92g\\=\\= .E\\+v70uhoAzn7sRUGJ3JFew\\=\\=.j4JgjsfGwFI-Sca46iuR3Q\\=\\=:hover {\r\n    background-color: #007b24\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .VNXkaoZBoLXPmMics8L92g\\=\\= .E\\+v70uhoAzn7sRUGJ3JFew\\=\\=.MQ8F-w3s9eTxTFpdE1DELw\\=\\= {\r\n    background-color: #e32700\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= .VNXkaoZBoLXPmMics8L92g\\=\\= .E\\+v70uhoAzn7sRUGJ3JFew\\=\\=.MQ8F-w3s9eTxTFpdE1DELw\\=\\=:hover {\r\n    background-color: #b11e00\r\n}\r\n._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .mlLReC1n0DZewlq8eNQ60A\\=\\= {\r\n    width: 100%;\r\n    text-align: center;\r\n    color: #eee;\r\n    font-size: 1.3rem;\r\n    font-family: \"GT Light\";\r\n}\r\n\r\n.\\-3GDfhnek1RnK7ppJlPjmg\\=\\= {\r\n    display: flex;\r\n    flex-wrap: wrap;\r\n    gap: 15px;\r\n}\r\n\r\n\r\n._6VO0X9LLkFuYDieQLpUBJw\\=\\= {\r\n    position: fixed;\r\n    top: 0;\r\n    left: 0;\r\n    bottom: 0;\r\n    right: 0;\r\n    background-color: #aaa7;\r\n    z-index: 20;\r\n}\r\n._6VO0X9LLkFuYDieQLpUBJw\\=\\= .DfLcdEw0UkYg3HPyNOgDtQ\\=\\= {\r\n    position: absolute;\r\n    top: 50%;\r\n    left: 50%;\r\n    transform: translate(-50%, -50%);\r\n    background-color: #0f1011;\r\n    padding: 15px;\r\n    border-radius: 5px;\r\n}\r\n._6VO0X9LLkFuYDieQLpUBJw\\=\\= .DfLcdEw0UkYg3HPyNOgDtQ\\=\\= .sg7shg3aE6xS72lqDKRZeQ\\=\\= {\r\n    color: #fff;\r\n    font-size: 1.5rem;\r\n    font-family: \"GT Bold\";\r\n    margin-bottom: 10px;\r\n    text-align: center;\r\n}\r\n._6VO0X9LLkFuYDieQLpUBJw\\=\\= .DfLcdEw0UkYg3HPyNOgDtQ\\=\\= .kFK9NBhippPoHXWSrn\\+LIw\\=\\= {\r\n    font-family: \"GT Medium\";\r\n    align-items: center;\r\n}\r\n\r\n.kFK9NBhippPoHXWSrn\\+LIw\\=\\=.LOTbc-tqKqwh-sobIScMrw\\=\\= {\r\n    flex-direction: column;\r\n    gap: 5px;\r\n    align-items: flex-start;\r\n}\r\n.kFK9NBhippPoHXWSrn\\+LIw\\=\\=.LOTbc-tqKqwh-sobIScMrw\\=\\= select {\r\n    width: 100%;\r\n    padding: 5px;\r\n}\r\n._6VO0X9LLkFuYDieQLpUBJw\\=\\= .DfLcdEw0UkYg3HPyNOgDtQ\\=\\= .mNn2wg52YrzmHE05WzXV\\+A\\=\\= .kFK9NBhippPoHXWSrn\\+LIw\\=\\= .MZ9UsTNsDwC7KihQOsfF0g\\=\\= {\r\n    display: flex;\r\n    gap: 3px;\r\n    flex-wrap: wrap;\r\n}\r\n._6VO0X9LLkFuYDieQLpUBJw\\=\\= .DfLcdEw0UkYg3HPyNOgDtQ\\=\\= .mNn2wg52YrzmHE05WzXV\\+A\\=\\= .kFK9NBhippPoHXWSrn\\+LIw\\=\\= .MZ9UsTNsDwC7KihQOsfF0g\\=\\= .P8E2glpflHe6TjMsAWspfQ\\=\\= {\r\n    color: #fff;\r\n    border-radius: 5px;\r\n    font-size: 0.9rem;\r\n    padding: 4px 5px;\r\n    font-family: \"GT LIGHT\";\r\n    display: flex;\r\n    gap: 5px;\r\n    align-items: center;\r\n}\r\n._6VO0X9LLkFuYDieQLpUBJw\\=\\= .DfLcdEw0UkYg3HPyNOgDtQ\\=\\= .mNn2wg52YrzmHE05WzXV\\+A\\=\\= .kFK9NBhippPoHXWSrn\\+LIw\\=\\= .MZ9UsTNsDwC7KihQOsfF0g\\=\\= .P8E2glpflHe6TjMsAWspfQ\\=\\= .QK-S6aJJNHlokMJNs0nU4A\\=\\= {\r\n    background-color:#e74c3c;\r\n    color: #fff;\r\n    border-radius: 50%;\r\n    padding: 5px;\r\n    display: flex;\r\n    justify-content: center;\r\n    align-items: center;\r\n    cursor: pointer;\r\n    transition: all 0.5s ease-in-out;\r\n    width: 17px;\r\n    height: 17px;\r\n}\r\n._6VO0X9LLkFuYDieQLpUBJw\\=\\= .DfLcdEw0UkYg3HPyNOgDtQ\\=\\= .mNn2wg52YrzmHE05WzXV\\+A\\=\\= .kFK9NBhippPoHXWSrn\\+LIw\\=\\= .MZ9UsTNsDwC7KihQOsfF0g\\=\\= .P8E2glpflHe6TjMsAWspfQ\\=\\= .QK-S6aJJNHlokMJNs0nU4A\\=\\=:hover {\r\n    background-color: #c0392b;\r\n}\r\n._6VO0X9LLkFuYDieQLpUBJw\\=\\= .DfLcdEw0UkYg3HPyNOgDtQ\\=\\= .mNn2wg52YrzmHE05WzXV\\+A\\=\\= .kFK9NBhippPoHXWSrn\\+LIw\\=\\= ._2i8U3JVLhRQccr6ubf5ILA\\=\\= {\r\n    flex: 1;\r\n    padding: 8px;\r\n    outline: none;\r\n    width: 100%;\r\n    background-color: #070707;\r\n    border: 1px solid #aaa;\r\n    color: #eee;\r\n    border-radius: 5px;\r\n}\r\n._6VO0X9LLkFuYDieQLpUBJw\\=\\= .DfLcdEw0UkYg3HPyNOgDtQ\\=\\= .mNn2wg52YrzmHE05WzXV\\+A\\=\\= .kFK9NBhippPoHXWSrn\\+LIw\\=\\= ._2i8U3JVLhRQccr6ubf5ILA\\=\\=:focus {\r\n    outline: none;\r\n    border: 2px solid #2980b9;\r\n}\r\n._6VO0X9LLkFuYDieQLpUBJw\\=\\= .DfLcdEw0UkYg3HPyNOgDtQ\\=\\= .mNn2wg52YrzmHE05WzXV\\+A\\=\\= .kFK9NBhippPoHXWSrn\\+LIw\\=\\=.n0cYEaJOfr7-SEzuTpfZ7g\\=\\= {\r\n    flex-direction: column;\r\n    justify-content: center;\r\n}\r\n.CNTMjIeO0rJ0qPvMswzK5w\\=\\= {\r\n    text-align: center;\r\n}\r\n.CNTMjIeO0rJ0qPvMswzK5w\\=\\= .ZJf6q3dmTtRrp-n4YkstLQ\\=\\= {\r\n    width: 40px;\r\n    height: 40px;\r\n}\r\n\r\n.T1acM-cOtOesO6KXlfWuqw\\=\\= {\r\n    width: 100%;\r\n    margin-top: 10px;\r\n    padding: 5px;\r\n    font-size: 1.1rem;\r\n    font-family: \"GT MEDIUM\";\r\n    border: none;\r\n    outline: none;\r\n    cursor: pointer;\r\n    color: #fff;\r\n    background-color: #27ae60;\r\n    transition: all 0.5s ease-in-out;\r\n}\r\n.T1acM-cOtOesO6KXlfWuqw\\=\\=:hover {\r\n    background-color: #27ae60;\r\n}\r\n\r\n@media screen and (max-width: 700px) {\r\n    .\\-3GDfhnek1RnK7ppJlPjmg\\=\\= {\r\n        flex-direction: column;\r\n        align-items: center;\r\n    }\r\n    ._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= .VKuhfu6RIfEU-jcYhNuGLw\\=\\= {\r\n        flex-direction: column;\r\n        align-items: center;\r\n    }\r\n    ._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= {\r\n        align-items: center;\r\n    }\r\n    ._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\= {\r\n        margin-bottom: 10px;\r\n        padding-bottom: 10px;\r\n        position: relative;\r\n        justify-content: center;\r\n        flex-direction: column;\r\n    }\r\n    ._3QnjCMCesoRC1ZHwhj10XQ\\=\\= .MB7zm-93-PPP1FybRtFVOg\\=\\= .irvBJV-eFYnCon7yf3CVKQ\\=\\= .Gvzdz4NiRCFOFiz2w1q5jg\\=\\=::after {\r\n        position: absolute;\r\n        content: \"\";\r\n        left: 15%;\r\n        width: 70%;\r\n        height: 1px;\r\n        background-color: #333;\r\n        bottom: 0;\r\n    }\r\n    .\\-3GDfhnek1RnK7ppJlPjmg\\=\\= {\r\n        gap: 5px;\r\n    }\r\n}\r\n\r\n@media screen and (max-width: 600px) {\r\n    ._3QnjCMCesoRC1ZHwhj10XQ\\=\\= {\r\n        margin: 0 20px;\r\n    }\r\n}", ""]);
 // Exports
 ___CSS_LOADER_EXPORT___.locals = {
 	"purchasedItemsPage": "_3QnjCMCesoRC1ZHwhj10XQ==",

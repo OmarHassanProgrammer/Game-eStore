@@ -148,6 +148,7 @@ useEffect(() => {
     api.get('/user/me')
       .then(response => {
         if(response.data.message != "Unauthenticated.") {
+          console.log("Errrrrrrrrrrrrrrrrrrrrrrrorrrrrrrrrrrrrr");
           setUser(response.data.user);
           api.get('/user/cart/get')
           .then(response => {
@@ -157,17 +158,17 @@ useEffect(() => {
             }
           })
           .catch(error => {
+            setAddNotification({
+              type: "danger",
+              msg: "There is some problem",
+              time: 5000,
+              key: Math.floor(Math.random() * 10000)
+            });
             console.error('Error fetching data:', error);
           });
         }
       })
       .catch(error => {
-setAddNotification({
-            type: "danger",
-            msg: "There is some problem",
-            time: 5000,
-            key: Math.floor(Math.random() * 10000)
-          });
         console.error('Error fetching data:', error);
       });
 }, []);
@@ -622,13 +623,12 @@ setAddNotification({
               console.error('Error fetching data:', error);
             });
         } else if (browseType == "/categories") {
-          if(currentGame.id != -1) {
+          if(currentGame?.id && currentGame.id != -1) {
             const apiUrl = '/api/games/getCategories/' + currentGame.id; // Replace with your actual API endpoint
             axios.get(apiUrl)
             .then(response => {
               setShownCategories(response.data.categories);
               setShownGames(response.data.categories);
-              g = response.data.games;
             })
             .catch(error => {
 setAddNotification({
@@ -645,7 +645,6 @@ setAddNotification({
             .then(response => {
               setShownCategories(response.data.categories);
               setShownGames(response.data.categories);
-              g = response.data.games;
             })
             .catch(error => {
 setAddNotification({
@@ -658,7 +657,7 @@ setAddNotification({
             });
           }
         } else if (browseType == "/items") {
-          if(currentCategory.id != -1) {
+          if(currentCategory?.id && currentCategory.id != -1) {
             const apiUrl = '/api/items/getAll/' + currentCategory.id; // Replace with your actual API endpoint
               axios.get(apiUrl)
               .then(response => {
@@ -886,7 +885,7 @@ setAddNotification({
                   </div>
                 </div>
                     <Grid 
-                      shownGames={shownGames}
+                      shownGames={shownGames ?? []}
                       reviewDisplay={reviewDisplay}
                       handleLike={handleLike}
                       handleHoverGame={browseType == "/games"? handleHoverGame:() => {return false}}

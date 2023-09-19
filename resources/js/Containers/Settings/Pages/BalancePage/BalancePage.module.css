@@ -99,6 +99,134 @@
 .balancePage .block .content .record .n.med:before {
     content: "= ";
 }
+
+
+.popOver {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: #aaa7;
+    z-index: 20;
+}
+.popOver .pop {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #0f1011;
+    padding: 15px;
+    border-radius: 5px;
+}
+.popOver .pop .title {
+    color: #fff;
+    font-size: 1.5rem;
+    font-family: "GT Bold";
+    margin-bottom: 10px;
+    text-align: center;
+}
+.popOver .pop .row {
+    font-family: "GT Medium";
+    align-items: center;
+}
+
+.row.genresRow {
+    flex-direction: column;
+    gap: 5px;
+    align-items: flex-start;
+}
+.row.genresRow select {
+    width: 100%;
+    padding: 5px;
+}
+.popOver .pop .form .row .genres {
+    display: flex;
+    gap: 3px;
+    flex-wrap: wrap;
+}
+.popOver .pop .form .row .genres .genre {
+    color: #fff;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    padding: 4px 5px;
+    font-family: "GT LIGHT";
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+.popOver .pop .form .row .genres .genre .delete {
+    background-color:#e74c3c;
+    color: #fff;
+    border-radius: 50%;
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.5s ease-in-out;
+    width: 17px;
+    height: 17px;
+}
+.popOver .pop .form .row .genres .genre .delete:hover {
+    background-color: #c0392b;
+}
+.popOver .pop .form .row .input {
+    flex: 1;
+    padding: 8px;
+    outline: none;
+    width: 100%;
+    background-color: #070707;
+    border: 1px solid #aaa;
+    color: #eee;
+    border-radius: 5px;
+}
+.popOver .pop .form .row .input:focus {
+    outline: none;
+    border: 2px solid #2980b9;
+}
+.popOver .pop .form .row.i {
+    flex-direction: column;
+    justify-content: center;
+}
+.stars {
+    text-align: center;
+}
+.stars .star {
+    width: 40px;
+    height: 40px;
+}
+.sendBtn {
+    width: 100%;
+    margin-top: 10px;
+    padding: 5px;
+    font-size: 1.1rem;
+    font-family: "GT MEDIUM";
+    border: none;
+    outline: none;
+    cursor: pointer;
+    color: #fff;
+    background-color: #27ae60;
+    transition: all 0.5s ease-in-out;
+}
+.sendBtn:hover {
+    background-color: #27ae60;
+}
+.email {
+    margin: 10px 0;
+}
+.email .label {
+    font-size: 1.1rem;
+    color: #fff;
+    font-family: "GT LIGHT";
+}
+.email .input {
+    padding: 3px;
+    font-size: 1.1rem;
+    border: none;
+    outline: none;
+    font-family: "GT LIGHT";
+}
 @media screen and (max-width: 600px) {
     .balancePage .header {
         flex-direction: column;

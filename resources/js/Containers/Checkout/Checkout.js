@@ -75,12 +75,6 @@ setAddNotification({
         }
       })
       .catch(error => {
-setAddNotification({
-            type: "danger",
-            msg: "There is some problem",
-            time: 5000,
-            key: Math.floor(Math.random() * 10000)
-          });
         if(error.code == "ERR_BAD_REQUEST") {
           setAuth(false);
         }

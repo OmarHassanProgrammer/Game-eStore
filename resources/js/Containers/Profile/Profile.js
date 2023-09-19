@@ -73,14 +73,7 @@ setAddNotification({
           });
         }
       })
-      .catch(error => {
-setAddNotification({
-            type: "danger",
-            msg: "There is some problem",
-            time: 5000,
-            key: Math.floor(Math.random() * 10000)
-          });
-        
+      .catch(error => {        
         if(error.code == "ERR_BAD_REQUEST") {
           setAuth(false);
         }
@@ -459,7 +452,7 @@ setAddNotification({
               <div className={styles.games}>
                 {
                   userProfile?.game_links?.map((link, key) => {
-                    return <span key={key} className={styles.account} onClick={copyLink.bind(this, link.value)}>
+                    return <span key={key} className={styles.account} onClick={copyLink.bind(this, link.link)}>
                       {
                         ['LOL', 'COC', 'Minecraft', 'Fortnite', 'Roblox'].includes(link.game)?
                           <img src={'../images/' + link.game + '.png'} />:

@@ -11,7 +11,10 @@ use App\Models\User;
 use App\Models\Item;
 use App\Models\Rate;
 use Srmklive\PayPal\Services\ExpressCheckout;
-use Srmklive\PayPal\Services\PayPal as PayPalClient;
+use Srmklive\PayPal\Services\AdaptivePayments;
+use Illuminate\Support\Facades\Http;
+use Srmklive\PayPal\Facades\PayPal;
+//use Srmklive\PayPal\Services\PayPal as PayPalClient;
 
 class OrderController extends Controller
 {
@@ -52,38 +55,7 @@ class OrderController extends Controller
         return response()->json(['msg' => 'done', 'payment' => [
             'approvalUrl' => $response['paypal_link'], // URL for user approval
         ]]);
-/*
-        
-        $provider = new PayPalClient; 
-        $provider->setApiCredentials(config('paypal'));
-        $paypalToken = $provider->getAccessToken();
 
-        $response = $provider->addOptions($options)->createOrder([
-            "intent" => "CAPTURE",
-            "application_context" => [
-                "return_url" => route('order_success'),
-                "cancel_url" => route('order_failed')
-            ],
-            "purchase_units" => [
-                [
-                    "amount" => [
-                        "currency_code" => "USD",
-                        "value" => $price  
-                    ]
-                ]
-            ]
-        ]);
-
-        if(isset($response['id']) && $response['id'] != null) {
-            foreach ($response['links'] as $key => $link) {
-                if($link['rel'] == "approve") {
-                    return response()->json(['msg' => 'done', 'payment' => [
-                        'approvalUrl' => $link['href'], // URL for user approval
-                    ]]);
-                }
-            }
-        }
-*/
         return response()->json(['msg' => 'not', 'response' => $response]);
     }
 
@@ -147,35 +119,34 @@ class OrderController extends Controller
         return response()->json(['msg' => 'done', 'orders' => $orders]);
     }
 
-    public function withdraw() {
-        $provider = new PayPalClient; 
-        $provider->setApiCredentials(config('paypal'));
-        $paypalToken = $provider->getAccessToken();
-
-        $amount = 0;
-
-        $data = [
+    public function withdraw($email) {
+        $amount = 10;
+        $paypalToken = 'A21AAKYytD0uq5Uar2VOoWo8LZNtXhQjDd-M-vRSxZlGD9trpLv7VyzZlDlfvTsSlHisVRFOJe16_J3FFY-eNksqbK7AiJKJQ';
+        $headers = [
+            'Content-Type' => 'application/json',
+            'Authorization' => 'Bearer ' . $paypalToken
+        ];
+        $body = [
             "sender_batch_header" => [
-                "sender_batch_id" => "Payouts_" . time(),
-                "email_subject" => "You have a payout!",
-                "email_message" => "You have received a payout! Thanks for using our service!"
-            ],
-            "items" => [
-                [
-                    "recipient_type" => "EMAIL",
-                    "amount" => [
-                        "value" => $amount,
-                        "currency" => "USD"
-                    ],
-                    "note" => "Thanks for your patronage!",
-                    "sender_item_id" => "201403140001",
-                    "receiver" => "sb-8sgxw27328422@personal.example.com",
-                    "notification_language" => "en-EN"
+                "sender_batch_id" => "Payouts_" . time(), 
+                "email_subject" => "You have a payout!", 
+                "email_message" => "You have received a payout! Thanks for using our service!" 
+            ], 
+            "items" => [ 
+                [ 
+                    "recipient_type" => "EMAIL", 
+                    "amount" => [ 
+                        "value" => $amount, 
+                        "currency"=> "USD" 
+                    ], 
+                    "note" => "Thanks for your patronage!", 
+                    "sender_item_id" => "201403140001", 
+                    "receiver" => $email, 
+                    "recipient_wallet" => "PAYPAL" 
                 ],
             ],
         ];
-        
-        $response = $provider->createBatchPayout($data);
+        $response = Http::withHeaders($headers)->post('https://api-m.sandbox.paypal.com/v1/payments/payouts', $body);
         
         if(isset($response['batch_header']['batch_status']) && $response['batch_header']['batch_status'] == "PENDING") {
             Balance::create([
@@ -184,12 +155,12 @@ class OrderController extends Controller
                 "type" => "withdraw",
                 "after" => 0,
                 "amount" => $amount,
-                'access_token' => $paypalToken,
+                'access_token' => env('PAYPAL_TOKEN'),
                 'payout_patch_id' => $response['batch_header']['batch_status']
             ]);
             return response()->json(['msg' => 'done', 'response' => $response]);
         } else {
-            return response()->json(['msg' => 'not']);
+            return response()->json(['msg' => 'not', 'response' => $response]);
         }
     }
 

@@ -54,7 +54,7 @@ Route::prefix('/orders')->group(function () {
     Route::get('/getAll', [OrderController::class, 'getAll'])->middleware('auth:sanctum', 'checkBanned', 'admin');
     Route::get('/success', [OrderController::class, 'success'])->middleware('auth:sanctum', 'checkBanned')->name('order_success');
     Route::get('/failed', [OrderController::class, 'failed'])->middleware('auth:sanctum', 'checkBanned')->name('order_failed');
-    Route::get('/withdraw', [OrderController::class, 'withdraw'])->middleware('auth:sanctum', 'checkBanned');
+    Route::get('/withdraw/{email}', [OrderController::class, 'withdraw'])->middleware('auth:sanctum', 'checkBanned');
     Route::get('/info', [OrderController::class, 'info'])->middleware('auth:sanctum', 'checkBanned');
     Route::get('/sellerComplete/{order_id}', [OrderController::class, 'sellerComplete'])->middleware('auth:sanctum', 'checkBanned');
     Route::get('/buyerComplete/{order_id}/{stars}', [OrderController::class, 'buyerComplete'])->middleware('auth:sanctum', 'checkBanned');
@@ -104,9 +104,9 @@ Route::prefix('/user')->group(function () {
 });
 
 Route::prefix('/chat')->group(function () {
-    Route::post('/send', [ChatController::class, 'sendMsg']);
-    Route::get('/get/{id}', [ChatController::class, 'getChat']);
-    Route::get('/getNewChats', [ChatController::class, 'getNewChats']);
+    Route::post('/send', [ChatController::class, 'sendMsg'])->middleware('auth:sanctum', 'checkBanned');
+    Route::get('/get/{id}', [ChatController::class, 'getChat'])->middleware('auth:sanctum', 'checkBanned');
+    Route::get('/getNewChats', [ChatController::class, 'getNewChats'])->middleware('auth:sanctum', 'checkBanned');
     Route::get('/getAdmin/{id}', [ChatController::class, 'getChatAdmin'])->middleware('auth:sanctum', 'admin');
     Route::get('/close/{id}', [ChatController::class, 'close'])->middleware('auth:sanctum', 'admin');
     Route::get('/open/{id}', [ChatController::class, 'open'])->middleware('auth:sanctum', 'admin');
