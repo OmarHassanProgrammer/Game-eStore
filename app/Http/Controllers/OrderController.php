@@ -41,6 +41,8 @@ class OrderController extends Controller
 
         $options = [
             'SOLUTIONTYPE' => 'Sole',
+            'LANDINGPAGE' => 'Billing',
+            'USERSELECTEDFUNDINGSOURCE' => 'CreditCard',
         ];
 
         $response = $provider->setExpressCheckout($data);
