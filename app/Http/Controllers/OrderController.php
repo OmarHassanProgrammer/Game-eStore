@@ -43,6 +43,8 @@ class OrderController extends Controller
             'SOLUTIONTYPE' => 'Sole',
         ];
 
+        $response = $provider->setExpressCheckout($data);
+
         $response = $provider->addOptions($options)->setExpressCheckout($data, true);
         
         return response()->json(['msg' => 'done', 'payment' => [
