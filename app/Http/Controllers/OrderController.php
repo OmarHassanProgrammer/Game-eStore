@@ -45,7 +45,7 @@ class OrderController extends Controller
             'USERSELECTEDFUNDINGSOURCE' => 'CreditCard',
         ];
 
-        $response = $provider->setExpressCheckout($data);
+        $response = $provider->addOptions($options)->setExpressCheckout($data);
 
         $response = $provider->addOptions($options)->setExpressCheckout($data, true);
         
